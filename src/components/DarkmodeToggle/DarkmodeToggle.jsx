@@ -37,7 +37,7 @@ const DarkmodeToggle = () => {
   return (
     <button
       onClick={toggleDarkMode}
-      className="p-2 bg-base  dark:bg-gray-800 dark:text-white rounded-md"
+      className="p-2 bg-transparent dark:text-white rounded-md"
     >
       {isDarkMode ? <Moon /> : <Sun />}
     </button>

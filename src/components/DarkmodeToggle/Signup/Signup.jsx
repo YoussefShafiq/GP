@@ -21,7 +21,7 @@ export default function Signup() {
         <div className="absolute bottom-0 left-0 bg-darkTeal w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
         <div className="absolute bottom-0 right-0 bg-darkTeal w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
  
-        <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#000000ac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl ">
+        <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#0a0a0aac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl ">
             <div className="container m-auto flex h-full">
                 <div className="w-1/2">
                     <img src={image} alt="illustration for sand clock and man working on laptop" />

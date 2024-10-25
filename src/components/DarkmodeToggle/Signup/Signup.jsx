@@ -15,21 +15,21 @@ export default function Signup() {
       setIsFlipped(!isFlipped);
     };
   return <>
-    <div className="lg:h-screen h-fit bg-base dark:bg-[#0a0a0a] overflow-hidden relative transition-colors duration-300">
+    <div className="h-screen bg-base dark:bg-[#0a0a0a] overflow-hidden relative transition-colors duration-300">
         <div className="absolute top-0 left-0 bg-darkTeal w-[210px] h-[196px] rounded-full -translate-x-1/3 -translate-y-1/3"></div>
         <div className="absolute top-0 right-0 bg-darkTeal w-[210px] h-[196px] rounded-full translate-x-1/3 -translate-y-1/3 "></div>
         <div className="absolute bottom-0 left-0 bg-darkTeal w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
         <div className="absolute bottom-0 right-0 bg-darkTeal w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
  
-        <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#0a0a0aac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl ">
-            <div className="container m-auto flex h-full">
-                <div className="w-1/2">
+        <div className=" overflow-y-scroll relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#121212ac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " style={{scrollbarWidth: "none" }}>
+            <div className="container m-auto flex lg:flex-row flex-col items-center lg:items-stretch h-full">
+                <div className="w-2/3 lg:w-1/2 ">
                     <img src={image} alt="illustration for sand clock and man working on laptop" />
                 </div>
-                <div className="w-1/2 flex flex-col items-center justify-center">
-                    <div className='w-1/5 scale-125 dark:hidden' ><img src={logo} alt="BrainMate" /></div>
+                <div className="w-full p-5 lg:p-0 lg:w-1/2 flex flex-col items-center justify-center">
+                    <div className='w-2/5 lg:w-1/5 scale-125 dark:hidden' ><img src={logo} alt="BrainMate" /></div>
                     <div className='w-1/5 scale-125 hidden dark:block' ><img src={darklogo} alt="BrainMate" /></div>
-                    <h1 className='text-5xl font-bold' >Let's Start!</h1>
+                    <h1 className='text-5xl font-bold text-center' >Let's Start!</h1>
                     <h2 className='text-primary dark:text-base dark:opacity-80 dark:text-sm text-sm' >The everything app for work and workspaces</h2>
                     <form className="w-full max-w-sm space-y-3 my-5">
                         <div className="relative z-0 w-full group">

@@ -67,8 +67,8 @@ export default function Signup() {
                         <img src={image} className='w-full' alt="illustration for sand clock and man working on laptop" />
                     </div>
                     <div className="w-full p-5 overflow-y-scroll lg:w-1/2 flex flex-col items-center justify-center" style={{ scrollbarWidth: "none" }}>
-                        <div className='w-1/4 lg:w-1/6 pt-20 dark:hidden' ><img src={logo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
-                        <div className='w-1/4 lg:w-1/6 pt-20 hidden dark:block' ><img src={darklogo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
+                        <div className='w-1/4 lg:w-1/6 pt-10 dark:hidden' ><img src={logo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
+                        <div className='w-1/4 lg:w-1/6 pt-10 hidden dark:block' ><img src={darklogo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
                         <h1 className='text-5xl font-bold text-center' >Let's Start!</h1>
                         <h2 className='text-primary dark:text-base dark:opacity-80 dark:text-sm text-sm' >The everything app for work and workspaces</h2>
                         <form onSubmit={formik.handleSubmit} className="w-full max-w-sm space-y-3 my-5">

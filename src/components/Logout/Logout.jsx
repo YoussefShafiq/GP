@@ -21,7 +21,8 @@ export default function Logout() {
 
         } catch (error) {
             console.log(error);
-
+            setToken('')
+            localStorage.setItem('userToken', '')
         }
 
     }

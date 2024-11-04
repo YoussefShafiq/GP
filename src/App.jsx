@@ -1,25 +1,38 @@
 import { useState } from 'react'
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Login from './components/DarkmodeToggle/Login/Login'
+import Login from './components/Login/Login'
 import Layout from './components/Layout/Layout'
-import Signup from './components/DarkmodeToggle/Signup/Signup'
-import Notfound from './components/DarkmodeToggle/Notfound/Notfound'
+import Signup from './components/Signup/Signup'
+import Notfound from './components/Notfound/Notfound'
+import SidebarContextProvider from './context/SidebarContext'
+import Home from './components/Home/Home'
+import UserDataContextProvider from './context/UserContext'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
+import ForgetPass from './components/ForgetPass/ForgetPass'
 
 let routers = createBrowserRouter([
-  {path:'', element: <Layout/> , children:[
-    {index:true , element:<Login/>},
-    {path:'login' , element:<Login/>},
-    {path:'signup' , element:<Signup/>},
-    {path:'*' , element:<Notfound/>},
-  ]}
+
+  { path: 'login', element: <Login /> },
+  { path: 'signup', element: <Signup /> },
+  { path: 'forgetpassword', element: <ForgetPass /> },
+  {
+    path: '', element: <Layout />, children: [
+      { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
+      { path: '*', element: <Notfound /> },
+    ]
+  }
 ])
 
 function App() {
 
 
   return <>
-    <RouterProvider router={routers}/>
+    <UserDataContextProvider>
+      <SidebarContextProvider>
+        <RouterProvider router={routers} />
+      </SidebarContextProvider>
+    </UserDataContextProvider>
   </>
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import notFoundAnimation from '../../../assets/images/404 error with a tired person.gif'
+import notFoundAnimation from '../../assets/images/404 error with a tired person.gif'
 
 export default function Notfound() {
   return <>

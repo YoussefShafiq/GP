@@ -16,7 +16,7 @@ export default {
         primary: '#393E46',  // dark gray-blue
         base: '#EEEEEE',  // light gray
         accent: '#51C4D3',  // teal
-        darkTeal: '#126E82',  // dark teal-blue
+        darkTeal: '#133D57',  // dark teal-blue
         highlight: '#F25287',  // pink-red
       },
     },

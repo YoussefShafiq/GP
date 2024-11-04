@@ -50,11 +50,11 @@ export default function Login() {
             <div className="absolute bottom-0 right-0 bg-darkTeal w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
 
             <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#121212ac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " >
-                <div className="container m-auto flex lg:flex-row flex-col items-center lg:items-stretch h-full" style={{ scrollbarWidth: 'none' }}>
+                <div className="container m-auto flex lg:flex-row flex-col items-center lg:items-stretch h-full" >
                     <div className="hidden lg:block w-2/3 lg:w-1/2 h ">
                         <img src={image} className='w-full' alt="illustration for sand clock and man working on laptop" />
                     </div>
-                    <div className="w-full p-5 lg:p-0 lg:w-1/2 flex flex-col items-center justify-center overflow-y-scroll">
+                    <div className="w-full p-5 lg:p-0 lg:w-1/2 flex flex-col items-center justify-center overflow-y-scroll" style={{ scrollbarWidth: 'none' }}>
                         <div className='w-1/4 lg:w-1/6 pt-10 dark:hidden' ><img src={logo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
                         <div className='w-1/4 lg:w-1/6 pt-10 hidden dark:block' ><img src={darklogo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
                         <h1 className='text-5xl font-bold text-center' >Welcome Back!</h1>

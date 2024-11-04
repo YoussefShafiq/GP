@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import image from '../../assets/images/Work time-pana (1).svg'
-import logo from '../../assets/images/brainmate.svg'
-import darklogo from '../../assets/images/brainmate dark.svg'
+import logo from '../../assets/images/brainmate.png'
+import darklogo from '../../assets/images/brainmate dark.png'
 import googleLogo from '../../assets/images/google.png'
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Formik, useFormik } from 'formik'
@@ -49,14 +49,14 @@ export default function Login() {
             <div className="absolute bottom-0 left-0 bg-darkTeal w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
             <div className="absolute bottom-0 right-0 bg-darkTeal w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
 
-            <div className="overflow-y-scroll relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#121212ac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " style={{ scrollbarWidth: "none" }}>
+            <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#121212ac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " >
                 <div className="container m-auto flex lg:flex-row flex-col items-center lg:items-stretch h-full">
-                    <div className="w-2/3 lg:w-1/2 ">
-                        <img src={image} alt="illustration for sand clock and man working on laptop" />
+                    <div className="hidden lg:block w-2/3 lg:w-1/2 h ">
+                        <img src={image} className='w-full' alt="illustration for sand clock and man working on laptop" />
                     </div>
                     <div className="w-full p-5 lg:p-0 lg:w-1/2 flex flex-col items-center justify-center">
-                        <div className='w-2/5 lg:w-1/5 scale-125 dark:hidden' ><img src={logo} alt="BrainMate" /></div>
-                        <div className='w-1/5 scale-125 hidden dark:block' ><img src={darklogo} alt="BrainMate" /></div>
+                        <div className='w-1/4 lg:w-1/6 pt-20 dark:hidden' ><img src={logo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
+                        <div className='w-1/4 lg:w-1/6 pt-20 hidden dark:block' ><img src={darklogo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
                         <h1 className='text-5xl font-bold text-center' >Welcome Back!</h1>
                         <h2 className='text-primary dark:text-base dark:opacity-80 dark:text-sm text-sm' >The everything app for work and workspaces</h2>
                         <form onSubmit={formik.handleSubmit} className="w-full max-w-sm my-5">

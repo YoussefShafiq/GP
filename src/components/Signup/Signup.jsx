@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import image from '../../assets/images/Work time-pana (1).svg'
-import logo from '../../assets/images/brainmate.svg'
-import darklogo from '../../assets/images/brainmate dark.svg'
+import logo from '../../assets/images/brainmate.png'
+import darklogo from '../../assets/images/brainmate dark.png'
 import googleLogo from '../../assets/images/google.png'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { UserData } from '../../context/UserContext'
@@ -63,12 +63,12 @@ export default function Signup() {
 
             <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#121212ac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " >
                 <div className="container m-auto flex lg:flex-row flex-col items-center lg:items-stretch h-full">
-                    <div className="w-2/3 lg:w-1/2 ">
-                        <img src={image} alt="illustration for sand clock and man working on laptop" />
+                    <div className="hidden lg:block w-2/3 lg:w-1/2 h ">
+                        <img src={image} className='w-full' alt="illustration for sand clock and man working on laptop" />
                     </div>
                     <div className="w-full p-5 overflow-y-scroll lg:w-1/2 flex flex-col items-center justify-center" style={{ scrollbarWidth: "none" }}>
-                        <div className='w-2/5 lg:w-1/5 scale-125 dark:hidden' ><img src={logo} alt="BrainMate" /></div>
-                        <div className='w-1/5 scale-125 hidden dark:block' ><img src={darklogo} alt="BrainMate" /></div>
+                        <div className='w-1/4 lg:w-1/6 pt-20 dark:hidden' ><img src={logo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
+                        <div className='w-1/4 lg:w-1/6 pt-20 hidden dark:block' ><img src={darklogo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
                         <h1 className='text-5xl font-bold text-center' >Let's Start!</h1>
                         <h2 className='text-primary dark:text-base dark:opacity-80 dark:text-sm text-sm' >The everything app for work and workspaces</h2>
                         <form onSubmit={formik.handleSubmit} className="w-full max-w-sm space-y-3 my-5">
@@ -130,7 +130,7 @@ export default function Signup() {
                             <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-primary before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-primary after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>
                         </div>
                         <div className='w-full max-w-sm my-5'>
-                            <button className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> Login with google</button>
+                            <button className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> signup with google</button>
                         </div>
                         <div className='text-primary pb-5 dark:text-gray-500 ' >Already have an account? <NavLink to={'/login'} className='text-darkTeal'>Login</NavLink></div>
 

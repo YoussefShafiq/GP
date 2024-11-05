@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode:'class',
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -18,6 +18,7 @@ export default {
         accent: '#51C4D3',  // teal
         darkTeal: '#133D57',  // dark teal-blue
         highlight: '#F25287',  // pink-red
+        dark: '#111',  // dark grey
       },
     },
   },

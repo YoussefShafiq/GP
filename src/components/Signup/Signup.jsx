@@ -66,7 +66,7 @@ export default function Signup() {
                     <div className="hidden lg:block w-2/3 lg:w-1/2 h ">
                         <img src={image} className='w-full' alt="illustration for sand clock and man working on laptop" />
                     </div>
-                    <div className="w-full p-5 overflow-y-scroll lg:w-1/2 flex flex-col items-center justify-center" style={{ scrollbarWidth: "none" }}>
+                    <div className="w-full p-5 overflow-y-scroll lg:w-1/2 flex flex-col items-center " style={{ scrollbarWidth: "none" }}>
                         <div className='w-1/4 lg:w-1/6 pt-10 dark:hidden' ><img src={logo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
                         <div className='w-1/4 lg:w-1/6 pt-10 hidden dark:block' ><img src={darklogo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
                         <h1 className='text-5xl font-bold text-center' >Let's Start!</h1>

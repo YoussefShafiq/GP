@@ -45,7 +45,7 @@ export default function ForgetPass() {
                     <div className="w-full p-5 lg:p-0 lg:w-1/2 flex flex-col items-center justify-center">
                         <div className='w-2/5 lg:w-1/5 scale-125 dark:hidden' ><img src={logo} alt="BrainMate" /></div>
                         <div className='w-1/5 scale-125 hidden dark:block' ><img src={darklogo} alt="BrainMate" /></div>
-                        <h1 className='text-5xl font-bold text-center' >Reset password</h1>
+                        <h1 className='text-5xl font-bold text-center' >Reset Password</h1>
                         <h2 className='text-primary dark:text-base dark:opacity-80 dark:text-sm text-sm' >The everything app for work and workspaces</h2>
                         <form onSubmit={formik.handleSubmit} className="w-full max-w-sm space-y-3 my-5">
 

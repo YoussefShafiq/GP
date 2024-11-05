@@ -151,7 +151,7 @@ export default function Signup() {
                                         wrapperStyle={{}}
                                         wrapperClass="w-fit m-auto"
                                     />
-                                ) : "submit"}
+                                ) : "sign up"}
                             </button>
                         </form>
 

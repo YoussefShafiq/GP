@@ -88,7 +88,7 @@ export default function ForgetPass() {
                                         wrapperStyle={{}}
                                         wrapperClass="w-fit m-auto"
                                     />
-                                ) : "submit"}
+                                ) : "get resetting email"}
                             </button>
                         </form>
 

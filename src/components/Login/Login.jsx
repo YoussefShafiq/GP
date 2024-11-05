@@ -113,7 +113,7 @@ export default function Login() {
                                         wrapperStyle={{}}
                                         wrapperClass="w-fit m-auto"
                                     />
-                                ) : "submit"}
+                                ) : "login"}
                             </button>
                         </form>
 

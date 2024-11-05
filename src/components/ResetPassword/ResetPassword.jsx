@@ -112,7 +112,7 @@ export default function ResetPassword() {
                                         wrapperStyle={{}}
                                         wrapperClass="w-fit m-auto"
                                     />
-                                ) : "submit"}
+                                ) : "reset"}
                             </button>
                         </form>
                     </div>

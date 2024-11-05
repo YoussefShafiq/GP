@@ -29,25 +29,16 @@ export default function ResetPassword() {
         }
     }
     let validationSchema = object({
-        name: string()
-            .matches(/^[a-zA-Z\s]+$/, "Full name can only contain letters and spaces")
-            .trim()
-            .min(3, "Full name must be at least 3 characters long")
-            .test(
-                "is-full-name",
-                "Full name must include at least three words",
-                (value) => value && value.trim().split(/\s+/).length >= 3
-            )
-            .required("Full name is required"),
-        email: string().email('invalid mail').required('email is required'),
         password: string().min(6, 'password must be at least 6 length').required('password is required'),
         password_confirmation: string().oneOf([ref('password')], "repassword doesn't match password").required('repassword is required')
     })
 
+    const params = new URLSearchParams(window.location.search);
+
     let formik = useFormik({
         initialValues: {
-            token: '',
-            email: '',
+            token: params.get('token') || '',
+            email: params.get('email') || '',
             password: '',
             password_confirmation: ''
         }, validationSchema, onSubmit: signup
@@ -69,27 +60,9 @@ export default function ResetPassword() {
                     <div className="w-full p-5 overflow-y-scroll lg:w-1/2 flex flex-col items-center " style={{ scrollbarWidth: "none" }}>
                         <div className='w-1/4 lg:w-1/6 pt-10 dark:hidden' ><img src={logo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
                         <div className='w-1/4 lg:w-1/6 pt-10 hidden dark:block' ><img src={darklogo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
-                        <h1 className='text-5xl font-bold text-center' >Let's Start!</h1>
+                        <h1 className='text-5xl font-bold text-center' >New Password</h1>
                         <h2 className='text-primary dark:text-base dark:opacity-80 dark:text-sm text-sm' >The everything app for work and workspaces</h2>
                         <form onSubmit={formik.handleSubmit} className="w-full max-w-sm space-y-3 my-5">
-                            <div className="relative z-0 w-full group">
-                                <input type="text" name="name" id="name" onChange={formik.handleChange} onBlur={formik.handleBlur} className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
-                                <label htmlFor="name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Name</label>
-                                {formik.errors.name && formik.touched.name &&
-                                    <div className=" text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600 " role="alert">
-                                        {formik.errors.name}
-                                    </div>
-                                }
-                            </div>
-                            <div className="relative z-0 w-full group">
-                                <input type="email" name="email" id="email" onChange={formik.handleChange} onBlur={formik.handleBlur} className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
-                                <label htmlFor="email" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
-                                {formik.errors.email && formik.touched.email &&
-                                    <div className=" text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600 " role="alert">
-                                        {formik.errors.email}
-                                    </div>
-                                }
-                            </div>
                             <div className="relative z-0 w-full group">
                                 <input type="password" name="password" id="password" onChange={formik.handleChange} onBlur={formik.handleBlur} className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
                                 <label htmlFor="password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
@@ -108,10 +81,6 @@ export default function ResetPassword() {
                                     </div>
                                 }
                             </div>
-                            <div className="flex items-center">
-                                <input id="link-checkbox" type="checkbox" defaultValue className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded  dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600" />
-                                <label htmlFor="link-checkbox" className="ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">I agree with the <a href="#" className="text-blue-600 dark:text-blue-500 hover:underline">terms and conditions</a>.</label>
-                            </div>
                             {error && <div className='bg-red-50 dark:bg-[#e33a3a1a] text-red-800 dark:text-red-600 text-center py-3 mb-2'>
                                 {error.email}
                             </div>}
@@ -125,22 +94,9 @@ export default function ResetPassword() {
                                 Sign up
                             </button>
                         </form>
-
-                        <div className='relative opacity-70 '>
-                            <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-primary before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-primary after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>
-                        </div>
-                        <div className='w-full max-w-sm my-5'>
-                            <button className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> signup with google</button>
-                        </div>
-                        <div className='text-primary pb-5 dark:text-gray-500 ' >Already have an account? <NavLink to={'/login'} className='text-darkTeal'>Login</NavLink></div>
-
                     </div>
                 </div>
             </div>
-
-
-
-
         </div>
     </>
 }

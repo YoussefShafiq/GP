@@ -62,7 +62,7 @@ export default function ForgetPass() {
                                 onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
                                 onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}
                             >
-                                reset password
+                                Get reseting email
                             </button>
                         </form>
 

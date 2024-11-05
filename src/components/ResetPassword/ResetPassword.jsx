@@ -90,7 +90,7 @@ export default function ResetPassword() {
                                 onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
                                 onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}
                             >
-                                Sign up
+                                Reset Password
                             </button>
                         </form>
                     </div>

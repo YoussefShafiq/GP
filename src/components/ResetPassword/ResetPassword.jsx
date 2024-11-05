@@ -33,7 +33,7 @@ export default function ResetPassword() {
             setloading(false)
             console.log(error);
 
-            toast.error('unexpected error, try again', {
+            toast.error(error.response.data.message.token, {
                 duration: 2000,
                 position: 'bottom-right'
             })

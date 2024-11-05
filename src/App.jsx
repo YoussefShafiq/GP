@@ -11,13 +11,14 @@ import UserDataContextProvider from './context/UserContext'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import ForgetPass from './components/ForgetPass/ForgetPass'
 import ResetPassword from './components/ResetPassword/ResetPassword'
+import GoHome from './components/GoHome/GoHome'
 
 let routers = createBrowserRouter([
 
-  { path: 'login', element: <Login /> },
-  { path: 'signup', element: <Signup /> },
-  { path: 'forgetpassword', element: <ForgetPass /> },
-  { path: 'resetpassword', element: <ResetPassword /> },
+  { path: 'login', element: <GoHome><Login /></GoHome> },
+  { path: 'signup', element: <GoHome><Signup /> </GoHome> },
+  { path: 'forgetpassword', element: <GoHome><ForgetPass /></GoHome> },
+  { path: 'resetpassword', element: <GoHome><ResetPassword /></GoHome> },
   {
     path: '', element: <Layout />, children: [
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },

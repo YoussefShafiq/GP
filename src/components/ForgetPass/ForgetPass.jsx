@@ -8,18 +8,30 @@ import { UserData } from '../../context/UserContext'
 import axios from 'axios'
 import { useFormik } from 'formik'
 import DarkmodeToggle from '../DarkmodeToggle/DarkmodeToggle'
+import toast from 'react-hot-toast'
+import { MailCheckIcon } from 'lucide-react'
+import { ThreeDots } from 'react-loader-spinner'
 
 
 export default function ForgetPass() {
 
-    const { setToken } = useContext(UserData)
-    let navigate = useNavigate()
+    const [loading, setloading] = useState(false)
 
     async function resetpassword(values) {
+        setloading(true)
         try {
             let { data } = await axios.post('https://brainmate-production.up.railway.app/api/password/reset-link', values)
-            console.log(data);
+            setloading(false)
+            toast.success(data.message, {
+                duration: 6000,
+                icon: <MailCheckIcon color='#009900' />,
+                position: 'bottom-right'
+            })
         } catch (error) {
+            setloading(false)
+            toast.error(error.response.data.message.email, {
+                position: 'bottom-right'
+            })
             console.log(error);
         }
     }
@@ -59,12 +71,24 @@ export default function ForgetPass() {
 
                             <button
                                 type='submit'
+                                disabled={loading}
                                 className='w-full h-12 rounded-xl bg-gradient-to-r from-primary dark:from-darkTeal via-darkTeal to-darkTeal text-white text-xl font-bold hover:shadow-xl'
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
                                 onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}
                             >
-                                Get reseting email
+                                {loading ? (
+                                    <ThreeDots
+                                        visible={true}
+                                        height="20"
+                                        width="43"
+                                        color="white"
+                                        radius="9"
+                                        ariaLabel="three-dots-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="w-fit m-auto"
+                                    />
+                                ) : "submit"}
                             </button>
                         </form>
 

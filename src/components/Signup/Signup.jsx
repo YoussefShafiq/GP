@@ -9,24 +9,39 @@ import axios from 'axios'
 import { useFormik } from 'formik'
 import { object, ref, string } from 'yup'
 import DarkmodeToggle from '../DarkmodeToggle/DarkmodeToggle'
+import toast from 'react-hot-toast'
+import { ThreeDots } from 'react-loader-spinner'
 
 
 export default function Signup() {
     const { setToken } = useContext(UserData)
     const [error, setError] = useState('')
+    const [loading, setloading] = useState(false)
+
     let navigate = useNavigate()
 
     async function signup(values) {
+        setloading(true)
         try {
             setError('')
             let { data } = await axios.post('https://brainmate-production.up.railway.app/api/register', values)
+            setloading(false)
             console.log(data);
             setToken(data.data.token)
             localStorage.setItem('userToken', data.data.token)
             navigate('/')
+            toast.success('signed up successfully', {
+                duration: 2000,
+                position: 'bottom-right'
+            })
         } catch (error) {
-            console.log(error.response.data.message);
-            setError(error.response.data.message)
+            console.log(error.response.data.message.email);
+            setloading(false)
+            setError(error.response.data.message.email)
+            toast.error(error.response.data.message.email, {
+                duration: 2000,
+                position: 'bottom-right'
+            })
         }
     }
     let validationSchema = object({
@@ -119,12 +134,24 @@ export default function Signup() {
                             </div>}
                             <button
                                 type='submit'
+                                disabled={loading}
                                 className='w-full h-12 rounded-xl bg-gradient-to-r from-primary dark:from-darkTeal via-darkTeal to-darkTeal text-white text-xl font-bold hover:shadow-xl'
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
                                 onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}
                             >
-                                Sign up
+                                {loading ? (
+                                    <ThreeDots
+                                        visible={true}
+                                        height="20"
+                                        width="43"
+                                        color="white"
+                                        radius="9"
+                                        ariaLabel="three-dots-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="w-fit m-auto"
+                                    />
+                                ) : "submit"}
                             </button>
                         </form>
 

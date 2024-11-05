@@ -9,23 +9,33 @@ import { UserData } from './../../context/UserContext';
 import axios from 'axios'
 import { object, string } from 'yup'
 import DarkmodeToggle from './../DarkmodeToggle/DarkmodeToggle';
+import toast from 'react-hot-toast'
+import { ThreeDots } from 'react-loader-spinner'
 
 
 export default function Login() {
     const { setToken } = useContext(UserData)
     const [error, setError] = useState('')
+    const [loading, setloading] = useState(false)
     let navigate = useNavigate()
 
     async function login(values) {
+        setloading(true)
         try {
             setError('')
             let { data } = await axios.post('https://brainmate-production.up.railway.app/api/login', values)
+            setloading(false)
             console.log(data);
+            toast.success('logged in successfully', {
+                duration: 2000,
+                position: 'bottom-right'
+            })
             setToken(data.data.token)
             localStorage.setItem('userToken', data.data.token)
             navigate('/')
 
         } catch (error) {
+            setloading(false)
             console.log(error.response.data.message);
             setError(error.response.data.message)
         }
@@ -86,12 +96,24 @@ export default function Login() {
                             </div>}
                             <button
                                 type="submit"
+                                disabled={loading}
                                 className='w-full h-12 rounded-xl bg-gradient-to-r from-primary dark:from-darkTeal via-darkTeal to-darkTeal text-white text-xl font-bold hover:shadow-md'
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
                                 onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}
                             >
-                                Login
+                                {loading ? (
+                                    <ThreeDots
+                                        visible={true}
+                                        height="20"
+                                        width="43"
+                                        color="white"
+                                        radius="9"
+                                        ariaLabel="three-dots-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="w-fit m-auto"
+                                    />
+                                ) : "submit"}
                             </button>
                         </form>
 

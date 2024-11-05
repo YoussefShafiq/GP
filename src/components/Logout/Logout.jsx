@@ -2,6 +2,7 @@ import axios from 'axios'
 import { LogOutIcon } from 'lucide-react'
 import React, { useContext } from 'react'
 import { UserData } from '../../context/UserContext'
+import toast from 'react-hot-toast'
 
 export default function Logout() {
     const { setToken } = useContext(UserData)
@@ -16,7 +17,6 @@ export default function Logout() {
             })
             setToken('')
             localStorage.setItem('userToken', '')
-
             console.log(data);
 
         } catch (error) {
@@ -24,6 +24,13 @@ export default function Logout() {
             setToken('')
             localStorage.setItem('userToken', '')
         }
+        toast.error('logged out',
+            {
+                duration: 2000,
+                position: 'bottom-right',
+                icon: <LogOutIcon color='red' ></LogOutIcon>
+            }
+        )
 
     }
 

@@ -9,23 +9,31 @@ import axios from 'axios'
 import { useFormik } from 'formik'
 import { object, ref, string } from 'yup'
 import DarkmodeToggle from '../DarkmodeToggle/DarkmodeToggle'
+import toast from 'react-hot-toast'
 
 
 export default function ResetPassword() {
-    const { setToken } = useContext(UserData)
-    const [error, setError] = useState('')
+    const [loading, setloading] = useState(false)
     let navigate = useNavigate()
 
     async function signup(values) {
+        setloading(true)
         try {
-            setError('')
             let { data } = await axios.post('https://brainmate-production.up.railway.app/api/password/reset', values)
+            toast.success(data.message, {
+                duration: 2000,
+                position: 'bottom-right'
+            })
+            setloading(false)
             console.log(data);
             navigate('/login')
 
         } catch (error) {
-            console.log(error.response.data.message);
-            setError(error.response.data.message)
+            setloading(false)
+            toast.error('unexpected error, try again', {
+                duration: 2000,
+                position: 'bottom-right'
+            })
         }
     }
     let validationSchema = object({
@@ -82,17 +90,26 @@ export default function ResetPassword() {
                                     </div>
                                 }
                             </div>
-                            {error && <div className='bg-red-50 dark:bg-[#e33a3a1a] text-red-800 dark:text-red-600 text-center py-3 mb-2'>
-                                {error.email}
-                            </div>}
                             <button
                                 type='submit'
+                                disabled={loading}
                                 className='w-full h-12 rounded-xl bg-gradient-to-r from-primary dark:from-darkTeal via-darkTeal to-darkTeal text-white text-xl font-bold hover:shadow-xl'
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
                                 onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}
                             >
-                                Reset Password
+                                {loading ? (
+                                    <ThreeDots
+                                        visible={true}
+                                        height="20"
+                                        width="43"
+                                        color="white"
+                                        radius="9"
+                                        ariaLabel="three-dots-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="w-fit m-auto"
+                                    />
+                                ) : "submit"}
                             </button>
                         </form>
                     </div>

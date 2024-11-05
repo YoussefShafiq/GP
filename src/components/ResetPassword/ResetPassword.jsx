@@ -22,7 +22,10 @@ export default function ResetPassword() {
             console.log(data);
             setToken(data.data.token)
             localStorage.setItem('userToken', data.data.token)
+            console.log('before navigate');
+
             navigate('/')
+            console.log('after navigate');
         } catch (error) {
             console.log(error.response.data.message);
             setError(error.response.data.message)

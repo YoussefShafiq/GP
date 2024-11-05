@@ -20,12 +20,8 @@ export default function ResetPassword() {
             setError('')
             let { data } = await axios.post('https://brainmate-production.up.railway.app/api/password/reset', values)
             console.log(data);
-            setToken(data.data.token)
-            localStorage.setItem('userToken', data.data.token)
-            console.log('before navigate');
+            navigate('/login')
 
-            navigate('/')
-            console.log('after navigate');
         } catch (error) {
             console.log(error.response.data.message);
             setError(error.response.data.message)

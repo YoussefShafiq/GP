@@ -8,6 +8,7 @@ import { UserData } from '../../context/UserContext'
 import axios from 'axios'
 import { useFormik } from 'formik'
 import { object, ref, string } from 'yup'
+import DarkmodeToggle from '../DarkmodeToggle/DarkmodeToggle'
 
 
 export default function ResetPassword() {
@@ -46,6 +47,7 @@ export default function ResetPassword() {
 
     return <>
         <div className="h-screen bg-base dark:bg-[#0a0a0a] overflow-hidden relative transition-colors duration-300">
+            <div className="fixed top-0 z-50 left-1/2 -translate-x-1/2"><DarkmodeToggle /></div>
             <div className="absolute top-0 left-0 bg-darkTeal w-[210px] h-[196px] rounded-full -translate-x-1/3 -translate-y-1/3"></div>
             <div className="absolute top-0 right-0 bg-darkTeal w-[210px] h-[196px] rounded-full translate-x-1/3 -translate-y-1/3 "></div>
             <div className="absolute bottom-0 left-0 bg-darkTeal w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>

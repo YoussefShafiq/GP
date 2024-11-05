@@ -6,7 +6,7 @@ import Login from '../Login/Login';
 export default function GoHome({ children }) {
 
     if (localStorage.getItem('userToken'))
-        return <Navigate to={''} />
+        return <Navigate to={'/'} />
     else
         return children
 }

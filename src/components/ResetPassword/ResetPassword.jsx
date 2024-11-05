@@ -31,6 +31,8 @@ export default function ResetPassword() {
 
         } catch (error) {
             setloading(false)
+            console.log(error);
+
             toast.error('unexpected error, try again', {
                 duration: 2000,
                 position: 'bottom-right'

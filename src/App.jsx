@@ -1,22 +1,22 @@
 import { useState } from 'react'
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Login from './components/Login/Login'
+import Login from './pages/Login/Login'
 import Layout from './components/Layout/Layout'
-import Signup from './components/Signup/Signup'
+import Signup from './pages/Signup/Signup'
 import Notfound from './components/Notfound/Notfound'
 import SidebarContextProvider from './context/SidebarContext'
-import Home from './components/Home/Home'
+import Home from './pages/Home/Home'
 import UserDataContextProvider from './context/UserContext'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
-import ForgetPass from './components/ForgetPass/ForgetPass'
-import ResetPassword from './components/ResetPassword/ResetPassword'
+import ForgetPass from './pages/ForgetPass/ForgetPass'
+import ResetPassword from './pages/ResetPassword/ResetPassword'
 import GoHome from './components/GoHome/GoHome'
 import { Toaster } from 'react-hot-toast'
 
 let routers = createBrowserRouter([
 
-  { path: 'login', element: <GoHome><Login /></GoHome> },
+  { path: 'login/:token?', element: <GoHome><Login /></GoHome> },
   { path: 'signup', element: <GoHome><Signup /> </GoHome> },
   { path: 'forgetpassword', element: <GoHome><ForgetPass /></GoHome> },
   { path: 'resetpassword', element: <ResetPassword /> },

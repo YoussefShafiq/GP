@@ -1,7 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  safelist: [
+    'bg-finished',
+    'bg-NA',
+    'bg-started',
+    'bg-holding',
+  ],
   darkMode: 'class',
   content: [
+    "./node_modules/flowbite/**/*.js",
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
@@ -16,12 +23,21 @@ export default {
         primary: '#393E46',  // dark gray-blue
         base: '#EEEEEE',  // light gray
         accent: '#51C4D3',  // teal
-        darkTeal: '#133D57',  // dark teal-blue
+        darkblue: '#133D57',  // dark teal-blue
+        blueblack: '#0b2534',  // most dark teal-blue
         highlight: '#F25287',  // pink-red
-        dark: '#111',  // dark grey
+        dark: '#111',
+
+
+        finished: '#17ce27',
+        NA: '#ea502f',
+        started: '#49afcd',
+        holding: '#b0b0b0',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 }
 

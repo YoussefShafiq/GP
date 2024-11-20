@@ -1,14 +1,14 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import image from '../../assets/images/Work time-pana (1).svg'
 import logo from '../../assets/images/brainmate.png'
 import darklogo from '../../assets/images/brainmate dark.png'
 import googleLogo from '../../assets/images/google.png'
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
 import { Formik, useFormik } from 'formik'
-import { UserData } from './../../context/UserContext';
+import { UserData } from '../../context/UserContext';
 import axios from 'axios'
 import { object, string } from 'yup'
-import DarkmodeToggle from './../DarkmodeToggle/DarkmodeToggle';
+import DarkmodeToggle from '../../components/DarkmodeToggle/DarkmodeToggle';
 import toast from 'react-hot-toast'
 import { ThreeDots } from 'react-loader-spinner'
 
@@ -53,13 +53,49 @@ export default function Login() {
         }, validationSchema, onSubmit: login
     })
 
+    const params = new URLSearchParams(location.search);
+    const paramToken = params.get('token');
+    async function googleToken() {
+        if (paramToken) {
+            try {
+                let headers = {
+                    Authorization: `Bearer ${paramToken}`
+                }
+                let { data } = await axios.post('https://brainmate-production.up.railway.app/api/validate-token', {
+
+                }, { headers })
+                console.log(data);
+                toast.success('logged in successfully', {
+                    duration: 2000,
+                    position: 'bottom-right'
+                })
+                setToken(data.data.token)
+                localStorage.setItem('userToken', data.data.token)
+                navigate('/')
+
+            } catch (error) {
+                setloading(false)
+                console.log(error.response.data.message);
+                setError(error.response.data.message)
+            }
+        }
+    }
+
+    useEffect(() => {
+        googleToken()
+
+
+
+    }, []);
+
+
     return <>
         <div className="h-screen bg-base dark:bg-[#0a0a0a] overflow-hidden relative transition-colors duration-300 ">
             <div className="fixed top-0 z-50 left-1/2 -translate-x-1/2"><DarkmodeToggle /></div>
-            <div className="absolute top-0 left-0 bg-darkTeal w-[210px] h-[196px] rounded-full -translate-x-1/3 -translate-y-1/3"></div>
-            <div className="absolute top-0 right-0 bg-darkTeal w-[210px] h-[196px] rounded-full translate-x-1/3 -translate-y-1/3 "></div>
-            <div className="absolute bottom-0 left-0 bg-darkTeal w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
-            <div className="absolute bottom-0 right-0 bg-darkTeal w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
+            <div className="absolute top-0 left-0 bg-darkblue w-[210px] h-[196px] rounded-full -translate-x-1/3 -translate-y-1/3"></div>
+            <div className="absolute top-0 right-0 bg-darkblue w-[210px] h-[196px] rounded-full translate-x-1/3 -translate-y-1/3 "></div>
+            <div className="absolute bottom-0 left-0 bg-darkblue w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
+            <div className="absolute bottom-0 right-0 bg-darkblue w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
 
             <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#121212ac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " >
                 <div className="container m-auto flex lg:flex-row flex-col items-center lg:items-stretch h-full" >
@@ -97,7 +133,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className='w-full h-12 rounded-xl bg-gradient-to-r from-primary dark:from-darkTeal via-darkTeal to-darkTeal text-white text-xl font-bold hover:shadow-md'
+                                className='w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack to-blueblack text-white text-xl font-bold hover:shadow-md'
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
                                 onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}
@@ -118,10 +154,10 @@ export default function Login() {
                         </form>
 
                         <div className='relative opacity-70 '>
-                            <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-primary before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-primary after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>
+                            <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-darkblue before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-darkblue after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>
                         </div>
-                        <div className='w-full max-w-sm my-5'>
-                            <button className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> Login with google</button>
+                        <div className='w-full max-w-sm my-5' >
+                            <button onClick={() => { window.location.href = 'https://brainmate-production.up.railway.app/api/auth/google' }} className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> Login with google</button>
                         </div>
                         <div className='text-primary dark:text-gray-500' >Don't have an account? <NavLink to={'/signup'} className={'text-darkTeal'} >Sign up</NavLink></div>
                     </div>

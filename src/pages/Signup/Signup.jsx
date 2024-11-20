@@ -8,7 +8,7 @@ import { UserData } from '../../context/UserContext'
 import axios from 'axios'
 import { useFormik } from 'formik'
 import { object, ref, string } from 'yup'
-import DarkmodeToggle from '../DarkmodeToggle/DarkmodeToggle'
+import DarkmodeToggle from '../../components/DarkmodeToggle/DarkmodeToggle'
 import toast from 'react-hot-toast'
 import { ThreeDots } from 'react-loader-spinner'
 
@@ -73,10 +73,10 @@ export default function Signup() {
     return <>
         <div className="h-screen bg-base dark:bg-[#0a0a0a] overflow-hidden relative transition-colors duration-300">
             <div className="fixed top-0 z-50 left-1/2 -translate-x-1/2"><DarkmodeToggle /></div>
-            <div className="absolute top-0 left-0 bg-darkTeal w-[210px] h-[196px] rounded-full -translate-x-1/3 -translate-y-1/3"></div>
-            <div className="absolute top-0 right-0 bg-darkTeal w-[210px] h-[196px] rounded-full translate-x-1/3 -translate-y-1/3 "></div>
-            <div className="absolute bottom-0 left-0 bg-darkTeal w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
-            <div className="absolute bottom-0 right-0 bg-darkTeal w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
+            <div className="absolute top-0 left-0 bg-darkblue w-[210px] h-[196px] rounded-full -translate-x-1/3 -translate-y-1/3"></div>
+            <div className="absolute top-0 right-0 bg-darkblue w-[210px] h-[196px] rounded-full translate-x-1/3 -translate-y-1/3 "></div>
+            <div className="absolute bottom-0 left-0 bg-darkblue w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
+            <div className="absolute bottom-0 right-0 bg-darkblue w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
 
             <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#121212ac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " >
                 <div className="container m-auto flex lg:flex-row flex-col items-center lg:items-stretch h-full">
@@ -135,7 +135,7 @@ export default function Signup() {
                             <button
                                 type='submit'
                                 disabled={loading}
-                                className='w-full h-12 rounded-xl bg-gradient-to-r from-primary dark:from-darkTeal via-darkTeal to-darkTeal text-white text-xl font-bold hover:shadow-xl'
+                                className='w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack to-blueblack text-white text-xl font-bold hover:shadow-xl'
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
                                 onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}
@@ -166,9 +166,6 @@ export default function Signup() {
                     </div>
                 </div>
             </div>
-
-
-
 
         </div>
     </>

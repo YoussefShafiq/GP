@@ -42,27 +42,27 @@ const DarkmodeToggle = () => {
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute mt-1 w-fit bg-darkTeal text-white rounded-md shadow-lg z-10">
+        <div className="absolute mt-1 w-fit bg-darkblue text-white rounded-md shadow-lg z-10">
           <button
             onClick={() => handleThemeChange('system')}
             className={`flex items-center p-2 w-full ${theme === 'system' ? 'bg-[#0b2534]' : ''}`}
           >
             <Monitor size={18} />
-            
+
           </button>
           <button
             onClick={() => handleThemeChange('light')}
             className={`flex items-center p-2 w-full ${theme === 'light' ? 'bg-[#0b2534]' : ''}`}
           >
             <Sun size={18} />
-            
+
           </button>
           <button
             onClick={() => handleThemeChange('dark')}
             className={`flex items-center p-2 w-full ${theme === 'dark' ? 'bg-[#0b2534]' : ''}`}
           >
             <Moon size={18} />
-            
+
           </button>
         </div>
       )}

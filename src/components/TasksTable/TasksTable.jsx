@@ -136,10 +136,10 @@ export default function TasksTable() {
                                             >
                                                 <ChevronDown />
                                             </button>
-                                            {/* Dropdown menu */}
+                                            {/* states menu */}
                                             <div
                                                 id={`dropdownHover${rowIndex}`}
-                                                className="absolute z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 dark:bg-gray-700"
+                                                className="absolute z-20 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 dark:bg-gray-700"
                                             >
                                                 <ul
                                                     className="py-2 text-sm text-gray-700 dark:text-gray-200"

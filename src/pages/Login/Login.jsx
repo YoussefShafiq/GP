@@ -105,25 +105,25 @@ export default function Login() {
                     <div className="hidden lg:block w-2/3 lg:w-1/2 h ">
                         <img src={image} className='w-full' alt="illustration for sand clock and man working on laptop" />
                     </div>
-                    <div className="w-full p-5 lg:p-0 lg:w-1/2 flex flex-col items-center overflow-y-scroll" style={{ scrollbarWidth: 'none' }}>
-                        <div className='w-1/4 lg:w-1/6 pt-10 dark:hidden' ><img src={logo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
-                        <div className='w-1/4 lg:w-1/6 pt-10 hidden dark:block' ><img src={darklogo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
-                        <h1 className='text-5xl font-bold text-center' >Welcome Back!</h1>
-                        <h2 className='text-primary dark:text-base dark:opacity-80 dark:text-sm text-sm' >The everything app for work and workspaces</h2>
-                        {thirdpartyAuthenticationLoading ? <>
-                            {loading ? (
-                                <ThreeDots
-                                    visible={true}
-                                    height="20"
-                                    width="43"
-                                    color="white"
-                                    radius="9"
-                                    ariaLabel="three-dots-loading"
-                                    wrapperStyle={{}}
-                                    wrapperClass="w-fit m-auto"
-                                />
-                            ) : "login"}
-                        </> : <>
+                    {thirdpartyAuthenticationLoading ? <>
+                        {loading ? (
+                            <ThreeDots
+                                visible={true}
+                                height="20"
+                                width="43"
+                                color="white"
+                                radius="9"
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{}}
+                                wrapperClass="w-fit m-auto"
+                            />
+                        ) : "login"}
+                    </> :
+                        <div className="w-full p-5 lg:p-0 lg:w-1/2 flex flex-col items-center overflow-y-scroll" style={{ scrollbarWidth: 'none' }}>
+                            <div className='w-1/4 lg:w-1/6 pt-10 dark:hidden' ><img src={logo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
+                            <div className='w-1/4 lg:w-1/6 pt-10 hidden dark:block' ><img src={darklogo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
+                            <h1 className='text-5xl font-bold text-center' >Welcome Back!</h1>
+                            <h2 className='text-primary dark:text-base dark:opacity-80 dark:text-sm text-sm' >The everything app for work and workspaces</h2>
                             <form onSubmit={formik.handleSubmit} className="w-full max-w-sm my-5">
                                 <div className="relative z-0 w-full group mb-4">
                                     <input type="email" name="email" id="email" onBlur={formik.handleBlur} onChange={formik.handleChange} className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
@@ -168,16 +168,16 @@ export default function Login() {
                                         />
                                     ) : "login"}
                                 </button>
-                            </form></>}
+                            </form>
 
-                        <div className='relative opacity-70 '>
-                            <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-darkblue before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-darkblue after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>
-                        </div>
-                        <div className='w-full max-w-sm my-5' >
-                            <button onClick={() => { window.location.href = 'https://brainmate-production.up.railway.app/api/auth/google' }} className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> Login with google</button>
-                        </div>
-                        <div className='text-primary dark:text-gray-500' >Don't have an account? <NavLink to={'/signup'} className={'text-darkTeal'} >Sign up</NavLink></div>
-                    </div>
+                            <div className='relative opacity-70 '>
+                                <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-darkblue before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-darkblue after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>
+                            </div>
+                            <div className='w-full max-w-sm my-5' >
+                                <button onClick={() => { window.location.href = 'https://brainmate-production.up.railway.app/api/auth/google' }} className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> Login with google</button>
+                            </div>
+                            <div className='text-primary dark:text-gray-500' >Don't have an account? <NavLink to={'/signup'} className={'text-darkTeal'} >Sign up</NavLink></div>
+                        </div>}
                 </div>
             </div>
 

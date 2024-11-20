@@ -14,6 +14,7 @@ import { ThreeDots } from 'react-loader-spinner'
 
 
 export default function Login() {
+    const [thirdpartyAuthenticationLoading, setThirdpartyAuthenticationLoading] = useState(false)
     const { setToken } = useContext(UserData)
     const [error, setError] = useState('')
     const [loading, setloading] = useState(false)
@@ -57,6 +58,7 @@ export default function Login() {
     const paramToken = params.get('token');
     async function googleToken() {
         if (paramToken) {
+            setThirdpartyAuthenticationLoading(true)
             try {
                 let headers = {
                     Authorization: `Bearer ${paramToken}`
@@ -72,10 +74,11 @@ export default function Login() {
                 setToken(data.data.token)
                 localStorage.setItem('userToken', data.data.token)
                 navigate('/')
+                setThirdpartyAuthenticationLoading(false)
 
             } catch (error) {
-                setloading(false)
                 console.log(error.response.data.message);
+                setThirdpartyAuthenticationLoading(false)
                 setError(error.response.data.message)
             }
         }
@@ -107,51 +110,65 @@ export default function Login() {
                         <div className='w-1/4 lg:w-1/6 pt-10 hidden dark:block' ><img src={darklogo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>
                         <h1 className='text-5xl font-bold text-center' >Welcome Back!</h1>
                         <h2 className='text-primary dark:text-base dark:opacity-80 dark:text-sm text-sm' >The everything app for work and workspaces</h2>
-                        <form onSubmit={formik.handleSubmit} className="w-full max-w-sm my-5">
-                            <div className="relative z-0 w-full group mb-4">
-                                <input type="email" name="email" id="email" onBlur={formik.handleBlur} onChange={formik.handleChange} className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
-                                <label htmlFor="email" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
-                                {formik.errors.email && formik.touched.email &&
-                                    <div className=" text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600 " role="alert">
-                                        {formik.errors.email}
-                                    </div>
-                                }
-                            </div>
-                            <div className="relative z-0 w-full group">
-                                <input type="password" name="password" id="password" onBlur={formik.handleBlur} onChange={formik.handleChange} className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
-                                <label htmlFor="password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
-                                {formik.errors.password && formik.touched.password &&
-                                    <div className=" text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600" role="alert">
-                                        {formik.errors.password}
-                                    </div>
-                                }
-                            </div>
-                            <div className='text-darkTeal text-end mb-5' ><Link to={'/forgetpassword'}>forget password?</Link></div>
-                            {error && <div className='bg-red-50 dark:bg-[#e33a3a1a] text-red-800 dark:text-red-600 text-center py-3 mb-2'>
-                                {error}
-                            </div>}
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className='w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack to-blueblack text-white text-xl font-bold hover:shadow-md'
-                                style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
-                                onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
-                                onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}
-                            >
-                                {loading ? (
-                                    <ThreeDots
-                                        visible={true}
-                                        height="20"
-                                        width="43"
-                                        color="white"
-                                        radius="9"
-                                        ariaLabel="three-dots-loading"
-                                        wrapperStyle={{}}
-                                        wrapperClass="w-fit m-auto"
-                                    />
-                                ) : "login"}
-                            </button>
-                        </form>
+                        {thirdpartyAuthenticationLoading ? <>
+                            {loading ? (
+                                <ThreeDots
+                                    visible={true}
+                                    height="20"
+                                    width="43"
+                                    color="white"
+                                    radius="9"
+                                    ariaLabel="three-dots-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClass="w-fit m-auto"
+                                />
+                            ) : "login"}
+                        </> : <>
+                            <form onSubmit={formik.handleSubmit} className="w-full max-w-sm my-5">
+                                <div className="relative z-0 w-full group mb-4">
+                                    <input type="email" name="email" id="email" onBlur={formik.handleBlur} onChange={formik.handleChange} className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
+                                    <label htmlFor="email" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
+                                    {formik.errors.email && formik.touched.email &&
+                                        <div className=" text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600 " role="alert">
+                                            {formik.errors.email}
+                                        </div>
+                                    }
+                                </div>
+                                <div className="relative z-0 w-full group">
+                                    <input type="password" name="password" id="password" onBlur={formik.handleBlur} onChange={formik.handleChange} className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
+                                    <label htmlFor="password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+                                    {formik.errors.password && formik.touched.password &&
+                                        <div className=" text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600" role="alert">
+                                            {formik.errors.password}
+                                        </div>
+                                    }
+                                </div>
+                                <div className='text-darkTeal text-end mb-5' ><Link to={'/forgetpassword'}>forget password?</Link></div>
+                                {error && <div className='bg-red-50 dark:bg-[#e33a3a1a] text-red-800 dark:text-red-600 text-center py-3 mb-2'>
+                                    {error}
+                                </div>}
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className='w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack to-blueblack text-white text-xl font-bold hover:shadow-md'
+                                    style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
+                                    onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
+                                    onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}
+                                >
+                                    {loading ? (
+                                        <ThreeDots
+                                            visible={true}
+                                            height="20"
+                                            width="43"
+                                            color="white"
+                                            radius="9"
+                                            ariaLabel="three-dots-loading"
+                                            wrapperStyle={{}}
+                                            wrapperClass="w-fit m-auto"
+                                        />
+                                    ) : "login"}
+                                </button>
+                            </form></>}
 
                         <div className='relative opacity-70 '>
                             <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-darkblue before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-darkblue after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>

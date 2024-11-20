@@ -106,18 +106,18 @@ export default function Login() {
                         <img src={image} className='w-full' alt="illustration for sand clock and man working on laptop" />
                     </div>
                     {thirdpartyAuthenticationLoading ? <>
-                        {loading ? (
-                            <ThreeDots
-                                visible={true}
-                                height="20"
-                                width="43"
-                                color="white"
-                                radius="9"
-                                ariaLabel="three-dots-loading"
-                                wrapperStyle={{}}
-                                wrapperClass="w-fit m-auto"
-                            />
-                        ) : "login"}
+                        (
+                        <ThreeDots
+                            visible={true}
+                            height="20"
+                            width="43"
+                            color="white"
+                            radius="9"
+                            ariaLabel="three-dots-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="w-fit m-auto"
+                        />
+                        )
                     </> :
                         <div className="w-full p-5 lg:p-0 lg:w-1/2 flex flex-col items-center overflow-y-scroll" style={{ scrollbarWidth: 'none' }}>
                             <div className='w-1/4 lg:w-1/6 pt-10 dark:hidden' ><img src={logo} className='w-full max-w-full object-contain' alt="BrainMate" /></div>

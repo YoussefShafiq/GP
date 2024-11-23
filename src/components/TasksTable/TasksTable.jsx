@@ -70,6 +70,22 @@ export default function TasksTable() {
         },
     ];
 
+    function taskstateDropdown(id) {
+        // Loop through all elements with the 'statesmenu' class
+        document.querySelectorAll('.statesmenu').forEach((element) => {
+            // Add the 'hidden' class to all elements except the selected one
+            if (element.id !== `dropdown${id}`) {
+                element.classList.add('hidden');
+            }
+        });
+
+        // Find the specific dropdown by its ID and toggle the 'hidden' class
+        const element = document.getElementById(`dropdown${id}`);
+        if (element) {
+            element.classList.toggle('hidden');
+        }
+    }
+
 
     return (
         <>
@@ -128,9 +144,8 @@ export default function TasksTable() {
                                         </span>
                                         <div className="relative">
                                             <button
-                                                id={`dropdownHoverButton${rowIndex}`}
-                                                data-dropdown-toggle={`dropdownHover${rowIndex}`}
-
+                                                id={`button${rowIndex}`}
+                                                onClick={() => { taskstateDropdown(rowIndex) }}
                                                 className="text-gray-600 font-medium rounded-lg text-sm p-1 inline-flex items-center "
                                                 type="button"
                                             >
@@ -138,22 +153,22 @@ export default function TasksTable() {
                                             </button>
                                             {/* states menu */}
                                             <div
-                                                id={`dropdownHover${rowIndex}`}
-                                                className="absolute z-20 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 dark:bg-gray-700"
+                                                id={`dropdown${rowIndex}`}
+                                                className="statesmenu absolute z-20 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 dark:bg-gray-700"
                                             >
                                                 <ul
-                                                    className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                                    className="py-2 text-sm text-gray-700 dark:text-gray-200 flex flex-col"
                                                     aria-labelledby={`dropdownHoverButton${rowIndex}`}
                                                 >
                                                     {["finished", "started", "NA", "holding"].map((item, itemIndex) => (
-                                                        <li key={itemIndex}>
+                                                        <button key={itemIndex}>
                                                             <a
                                                                 href="#"
                                                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                                             >
                                                                 {item}
                                                             </a>
-                                                        </li>
+                                                        </button>
                                                     ))}
                                                 </ul>
                                             </div>

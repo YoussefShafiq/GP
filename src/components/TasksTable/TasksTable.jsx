@@ -212,7 +212,7 @@ export default function TasksTable() {
                                             {/* states menu */}
                                             <div
                                                 id={`dropdown${rowIndex}`}
-                                                className={`statesmenu absolute z-20 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 dark:bg-gray-700 ${rowIndex == tasks.length - 1 ? 'bottom-full' : rowIndex == tasks.length - 2 ? 'bottom-full' : ''}`}
+                                                className={`statesmenu absolute z-20 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 dark:bg-gray-700 ${rowIndex >= tasks.length - 3 && rowIndex < tasks.length ? 'bottom-full' : ''}`}
                                             >
                                                 <ul
                                                     className="py-2 text-sm text-gray-700 dark:text-gray-200 flex flex-col"

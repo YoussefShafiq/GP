@@ -39,7 +39,7 @@ export default function Signup() {
             setloading(false)
             setError(error.response.data.message.email)
             toast.error(error.response.data.message.email, {
-                duration: 2000,
+                duration: 5000,
                 position: 'bottom-right'
             })
         }
@@ -130,9 +130,6 @@ export default function Signup() {
                                 <input id="link-checkbox" type="checkbox" defaultValue className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded  dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600" />
                                 <label htmlFor="link-checkbox" className="ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">I agree with the <a href="#" className="text-blue-600 dark:text-blue-500 hover:underline">terms and conditions</a>.</label>
                             </div>
-                            {error && <div className='bg-red-50 dark:bg-[#e33a3a1a] text-red-800 dark:text-red-600 text-center py-3 mb-2'>
-                                {error.email}
-                            </div>}
                             <button
                                 type='submit'
                                 disabled={loading}

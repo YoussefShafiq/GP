@@ -36,6 +36,10 @@ export default function Login() {
             navigate('/')
 
         } catch (error) {
+            toast.error(error.response.data.message, {
+                duration: 5000,
+                position: 'bottom-right'
+            })
             setloading(false)
             console.log(error.response.data.message);
             setError(error.response.data.message)
@@ -77,6 +81,10 @@ export default function Login() {
                 setThirdpartyAuthenticationLoading(false)
 
             } catch (error) {
+                toast.error(error.response.data.message, {
+                    duration: 5000,
+                    position: 'bottom-right'
+                })
                 console.log(error.response.data.message);
                 setThirdpartyAuthenticationLoading(false)
                 setError(error.response.data.message)
@@ -144,9 +152,6 @@ export default function Login() {
                                     }
                                 </div>
                                 <div className='text-darkTeal text-end mb-5' ><Link to={'/forgetpassword'}>forget password?</Link></div>
-                                {error && <div className='bg-red-50 dark:bg-[#e33a3a1a] text-red-800 dark:text-red-600 text-center py-3 mb-2'>
-                                    {error}
-                                </div>}
                                 <button
                                     type="submit"
                                     disabled={loading}

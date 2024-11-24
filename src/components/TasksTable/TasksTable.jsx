@@ -141,8 +141,8 @@ export default function TasksTable() {
 
     return (
         <>
-            <div className="relative overflow-x-scroll shadow-md sm:rounded-lg">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <div className="relative overflow-x-scroll overflow-y-visible shadow-md sm:rounded-lg">
+                <table className="w-full text-sm text-left rtl:text-right overflow-y-visible text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             {["Task Name", "Assigned to", "Deadline", "Priority", "State", "Tags"].map((header, index) => (
@@ -212,7 +212,7 @@ export default function TasksTable() {
                                             {/* states menu */}
                                             <div
                                                 id={`dropdown${rowIndex}`}
-                                                className="statesmenu absolute z-20 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 dark:bg-gray-700"
+                                                className={`statesmenu absolute z-20 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 dark:bg-gray-700 ${rowIndex == tasks.length - 1 ? 'bottom-full' : rowIndex == tasks.length - 2 ? 'bottom-full' : ''}`}
                                             >
                                                 <ul
                                                     className="py-2 text-sm text-gray-700 dark:text-gray-200 flex flex-col"

@@ -29,8 +29,8 @@ export default {
         dark: '#111',
 
 
-        finished: '#17ce27',
-        NA: '#ea502f',
+        finished: '#7dad4e',
+        NA: '#c6001d',
         started: '#49afcd',
         holding: '#b0b0b0',
       },

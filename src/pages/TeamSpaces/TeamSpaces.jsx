@@ -33,7 +33,7 @@ export default function TeamSpaces() {
         {/* team spaces list */}
         <div className="p-5 flex flex-wrap gap-5 ">
 
-            {<>
+            <>
                 {data?.data.map((teamspace) => (
                     <div key={teamspace.id} className="relative rounded-3xl mt-5 w-[calc(33%-10px)] border border-darkblue p-4">
                         {/* icon */}
@@ -61,7 +61,7 @@ export default function TeamSpaces() {
                         </div>
                     </div>
                 ))}
-            </>}
+            </>
 
         </div>
     </>

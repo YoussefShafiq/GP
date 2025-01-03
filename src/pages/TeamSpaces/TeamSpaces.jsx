@@ -46,7 +46,7 @@ export default function TeamSpaces() {
                 ))}
 
             </> : <>
-                {data?.data.map((teamspace) => (
+                {data.data?.map((teamspace) => (
                     <div key={teamspace.id} className="relative rounded-3xl mt-5 w-[calc(33%-10px)] border border-darkblue p-4">
                         {/* icon */}
                         <div className="absolute left-1/2 -translate-x-1/2 -translate-y-10"><div className="bg-black p-3 rounded-full bg-opacity-25 "><Pin color='#133d57' fill='#133d57' /></div></div>

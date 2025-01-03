@@ -5,9 +5,9 @@ import { Navigate } from 'react-router-dom';
 export default function ProtectedRoute({ children }) {
     const { token } = useContext(UserData)
 
-    if (localStorage.getItem('userToken'))
+    // if (localStorage.getItem('userToken'))
         return children
-    else {
-        return <Navigate to={'login'} />
-    }
+    // else {
+    //     return <Navigate to={'login'} />
+    // }
 }

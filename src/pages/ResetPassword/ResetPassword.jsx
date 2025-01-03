@@ -20,7 +20,7 @@ export default function ResetPassword() {
     async function signup(values) {
         setloading(true)
         try {
-            let { data } = await axios.post('http://brainmate.ct.ws/api/v1/auth/password/reset', values)
+            let { data } = await axios.post('https://brainmate.ct.ws/api/v1/auth/password/reset', values)
             toast.success(data.message, {
                 duration: 2000,
                 position: 'bottom-right'

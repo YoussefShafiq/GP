@@ -12,7 +12,7 @@ export default function Layout() {
   return <>
     <Navbar />
     <Sidebar />
-    <div className={`${!sidebarOpen ? "ms-16" : "ms-48"} pt-10 transition-all`}>
+    <div className={`${!sidebarOpen ? "ms-16" : "ms-48"} pt-12 transition-all`}>
       <Outlet></Outlet>
     </div>
   </>

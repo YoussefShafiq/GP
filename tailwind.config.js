@@ -23,9 +23,9 @@ export default {
         primary: '#393E46',  // dark gray-blue
         base: '#EEEEEE',  // light gray
         accent: '#51C4D3',  // teal
-        darkblue: '#133D57',  // dark teal-blue
+        darkblue: '#133d57',  // dark teal-blue
         blueblack: '#0b2534',  // most dark teal-blue
-        highlight: '#F25287',  // pink-red
+        highlight: '#f25287',  // pink-red
         dark: '#111',
 
 

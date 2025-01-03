@@ -13,6 +13,8 @@ import ForgetPass from './pages/ForgetPass/ForgetPass'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
 import GoHome from './components/GoHome/GoHome'
 import { Toaster } from 'react-hot-toast'
+import TeamSpaces from './pages/TeamSpaces/TeamSpaces'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 let routers = createBrowserRouter([
 
@@ -23,21 +25,26 @@ let routers = createBrowserRouter([
   {
     path: '', element: <Layout />, children: [
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
+      { path: 'teamspaces', element: <ProtectedRoute><TeamSpaces /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]
   }
 ])
 
+let query = new QueryClient()
+
 function App() {
 
 
   return <>
-    <UserDataContextProvider>
-      <SidebarContextProvider>
-        <RouterProvider router={routers} />
-        <Toaster />
-      </SidebarContextProvider>
-    </UserDataContextProvider>
+    <QueryClientProvider client={query}>
+      <UserDataContextProvider>
+        <SidebarContextProvider>
+          <RouterProvider router={routers} />
+          <Toaster />
+        </SidebarContextProvider>
+      </UserDataContextProvider>
+    </QueryClientProvider>
   </>
 }
 

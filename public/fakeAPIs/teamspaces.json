@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "name": "Marketing Team",
+        "assignedMembers": 12,
+        "activeTasks": 8,
+        "actions": {
+            "scheduleMeeting": "https://api.example.com/teams/1/schedule-meeting",
+            "videoConference": "https://api.example.com/teams/1/video-conference",
+            "groupChat": "https://api.example.com/teams/1/group-chat"
+        }
+    },
+    {
+        "id": 2,
+        "name": "Development Team",
+        "assignedMembers": 20,
+        "activeTasks": 15,
+        "actions": {
+            "scheduleMeeting": "https://api.example.com/teams/2/schedule-meeting",
+            "videoConference": "https://api.example.com/teams/2/video-conference",
+            "groupChat": "https://api.example.com/teams/2/group-chat"
+        }
+    },
+    {
+        "id": 3,
+        "name": "Design Team",
+        "assignedMembers": 8,
+        "activeTasks": 5,
+        "actions": {
+            "scheduleMeeting": "https://api.example.com/teams/3/schedule-meeting",
+            "videoConference": "https://api.example.com/teams/3/video-conference",
+            "groupChat": "https://api.example.com/teams/3/group-chat"
+        }
+    }
+]

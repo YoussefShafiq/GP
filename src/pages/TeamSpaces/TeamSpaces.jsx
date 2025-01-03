@@ -6,7 +6,7 @@ import React from 'react'
 export default function TeamSpaces() {
 
     function getTeamSpaces() {
-        return axios.get('../../../public/fakeAPIs/teamspaces.json');
+        return axios.get('/fakeAPIs/teamspaces.json');
     }
 
     let { data, isLoading, isFetching } = useQuery({

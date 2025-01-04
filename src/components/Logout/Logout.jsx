@@ -12,7 +12,7 @@ export default function Logout() {
 
     async function logout() {
         try {
-            let { data } = await axios.post('https://brainmate.ct.ws/api/v1/auth/logout', {}, {
+            let { data } = await axios.post('https://brainmate.fly.dev/api/v1/auth/logout', {}, {
                 headers
             })
             setToken('')

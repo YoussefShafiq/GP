@@ -3,8 +3,10 @@ import { LogOutIcon } from 'lucide-react'
 import React, { useContext } from 'react'
 import { UserData } from '../../context/UserContext'
 import toast from 'react-hot-toast'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 export default function Logout() {
+    const navigate = useNavigate();
     const { setToken } = useContext(UserData)
     let headers = {
         Authorization: `Bearer ${localStorage.getItem('userToken')}`
@@ -18,11 +20,13 @@ export default function Logout() {
             setToken('')
             localStorage.setItem('userToken', '')
             console.log(data);
+            navigate('/login');
 
         } catch (error) {
             console.log(error);
             setToken('')
             localStorage.setItem('userToken', '')
+            navigate('/login');
         }
         toast.error('logged out',
             {

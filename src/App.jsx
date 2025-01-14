@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import './fonts.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from './pages/Login/Login'
 import Layout from './components/Layout/Layout'
@@ -15,6 +16,7 @@ import GoHome from './components/GoHome/GoHome'
 import { Toaster } from 'react-hot-toast'
 import TeamSpaces from './pages/TeamSpaces/TeamSpaces'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import Dashboard from './pages/Dashboard/Dashboard'
 
 let routers = createBrowserRouter([
 
@@ -25,6 +27,7 @@ let routers = createBrowserRouter([
   {
     path: '', element: <Layout />, children: [
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
+      { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
       { path: 'teamspaces', element: <ProtectedRoute><TeamSpaces /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]

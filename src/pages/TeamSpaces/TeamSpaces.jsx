@@ -17,7 +17,7 @@ export default function TeamSpaces() {
 
     return <>
         {/* team spaces controls */}
-        <div className="flex justify-between items-center space-x-3 p-3  bg-base">
+        <div className="flex justify-between items-center space-x-3 p-3  bg-white">
 
             <h1 className='font-semibold text-xl capitalize'>team spacecs</h1>
             <div className='flex space-x-3'>

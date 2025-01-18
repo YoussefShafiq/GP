@@ -20,7 +20,7 @@ export default function ForgetPass() {
     async function resetpassword(values) {
         setloading(true)
         try {
-            let { data } = await axios.post('https://brainmate.fly.dev/api/v1/auth/password/reset-link', values)
+            let { data } = await axios.post('https://brainmate.fly.dev/api/v1/password/reset/request', values)
             setloading(false)
             toast.success(data.message, {
                 duration: 6000,
@@ -29,9 +29,15 @@ export default function ForgetPass() {
             })
         } catch (error) {
             setloading(false)
-            toast.error(error.response.data.message.email, {
-                position: 'bottom-right'
-            })
+            if (error.response.data.message.email) {
+                toast.error(error.response.data.message.email, {
+                    position: 'bottom-right'
+                })
+            } else {
+                toast.error('Unexpected error, Please try again', {
+                    position: 'bottom-right'
+                })
+            }
             console.log(error);
         }
     }
@@ -72,7 +78,7 @@ export default function ForgetPass() {
                             <button
                                 type='submit'
                                 disabled={loading}
-                                className='w-full h-12 rounded-xl bg-gradient-to-r from-primary dark:from-darkTeal via-darkTeal to-darkTeal text-white text-xl font-bold hover:shadow-xl'
+                                className='w-full h-12 rounded-xl bg-gradient-to-r from-darkblue dark:from-darkblue via-darkblue to-blueblack text-white text-xl font-bold hover:shadow-xl'
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => e.target.style.backgroundPosition = 'right'}
                                 onMouseLeave={(e) => e.target.style.backgroundPosition = 'left'}

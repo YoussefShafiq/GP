@@ -167,7 +167,7 @@ export default function TasksTable() {
                                 </th>
                                 {/* assigned to column */}
                                 <td className="px-6 py-4">
-                                    <div className="flex -space-x-2 max-w-[200px] overflow-hidden">
+                                    <div className="flex -space-x-2 max-w-[200px] overflow-hidden px-2">
                                         {task.assignedTo.map((person, personIndex) => (
                                             <div
                                                 key={personIndex}

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { Globe, MessageCircleMore, Pin, Plus, UserPlus, Video } from 'lucide-react';
+import { Globe, MessageCircleMore, Pin, Video } from 'lucide-react';
 import React from 'react'
 
 export default function TeamSpaces() {
@@ -17,17 +17,10 @@ export default function TeamSpaces() {
 
     return <>
         {/* team spaces controls */}
-        <div className="flex justify-between items-center space-x-3 p-3  bg-white">
+        <div className="flex justify-between items-center space-x-3 p-3 bg-white">
 
             <h1 className='font-semibold text-xl capitalize'>team spacecs</h1>
-            <div className='flex space-x-3'>
-                <div className="bg-highlight shadow-md p-2 text-white capitalize rounded-full" title='Invite New Member'>
-                    <UserPlus />
-                </div>
-                <div className="bg-highlight shadow-md p-2 text-white capitalize rounded-full" title='Add New Teamspace'>
-                    <Plus />
-                </div>
-            </div>
+
         </div>
 
         {/* team spaces list */}

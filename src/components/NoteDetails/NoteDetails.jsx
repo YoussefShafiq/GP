@@ -87,7 +87,7 @@ export default function NoteDetails() {
                 duration: 1000,
                 position: 'bottom-right',
             });
-            setSelectedNote(''); // Clear selected note
+            setSelectedNote(null); // Clear selected note
             refetch(); // Refetch note details
             folderNotes.refetch(); // Refetch folder notes
             recentNotes.refetch(); // Refetch recent notes
@@ -99,7 +99,6 @@ export default function NoteDetails() {
         }
     }
 
-    // Toggle favorite status of a note
     // Toggle favorite status of a note
     async function toggleFavorite(flag) {
         if (!selectedNote) {
@@ -214,6 +213,8 @@ export default function NoteDetails() {
 
     return (
         <div className="w-1/2 bg-darkblue h-[calc(100vh-48px)] overflow-y-scroll relative" style={{ scrollbarWidth: 'none' }}>
+            {/* Show "Select a note to view" if no note is selected */}
+
             {!selectedNote ? (
                 <div className="w-full h-full flex justify-center items-center font-inter">
                     <div className="flex flex-col text-white w-1/2 text-center items-center">
@@ -224,9 +225,8 @@ export default function NoteDetails() {
                         </div>
                     </div>
                 </div>
-            ) : null}
-
-            {isLoading ? (
+            ) : isLoading ? (
+                // Show loading state if a note is selected but data is still loading
                 <div className="flex flex-col pt-3 px-5">
                     <h1 className="h-4 bg-slate-400 opacity-20 animate-pulse rounded w-1/3"></h1>
                     <div className="flex items-center gap-10 mt-5">
@@ -257,6 +257,7 @@ export default function NoteDetails() {
                     ></p>
                 </div>
             ) : (
+                // Show note details if a note is selected and data is loaded
                 data?.data?.data?.note && (
                     <div className="flex flex-col pt-3 px-5">
                         <div className="flex justify-between items-center relative">
@@ -269,12 +270,12 @@ export default function NoteDetails() {
                                 placeholder='Title'
                                 disabled={isNoteDeleted}
                             />
-
-                            {/* save and favorite */}
+                            {!selectedNote}
+                            {/* Save and favorite buttons */}
                             {!isNoteDeleted && (
                                 <div className="flex gap-3">
                                     {/* Favorite Button */}
-                                    {data?.data?.data?.note.isFavorite ? <>
+                                    {data?.data?.data?.note.isFavorite ? (
                                         <button
                                             className="text-yellow-400"
                                             onClick={() => toggleFavorite(0)}
@@ -282,7 +283,7 @@ export default function NoteDetails() {
                                         >
                                             <Star fill="#e3a008" />
                                         </button>
-                                    </> : <>
+                                    ) : (
                                         <button
                                             className="text-yellow-400"
                                             onClick={() => toggleFavorite(1)}
@@ -290,8 +291,7 @@ export default function NoteDetails() {
                                         >
                                             <Star />
                                         </button>
-                                    </>}
-
+                                    )}
 
                                     {/* Save Button */}
                                     <button

@@ -182,7 +182,7 @@ export default function Notes() {
 
                     <button
                         type="submit"
-                        className="w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack to-blueblack text-white text-lg font-bold hover:shadow-md"
+                        className="w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack  to-blueblack text-white text-lg font-bold hover:shadow-md"
                         style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                         onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
                         onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
@@ -205,7 +205,7 @@ export default function Notes() {
                         }}
                     >
                         <Plus />
-                        <div className="font-inter">Add Note</div>
+                        <div className="font-inter font-bold">Add Note</div>
                     </button>
 
                     {/* Folders */}

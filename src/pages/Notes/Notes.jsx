@@ -12,7 +12,7 @@ import axios from 'axios';
 import { NotesContext } from '../../context/NotesContext';
 
 export default function Notes() {
-    const { setSelectedFolder, setSelectedFolderName, selectedFolder } = useContext(NotesContext);
+    const { setSelectedFolder, setSelectedFolderName, selectedFolder, setSelectedNote } = useContext(NotesContext);
     const [addnoteForm, setaddnoteForm] = useState(false);
     const token = localStorage.getItem('userToken');
 
@@ -26,6 +26,11 @@ export default function Notes() {
                 },
             }),
     });
+
+    let notesFoldersquery = useQuery({
+        queryKey: ['notesFolders'],
+        keepPreviousData: true,
+    })
 
     // Fetch notes for the selected folder
     let folderNotes = useQuery({
@@ -48,6 +53,10 @@ export default function Notes() {
                     Authorization: `Bearer ${token}`,
                 },
             });
+            console.log(response.data.data.id);
+            setSelectedNote(response.data.data.id)
+            setSelectedFolder(response.data.data.folder_id)
+
             toast.success('Note added successfully', {
                 duration: 1000,
                 position: 'bottom-right',
@@ -55,6 +64,7 @@ export default function Notes() {
             resetForm();
             folderNotes.refetch(); // Refetch folder notes
             recentNotes.refetch(); // Refetch recent notes
+            notesFoldersquery.refetch(); // Refetch recent notes
         } catch (error) {
             toast.error(error.response?.data?.message || 'Error adding note', {
                 duration: 3000,

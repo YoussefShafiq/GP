@@ -92,7 +92,7 @@ export default function NoteDetails() {
     // Update a note
     async function updateNote() {
         const noteData = data.data.data.note;
-        if (noteContent !== noteData.content || noteTitle !== noteData.title) {
+        if ((noteContent !== noteData.content && noteContent != '') || (noteTitle !== noteData.title && noteTitle != '')) {
             try {
                 await axios.put(
                     `https://brainmate.fly.dev/api/v1/notes/${noteData.id}`,

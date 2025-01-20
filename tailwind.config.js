@@ -38,6 +38,7 @@ export default {
         blueblack: '#0b2534',  // most dark teal-blue
         highlight: '#f25287',  // pink-red
         dark: '#111',
+        notes: '#35586f',
 
 
         finished: '#7dad4e',

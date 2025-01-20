@@ -17,6 +17,8 @@ import { Toaster } from 'react-hot-toast'
 import TeamSpaces from './pages/TeamSpaces/TeamSpaces'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Dashboard from './pages/Dashboard/Dashboard'
+import Notes from './pages/Notes/Notes'
+import NotesContextProvider from './context/NotesContext'
 
 let routers = createBrowserRouter([
 
@@ -29,6 +31,7 @@ let routers = createBrowserRouter([
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
       { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
       { path: 'teamspaces', element: <ProtectedRoute><TeamSpaces /></ProtectedRoute> },
+      { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]
   }
@@ -40,14 +43,16 @@ function App() {
 
 
   return <>
-    <QueryClientProvider client={query}>
-      <UserDataContextProvider>
-        <SidebarContextProvider>
-          <RouterProvider router={routers} />
-          <Toaster />
-        </SidebarContextProvider>
-      </UserDataContextProvider>
-    </QueryClientProvider>
+    <NotesContextProvider>
+      <QueryClientProvider client={query}>
+        <UserDataContextProvider>
+          <SidebarContextProvider>
+            <RouterProvider router={routers} />
+            <Toaster />
+          </SidebarContextProvider>
+        </UserDataContextProvider>
+      </QueryClientProvider>
+    </NotesContextProvider>
   </>
 }
 

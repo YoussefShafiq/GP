@@ -1,5 +1,5 @@
 import { Archive, Folder, FolderOpen, FolderPlus, NotebookText, Plus, Star, Trash, X } from 'lucide-react';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react'; // Add useRef
 import NotesFolders from '../../components/NotesFolders/NotesFolders';
 import FolderNotes from '../../components/FolderNotes/FolderNotes';
 import RecentNotes from '../../components/RecentNotes/RecentNotes';
@@ -16,6 +16,25 @@ export default function Notes() {
     const [addnoteForm, setaddnoteForm] = useState(false);
     const token = localStorage.getItem('userToken');
 
+    // Ref for the create note form
+    const notesFormRef = useRef(null);
+
+    // Close the form when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (notesFormRef.current && !notesFormRef.current.contains(event.target)) {
+                setaddnoteForm(false); // Close the form
+            }
+        }
+
+        // Attach the event listener
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            // Clean up the event listener
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     // Fetch all notes for the recent notes section
     let recentNotes = useQuery({
         queryKey: ['recentNotes'],
@@ -30,7 +49,7 @@ export default function Notes() {
     let notesFoldersquery = useQuery({
         queryKey: ['notesFolders'],
         keepPreviousData: true,
-    })
+    });
 
     // Fetch notes for the selected folder
     let folderNotes = useQuery({
@@ -54,8 +73,8 @@ export default function Notes() {
                 },
             });
             console.log(response.data.data.id);
-            setSelectedNote(response.data.data.id)
-            setSelectedFolder(response.data.data.folder_id)
+            setSelectedNote(response.data.data.id);
+            setSelectedFolder(response.data.data.folder_id);
 
             toast.success('Note added successfully', {
                 duration: 1000,
@@ -76,7 +95,6 @@ export default function Notes() {
     // Form validation schema
     let validationSchema = object({
         title: string().required('Title is required'),
-        // content: string().required('Content is required'),
         folder_id: string().required('Folder is required'),
     });
 
@@ -110,6 +128,7 @@ export default function Notes() {
             <div
                 className={`absolute w-1/3 p-5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop-blur-md rounded-lg border shadow-lg bg-[#555] bg-opacity-20 z-10 ${addnoteForm ? 'flex' : 'hidden'
                     } justify-center items-center`}
+                ref={notesFormRef} // Attach ref to the form container
             >
                 <button
                     className="absolute top-0 right-0 m-3 text-red-500 hover:drop-shadow-lg hover:text-red-700 transition-all"
@@ -145,9 +164,8 @@ export default function Notes() {
                         )}
                     </div>
 
-
+                    {/* Folder Dropdown */}
                     <div className="relative z-0 w-full group mb-4">
-                        {/* Dropdown List */}
                         <select
                             name="folder_id"
                             id="folder_id"
@@ -180,9 +198,10 @@ export default function Notes() {
                         )}
                     </div>
 
+                    {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack  to-blueblack text-white text-lg font-bold hover:shadow-md"
+                        className="w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack to-blueblack text-white text-lg font-bold hover:shadow-md"
                         style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                         onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
                         onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}

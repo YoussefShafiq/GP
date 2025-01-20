@@ -1,5 +1,5 @@
 import { Folder, FolderOpen, FolderPlus, MoreVertical, Trash2, X } from 'lucide-react';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { NotesContext } from '../../context/NotesContext';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -13,6 +13,31 @@ export default function NotesFolders() {
     const token = localStorage.getItem('userToken');
     const [folderform, setFolderform] = useState(false);
     const [showMenu, setShowMenu] = useState(null); // Track which folder's menu is open
+
+    // Refs for the menu and form
+    const menuRef = useRef(null);
+    const folderFormRef = useRef(null);
+
+    // Close the menu or form when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event) {
+            // Close the menu if clicked outside
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setShowMenu(null);
+            }
+            // Close the form if clicked outside
+            if (folderFormRef.current && !folderFormRef.current.contains(event.target)) {
+                setFolderform(false);
+            }
+        }
+
+        // Attach the event listener
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            // Clean up the event listener
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     function getNotesFolders() {
         return axios.get('https://brainmate.fly.dev/api/v1/notes/folders', {
@@ -56,7 +81,6 @@ export default function NotesFolders() {
                 duration: 1000,
                 position: 'bottom-right'
             });
-
 
             // Check if the selected note belongs to the deleted folder
             if (noteDetails.data?.data?.data?.note?.folder?.id === folderId) {
@@ -117,14 +141,36 @@ export default function NotesFolders() {
     return (
         <>
             {/* Create folder form */}
-            <div className={`absolute w-1/3 p-5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop-blur-md rounded-lg border shadow-lg bg-[#555] bg-opacity-20 z-10 ${folderform ? 'flex' : 'hidden'} justify-center items-center`}>
-                <button className='absolute top-0 right-0 m-3 text-red-500 hover:drop-shadow-lg hover:text-red-700 transition-all' onClick={() => { setFolderform(false) }} ><X size={25} /></button>
+            <div
+                className={`absolute w-1/3 p-5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop-blur-md rounded-lg border shadow-lg bg-[#555] bg-opacity-20 z-10 ${folderform ? 'flex' : 'hidden'} justify-center items-center`}
+                ref={folderFormRef} // Attach ref to the form container
+            >
+                <button
+                    className='absolute top-0 right-0 m-3 text-red-500 hover:drop-shadow-lg hover:text-red-700 transition-all'
+                    onClick={() => { setFolderform(false) }}
+                >
+                    <X size={25} />
+                </button>
                 <form onSubmit={formik.handleSubmit} className="w-full max-w-sm mt-5">
                     <div className="relative z-0 w-full group mb-4">
-                        <input type="text" name="name" id="name" onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.name} className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder='' />
-                        <label htmlFor="name" className="peer-focus:font-medium absolute text-sm text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Folder Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            value={formik.values.name}
+                            className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                            placeholder=''
+                        />
+                        <label
+                            htmlFor="name"
+                            className="peer-focus:font-medium absolute text-sm text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                        >
+                            Folder Name
+                        </label>
                         {formik.errors.name && formik.touched.name &&
-                            <div className=" text-sm text-red-500 rounded-lg bg-transparent  " role="alert">
+                            <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
                                 {formik.errors.name}
                             </div>
                         }
@@ -145,7 +191,9 @@ export default function NotesFolders() {
             <div className="mt-2 flex flex-col space-y-0 text-white">
                 <div className="ms-3 pe-3 mb-1 opacity-50 flex justify-between items-center capitalize">
                     <span>Folders</span>
-                    <button onClick={() => { setFolderform(true) }} ><FolderPlus size={20} /></button>
+                    <button onClick={() => { setFolderform(true) }} >
+                        <FolderPlus size={20} />
+                    </button>
                 </div>
                 {isLoading ? (
                     <div className="flex flex-col p-2 space-y-2">
@@ -156,23 +204,29 @@ export default function NotesFolders() {
                 ) : (
                     <>
                         {data?.data.data.folders.map((folder) => (
-                            <div key={folder.id} className={`px-3 flex items-center justify-between space-x-2 my-4 py-2 ${selectedFolder === folder.id ? 'bg-white bg-opacity-5' : 'opacity-50'}  cursor-pointer`} onClick={() => {
-                                setSelectedFolder(folder.id);
-                                setSelectedFolderName(folder.name);
-                                setTimeout(() => {
-                                    foldernotes.refetch();
-                                }, 100);
-                            }}>
+                            <div
+                                key={folder.id}
+                                className={`px-3 flex items-center justify-between space-x-2 my-4 py-2 ${selectedFolder === folder.id ? 'bg-white bg-opacity-5' : 'opacity-50'}  cursor-pointer`}
+                                onClick={() => {
+                                    setSelectedFolder(folder.id);
+                                    setSelectedFolderName(folder.name);
+                                    setTimeout(() => {
+                                        foldernotes.refetch();
+                                    }, 100);
+                                }}
+                            >
                                 <div className="flex items-center space-x-2">
                                     {selectedFolder === folder.id ? <FolderOpen size={20} /> : <Folder size={20} />}
                                     <p>{folder.name}</p>
                                 </div>
-                                <div className="relative">
-                                    <button onClick={(e) => {
-                                        e.stopPropagation(); // Prevent the folder click event
-                                        setShowMenu(showMenu === folder.id ? null : folder.id);
-                                        setSelectedFolder(folder.id)
-                                    }}>
+                                <div className="relative" ref={menuRef}>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Prevent the folder click event
+                                            setShowMenu(showMenu === folder.id ? null : folder.id);
+                                            setSelectedFolder(folder.id);
+                                        }}
+                                    >
                                         <MoreVertical size={20} />
                                     </button>
                                     {showMenu === folder.id && (

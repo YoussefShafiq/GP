@@ -146,7 +146,6 @@ export default function FolderNotes() {
                                     }}
                                 >
                                     <div className="text-[16px] font-semibold pb-1">{noteTitle || 'Untitled'}</div>
-                                    <div className="text-red-500">{note.id}</div>
                                     <div className="flex justify-between items-center opacity-80">
                                         {/* Date */}
                                         <div>{note.created_at?.substring(0, 10) || 'Unknown date'}</div>

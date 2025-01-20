@@ -25,22 +25,25 @@ export default function NoteDetails() {
         enabled: !!selectedNote, // Only fetch if selectedNote is set
     });
 
-    // State for editable content and title
+    // State for editable content, title, and selected folder
     const [noteContent, setNoteContent] = useState('');
     const [noteTitle, setNoteTitle] = useState('');
+    const [selectedFolderId, setSelectedFolderId] = useState('');
 
     // Update the states when the data changes
     useEffect(() => {
         if (data?.data?.data?.note) {
-            const { content, title } = data.data.data.note;
+            const { content, title, folder } = data.data.data.note;
             setNoteContent(content || '');
             setNoteTitle(title || '');
+            setSelectedFolderId(folder?.id || ''); // Set the current folder ID
         }
     }, [data]);
 
     // Handle input changes
     const handleContentChange = (e) => setNoteContent(e.target.value);
     const handleTitleChange = (e) => setNoteTitle(e.target.value);
+    const handleFolderChange = (e) => setSelectedFolderId(e.target.value);
 
     // Fetch folder notes
     let folderNotes = useQuery({
@@ -63,6 +66,12 @@ export default function NoteDetails() {
                     Authorization: `Bearer ${token}`,
                 },
             }),
+    });
+
+    // Fetch folders for the dropdown
+    let foldersQuery = useQuery({
+        queryKey: ['notesFolders'],
+        keepPreviousData: true,
     });
 
     // Delete a note
@@ -92,14 +101,18 @@ export default function NoteDetails() {
     // Update a note
     async function updateNote() {
         const noteData = data.data.data.note;
-        if ((noteContent !== noteData.content && noteContent != '') || (noteTitle !== noteData.title && noteTitle != '')) {
+        if (
+            (noteContent !== noteData.content && noteContent !== '') ||
+            (noteTitle !== noteData.title && noteTitle !== '') ||
+            selectedFolderId !== noteData.folder.id
+        ) {
             try {
                 await axios.put(
                     `https://brainmate.fly.dev/api/v1/notes/${noteData.id}`,
                     {
                         title: noteTitle,
                         content: noteContent,
-                        folder_id: noteData.folder.id,
+                        folder_id: selectedFolderId, // Include the selected folder ID
                     },
                     {
                         headers: {
@@ -123,6 +136,11 @@ export default function NoteDetails() {
             }
         }
     }
+
+    // Auto-save when input fields lose focus
+    const handleBlur = () => {
+        updateNote();
+    };
 
     return (
         <div className="w-1/2 bg-darkblue h-[calc(100vh-48px)] overflow-y-scroll relative" style={{ scrollbarWidth: 'none' }}>
@@ -177,16 +195,25 @@ export default function NoteDetails() {
                                 className="text-white text-2xl font-inter font-bold mb-5 bg-darkblue p-0 border-0 focus:ring-0"
                                 value={noteTitle}
                                 onChange={handleTitleChange}
+                                onBlur={handleBlur} // Auto-save on blur
                             />
-                            <button
-                                className={`${noteContent === data.data.data.note.content && noteTitle === data.data.data.note.title
-                                    ? 'opacity-30 cursor-default'
-                                    : 'opacity-100 drop-shadow-lg'
-                                    } text-white transition-all`}
-                                onClick={updateNote}
-                            >
-                                <Save />
-                            </button>
+
+                            {/* save and favorite */}
+                            <div className="">
+                                <button
+                                    className={`${(noteContent === data.data.data.note.content &&
+                                        noteTitle === data.data.data.note.title &&
+                                        selectedFolderId === data.data.data.note.folder.id) ||
+                                        noteContent === '' ||
+                                        noteTitle === ''
+                                        ? 'opacity-30 cursor-default'
+                                        : 'opacity-100 drop-shadow-lg'
+                                        } text-white transition-all`}
+                                    onClick={updateNote}
+                                >
+                                    <Save />
+                                </button>
+                            </div>
                         </div>
                         <div className="flex items-center gap-10">
                             <div className="flex items-center gap-2 text-white opacity-50 w-20">
@@ -201,15 +228,29 @@ export default function NoteDetails() {
                                 <Folder size={22} />
                                 <div className="capitalize">folder</div>
                             </div>
-                            <div className="text-white">{data.data.data.note.folder.name}</div>
+                            <select
+                                className="text-white bg-darkblue p-0 border-0 focus:ring-0"
+                                value={selectedFolderId}
+                                onChange={handleFolderChange}
+                                onBlur={handleBlur}
+                            >
+                                {foldersQuery?.data?.data.data.folders.map((folder) => (
+                                    <option key={folder.id} value={folder.id} >
+                                        {folder.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <div className="h-[1px] w-full bg-white opacity-25 my-4"></div>
                         <textarea
                             className="bg-darkblue p-0 text-white font-inter border-0 focus:ring-0 w-full h-48"
                             value={noteContent}
                             onChange={handleContentChange}
+                            onBlur={handleBlur} // Auto-save on blur
                         />
-                        <button className='absolute bottom-0 right-0 m-5 text-red-500 drop-shadow-md' onClick={deleteNote} ><Trash2 /></button>
+                        <button className="absolute bottom-0 right-0 m-5 text-red-500 drop-shadow-md" onClick={deleteNote}>
+                            <Trash2 />
+                        </button>
                     </div>
                 )
             )}

@@ -52,7 +52,7 @@ export default function RecentNotes() {
                 ) : (
                     <>
                         {/* Slice the array to get the first 3 elements */}
-                        {data?.data.data.slice(0, 3).map((note) => {
+                        {data?.data.data.slice(0, 5).map((note) => {
                             return (
                                 <div
                                     key={note.id}

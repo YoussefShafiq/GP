@@ -19,6 +19,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Notes from './pages/Notes/Notes'
 import NotesContextProvider from './context/NotesContext'
+import Mytasks from './pages/Mytasks/Mytasks'
 
 let routers = createBrowserRouter([
 
@@ -30,6 +31,7 @@ let routers = createBrowserRouter([
     path: '', element: <Layout />, children: [
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
       { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
+      { path: 'mytasks', element: <ProtectedRoute><Mytasks /></ProtectedRoute> },
       { path: 'teamspaces', element: <ProtectedRoute><TeamSpaces /></ProtectedRoute> },
       { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },

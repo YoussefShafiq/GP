@@ -112,7 +112,6 @@ export default function NotesFolders() {
                             <div key={folder.id} className={`px-3 flex items-center space-x-2 my-4 py-2 ${selectedFolder === folder.id ? 'bg-white bg-opacity-5' : 'opacity-50'}  cursor-pointer`} onClick={() => {
                                 setSelectedFolder(folder.id); setSelectedFolderName(folder.name); setTimeout(() => {
                                     foldernotes.refetch()
-
                                 }, 100);
                             }} >
                                 {selectedFolder === folder.id ? <FolderOpen size={20} /> : <Folder size={20} />}

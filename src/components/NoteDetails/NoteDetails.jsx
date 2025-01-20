@@ -6,7 +6,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 export default function NoteDetails() {
-    const { selectedNote, setSelectedNote } = useContext(NotesContext);
+    const { selectedNote, setSelectedNote, selectedFolder } = useContext(NotesContext);
     const token = localStorage.getItem('userToken');
 
     // Function to fetch note details
@@ -20,8 +20,9 @@ export default function NoteDetails() {
 
     // React Query for fetching note details
     const { data, isLoading, refetch } = useQuery({
-        queryKey: ['noteDetails'],
+        queryKey: ['noteDetails', selectedNote], // Include selectedNote in the queryKey
         queryFn: getNoteDetails,
+        enabled: !!selectedNote, // Only fetch if selectedNote is set
     });
 
     // State for editable content and title
@@ -41,30 +42,45 @@ export default function NoteDetails() {
     const handleContentChange = (e) => setNoteContent(e.target.value);
     const handleTitleChange = (e) => setNoteTitle(e.target.value);
 
-
+    // Fetch folder notes
     let folderNotes = useQuery({
-        queryKey: ['folderNotes'],
-    })
+        queryKey: ['folderNotes', selectedFolder], // Include selectedFolder in the queryKey
+        queryFn: () =>
+            axios.get(`https://brainmate.fly.dev/api/v1/notes/folders/${selectedFolder}/notes`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+        enabled: !!selectedFolder, // Only fetch if a folder is selected
+    });
 
+    // Fetch recent notes
     let recentNotes = useQuery({
         queryKey: ['recentNotes'],
-    })
+        queryFn: () =>
+            axios.get(`https://brainmate.fly.dev/api/v1/notes`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+    });
 
+    // Delete a note
     async function deleteNote() {
         try {
             let response = await axios.delete(`https://brainmate.fly.dev/api/v1/notes/${selectedNote}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                }
+                },
             });
-            toast.success('note deleted successfully', {
+            toast.success('Note deleted successfully', {
                 duration: 1000,
                 position: 'bottom-right',
             });
-            refetch();
-            setSelectedNote('')
-            folderNotes.refetch();
-            recentNotes.refetch();
+            setSelectedNote(''); // Clear selected note
+            refetch(); // Refetch note details
+            folderNotes.refetch(); // Refetch folder notes
+            recentNotes.refetch(); // Refetch recent notes
         } catch (error) {
             toast.error(error?.response?.data?.message || 'Error deleting note', {
                 duration: 3000,
@@ -73,8 +89,7 @@ export default function NoteDetails() {
         }
     }
 
-
-    // update note
+    // Update a note
     async function updateNote() {
         const noteData = data.data.data.note;
         if (noteContent !== noteData.content || noteTitle !== noteData.title) {
@@ -96,9 +111,9 @@ export default function NoteDetails() {
                     duration: 1000,
                     position: 'bottom-right',
                 });
-                refetch();
-                folderNotes.refetch()
-                recentNotes.refetch()
+                refetch(); // Refetch note details
+                folderNotes.refetch(); // Refetch folder notes
+                recentNotes.refetch(); // Refetch recent notes
             } catch (error) {
                 toast.error(error.response?.data?.message || 'Failed to update note', {
                     duration: 3000,
@@ -156,7 +171,7 @@ export default function NoteDetails() {
             ) : (
                 data?.data?.data?.note && (
                     <div className="flex flex-col pt-3 px-5">
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center relative">
                             <input
                                 type="text"
                                 className="text-white text-2xl font-inter font-bold mb-5 bg-darkblue p-0 border-0 focus:ring-0"
@@ -194,10 +209,10 @@ export default function NoteDetails() {
                             value={noteContent}
                             onChange={handleContentChange}
                         />
+                        <button className='absolute bottom-0 right-0 m-5 text-red-500 drop-shadow-md' onClick={deleteNote} ><Trash2 /></button>
                     </div>
                 )
             )}
-            <button className='absolute bottom-0 right-0 m-5 text-red-500 drop-shadow-md' onClick={deleteNote} ><Trash2 /></button>
         </div>
     );
 }

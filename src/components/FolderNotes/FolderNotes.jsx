@@ -48,15 +48,6 @@ export default function FolderNotes() {
             }),
     });
 
-    // Debugging: Log when selectedNote changes
-    useEffect(() => {
-        console.log('Selected Note Changed:', selectedNote);
-    }, [selectedNote]);
-
-    // Debugging: Log when noteDetails query is enabled/disabled
-    useEffect(() => {
-        console.log('Note Details Query Enabled:', !!selectedNote);
-    }, [selectedNote]);
 
     // Delete a note permanently
     async function deletePermenent(noteid) {
@@ -70,8 +61,29 @@ export default function FolderNotes() {
                 duration: 1000,
                 position: 'bottom-right',
             });
-            refetch(); // Refetch folder notes
-            setSelectedNote(''); // Clear selected note
+            refetch();
+            setSelectedNote('');
+        } catch (error) {
+            toast.error(error?.response?.data?.message || 'Error deleting note', {
+                duration: 3000,
+                position: 'bottom-right',
+            });
+        }
+    }
+
+    async function emptyTrash() {
+        try {
+            await axios.delete(`https://brainmate.fly.dev/api/v1/notes/trash/deleteAll`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            toast.success('Trash cleared successfully', {
+                duration: 1000,
+                position: 'bottom-right',
+            });
+            refetch();
+            setSelectedNote('');
         } catch (error) {
             toast.error(error?.response?.data?.message || 'Error deleting note', {
                 duration: 3000,
@@ -85,7 +97,7 @@ export default function FolderNotes() {
         try {
             await axios.post(
                 `https://brainmate.fly.dev/api/v1/notes/trash/${noteid}/restore`,
-                {}, // Empty body (if no data is required)
+                {},
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -106,7 +118,6 @@ export default function FolderNotes() {
             });
         }
     }
-
     return (
         <>
             {/* Notes inside selected folder */}
@@ -115,8 +126,9 @@ export default function FolderNotes() {
                     <div className="ms-3 mb-1 opacity-50 capitalize">
                         {selectedFolderName ? selectedFolderName : 'Select a folder to show notes'}
                     </div>
-                    <div className="ms-3 mb-1 opacity-50 capitalize">
-                        {isFetching ? '' : data?.data?.data?.length || 0}
+                    <div className="ms-3 mb-1 capitalize flex gap-2">
+                        <div className="opacity-50">{isFetching ? '_' : data?.data?.data?.length || 0}</div>
+                        {selectedFolder === 'trash' && <button className='text-red-500 flex gap-2' onClick={emptyTrash} title='empty trash' ><Trash2 size={20} /></button>}
                     </div>
                 </div>
 
@@ -131,7 +143,7 @@ export default function FolderNotes() {
                     <>
                         {data?.data?.data?.map((note) => {
                             const isTrash = selectedFolder === 'trash';
-                            const noteKey = isTrash ? note.note?.id : note.id; // Use note.note?.id for trash
+                            const noteKey = isTrash ? note.note?.id : note.id;
                             const noteTitle = isTrash ? note.note?.title : note.title;
                             const noteContent = isTrash ? note.note?.content : note.content;
                             const isSelected = selectedNote === noteKey;
@@ -139,14 +151,14 @@ export default function FolderNotes() {
                             return (
                                 <div
                                     key={noteKey}
-                                    className={`mx-2 ${isSelected ? 'bg-light bg-opacity-90' : 'bg-white bg-opacity-5'} flex flex-col p-2 rounded cursor-pointer`}
+                                    className={`mx-2 ${isSelected ? 'bg-light bg-opacity-90' : 'bg-white bg-opacity-5'} relative flex flex-col p-2 rounded cursor-pointer`}
                                     onClick={() => {
                                         console.log('Selected Note Key:', noteKey); // Debugging
                                         setSelectedNote(noteKey);
                                     }}
                                 >
                                     <div className="text-[16px] font-semibold pb-1">{noteTitle || 'Untitled'}</div>
-                                    <div className="flex justify-between items-center opacity-80">
+                                    <div className="flex justify-between items-center opacity-80 ">
                                         {/* Date */}
                                         <div>{note.created_at?.substring(0, 10) || 'Unknown date'}</div>
                                         {/* Note Content */}

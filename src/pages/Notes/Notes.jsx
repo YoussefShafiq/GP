@@ -76,7 +76,7 @@ export default function Notes() {
     // Form validation schema
     let validationSchema = object({
         title: string().required('Title is required'),
-        content: string().required('Content is required'),
+        // content: string().required('Content is required'),
         folder_id: string().required('Folder is required'),
     });
 
@@ -120,8 +120,8 @@ export default function Notes() {
                     <X size={25} />
                 </button>
                 <form onSubmit={formik.handleSubmit} className="w-full max-w-sm mt-5">
+                    {/* Title Input */}
                     <div className="relative z-0 w-full group mb-4">
-                        {/* Title Input */}
                         <input
                             type="text"
                             name="title"
@@ -145,30 +145,6 @@ export default function Notes() {
                         )}
                     </div>
 
-                    <div className="relative z-0 w-full group mb-4">
-                        {/* Content Input */}
-                        <input
-                            type="text"
-                            name="content"
-                            id="content"
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                            value={formik.values.content}
-                            className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
-                            placeholder=" "
-                        />
-                        <label
-                            htmlFor="content"
-                            className="absolute text-sm text-gray-400 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
-                        >
-                            Content
-                        </label>
-                        {formik.errors.content && formik.touched.content && (
-                            <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
-                                {formik.errors.content}
-                            </div>
-                        )}
-                    </div>
 
                     <div className="relative z-0 w-full group mb-4">
                         {/* Dropdown List */}
@@ -238,9 +214,19 @@ export default function Notes() {
                     {/* More */}
                     <div className="mt-8 flex flex-col space-y-0 text-white">
                         <div className="ms-3 mb-1 opacity-50 capitalize">More</div>
-                        <div className="px-3 flex items-center space-x-2 my-4 py-2 opacity-50">
+                        <div
+                            className={`px-3 flex items-center space-x-2 my-4 py-2 ${selectedFolder === 'favorites' ? 'bg-white bg-opacity-5' : 'opacity-50'
+                                }  cursor-pointer`}
+                            onClick={() => {
+                                setSelectedFolder('favorites');
+                                setSelectedFolderName('favorites');
+                                setTimeout(() => {
+                                    folderNotes.refetch();
+                                }, 100);
+                            }}
+                        >
                             <Star size={20} />
-                            <p className="capitalize">Favorite</p>
+                            <p className="capitalize">favorite</p>
                         </div>
                         <div
                             className={`px-3 flex items-center space-x-2 my-4 py-2 ${selectedFolder === 'trash' ? 'bg-white bg-opacity-5' : 'opacity-50'

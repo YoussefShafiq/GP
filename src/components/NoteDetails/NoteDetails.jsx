@@ -1,4 +1,4 @@
-import { CalendarDays, Folder, NotebookText, Save, Trash2 } from 'lucide-react';
+import { CalendarDays, Folder, NotebookText, Save, Star, Trash2 } from 'lucide-react';
 import React, { useContext, useState, useEffect } from 'react';
 import { NotesContext } from '../../context/NotesContext';
 import { useQuery } from '@tanstack/react-query';
@@ -29,11 +29,12 @@ export default function NoteDetails() {
     const [noteContent, setNoteContent] = useState('');
     const [noteTitle, setNoteTitle] = useState('');
     const [selectedFolderId, setSelectedFolderId] = useState('');
+    const [isFavoriteLoading, setIsFavoriteLoading] = useState(false); // Loading state for favorite button
 
     // Update the states when the data changes
     useEffect(() => {
         if (data?.data?.data?.note) {
-            const { content, title, folder } = data.data.data.note;
+            const { content, title, folder, deleted_at } = data.data.data.note;
             setNoteContent(content || '');
             setNoteTitle(title || '');
             setSelectedFolderId(folder?.id || ''); // Set the current folder ID
@@ -98,20 +99,86 @@ export default function NoteDetails() {
         }
     }
 
+    // Toggle favorite status of a note
+    // Toggle favorite status of a note
+    async function toggleFavorite(flag) {
+        if (!selectedNote) {
+            console.error('No note selected'); // Debugging
+            toast.error('No note selected', {
+                duration: 3000,
+                position: 'bottom-right',
+            });
+            return;
+        }
+
+        setIsFavoriteLoading(true); // Set loading state
+        try {
+            console.log('Toggling favorite. Flag:', flag); // Debugging
+
+            // Send a request to update the favorite status
+            const response = await axios.post(
+                `https://brainmate.fly.dev/api/v1/notes/favorites`,
+                {
+                    note_id: selectedNote,
+                    flag: flag, // true to favorite, false to unfavorite
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            console.log('API Response:', response.data); // Debugging
+
+            if (response.data?.success) {
+                // Show a success toast
+                toast.success(
+                    flag ? 'Added to Favorites' : 'Removed from Favorites',
+                    {
+                        duration: 1000,
+                        position: 'bottom-right',
+                    }
+                );
+
+                // Refetch data to update the UI
+                refetch(); // Refetch note details
+                folderNotes.refetch(); // Refetch folder notes
+                recentNotes.refetch(); // Refetch recent notes
+            } else {
+                console.error('API did not return success:', response.data); // Debugging
+                toast.error('Failed to update favorite status', {
+                    duration: 3000,
+                    position: 'bottom-right',
+                });
+            }
+        } catch (error) {
+            console.error('Error toggling favorite:', error); // Debugging
+            toast.error(error?.response?.data?.message || 'Error updating favorite status', {
+                duration: 3000,
+                position: 'bottom-right',
+            });
+        } finally {
+            setIsFavoriteLoading(false); // Reset loading state
+        }
+    }
+
     // Update a note
     async function updateNote() {
-        const noteData = data.data.data.note;
+        const noteData = data?.data?.data?.note;
+        if (!noteData) return;
+
         if (
-            (noteContent !== noteData.content && noteContent !== '') ||
-            (noteTitle !== noteData.title && noteTitle !== '') ||
-            selectedFolderId !== noteData.folder.id
+            (noteContent !== noteData.content && noteContent.trim() !== '') || // Check if content has changed and is not empty
+            (noteTitle !== noteData.title && noteTitle.trim() !== '') || // Check if title has changed and is not empty
+            selectedFolderId !== noteData.folder.id // Check if folder has changed
         ) {
             try {
                 await axios.put(
                     `https://brainmate.fly.dev/api/v1/notes/${noteData.id}`,
                     {
-                        title: noteTitle,
-                        content: noteContent,
+                        title: noteTitle.trim() || noteData.title, // Use existing title if new title is empty
+                        content: noteContent.trim() || noteData.content, // Use existing content if new content is empty
                         folder_id: selectedFolderId, // Include the selected folder ID
                     },
                     {
@@ -141,6 +208,9 @@ export default function NoteDetails() {
     const handleBlur = () => {
         updateNote();
     };
+
+    // Check if the note is deleted
+    const isNoteDeleted = data?.data?.data?.note?.deleted_at !== null;
 
     return (
         <div className="w-1/2 bg-darkblue h-[calc(100vh-48px)] overflow-y-scroll relative" style={{ scrollbarWidth: 'none' }}>
@@ -195,25 +265,48 @@ export default function NoteDetails() {
                                 className="text-white text-2xl font-inter font-bold mb-5 bg-darkblue p-0 border-0 focus:ring-0"
                                 value={noteTitle}
                                 onChange={handleTitleChange}
-                                onBlur={handleBlur} // Auto-save on blur
+                                onBlur={handleBlur}
+                                placeholder='Title'
+                                disabled={isNoteDeleted}
                             />
 
                             {/* save and favorite */}
-                            <div className="">
-                                <button
-                                    className={`${(noteContent === data.data.data.note.content &&
-                                        noteTitle === data.data.data.note.title &&
-                                        selectedFolderId === data.data.data.note.folder.id) ||
-                                        noteContent === '' ||
-                                        noteTitle === ''
-                                        ? 'opacity-30 cursor-default'
-                                        : 'opacity-100 drop-shadow-lg'
-                                        } text-white transition-all`}
-                                    onClick={updateNote}
-                                >
-                                    <Save />
-                                </button>
-                            </div>
+                            {!isNoteDeleted && (
+                                <div className="flex gap-3">
+                                    {/* Favorite Button */}
+                                    {data?.data?.data?.note.isFavorite ? <>
+                                        <button
+                                            className="text-yellow-400"
+                                            onClick={() => toggleFavorite(0)}
+                                            disabled={isFavoriteLoading}
+                                        >
+                                            <Star fill="#e3a008" />
+                                        </button>
+                                    </> : <>
+                                        <button
+                                            className="text-yellow-400"
+                                            onClick={() => toggleFavorite(1)}
+                                            disabled={isFavoriteLoading}
+                                        >
+                                            <Star />
+                                        </button>
+                                    </>}
+
+
+                                    {/* Save Button */}
+                                    <button
+                                        className={`${noteContent === data.data.data.note.content &&
+                                            noteTitle === data.data.data.note.title &&
+                                            selectedFolderId === data.data.data.note.folder.id
+                                            ? 'opacity-30 cursor-default'
+                                            : 'opacity-100 drop-shadow-lg'
+                                            } text-white transition-all`}
+                                        onClick={updateNote}
+                                    >
+                                        <Save />
+                                    </button>
+                                </div>
+                            )}
                         </div>
                         <div className="flex items-center gap-10">
                             <div className="flex items-center gap-2 text-white opacity-50 w-20">
@@ -233,9 +326,14 @@ export default function NoteDetails() {
                                 value={selectedFolderId}
                                 onChange={handleFolderChange}
                                 onBlur={handleBlur}
+                                disabled={isNoteDeleted}
                             >
                                 {foldersQuery?.data?.data.data.folders.map((folder) => (
-                                    <option key={folder.id} value={folder.id} >
+                                    <option
+                                        key={folder.id}
+                                        value={folder.id}
+                                        className="bg-darkblue text-white hover:bg-blue-500 hover:text-white cursor-pointer"
+                                    >
                                         {folder.name}
                                     </option>
                                 ))}
@@ -246,11 +344,15 @@ export default function NoteDetails() {
                             className="bg-darkblue p-0 text-white font-inter border-0 focus:ring-0 w-full h-48"
                             value={noteContent}
                             onChange={handleContentChange}
-                            onBlur={handleBlur} // Auto-save on blur
+                            onBlur={handleBlur}
+                            placeholder='note content'
+                            disabled={isNoteDeleted}
                         />
-                        <button className="absolute bottom-0 right-0 m-5 text-red-500 drop-shadow-md" onClick={deleteNote}>
-                            <Trash2 />
-                        </button>
+                        {!isNoteDeleted && (
+                            <button className="absolute bottom-0 right-0 m-5 text-red-500 drop-shadow-md" onClick={deleteNote}>
+                                <Trash2 />
+                            </button>
+                        )}
                     </div>
                 )
             )}

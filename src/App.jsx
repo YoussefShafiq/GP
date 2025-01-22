@@ -20,6 +20,7 @@ import Dashboard from './pages/Dashboard/Dashboard'
 import Notes from './pages/Notes/Notes'
 import NotesContextProvider from './context/NotesContext'
 import Mytasks from './pages/Mytasks/Mytasks'
+import Workspaces from './pages/Workspaces/Workspaces'
 
 let routers = createBrowserRouter([
 
@@ -34,6 +35,7 @@ let routers = createBrowserRouter([
       { path: 'mytasks', element: <ProtectedRoute><Mytasks /></ProtectedRoute> },
       { path: 'teamspaces', element: <ProtectedRoute><TeamSpaces /></ProtectedRoute> },
       { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },
+      { path: 'workspaces', element: <ProtectedRoute><Workspaces /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]
   }

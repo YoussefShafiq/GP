@@ -1,5 +1,6 @@
-import { Archive, Folder, FolderOpen, FolderPlus, NotebookText, Plus, Star, Trash, X } from 'lucide-react';
-import React, { useContext, useState, useEffect, useRef } from 'react'; // Add useRef
+import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
+import { Archive, Folder, FolderOpen, FolderPlus, Heart, NotebookText, Plus, Star, Trash, X } from 'lucide-react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import NotesFolders from '../../components/NotesFolders/NotesFolders';
 import FolderNotes from '../../components/FolderNotes/FolderNotes';
 import RecentNotes from '../../components/RecentNotes/RecentNotes';
@@ -124,93 +125,105 @@ export default function Notes() {
 
     return (
         <>
-            {/* Create note form */}
-            <div
-                className={`absolute w-1/3 p-5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop-blur-md rounded-lg border shadow-lg bg-[#555] bg-opacity-20 z-10 ${addnoteForm ? 'flex' : 'hidden'
-                    } justify-center items-center`}
-                ref={notesFormRef} // Attach ref to the form container
-            >
-                <button
-                    className="absolute top-0 right-0 m-3 text-red-500 hover:drop-shadow-lg hover:text-red-700 transition-all"
-                    onClick={() => {
-                        setaddnoteForm(false);
-                    }}
-                >
-                    <X size={25} />
-                </button>
-                <form onSubmit={formik.handleSubmit} className="w-full max-w-sm mt-5">
-                    {/* Title Input */}
-                    <div className="relative z-0 w-full group mb-4">
-                        <input
-                            type="text"
-                            name="title"
-                            id="title"
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                            value={formik.values.title}
-                            className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
-                            placeholder=" "
-                        />
-                        <label
-                            htmlFor="title"
-                            className="absolute text-sm text-gray-400 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
-                        >
-                            Title
-                        </label>
-                        {formik.errors.title && formik.touched.title && (
-                            <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
-                                {formik.errors.title}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Folder Dropdown */}
-                    <div className="relative z-0 w-full group mb-4">
-                        <select
-                            name="folder_id"
-                            id="folder_id"
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                            value={formik.values.folder_id}
-                            className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
-                        >
-                            <option value="" defaultValue={''} disabled hidden>
-                                Select folder
-                            </option>
-                            {notesFolders?.data?.data.data.folders.map((folder) => {
-                                return (
-                                    <option key={folder.id} className="text-black" value={`${folder.id}`}>
-                                        {folder.name}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                        <label
-                            htmlFor="folder_id"
-                            className="absolute text-sm text-gray-400 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
-                        >
-                            Folder
-                        </label>
-                        {formik.errors.folder_id && formik.touched.folder_id && (
-                            <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
-                                {formik.errors.folder_id}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Submit Button */}
-                    <button
-                        type="submit"
-                        className="w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack to-blueblack text-white text-lg font-bold hover:shadow-md"
-                        style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
-                        onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
-                        onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
+            {/* Create note form with Framer Motion animation */}
+            <AnimatePresence>
+                {addnoteForm && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }} // Initial state
+                        animate={{ opacity: 1, scale: 1 }} // Animate to this state
+                        exit={{ opacity: 0, scale: 0.9 }} // Exit animation
+                        transition={{ duration: 0.3, ease: 'easeInOut' }} // Animation settings
+                        className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10" // Center the form
                     >
-                        Add Note
-                    </button>
-                </form>
-            </div>
+                        <div
+                            className="w-1/3 p-5 rounded-lg border shadow-lg bg-[#555] bg-opacity-20 flex flex-col justify-center items-center "
+                            ref={notesFormRef}
+                        >
+                            <button
+                                className="absolute top-0 right-0 m-3 text-red-500 hover:drop-shadow-lg hover:text-red-700 transition-all"
+                                onClick={() => {
+                                    setaddnoteForm(false);
+                                }}
+                            >
+                                <X size={25} />
+                            </button>
+                            <form onSubmit={formik.handleSubmit} className="w-full max-w-sm mt-5">
+                                {/* Title Input */}
+                                <div className="relative z-0 w-full group mb-4">
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        id="title"
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        value={formik.values.title}
+                                        className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                        placeholder=" "
+                                    />
+                                    <label
+                                        htmlFor="title"
+                                        className="absolute text-sm text-gray-400 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    >
+                                        Title
+                                    </label>
+                                    {formik.errors.title && formik.touched.title && (
+                                        <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
+                                            {formik.errors.title}
+                                        </div>
+                                    )}
+                                </div>
 
+                                {/* Folder Dropdown */}
+                                <div className="relative z-0 w-full group mb-4">
+                                    <select
+                                        name="folder_id"
+                                        id="folder_id"
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        value={formik.values.folder_id}
+                                        className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    >
+                                        <option value="" defaultValue={''} disabled hidden>
+                                            Select folder
+                                        </option>
+                                        {notesFolders?.data?.data.data.folders.map((folder) => {
+                                            return (
+                                                <option key={folder.id} className="text-black" value={`${folder.id}`}>
+                                                    {folder.name}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                    <label
+                                        htmlFor="folder_id"
+                                        className="absolute text-sm text-gray-400 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    >
+                                        Folder
+                                    </label>
+                                    {formik.errors.folder_id && formik.touched.folder_id && (
+                                        <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
+                                            {formik.errors.folder_id}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Submit Button */}
+                                <button
+                                    type="submit"
+                                    className="w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack to-blueblack text-white text-lg font-bold hover:shadow-md"
+                                    style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
+                                    onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
+                                    onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
+                                >
+                                    Add Note
+                                </button>
+                            </form>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Main Content */}
             <div className="flex flex-wrap border-s box-border text-sm">
                 <div className="w-1/4 bg-darkblue h-[calc(100vh-48px)] overflow-y-scroll" style={{ scrollbarWidth: 'none' }}>
                     {/* Recents */}
@@ -244,7 +257,7 @@ export default function Notes() {
                                 }, 100);
                             }}
                         >
-                            <Star size={20} />
+                            <Heart size={20} />
                             <p className="capitalize">favorite</p>
                         </div>
                         <div

@@ -1,4 +1,4 @@
-import { CalendarDays, Folder, NotebookText, Save, Star, Trash2 } from 'lucide-react';
+import { CalendarDays, Folder, Heart, NotebookText, Save, Star, Trash2 } from 'lucide-react';
 import React, { useContext, useState, useEffect } from 'react';
 import { NotesContext } from '../../context/NotesContext';
 import { useQuery } from '@tanstack/react-query';
@@ -137,6 +137,7 @@ export default function NoteDetails() {
                     {
                         duration: 1000,
                         position: 'bottom-right',
+                        icon: <Heart color='#f05252' fill='#f05252' />
                     }
                 );
 
@@ -277,19 +278,19 @@ export default function NoteDetails() {
                                     {/* Favorite Button */}
                                     {data?.data?.data?.note.isFavorite ? (
                                         <button
-                                            className="text-yellow-400"
+                                            className="text-red-500"
                                             onClick={() => toggleFavorite(0)}
                                             disabled={isFavoriteLoading}
                                         >
-                                            <Star fill="#e3a008" />
+                                            <Heart fill="#f05252 " />
                                         </button>
                                     ) : (
                                         <button
-                                            className="text-yellow-400"
+                                            className="text-red-500"
                                             onClick={() => toggleFavorite(1)}
                                             disabled={isFavoriteLoading}
                                         >
-                                            <Star />
+                                            <Heart />
                                         </button>
                                     )}
 

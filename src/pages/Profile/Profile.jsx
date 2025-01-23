@@ -135,7 +135,7 @@ export default function Profile() {
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Cake size={30} className="text-white" fill="#133d57" />
-                                        {isLoading ? <div className="w-1/3 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data.data.user.birthdate.substring(0, 10)}</h2>}
+                                        {isLoading ? <div className="w-1/3 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data.data.user.birthdate?.substring(0, 10)}</h2>}
                                     </div>
                                     {/* <div className="flex items-center gap-2">
                                         <FontAwesomeIcon icon={faMars} className="text-xl w-7" />

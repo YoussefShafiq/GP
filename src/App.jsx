@@ -22,6 +22,7 @@ import NotesContextProvider from './context/NotesContext'
 import Mytasks from './pages/Mytasks/Mytasks'
 import Workspaces from './pages/Workspaces/Workspaces'
 import Profile from './pages/Profile/Profile'
+import UpdateProfile from './pages/UpdateProfile/UpdateProfile'
 
 let routers = createBrowserRouter([
 
@@ -38,6 +39,7 @@ let routers = createBrowserRouter([
       { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },
       { path: 'workspaces', element: <ProtectedRoute><Workspaces /></ProtectedRoute> },
       { path: 'profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
+      { path: 'profile/updateprofile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]
   }

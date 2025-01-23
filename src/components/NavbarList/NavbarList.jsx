@@ -30,7 +30,7 @@ export default function NavbarList() {
             {/* Dropdown Toggle Button */}
             <button
                 onClick={() => setDropped(!dropped)}
-                className="text-white dark:text-darkblue hover:bg-blueblack font-medium rounded-full text-sm p-1 text-center inline-flex items-center dark:bg-white transition-colors"
+                className="text-white  hover:bg-blueblack font-medium rounded-full text-sm p-1 text-center inline-flex items-center transition-colors"
                 type="button"
             >
                 <User2Icon />
@@ -56,7 +56,7 @@ export default function NavbarList() {
                 {dropped && (
                     <motion.div
                         ref={dropdownRef}
-                        className="absolute top-full right-0 z-10 bg-white divide-y divide-gray-100 rounded-full shadow p-3 dark:bg-white"
+                        className="absolute top-full right-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow p-3 "
                         initial={{ opacity: 0, y: -10 }} // Initial state (hidden and slightly above)
                         animate={{ opacity: 1, y: 0 }} // Animate to visible and in place
                         exit={{ opacity: 0, y: -10 }} // Exit animation (fade out and move up)

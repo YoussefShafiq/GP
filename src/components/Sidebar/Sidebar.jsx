@@ -1,6 +1,6 @@
 import { ChartNoAxesCombined, ChevronDown, ChevronUp, CirclePlus, CircleUserRound, ClipboardList, DoorOpen, Headset, House, LayoutDashboard, LayoutGrid, LibraryBig, ListCollapse, NotebookPen, PanelLeft, Users } from 'lucide-react'
 import React, { useContext, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { SidebarContext } from '../../context/SidebarContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -30,7 +30,7 @@ export default function Sidebar() {
     <div className={`${!sidebarOpen ? "w-16" : "w-48"} transition-all h-[calc(100vh-48px)] fixed left-0 z-50 bg-darkblue flex flex-col px-0 text-white mt-12 text-[13px]`}>
       <div className="px-3 pb-3 border-b">
         <div className={`flex ${!sidebarOpen ? "flex-col-reverse items-center mt-3" : ""} justify-between relative after:absolute after:content-[""] after:h-[1px] after:w-full after:bg-gray-500 after:bottom-1 `} >
-          <div className='text-darkTeal bg-white rounded-3xl w-fit my-5 '><CircleUserRound color='#0b2534' /></div>
+          <Link to={'profile'} className='text-darkTeal bg-white rounded-3xl w-fit my-5 '><CircleUserRound color='#0b2534' /></Link>
           <button className='w-fit' onClick={() => { setSidebarOpen(!sidebarOpen) }} ><PanelLeft /></button>
         </div>
         <ul className={`space-y-1 `}>

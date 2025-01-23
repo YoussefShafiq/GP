@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import img from '../../assets/images/workspaces.png';
 import { useFormik } from 'formik';
-import { object, string, date } from 'yup';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { object, string, date, array } from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
 export default function UpdateProfile() {
-
     const navigate = useNavigate();
+    const token = localStorage.getItem('userToken'); // Assuming you store the token in localStorage
 
     const handleCancel = () => {
         navigate('/profile');
@@ -41,28 +44,72 @@ export default function UpdateProfile() {
         linkedin: string()
             .url("Invalid LinkedIn URL"),
         position: string()
-            .required("Position is required")
+            .required("Position is required"),
+        level: string()
+            .required("Job level is required"),
+        skills: array()
+            .of(string().min(1, "Skill must be at least 1 character long"))
+            .min(1, "At least one skill is required")
     });
+
+    function getProfileData() {
+        return axios.get('https://brainmate.fly.dev/api/v1/profile', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+    }
+
+    let { data, isLoading, isError } = useQuery({
+        queryKey: 'ProfileData',
+        queryFn: getProfileData
+    })
+
+    useEffect(() => {
+        console.log(data);
+    }, [data])
+
+
+    async function updateProfile(values) {
+        try {
+            let response = await axios.put('https://brainmate.fly.dev/api/v1/profile', values, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            toast.success('Updated successfully', {
+                position: 'bottom-right',
+                duration: 3000
+            });
+            formik.resetForm();
+            navigate('/profile');
+        } catch (error) {
+            toast.error('Error happened, please try again', {
+                position: 'bottom-right',
+                duration: 3000
+            });
+        }
+    }
 
     const formik = useFormik({
         initialValues: {
-            name: '',
-            bio: '',
-            birthdate: '',
-            email: '',
-            phone: '',
-            gender: '',
-            facebook: '',
-            instagram: '',
-            website: '',
-            linkedin: '',
-            position: ''
+            name: data?.data?.data.user.name,
+            email: data?.data.data.user.email || '',
+            phone: data?.data?.data.user.phone || '',
+            gender: data?.data?.data.user.gender || '',
+            birthdate: data?.data?.data.user.birthdate || '',
+            bio: data?.data?.data.user.bio || '',
+            position: data?.data?.data.user.position || '',
+            facebook: data?.data?.data.user.facebook || '',
+            instagram: data?.data?.data.user.instagram || '',
+            linkedin: data?.data?.data.user.linkedin || '',
+            website: data?.data?.data.user.website || '',
+            level: data?.data?.data.user.level || '',
+            skills: data?.data?.data.user.skills || []
         },
         validationSchema,
-        onSubmit: (values) => {
-            // Handle form submission
-            console.log(values);
-        }
+        onSubmit: updateProfile,
+        enableReinitialize: true,
     });
 
     const handlePhoneInput = (e) => {
@@ -70,7 +117,13 @@ export default function UpdateProfile() {
         formik.setFieldValue('phone', value);
     };
 
-    return <>
+    const handleSkillsChange = (e) => {
+        const value = e.target.value;
+        const skillsArray = value.split(',').map(skill => skill.trim());
+        formik.setFieldValue('skills', skillsArray);
+    };
+
+    return (
         <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
@@ -78,7 +131,7 @@ export default function UpdateProfile() {
             transition={{ duration: 0.3 }}
         >
             <div className="p-5 flex flex-col md:flex-row items-start gap-10">
-                <form className='w-full flex md:flex-row flex-col items-start gap-10 ' onSubmit={formik.handleSubmit}>
+                <form className='w-full flex md:flex-row flex-col items-start gap-10' onSubmit={formik.handleSubmit}>
                     <div className="md:w-1/4 flex justify-center items-center md:p-3">
                         <img src={img} alt="profile photo" className="w-full aspect-square object-cover rounded-full" />
                     </div>
@@ -91,6 +144,7 @@ export default function UpdateProfile() {
                                 id="name"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={formik.values.name}
                                 className="w-full p-2 bg-base rounded-xl border border-gray-300"
                             />
                             {formik.errors.name && formik.touched.name &&
@@ -106,6 +160,7 @@ export default function UpdateProfile() {
                                 id="bio"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={formik.values.bio}
                                 className="w-full p-2 bg-base rounded-xl border border-gray-300"
                             />
                             {formik.errors.bio && formik.touched.bio &&
@@ -122,6 +177,7 @@ export default function UpdateProfile() {
                                 id="birthdate"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={formik.values.birthdate}
                                 className="w-full p-2 bg-base rounded-xl border border-gray-300"
                             />
                             {formik.errors.birthdate && formik.touched.birthdate &&
@@ -138,6 +194,7 @@ export default function UpdateProfile() {
                                 id="email"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={formik.values.email}
                                 className="w-full p-2 bg-base rounded-xl border border-gray-300"
                             />
                             {formik.errors.email && formik.touched.email &&
@@ -171,16 +228,58 @@ export default function UpdateProfile() {
                                 id="gender"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={formik.values.gender}
                                 className="w-full p-2 bg-base rounded-xl border border-gray-300"
                             >
                                 <option value="">Select Gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
-                                <option value="other">Other</option>
                             </select>
                             {formik.errors.gender && formik.touched.gender &&
                                 <div className="text-sm text-red-600 mt-1">
                                     {formik.errors.gender}
+                                </div>
+                            }
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="level" className="block text-sm font-medium mb-1">Job Level</label>
+                            <select
+                                name="level"
+                                id="level"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.level}
+                                className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                            >
+                                <option value="">Select Job Level</option>
+                                <option value="fresh">fresh</option>
+                                <option value="junior">junior</option>
+                                <option value="mid">Mid Level</option>
+                                <option value="semi senior">semi senior</option>
+                                <option value="senior">Senior Level</option>
+                                <option value="executive">Executive Level</option>
+                            </select>
+                            {formik.errors.level && formik.touched.level &&
+                                <div className="text-sm text-red-600 mt-1">
+                                    {formik.errors.level}
+                                </div>
+                            }
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="skills" className="block text-sm font-medium mb-1">Skills</label>
+                            <input
+                                type="text"
+                                name="skills"
+                                id="skills"
+                                onChange={handleSkillsChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.skills.join(', ')}
+                                className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                placeholder="Enter skills separated by commas"
+                            />
+                            {formik.errors.skills && formik.touched.skills &&
+                                <div className="text-sm text-red-600 mt-1">
+                                    {formik.errors.skills}
                                 </div>
                             }
                         </div>
@@ -192,6 +291,7 @@ export default function UpdateProfile() {
                                 id="facebook"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={formik.values.facebook}
                                 className="w-full p-2 bg-base rounded-xl border border-gray-300"
                             />
                             {formik.errors.facebook && formik.touched.facebook &&
@@ -208,6 +308,7 @@ export default function UpdateProfile() {
                                 id="instagram"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={formik.values.instagram}
                                 className="w-full p-2 bg-base rounded-xl border border-gray-300"
                             />
                             {formik.errors.instagram && formik.touched.instagram &&
@@ -224,6 +325,7 @@ export default function UpdateProfile() {
                                 id="website"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={formik.values.website}
                                 className="w-full p-2 bg-base rounded-xl border border-gray-300"
                             />
                             {formik.errors.website && formik.touched.website &&
@@ -240,6 +342,7 @@ export default function UpdateProfile() {
                                 id="linkedin"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={formik.values.linkedin}
                                 className="w-full p-2 bg-base rounded-xl border border-gray-300"
                             />
                             {formik.errors.linkedin && formik.touched.linkedin &&
@@ -256,6 +359,7 @@ export default function UpdateProfile() {
                                 id="position"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={formik.values.position}
                                 className="w-full p-2 bg-base rounded-xl border border-gray-300"
                             />
                             {formik.errors.position && formik.touched.position &&
@@ -265,7 +369,6 @@ export default function UpdateProfile() {
                             }
                         </div>
                         <div className="flex justify-end gap-3">
-                            {/* Cancel Button */}
                             <button
                                 type="button"
                                 onClick={handleCancel}
@@ -273,8 +376,6 @@ export default function UpdateProfile() {
                             >
                                 Cancel
                             </button>
-
-                            {/* Update Button */}
                             <button
                                 type="submit"
                                 className="mt-4 bg-light text-white px-10 py-2 rounded-xl capitalize"
@@ -286,6 +387,5 @@ export default function UpdateProfile() {
                 </form>
             </div>
         </motion.div>
-
-    </>;
+    );
 }

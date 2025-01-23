@@ -64,7 +64,7 @@ export default function Workspaces() {
     // Clear all filters
     const clearFilters = () => {
         setMinPrice(0);
-        setMaxPrice(500);
+        setMaxPrice(1000);
         setSelectedStars(0);
     };
 

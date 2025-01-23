@@ -21,3 +21,17 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-blueblack
 }
+
+
+/* Custom styles for the range inputs */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  @apply w-4 h-4 bg-highlight rounded-full cursor-pointer pointer-events-auto
+  /* Ensure thumbs are clickable */
+}
+
+input[type="range"]::-moz-range-thumb {
+  @apply w-4 h-4 bg-highlight rounded-full cursor-pointer pointer-events-auto
+  /* Ensure thumbs are clickable */
+}

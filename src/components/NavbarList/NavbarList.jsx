@@ -2,6 +2,7 @@ import { User2Icon } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import Logout from "../Logout/Logout";
 import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
+import { NavLink } from "react-router-dom";
 
 export default function NavbarList() {
     const [dropped, setDropped] = useState(false);
@@ -62,8 +63,8 @@ export default function NavbarList() {
                         transition={{ duration: 0.2 }} // Animation duration
                     >
                         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 space-y-3">
-                            <li>
-                                <User2Icon color="#0b2534" />
+                            <li >
+                                <NavLink to={'profile'} onClick={() => setDropped(false)} ><User2Icon color="#0b2534" /></NavLink>
                             </li>
                             <li>
                                 <Logout />

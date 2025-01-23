@@ -219,21 +219,92 @@ export default function Workspaces() {
                                         <label className="block text-sm font-medium mb-2">
                                             Price Range
                                         </label>
-                                        <div className="flex gap-2">
-                                            <input
-                                                type="number"
-                                                placeholder="Min"
-                                                value={minPrice}
-                                                onChange={(e) => setMinPrice(Number(e.target.value))}
-                                                className="w-1/2 p-2 border border-gray-300 rounded-lg"
-                                            />
-                                            <input
-                                                type="number"
-                                                placeholder="Max"
-                                                value={maxPrice}
-                                                onChange={(e) => setMaxPrice(Number(e.target.value))}
-                                                className="w-1/2 p-2 border border-gray-300 rounded-lg"
-                                            />
+                                        <div className="flex flex-col gap-2 items-center">
+                                            <div className="flex justify-between w-full">
+                                                <input
+                                                    type="number"
+                                                    value={minPrice}
+                                                    onChange={(e) => {
+                                                        const newMin = Number(e.target.value);
+                                                        if (newMin <= maxPrice) {
+                                                            setMinPrice(newMin);
+                                                        }
+                                                    }}
+                                                    className="w-2/5 p-2 text-center border border-gray-300 rounded-lg bg-gray-100"
+                                                    min={0}
+                                                    max={maxPrice}
+                                                />
+                                                {/* Max Price Input */}
+                                                <input
+                                                    type="number"
+                                                    value={maxPrice}
+                                                    onChange={(e) => {
+                                                        const newMax = Number(e.target.value);
+                                                        if (newMax >= minPrice) {
+                                                            setMaxPrice(newMax);
+                                                        }
+                                                    }}
+                                                    className="w-2/5 p-2 text-center border border-gray-300 rounded-lg bg-gray-100"
+                                                    min={minPrice}
+                                                    max={500}
+                                                />
+
+                                            </div>
+                                            {/* Min Price Input */}
+
+                                            {/* Dual Range Slider */}
+                                            <div className="w-full relative mt-2">
+                                                {/* Track for the Slider */}
+                                                <div
+                                                    className="absolute w-full h-1 bg-gray-300 rounded-full"
+                                                    style={{ top: '50%', transform: 'translateY(-50%)' }}
+                                                />
+
+                                                {/* Active Range Track */}
+                                                <div
+                                                    className="absolute h-1 bg-highlight rounded-full"
+                                                    style={{
+                                                        left: `${(minPrice / 1000) * 100}%`,
+                                                        right: `${100 - (maxPrice / 1000) * 100}%`,
+                                                        top: '50%',
+                                                        transform: 'translateY(-50%)',
+                                                    }}
+                                                />
+
+                                                {/* Min Price Slider */}
+                                                <input
+                                                    type="range"
+                                                    min={0}
+                                                    max={1000} // Set your maximum price range here
+                                                    value={minPrice}
+                                                    onChange={(e) => {
+                                                        const newMin = Number(e.target.value);
+                                                        if (newMin <= maxPrice) {
+                                                            setMinPrice(newMin);
+                                                        }
+                                                    }}
+                                                    className="absolute -translate-y-1/2 w-full appearance-none bg-transparent pointer-events-none"
+                                                    style={{ zIndex: 2 }}
+                                                />
+
+                                                {/* Max Price Slider */}
+                                                <input
+                                                    type="range"
+                                                    min={0}
+                                                    max={1000} // Set your maximum price range here
+                                                    value={maxPrice}
+                                                    onChange={(e) => {
+                                                        const newMax = Number(e.target.value);
+                                                        if (newMax >= minPrice) {
+                                                            setMaxPrice(newMax);
+                                                        }
+                                                    }}
+                                                    className="absolute -translate-y-1/2 w-full appearance-none bg-transparent pointer-events-none"
+                                                    style={{ zIndex: 2 }}
+                                                />
+                                            </div>
+
+
                                         </div>
                                     </div>
 

@@ -1,6 +1,7 @@
 import { User2Icon } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import Logout from "../Logout/Logout";
+import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
 
 export default function NavbarList() {
     const [dropped, setDropped] = useState(false);
@@ -49,22 +50,28 @@ export default function NavbarList() {
                 </svg>
             </button>
 
-            {/* Dropdown Menu */}
-            {dropped && (
-                <div
-                    ref={dropdownRef}
-                    className="absolute top-full right-0 z-10 bg-white divide-y divide-gray-100 rounded-full shadow p-3 dark:bg-white"
-                >
-                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 space-y-3">
-                        <li>
-                            <User2Icon color="#0b2534" />
-                        </li>
-                        <li>
-                            <Logout />
-                        </li>
-                    </ul>
-                </div>
-            )}
+            {/* Dropdown Menu with Animation */}
+            <AnimatePresence>
+                {dropped && (
+                    <motion.div
+                        ref={dropdownRef}
+                        className="absolute top-full right-0 z-10 bg-white divide-y divide-gray-100 rounded-full shadow p-3 dark:bg-white"
+                        initial={{ opacity: 0, y: -10 }} // Initial state (hidden and slightly above)
+                        animate={{ opacity: 1, y: 0 }} // Animate to visible and in place
+                        exit={{ opacity: 0, y: -10 }} // Exit animation (fade out and move up)
+                        transition={{ duration: 0.2 }} // Animation duration
+                    >
+                        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 space-y-3">
+                            <li>
+                                <User2Icon color="#0b2534" />
+                            </li>
+                            <li>
+                                <Logout />
+                            </li>
+                        </ul>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

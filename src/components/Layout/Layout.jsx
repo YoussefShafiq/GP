@@ -12,7 +12,7 @@ export default function Layout() {
   return <>
     <Navbar />
     <Sidebar />
-    <div className={`${!sidebarOpen ? "ms-16" : "ms-48"} pt-12 transition-all relative`}>
+    <div className={`${!sidebarOpen ? "ms-16" : "ms-48"} pt-12 transition-all relative font-inter`}>
       {/* <div className="fixed w-3 h-3 top-12 bg-darkblue">
         <div className="w-3 h-3 bg-white dark:bg-dark rounded-tl-full"></div>
       </div> */}

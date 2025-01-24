@@ -48,7 +48,7 @@ export default function Login() {
 
     let validationSchema = object({
         email: string().email('invalid mail').required('email is required'),
-        password: string().min(6, 'password must be at least 6 length').required('password is required')
+        password: string().min(9, 'password must be at least 9 length').required('password is required')
     })
 
     let formik = useFormik({

@@ -34,11 +34,11 @@ export default function UpdateProfile() {
             .max(15, "Phone number must be at most 15 digits long")
             .required("Phone number is required"),
         gender: string()
-            .oneOf(['male', 'female'], "Invalid gender"),
+            .oneOf(['Male', 'Female'], "Invalid gender"),
         facebook: string()
             .url("Invalid Facebook URL"),
-        instagram: string()
-            .url("Invalid Instagram URL"),
+        github: string()
+            .url("Invalid github URL"),
         website: string()
             .url("Invalid website URL"),
         linkedin: string()
@@ -101,7 +101,7 @@ export default function UpdateProfile() {
             bio: data?.data?.data.user.bio || '',
             position: data?.data?.data.user.position || '',
             facebook: data?.data?.data.user.social.facebook || '',
-            instagram: data?.data?.data.user.social.instagram || '',
+            github: data?.data?.data.user.social.github || '',
             linkedin: data?.data?.data.user.social.linkedin || '',
             website: data?.data?.data.user.social.website || '',
             level: data?.data?.data.user.level || '',
@@ -234,8 +234,8 @@ export default function UpdateProfile() {
                                     className="w-full p-2 bg-base rounded-xl border border-gray-300"
                                 >
                                     <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                                 {formik.errors.gender && formik.touched.gender &&
                                     <div className="text-sm text-red-600 mt-1">
@@ -320,19 +320,19 @@ export default function UpdateProfile() {
                                 }
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="instagram" className="block text-sm font-medium mb-1">Instagram</label>
+                                <label htmlFor="github" className="block text-sm font-medium mb-1">github</label>
                                 <input
                                     type="url"
-                                    name="instagram"
-                                    id="instagram"
+                                    name="github"
+                                    id="github"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    value={formik.values.instagram}
+                                    value={formik.values.github}
                                     className="w-full p-2 bg-base rounded-xl border border-gray-300"
                                 />
-                                {formik.errors.instagram && formik.touched.instagram &&
+                                {formik.errors.github && formik.touched.github &&
                                     <div className="text-sm text-red-600 mt-1">
-                                        {formik.errors.instagram}
+                                        {formik.errors.github}
                                     </div>
                                 }
                             </div>

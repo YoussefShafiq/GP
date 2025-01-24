@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import img from '../../assets/images/avatar.jpg';
 import { BadgeCheck, Cake, Laptop, Mail, Phone } from 'lucide-react';
-import { faEarthAfrica, faMars, faX } from '@fortawesome/free-solid-svg-icons';
+import { faEarthAfrica, faMars, faVenus, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faInstagram, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faGithub, faInstagram, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFormik } from 'formik';
@@ -43,7 +43,9 @@ export default function Profile() {
             setIsPopupOpen(false)
 
         } catch (error) {
-            toast.error('old password is wrong', {
+            console.log(error);
+
+            toast.error(error.response.data.message.new_password ? error.response.data.message.new_password[0] : (error.response.data.message.current_password ? error.response.data.message.current_password[0] : 'unexpected error, please try again'), {
                 position: 'bottom-right',
                 duration: 3000
             })
@@ -61,7 +63,7 @@ export default function Profile() {
             current_password: Yup.string()
                 .required('Old Password is required'),
             new_password: Yup.string()
-                .min(6, 'New Password must be at least 8 characters long')
+                .min(9, 'New Password must be at least 9 characters long')
                 .required('New Password is required'),
             new_password_confirmation: Yup.string()
                 .oneOf([Yup.ref('new_password'), null], 'Passwords must match')
@@ -137,10 +139,19 @@ export default function Profile() {
                                         <Cake size={30} className="text-white" fill="#133d57" />
                                         {isLoading ? <div className="w-1/3 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data?.data.user.birthdate?.substring(0, 10)}</h2>}
                                     </div>
-                                    {/* <div className="flex items-center gap-2">
-                                        <FontAwesomeIcon icon={faMars} className="text-xl w-7" />
-                                        {isLoading ? <div className="w-1/5 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data.data.user.gender}</h2>}
-                                    </div> */}
+                                    <div className="flex items-center gap-2">
+                                        {isLoading ? (
+                                            <div className="w-1/5 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div>
+                                        ) : (
+                                            <>
+                                                <FontAwesomeIcon
+                                                    icon={data?.data.data.user.gender === "Female" ? faVenus : faMars}
+                                                    className="text-xl w-7"
+                                                />
+                                                <h2 className="capitalize">{data?.data.data.user.gender}</h2>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             <div className="flex flex-col items-end justify-end gap-3 right-0">
@@ -162,12 +173,9 @@ export default function Profile() {
                             <a href={data?.data?.data.user.social.facebook} target='_blank'>
                                 <FontAwesomeIcon icon={faFacebook} className='drop-shadow-lg' />
                             </a>
-                            <a href={data?.data?.data.user.social.instagram} target='_blank'>
-                                <FontAwesomeIcon icon={faInstagram} className='drop-shadow-lg' />
+                            <a href={data?.data?.data.user.social.github} target='_blank'>
+                                <FontAwesomeIcon icon={faGithub} className='drop-shadow-lg' />
                             </a>
-                            {/* <a href={data.data.data.user.social.twitter} target='_blank'>
-                                <FontAwesomeIcon icon={faXTwitter} className='drop-shadow-lg' />
-                            </a> */}
                             <a href={data?.data?.data.user.social.linkedin} target='_blank'>
                                 <FontAwesomeIcon icon={faLinkedin} className='drop-shadow-lg' />
                             </a>

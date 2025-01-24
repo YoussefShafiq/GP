@@ -323,7 +323,7 @@ export default function NoteDetails() {
                                 <div className="capitalize">folder</div>
                             </div>
                             <select
-                                className="text-white bg-darkblue p-0 border-0 focus:ring-0"
+                                className="text-white bg-darkblue p-2 border-0 focus:ring-0"
                                 value={selectedFolderId}
                                 onChange={handleFolderChange}
                                 onBlur={handleBlur}

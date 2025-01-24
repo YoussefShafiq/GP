@@ -56,7 +56,7 @@ export default function Signup() {
             )
             .required("Full name is required"),
         email: string().email('invalid mail').required('email is required'),
-        password: string().min(6, 'password must be at least 6 length').required('password is required'),
+        password: string().min(9, 'password must be at least 6 length').required('password is required'),
         password_confirmation: string().oneOf([ref('password')], "repassword doesn't match password").required('repassword is required')
     })
 

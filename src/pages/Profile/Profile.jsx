@@ -92,13 +92,23 @@ export default function Profile() {
 
 
 
-
     return (
         <>
-            <motion.div
-                initial={{ opacity: 0, y: -100 }}
+
+            {/* <motion.div
+                initial={{ opacity: 0, y: -100 }
+                }
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 100 }}
+                transition={{ duration: 0.3 }}
+            >
+
+            </motion.div > */}
+
+            <motion.div
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -100 }}
                 transition={{ duration: 0.3 }}
             >
 
@@ -124,7 +134,7 @@ export default function Profile() {
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Laptop size={30} className="text-white" />
-                                        {isLoading ? <div className="w-1/2 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data?.data.user.position}</h2>}
+                                        {isLoading ? <div className="w-1/2 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data?.data.user.level} {data?.data?.data.user.position}</h2>}
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Mail size={30} className="text-darkblue" fill="white" />

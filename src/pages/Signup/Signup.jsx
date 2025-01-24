@@ -14,7 +14,7 @@ import { ThreeDots } from 'react-loader-spinner'
 
 
 export default function Signup() {
-    const { setToken } = useContext(UserData)
+    const { setToken, setUsername } = useContext(UserData)
     const [error, setError] = useState('')
     const [loading, setloading] = useState(false)
 
@@ -29,6 +29,8 @@ export default function Signup() {
             console.log(data);
             setToken(data.data.token)
             localStorage.setItem('userToken', data.data.token)
+            setUsername(data.data.setUsername)
+            localStorage.setItem('username', data.data.username)
             navigate('/')
             toast.success('signed up successfully', {
                 duration: 2000,

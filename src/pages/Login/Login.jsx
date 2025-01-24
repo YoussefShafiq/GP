@@ -15,7 +15,7 @@ import { ThreeDots } from 'react-loader-spinner'
 
 export default function Login() {
     const [thirdpartyAuthenticationLoading, setThirdpartyAuthenticationLoading] = useState(false)
-    const { setToken } = useContext(UserData)
+    const { setToken, setUsername } = useContext(UserData)
     const [error, setError] = useState('')
     const [loading, setloading] = useState(false)
     let navigate = useNavigate()
@@ -33,6 +33,8 @@ export default function Login() {
             })
             setToken(data.data.token)
             localStorage.setItem('userToken', data.data.token)
+            setUsername(data.data.setUsername)
+            localStorage.setItem('username', data.data.user.name)
             navigate('/')
 
         } catch (error) {

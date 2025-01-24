@@ -15,6 +15,7 @@ export default function Workspaces() {
     const [selectedStars, setSelectedStars] = useState(0); // State for selected star rating
     const [selectedWorkspace, setSelectedWorkspace] = useState(null); // State for selected workspace
     const token = localStorage.getItem('userToken');
+    const username = localStorage.getItem('username');
 
     // Ref for the filter dropdown
     const filterRef = useRef(null);
@@ -93,7 +94,7 @@ export default function Workspaces() {
                 {/* Header Skeleton */}
                 <div className="flex flex-col md:flex-row justify-between items-center p-4">
                     <div className="text-xl">
-                        <span className="font-light">Hi, where you </span>
+                        <span className="font-light">Hi {username.split(" ")[0]}, where you </span>
                         <span className="font-bold">wanna work today?</span>
                     </div>
                     <div className="w-1/4">

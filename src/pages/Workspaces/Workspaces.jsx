@@ -94,7 +94,7 @@ export default function Workspaces() {
                 {/* Header Skeleton */}
                 <div className="flex flex-col md:flex-row justify-between items-center p-4">
                     <div className="text-xl">
-                        <span className="font-light">Hi {username.split(" ")[0]}, where you </span>
+                        <span className="font-light">Hi {username?.split(" ")[0]}, where you </span>
                         <span className="font-bold">wanna work today?</span>
                     </div>
                     <div className="w-1/4">

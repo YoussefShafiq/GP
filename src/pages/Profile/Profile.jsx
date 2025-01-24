@@ -145,11 +145,11 @@ export default function Profile() {
                                         {isLoading ? <div className="w-1/2 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="break-words max-w-[80%]">{data?.data?.data.user.phone}</h2>}
 
                                     </div>
-                                    <div className="flex items-center gap-2">
+                                    {data?.data?.data.user.birthdate ? <div className="flex items-center gap-2">
                                         <Cake size={30} className="text-white" fill="#133d57" />
                                         {isLoading ? <div className="w-1/3 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data?.data.user.birthdate?.substring(0, 10)}</h2>}
-                                    </div>
-                                    <div className="flex items-center gap-2">
+                                    </div> : ''}
+                                    {data?.data.data.user.gender ? <div className="flex items-center gap-2">
                                         {isLoading ? (
                                             <div className="w-1/5 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div>
                                         ) : (
@@ -161,7 +161,7 @@ export default function Profile() {
                                                 <h2 className="capitalize">{data?.data.data.user.gender}</h2>
                                             </>
                                         )}
-                                    </div>
+                                    </div> : ''}
                                 </div>
                             </div>
                             <div className="flex flex-col items-end justify-end gap-3 right-0">

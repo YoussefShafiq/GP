@@ -111,7 +111,7 @@ export default function Profile() {
                                 <div className="py-5 flex flex-col gap-4 flex-1">
                                     <div className="flex items-center gap-2">
                                         {isLoading ? <div className="w-full h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize font-semibold text-2xl">
-                                            {data.data.data.user.name}{" "}
+                                            {data?.data?.data.user.name}{" "}
                                             <BadgeCheck
                                                 size={25}
                                                 className="text-darkblue inline top-0 relative -translate-y-1/4"
@@ -122,20 +122,20 @@ export default function Profile() {
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Laptop size={30} className="text-white" />
-                                        {isLoading ? <div className="w-1/2 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data.data.user.position}</h2>}
+                                        {isLoading ? <div className="w-1/2 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data?.data.user.position}</h2>}
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Mail size={30} className="text-darkblue" fill="white" />
-                                        {isLoading ? <div className="w-2/3 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="break-words max-w-[80%]">{data?.data.data.user.email}</h2>}
+                                        {isLoading ? <div className="w-2/3 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="break-words max-w-[80%]">{data?.data?.data.user.email}</h2>}
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Phone size={30} className="text-darkblue" fill="white" />
-                                        {isLoading ? <div className="w-1/2 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="break-words max-w-[80%]">{data?.data.data.user.phone}</h2>}
+                                        {isLoading ? <div className="w-1/2 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="break-words max-w-[80%]">{data?.data?.data.user.phone}</h2>}
 
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Cake size={30} className="text-white" fill="#133d57" />
-                                        {isLoading ? <div className="w-1/3 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data.data.user.birthdate?.substring(0, 10)}</h2>}
+                                        {isLoading ? <div className="w-1/3 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data?.data.user.birthdate?.substring(0, 10)}</h2>}
                                     </div>
                                     {/* <div className="flex items-center gap-2">
                                         <FontAwesomeIcon icon={faMars} className="text-xl w-7" />
@@ -178,7 +178,7 @@ export default function Profile() {
                     </div>
                     <div className="flex flex-col p-5 bg-base text-black rounded-3xl shadow-xl gap-2">
                         <h2 className='font-bold text-2xl capitalize'>bio</h2>
-                        <p className='text-gray-800'>{data?.data.data.user.bio}</p>
+                        <p className='text-gray-800'>{data?.data?.data.user.bio}</p>
                     </div>
                 </div>
 

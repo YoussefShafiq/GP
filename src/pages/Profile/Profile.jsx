@@ -152,7 +152,7 @@ export default function Profile() {
                                 </Link>
                                 <button
                                     onClick={openPopup}
-                                    className="capitalize bg-highlight p-2 rounded-xl drop-shadow-md w-max text-center"
+                                    className="capitalize bg-highlight p-2 rounded-xl drop-shadow-md w-full md:w-max text-center"
                                 >
                                     Change Password
                                 </button>

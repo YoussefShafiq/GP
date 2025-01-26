@@ -195,6 +195,15 @@ export default function Profile() {
                         </div>
                     </div>
                     <div className="flex flex-col p-5 bg-base text-black rounded-3xl shadow-xl gap-2">
+                        <h2 className='font-bold text-2xl capitalize'>skills</h2>
+
+                        <div className="flex flex-wrap gap-3">
+                            {data?.data?.data?.user?.skills?.map((skill) => (
+                                <div className='bg-gray-300 rounded-3xl py-1 px-3' >{skill}</div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex flex-col p-5 bg-base text-black rounded-3xl shadow-xl gap-2">
                         <h2 className='font-bold text-2xl capitalize'>bio</h2>
                         <p className='text-gray-800'>{data?.data?.data.user.bio}</p>
                     </div>

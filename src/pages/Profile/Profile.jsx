@@ -199,7 +199,7 @@ export default function Profile() {
 
                         <div className="flex flex-wrap gap-3">
                             {data?.data?.data?.user?.skills?.map((skill) => (
-                                <div className='bg-gray-300 rounded-3xl py-1 px-3' >{skill}</div>
+                                <div className='bg-darkblue bg-opacity-5 shadow-inner rounded-3xl py-1 px-3' >{skill}</div>
                             ))}
                         </div>
                     </div>

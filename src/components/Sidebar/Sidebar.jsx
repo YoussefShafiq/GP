@@ -1,4 +1,4 @@
-import { ChartNoAxesCombined, ChevronDown, ChevronUp, CirclePlus, CircleUserRound, ClipboardList, DoorOpen, Headset, House, LayoutDashboard, LayoutGrid, LibraryBig, ListCollapse, NotebookPen, PanelLeft, Users, X } from 'lucide-react';
+import { ChevronDown, ChevronUp, CirclePlus, CircleUserRound, ClipboardList, DoorOpen, Headset, House, LayoutDashboard, LayoutGrid, LibraryBig, ListCollapse, NotebookPen, PanelLeft, Users, X } from 'lucide-react';
 import React, { useContext, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { SidebarContext } from '../../context/SidebarContext';
@@ -15,7 +15,7 @@ export default function Sidebar() {
   let { setselectedProject, selectedProject } = useContext(projectContext);
   const navigate = useNavigate();
   const [teamspacesDropdown, setTeamspacesDropdown] = useState(true);
-  const [addProjectForm, setAddProjectForm] = useState(false); // State for add project form
+  const [addProjectForm, setAddProjectForm] = useState(false);
   const token = localStorage.getItem('userToken');
 
   // Fetch projects

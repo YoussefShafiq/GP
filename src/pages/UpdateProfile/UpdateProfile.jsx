@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { Chips } from 'primereact/chips'; // Import PrimeReact Chips
 
 export default function UpdateProfile() {
     const navigate = useNavigate();
@@ -57,18 +58,17 @@ export default function UpdateProfile() {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
-        })
+        });
     }
 
     let { data, isLoading, isError } = useQuery({
         queryKey: 'ProfileData',
         queryFn: getProfileData
-    })
+    });
 
     useEffect(() => {
         console.log(data);
-    }, [data])
-
+    }, [data]);
 
     async function updateProfile(values) {
         try {
@@ -93,8 +93,8 @@ export default function UpdateProfile() {
 
     const formik = useFormik({
         initialValues: {
-            name: data?.data?.data.user.name,
-            email: data?.data.data.user.email || '',
+            name: data?.data?.data.user.name || '',
+            email: data?.data?.data.user.email || '',
             phone: data?.data?.data.user.phone || '',
             gender: data?.data?.data.user.gender || '',
             birthdate: data?.data?.data.user.birthdate ? data.data.data.user.birthdate.split('T')[0] : '',
@@ -118,9 +118,7 @@ export default function UpdateProfile() {
     };
 
     const handleSkillsChange = (e) => {
-        const value = e.target.value;
-        const skillsArray = value.split(',').map(skill => skill.trim());
-        formik.setFieldValue('skills', skillsArray);
+        formik.setFieldValue('skills', e.value); // Update skills array when chips change
     };
 
     return (
@@ -286,21 +284,25 @@ export default function UpdateProfile() {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="skills" className="block text-sm font-medium mb-1">Skills</label>
-                                <input
-                                    type="text"
-                                    name="skills"
+                                <Chips
                                     id="skills"
+                                    name="skills"
+                                    value={formik.values.skills}
                                     onChange={handleSkillsChange}
                                     onBlur={formik.handleBlur}
-                                    value={formik.values.skills.join(', ')}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
-                                    placeholder="Enter skills separated by commas"
+                                    placeholder="Enter skills"
+                                    className="w-full p-chips"
+                                    itemTemplate={(skill) => (
+                                        <div className="bg-gray-200 rounded-full px-3 py-1 text-sm">
+                                            {skill}
+                                        </div>
+                                    )}
                                 />
-                                {formik.errors.skills && formik.touched.skills &&
+                                {formik.errors.skills && formik.touched.skills && (
                                     <div className="text-sm text-red-600 mt-1">
                                         {formik.errors.skills}
                                     </div>
-                                }
+                                )}
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="facebook" className="block text-sm font-medium mb-1">Facebook</label>

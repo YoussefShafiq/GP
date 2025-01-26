@@ -361,7 +361,7 @@ export default function Workspaces() {
                         >
                             {/* Image Container */}
                             <div className="rounded-xl overflow-hidden flex items-center">
-                                <img src={'https://brainmate.fly.dev' + workspace.images[0]} alt={workspace.name + ' image'} className="w-full" />
+                                <img src={'https://brainmate.fly.dev' + workspace.images[0]} alt={workspace.name + ' image'} loading='lazy' className="w-full" />
                             </div>
                             {/* Workspace Name */}
                             <div className="font-semiBold text capitalize my-3">

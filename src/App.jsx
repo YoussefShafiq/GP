@@ -23,6 +23,8 @@ import Mytasks from './pages/Mytasks/Mytasks'
 import Workspaces from './pages/Workspaces/Workspaces'
 import Profile from './pages/Profile/Profile'
 import UpdateProfile from './pages/UpdateProfile/UpdateProfile'
+import ProjectContextProvider from './context/ProjectsContext'
+import ProjectTeams from './pages/ProjectTeams/ProjectTeams'
 
 let routers = createBrowserRouter([
 
@@ -40,6 +42,7 @@ let routers = createBrowserRouter([
       { path: 'workspaces', element: <ProtectedRoute><Workspaces /></ProtectedRoute> },
       { path: 'profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
       { path: 'profile/updateprofile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
+      { path: 'projectTeams', element: <ProtectedRoute><ProjectTeams /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]
   }
@@ -51,16 +54,18 @@ function App() {
 
 
   return <>
-    <NotesContextProvider>
-      <QueryClientProvider client={query}>
-        <UserDataContextProvider>
-          <SidebarContextProvider>
-            <RouterProvider router={routers} />
-            <Toaster />
-          </SidebarContextProvider>
-        </UserDataContextProvider>
-      </QueryClientProvider>
-    </NotesContextProvider>
+    <ProjectContextProvider>
+      <NotesContextProvider>
+        <QueryClientProvider client={query}>
+          <UserDataContextProvider>
+            <SidebarContextProvider>
+              <RouterProvider router={routers} />
+              <Toaster />
+            </SidebarContextProvider>
+          </UserDataContextProvider>
+        </QueryClientProvider>
+      </NotesContextProvider>
+    </ProjectContextProvider>
   </>
 }
 

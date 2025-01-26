@@ -23,6 +23,8 @@
 }
 
 
+
+
 /* Custom styles for the range inputs */
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;

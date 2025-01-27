@@ -87,7 +87,6 @@ export default function Login() {
                     duration: 5000,
                     position: 'bottom-right'
                 })
-                console.log(error.response.data.message);
                 setThirdpartyAuthenticationLoading(false)
                 setError(error.response.data.message)
             }

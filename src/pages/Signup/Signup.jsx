@@ -21,30 +21,38 @@ export default function Signup() {
     let navigate = useNavigate()
 
     async function signup(values) {
-        setloading(true)
-        try {
-            setError('')
-            let { data } = await axios.post('https://brainmate.fly.dev/api/v1/auth/register', values)
-            setloading(false)
-            console.log(data);
-            setToken(data.data.token)
-            localStorage.setItem('userToken', data.data.token)
-            setUsername(data.data.setUsername)
-            localStorage.setItem('username', data.data.username)
-            navigate('/')
-            toast.success('signed up successfully', {
-                duration: 2000,
-                position: 'bottom-right'
-            })
-        } catch (error) {
-            console.log(error.response.data.message.email);
-            setloading(false)
-            setError(error.response.data.message.email)
-            toast.error(error.response.data.message.email, {
+        const checkbox = document.getElementById('link-checkbox');
+
+        if (!checkbox.checked) {
+            toast.error('Please agree to the terms and conditions before submitting', {
                 duration: 5000,
                 position: 'bottom-right'
             })
+        } else {
+            setloading(true)
+            try {
+                setError('')
+                let { data } = await axios.post('https://brainmate.fly.dev/api/v1/auth/register', values)
+                setloading(false)
+                setToken(data.data.token)
+                localStorage.setItem('userToken', data.data.token)
+                setUsername(data.data.setUsername)
+                localStorage.setItem('username', data.data.username)
+                navigate('/')
+                toast.success('signed up successfully', {
+                    duration: 2000,
+                    position: 'bottom-right'
+                })
+            } catch (error) {
+                setloading(false)
+                setError(error.response.data.message)
+                toast.error(error.response.data.message, {
+                    duration: 5000,
+                    position: 'bottom-right'
+                })
+            }
         }
+
     }
     let validationSchema = object({
         name: string()
@@ -59,17 +67,31 @@ export default function Signup() {
             .required("Full name is required"),
         email: string().email('invalid mail').required('email is required'),
         password: string().min(9, 'password must be at least 6 length').required('password is required'),
-        password_confirmation: string().oneOf([ref('password')], "repassword doesn't match password").required('repassword is required')
-    })
+        password_confirmation: string().oneOf([ref('password')], "repassword doesn't match password").required('repassword is required'),
+        phone: string()
+            .matches(/^[0-9]+$/, "Phone number can only contain numbers")
+            .min(10, "Phone number must be at least 10 digits long")
+            .max(15, "Phone number must be at most 15 digits long")
+            .required("Phone number is required"),
+        position: string()
+            .required("Position is required"),
+        level: string()
+            .required("Job level is required"),
+    });
 
     let formik = useFormik({
         initialValues: {
             name: '',
             email: '',
             password: '',
-            password_confirmation: ''
-        }, validationSchema, onSubmit: signup
-    })
+            password_confirmation: '',
+            phone: '',
+            position: '',
+            level: ''
+        },
+        validationSchema,
+        onSubmit: signup
+    });
 
 
 
@@ -125,6 +147,65 @@ export default function Signup() {
                                 {formik.errors.password_confirmation && formik.touched.password_confirmation &&
                                     <div className=" text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600 " role="alert">
                                         {formik.errors.password_confirmation}
+                                    </div>
+                                }
+                            </div>
+                            <div className="relative z-0 w-full group">
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    id="phone"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    placeholder=" "
+                                />
+                                <label htmlFor="phone" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Phone</label>
+                                {formik.errors.phone && formik.touched.phone &&
+                                    <div className="text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600" role="alert">
+                                        {formik.errors.phone}
+                                    </div>
+                                }
+                            </div>
+
+                            <div className="relative z-0 w-full group">
+                                <input
+                                    type="text"
+                                    name="position"
+                                    id="position"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    placeholder=" "
+                                />
+                                <label htmlFor="position" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Position</label>
+                                {formik.errors.position && formik.touched.position &&
+                                    <div className="text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600" role="alert">
+                                        {formik.errors.position}
+                                    </div>
+                                }
+                            </div>
+
+                            <div className="relative z-0 w-full group">
+                                <select
+                                    name="level"
+                                    id="level"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                >
+                                    <option value="">Select Job Level</option>
+                                    <option value="fresh">Fresh</option>
+                                    <option value="junior">Junior</option>
+                                    <option value="mid">Mid Level</option>
+                                    <option value="semi senior">Semi Senior</option>
+                                    <option value="senior">Senior Level</option>
+                                    <option value="executive">Executive Level</option>
+                                </select>
+                                <label htmlFor="level" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Job Level</label>
+                                {formik.errors.level && formik.touched.level &&
+                                    <div className="text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600" role="alert">
+                                        {formik.errors.level}
                                     </div>
                                 }
                             </div>

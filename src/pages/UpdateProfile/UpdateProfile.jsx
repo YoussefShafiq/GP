@@ -84,7 +84,7 @@ export default function UpdateProfile() {
             formik.resetForm();
             navigate('/profile');
         } catch (error) {
-            toast.error('Unexpected error, please try again', {
+            toast.error(error.response.data.message, {
                 position: 'bottom-right',
                 duration: 3000
             });

@@ -516,7 +516,7 @@ export default function ProjectTeams() {
                                                     onClick={() => { setselectedTeam(team); navigate('team') }}
                                                     className="cursor-pointer py-3 px-4 rounded-3xl bg-base shadow-inner bg-opacity-40 text-lg h-fit"
                                                 >
-                                                    {team.name} {team.id}
+                                                    {team.name}
                                                 </div>
                                             ))
                                         }

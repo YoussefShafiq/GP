@@ -25,6 +25,8 @@ import Profile from './pages/Profile/Profile'
 import UpdateProfile from './pages/UpdateProfile/UpdateProfile'
 import ProjectContextProvider from './context/ProjectsContext'
 import ProjectTeams from './pages/ProjectTeams/ProjectTeams'
+import TeamsContextProvider from './context/TeamsContext'
+import Team from './pages/Team/Team'
 
 let routers = createBrowserRouter([
 
@@ -42,7 +44,8 @@ let routers = createBrowserRouter([
       { path: 'workspaces', element: <ProtectedRoute><Workspaces /></ProtectedRoute> },
       { path: 'profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
       { path: 'profile/updateprofile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
-      { path: 'projectTeams', element: <ProtectedRoute><ProjectTeams /></ProtectedRoute> },
+      { path: 'project', element: <ProtectedRoute><ProjectTeams /></ProtectedRoute> },
+      { path: 'project/team', element: <ProtectedRoute><Team /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]
   }
@@ -54,18 +57,20 @@ function App() {
 
 
   return <>
-    <ProjectContextProvider>
-      <NotesContextProvider>
-        <QueryClientProvider client={query}>
-          <UserDataContextProvider>
-            <SidebarContextProvider>
-              <RouterProvider router={routers} />
-              <Toaster />
-            </SidebarContextProvider>
-          </UserDataContextProvider>
-        </QueryClientProvider>
-      </NotesContextProvider>
-    </ProjectContextProvider>
+    <TeamsContextProvider>
+      <ProjectContextProvider>
+        <NotesContextProvider>
+          <QueryClientProvider client={query}>
+            <UserDataContextProvider>
+              <SidebarContextProvider>
+                <RouterProvider router={routers} />
+                <Toaster />
+              </SidebarContextProvider>
+            </UserDataContextProvider>
+          </QueryClientProvider>
+        </NotesContextProvider>
+      </ProjectContextProvider>
+    </TeamsContextProvider>
   </>
 }
 

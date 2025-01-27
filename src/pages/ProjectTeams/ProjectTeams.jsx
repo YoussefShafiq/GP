@@ -1,21 +1,24 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, X, Trash, Edit, FolderMinus } from 'lucide-react';
+import { MousePointerClick, Plus, X, Trash, Edit, FolderMinus, Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { TeamsContext } from '../../context/TeamsContext';
 
 export default function ProjectTeams() {
     let { selectedProject, setselectedProject } = useContext(projectContext);
+    let { selectedTeam, setselectedTeam } = useContext(TeamsContext);
     const [addProjectForm, setAddProjectForm] = useState(false);
     const [deleteProjectForm, setDeleteProjectForm] = useState(false);
     const [updateProjectForm, setUpdateProjectForm] = useState(false);
     const token = localStorage.getItem('userToken');
     const projectFormRef = useRef(null);
+    const navigate = useNavigate();
 
     // Close the form when clicking outside
     useEffect(() => {
@@ -36,7 +39,7 @@ export default function ProjectTeams() {
     }, []);
 
     function getProjectTeams() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/${selectedProject.id}`, {
+        return axios.get(`https://brainmate.fly.dev/api/v1/projects/${selectedProject.id}/teams`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -180,7 +183,7 @@ export default function ProjectTeams() {
             });
             resetForm();
             setUpdateProjectForm(false);
-            setselectedProject(response.data.data.project); // Update selectedProject with the new data
+            setselectedProject(response.data.data); // Update selectedProject with the new data
             sidebarProjects.refetch();
             refetch();
         } catch (error) {
@@ -479,39 +482,54 @@ export default function ProjectTeams() {
             </>}
 
             <div className="p-5">
-                <div className="flex justify-between items-center mb-5">
+                <div className="flex justify-between items-center mb-5 h-9">
                     {/* Path */}
-                    <div className='text-light font-semibold' >{selectedProject?.name} /</div>
-                    <div className="flex gap-2">
-                        <button onClick={() => setAddProjectForm(true)} className="rounded-full bg-light text-white p-1"><Plus size={25} /></button>
-                        <button onClick={() => setUpdateProjectForm(true)} className="rounded-full bg-yellow-600 text-white p-1"><Edit size={25} /></button>
-                        <button onClick={() => setDeleteProjectForm(true)} className="rounded-full bg-red-600 text-white p-1"><Trash size={25} /></button>
+                    <div className='text-light font-semibold flex items-center' >
+                        <div onClick={() => navigate('/project')} className="pe-1 cursor-pointer">{selectedProject?.name}</div> /
                     </div>
+                    {/* <div className='text-light font-semibold' >{selectedProject?.name} /</div> */}
+                    {data?.data.data.is_manager && <div className="flex gap-2">
+                        <button onClick={() => setAddProjectForm(true)} className="rounded-full bg-light text-white p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
+                        <button onClick={() => setUpdateProjectForm(true)} className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
+                        <button onClick={() => setDeleteProjectForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                    </div>}
                 </div>
 
                 {/* Accessible teams */}
                 <h2 className='text-xl capitalize font-semibold text-highlight mb-3'>My teams</h2>
-                <div className="flex">
-                    <div className="w-full md:w-3/4 flex flex-wrap h-fit gap-3">
+                <div className="flex justify-between">
+
+                    <div className="w-full md:w-[70%] flex flex-wrap h-fit gap-3">
                         {isLoading ? <>
                             <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
                             <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
                             <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
                         </>
                             : <>
-                                {data?.data.data.project.teams.length > 0 ? (
+                                {data?.data.data.teams?.filter(team => team.hasAccess).length > 0 ? (
                                     <>
-                                        {data?.data.data.project.teams.map((team) => (
-                                            <div key={team.id} className="py-3 px-4 rounded-3xl bg-base text-lg h-fit">{team.name}</div>
-                                        ))}
+                                        {data?.data.data.teams
+                                            .filter(team => team.hasAccess) // Filter teams with access
+                                            .map((team) => (
+                                                <div
+                                                    key={team.id}
+                                                    onClick={() => { setselectedTeam(team); navigate('team') }}
+                                                    className="cursor-pointer py-3 px-4 rounded-3xl bg-base shadow-inner bg-opacity-40 text-lg h-fit"
+                                                >
+                                                    {team.name} {team.id}
+                                                </div>
+                                            ))
+                                        }
                                     </>
                                 ) : (
-                                    <div className="capitalize text-gray-400 text-center w-full">add teams to show</div>
+                                    <div className="capitalize text-gray-400 text-center w-full">No teams with access to show</div>
                                 )}
                             </>
                         }
                     </div>
-                    <div className="hidden md:flex flex-col md:w-1/4 h-full bg-base p-5 rounded-2xl max-h-[50vh] overflow-y-scroll">
+
+                    {/* materials */}
+                    <div className="hidden md:flex flex-col md:w-[30%] h-full bg-base p-5 rounded-2xl max-h-[50vh] overflow-y-scroll">
                         <h2 className='capitalize text-2xl font-semibold text-darkblue' >materials</h2>
 
                         <div className="flex justify-between items-center mb-3">
@@ -520,9 +538,9 @@ export default function ProjectTeams() {
                         </div>
 
                         <div className="flex flex-col flex-wrap justify-center items-center gap-7">
-                            {data?.data.data.project.teams.length > 0 ? (
+                            {data?.data.data.teams?.length > 0 ? (
                                 <>
-                                    {data?.data.data.project.teams.map((team) => (
+                                    {data?.data.data.teams.map((team) => (
                                         // materials folders
                                         <div key={team.id} class="relative bg-white rounded-lg shadow-lg p-6 w-full">
                                             <div class="absolute w-1/2 -top-4 left-0 bg-white h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl"></div>
@@ -539,12 +557,37 @@ export default function ProjectTeams() {
                         </div>
                     </div>
                 </div>
-                <div className="w-[95%] mx-auto my-10 h-[1px] bg-gray-300"></div>
-
                 {/* Non-accessible teams */}
-                <h2 className='text-xl capitalize font-semibold text-highlight mb-3'>Other teams</h2>
-                <div className="md:w-2/3 flex gap-3">
-                    <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit opacity-50">team1</div>
+                <div>
+                    <div className="w-[95%] mx-auto my-8 h-[1px] bg-gray-300"></div>
+                    <h2 className='text-xl capitalize font-semibold text-highlight mb-3'>Other teams</h2>
+                    <div className="w-full md:w-[70%] flex flex-wrap h-fit gap-3">
+                        {isLoading ? <>
+                            <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
+                            <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
+                            <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
+                        </>
+                            : <>
+                                {data?.data.data.teams?.filter(team => team.hasAccess === false).length > 0 ? (
+                                    <>
+                                        {data?.data.data.teams
+                                            .filter(team => team.hasAccess === false) // Explicitly check for false
+                                            .map((team) => (
+                                                <div
+                                                    key={team.id}
+                                                    className="cursor-not-allowed py-3 px-4 rounded-3xl bg-base opacity-50 shadow-inner bg-opacity-40 text-lg h-fit"
+                                                >
+                                                    {team.name} {team.id}
+                                                </div>
+                                            ))
+                                        }
+                                    </>
+                                ) : (
+                                    <div className="capitalize text-gray-400 text-center w-full">No teams without access to show</div>
+                                )}
+                            </>
+                        }
+                    </div>
                 </div>
             </div>
         </>

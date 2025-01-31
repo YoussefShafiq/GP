@@ -22,7 +22,9 @@
   @apply bg-blueblack
 }
 
-
+* {
+  scroll-behavior: smooth;
+}
 
 
 /* Custom styles for the range inputs */
@@ -76,4 +78,8 @@ input[type="range"]::-moz-range-thumb {
   /* Remove outline */
   background-color: transparent;
   /* Transparent background */
+}
+
+html {
+  @apply dark:bg-dark bg-white
 }

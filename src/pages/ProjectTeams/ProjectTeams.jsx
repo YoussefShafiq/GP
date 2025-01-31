@@ -561,7 +561,7 @@ export default function ProjectTeams() {
                 <div>
                     <div className="w-[95%] mx-auto my-8 h-[1px] bg-gray-300"></div>
                     <h2 className='text-xl capitalize font-semibold text-highlight mb-3'>Other teams</h2>
-                    <div className="w-full md:w-[70%] flex flex-wrap h-fit gap-3">
+                    <div className="w-full flex flex-wrap h-fit gap-3">
                         {isLoading ? <>
                             <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
                             <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>

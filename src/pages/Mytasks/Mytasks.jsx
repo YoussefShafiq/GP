@@ -110,10 +110,12 @@ const FilterBar = ({ onSearch, onFilter, onSort, onStateFilter }) => {
                                 className="p-2 border border-gray-300 rounded-lg w-full"
                             >
                                 <option value="">All States</option>
-                                <option value="in_progress">in_progress</option>
-                                <option value="NA">NA</option>
-                                <option value="completed">completed</option>
                                 <option value="pending">pending</option>
+                                <option value="in_progress">in progress</option>
+                                <option value="completed">completed</option>
+                                <option value="cancelled">cancelled</option>
+                                <option value="on_hold">on hold</option>
+                                <option value="in_review">in review</option>
                             </select>
                         </div>
 
@@ -203,7 +205,7 @@ export default function Mytasks() {
                 "deadline": "28/11",
                 "priority": "Normal",
                 "state": "pending",
-                "tags": "backend, node, API"
+                "tags": "backend, node, API backend, node, API backend, node, API backend, node, API backend, node, API"
             },
             {
                 "taskName": "Testing & QA",
@@ -430,9 +432,9 @@ export default function Mytasks() {
 
             {/* Task State Sections */}
             <div className="space-y-6">
-                {['in_progress', 'cancelled', 'completed', 'pending'].map((state) => (
+                {['pending', 'in_progress', 'completed', 'cancelled', 'on_hold', 'in_review'].map((state) => (
                     <div key={state}>
-                        <div className={`px-3 py-1 text-white my-3 bg-${state} w-fit rounded-lg`}>{state}</div>
+                        <div className={`px-3 py-1 text-white my-3 bg-${state} w-fit rounded-lg`}>{state.replace('_', ' ')}</div>
                         <TasksTable tasks={filteredTasks.filter((task) => task.state === state)} />
                     </div>
                 ))}

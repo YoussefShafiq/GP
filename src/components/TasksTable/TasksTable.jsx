@@ -87,8 +87,8 @@ export default function TasksTable({ tasks = [] }) {
                             {/* State Column */}
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center space-x-2">
-                                    <span className={`uppercase py-1 px-2 ${task.state ? `bg-${task.state}` : 'bg-gray-400'} drop-shadow text-white rounded-lg w-20 text-center`}>
-                                        {task.state}
+                                    <span className={`py-1 px-2 ${task.state ? `bg-${task.state}` : 'bg-gray-400'} drop-shadow text-white rounded-lg w-fit text-center`}>
+                                        {task.state.replace('_', ' ')}
                                     </span>
                                     <div className="relative" ref={dropdownRef}>
                                         <button
@@ -111,12 +111,12 @@ export default function TasksTable({ tasks = [] }) {
                                                 className="text-sm text-white dark:text-gray-200 flex flex-col"
                                                 aria-labelledby={`dropdownHoverButton${rowIndex}`}
                                             >
-                                                {["completed", "in_progress", "cancelled", "pending",].map((item, itemIndex) => (
+                                                {['pending', 'in_progress', 'completed', 'cancelled', 'on_hold', 'in_review'].map((item, itemIndex) => (
                                                     <button key={itemIndex}>
                                                         <div
-                                                            className={`block px-7 py-2 hover:bg-white hover:bg-opacity-20 dark:hover:bg-gray-600 dark:hover:text-white ${itemIndex < 3 ? 'border-b-[1px]' : ''} `}
+                                                            className={`block px-7 py-2 hover:bg-white hover:bg-opacity-20 dark:hover:bg-gray-600 dark:hover:text-white ${itemIndex < 5 ? 'border-b-[1px]' : ''} `}
                                                         >
-                                                            {item}
+                                                            {item.replace('_', ' ')}
                                                         </div>
                                                     </button>
                                                 ))}
@@ -126,7 +126,7 @@ export default function TasksTable({ tasks = [] }) {
                                 </div>
                             </td>
                             {/* Tags Column */}
-                            <td className="px-6 py-4 whitespace-nowrap">{task.tags}</td>
+                            <td className="px-6 py-4 max-w-52 overflow-hidden whitespace-nowrap">{task.tags}</td>
                         </tr>
                     ))}
                 </tbody>

@@ -21,7 +21,7 @@
         ],
         "deadline": "25/11",
         "priority": "High",
-        "state": "started",
+        "state": "in_progress",
         "tags": "design, figma, UI"
     },
     {
@@ -42,7 +42,7 @@
         ],
         "deadline": "28/11",
         "priority": "Normal",
-        "state": "holding",
+        "state": "pending",
         "tags": "backend, node, API"
     },
     {
@@ -59,7 +59,7 @@
         ],
         "deadline": "30/11",
         "priority": "Low",
-        "state": "started",
+        "state": "in_progress",
         "tags": "testing, QA, manual"
     },
     {
@@ -93,7 +93,7 @@
         ],
         "deadline": "05/12",
         "priority": "Normal",
-        "state": "finished",
+        "state": "completed",
         "tags": "database, setup, SQL"
     },
     {
@@ -110,7 +110,7 @@
         ],
         "deadline": "10/12",
         "priority": "High",
-        "state": "started",
+        "state": "in_progress",
         "tags": "frontend, React, UI"
     },
     {
@@ -127,7 +127,7 @@
         ],
         "deadline": "12/12",
         "priority": "Low",
-        "state": "holding",
+        "state": "pending",
         "tags": "research, user testing, feedback"
     },
     {
@@ -144,7 +144,7 @@
         ],
         "deadline": "15/12",
         "priority": "Normal",
-        "state": "finished",
+        "state": "completed",
         "tags": "code review, peer review"
     },
     {
@@ -178,7 +178,7 @@
         ],
         "deadline": "18/12",
         "priority": "Normal",
-        "state": "started",
+        "state": "in_progress",
         "tags": "client, meeting, discussion"
     }
 ]

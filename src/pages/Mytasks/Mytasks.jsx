@@ -13,6 +13,7 @@ const FilterBar = ({ onSearch, onFilter, onSort, onStateFilter }) => {
     const [sortPriority, setSortPriority] = useState('');
     const [sortDeadline, setSortDeadline] = useState('');
     const [filterState, setFilterState] = useState('');
+    const [isExpanded, setIsExpanded] = useState(false); // State to manage expansion
 
     // Trigger search on typing
     useEffect(() => {
@@ -40,108 +41,117 @@ const FilterBar = ({ onSearch, onFilter, onSort, onStateFilter }) => {
         onStateFilter(state);
     };
 
+    const toggleExpansion = () => {
+        setIsExpanded(!isExpanded);
+    };
+
     return (
         <div className="sticky top-12 z-40 bg-gray-100 rounded-2xl dark:bg-gray-800 shadow-lg p-4 mb-4">
-            <div className="flex flex-col gap-4 ">
-                <div className="flex gap-4 justify-around">
+            <div className="flex flex-col gap-4">
+                {/* Search Inputs */}
+                <div className="flex flex-col md:flex-row gap-4">
                     {/* Search by Task Name */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-1">
                         <Search className="text-highlight" />
                         <input
                             type="text"
                             placeholder="Search by Task Name"
                             value={searchName}
                             onChange={(e) => setSearchName(e.target.value)}
-                            className="p-2 border border-gray-300 rounded-lg"
+                            className="p-2 border border-gray-300 rounded-lg w-full"
                         />
                     </div>
 
                     {/* Search by Tag */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-1">
                         <Search className="text-highlight" />
                         <input
                             type="text"
                             placeholder="Search by Tag"
                             value={searchTag}
                             onChange={(e) => setSearchTag(e.target.value)}
-                            className="p-2 border border-gray-300 rounded-lg"
+                            className="p-2 border border-gray-300 rounded-lg w-full"
                         />
                     </div>
                 </div>
 
-                <div className="flex flex-wrap gap-4 justify-around">
-                    {/* Filter by Priority */}
-                    <div className="flex items-center gap-2">
-                        <Filter className="text-highlight" />
-                        <select
-                            value={filterPriority}
-                            onChange={(e) => handleFilter(e.target.value)}
-                            className="p-2 border border-gray-300 rounded-lg"
-                        >
-                            <option value="">All Priorities</option>
-                            <option value="High">High</option>
-                            <option value="Normal">Normal</option>
-                            <option value="Low">Low</option>
-                        </select>
-                    </div>
+                {/* Toggle Button for Mobile */}
+                <button
+                    onClick={toggleExpansion}
+                    className="md:hidden p-2 bg-gray-200 rounded-lg flex items-center justify-center"
+                >
+                    {isExpanded ? 'Hide Filters' : 'Show Filters'}
+                </button>
 
-                    {/* Filter by State */}
-                    <div className="flex items-center gap-2">
-                        <Filter className="text-highlight" />
-                        <select
-                            value={filterState}
-                            onChange={(e) => handleStateFilter(e.target.value)}
-                            className="p-2 border border-gray-300 rounded-lg"
-                        >
-                            <option value="">All States</option>
-                            <option value="started">Started</option>
-                            <option value="NA">NA</option>
-                            <option value="finished">Finished</option>
-                            <option value="holding">Holding</option>
-                        </select>
-                    </div>
+                {/* Filters and Sorting */}
+                {(isExpanded || window.innerWidth >= 768) && ( // Show filters if expanded or on desktop
+                    <div className="flex flex-col md:flex-row gap-4">
+                        {/* Filter by Priority */}
+                        <div className="flex items-center gap-2 flex-1">
+                            <Filter className="text-highlight" />
+                            <select
+                                value={filterPriority}
+                                onChange={(e) => handleFilter(e.target.value)}
+                                className="p-2 border border-gray-300 rounded-lg w-full"
+                            >
+                                <option value="">All Priorities</option>
+                                <option value="High">High</option>
+                                <option value="Normal">Normal</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
 
-                    {/* Sort by Priority */}
-                    <div className="flex items-center gap-2">
-                        <ArrowUpDown className="text-highlight" />
-                        <select
-                            value={sortPriority}
-                            onChange={(e) => handleSort('priority', e.target.value)}
-                            className="p-2 border border-gray-300 rounded-lg"
-                        >
-                            <option value="">Sort by Priority</option>
-                            <option value="asc">Priority: Low to High</option>
-                            <option value="desc">Priority: High to Low</option>
-                        </select>
-                    </div>
+                        {/* Filter by State */}
+                        <div className="flex items-center gap-2 flex-1">
+                            <Filter className="text-highlight" />
+                            <select
+                                value={filterState}
+                                onChange={(e) => handleStateFilter(e.target.value)}
+                                className="p-2 border border-gray-300 rounded-lg w-full"
+                            >
+                                <option value="">All States</option>
+                                <option value="in_progress">in_progress</option>
+                                <option value="NA">NA</option>
+                                <option value="completed">completed</option>
+                                <option value="pending">pending</option>
+                            </select>
+                        </div>
 
-                    {/* Sort by Deadline */}
-                    <div className="flex items-center gap-2">
-                        <ArrowUpDown className="text-highlight" />
-                        <select
-                            value={sortDeadline}
-                            onChange={(e) => handleSort('deadline', e.target.value)}
-                            className="p-2 border border-gray-300 rounded-lg"
-                        >
-                            <option value="">Sort by Deadline</option>
-                            <option value="asc">Deadline: Earliest to Latest</option>
-                            <option value="desc">Deadline: Latest to Earliest</option>
-                        </select>
+                        {/* Sort by Priority */}
+                        <div className="flex items-center gap-2 flex-1">
+                            <ArrowUpDown className="text-highlight" />
+                            <select
+                                value={sortPriority}
+                                onChange={(e) => handleSort('priority', e.target.value)}
+                                className="p-2 border border-gray-300 rounded-lg w-full"
+                            >
+                                <option value="">Sort by Priority</option>
+                                <option value="asc">Priority: Low to High</option>
+                                <option value="desc">Priority: High to Low</option>
+                            </select>
+                        </div>
+
+                        {/* Sort by Deadline */}
+                        <div className="flex items-center gap-2 flex-1">
+                            <ArrowUpDown className="text-highlight" />
+                            <select
+                                value={sortDeadline}
+                                onChange={(e) => handleSort('deadline', e.target.value)}
+                                className="p-2 border border-gray-300 rounded-lg w-full"
+                            >
+                                <option value="">Sort by Deadline</option>
+                                <option value="asc">Deadline: Earliest to Latest</option>
+                                <option value="desc">Deadline: Latest to Earliest</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );
 };
 
 export default function Mytasks() {
-    const token = localStorage.getItem('userToken');
-
-    let { data, isLoading, refetch } = useQuery({
-        queryKey: ['myrasks'],
-        queryFn: () => axios.get(`/public/fakeAPIs/tasks.json`),
-    });
-
     const [tasks, setTasks] = useState(
         [
             {
@@ -171,7 +181,7 @@ export default function Mytasks() {
                 ],
                 "deadline": "25/11",
                 "priority": "High",
-                "state": "started",
+                "state": "in_progress",
                 "tags": "design, figma, UI"
             },
             {
@@ -192,7 +202,7 @@ export default function Mytasks() {
                 ],
                 "deadline": "28/11",
                 "priority": "Normal",
-                "state": "holding",
+                "state": "pending",
                 "tags": "backend, node, API"
             },
             {
@@ -209,7 +219,7 @@ export default function Mytasks() {
                 ],
                 "deadline": "30/11",
                 "priority": "Low",
-                "state": "started",
+                "state": "in_progress",
                 "tags": "testing, QA, manual"
             },
             {
@@ -226,7 +236,7 @@ export default function Mytasks() {
                 ],
                 "deadline": "01/12",
                 "priority": "High",
-                "state": "NA",
+                "state": "cancelled",
                 "tags": "deployment, AWS, CI/CD"
             },
             {
@@ -243,7 +253,7 @@ export default function Mytasks() {
                 ],
                 "deadline": "05/12",
                 "priority": "Normal",
-                "state": "finished",
+                "state": "completed",
                 "tags": "database, setup, SQL"
             },
             {
@@ -260,7 +270,7 @@ export default function Mytasks() {
                 ],
                 "deadline": "10/12",
                 "priority": "High",
-                "state": "started",
+                "state": "in_progress",
                 "tags": "frontend, React, UI"
             },
             {
@@ -277,7 +287,7 @@ export default function Mytasks() {
                 ],
                 "deadline": "12/12",
                 "priority": "Low",
-                "state": "holding",
+                "state": "pending",
                 "tags": "research, user testing, feedback"
             },
             {
@@ -294,7 +304,7 @@ export default function Mytasks() {
                 ],
                 "deadline": "15/12",
                 "priority": "Normal",
-                "state": "finished",
+                "state": "completed",
                 "tags": "code review, peer review"
             },
             {
@@ -311,7 +321,7 @@ export default function Mytasks() {
                 ],
                 "deadline": "20/12",
                 "priority": "High",
-                "state": "NA",
+                "state": "cancelled",
                 "tags": "marketing, campaign, digital"
             },
             {
@@ -328,7 +338,7 @@ export default function Mytasks() {
                 ],
                 "deadline": "18/12",
                 "priority": "Normal",
-                "state": "started",
+                "state": "in_progress",
                 "tags": "client, meeting, discussion"
             }
         ]
@@ -409,29 +419,8 @@ export default function Mytasks() {
         setFilterState(state);
     };
 
-    const [dropped, setDropped] = useState(false);
-    const dropdownRef = useRef(null);
-
-    // Handle clicks outside the dropdown
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDropped(false);
-            }
-        };
-
-        if (dropped) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [dropped]);
-
-    return <>
+    return (
         <div className="p-5 pb-32 dark:bg-dark min-h-[calc(100vh-40px)]">
-
             <FilterBar
                 onSearch={handleSearch}
                 onFilter={handleFilter}
@@ -439,21 +428,15 @@ export default function Mytasks() {
                 onStateFilter={handleStateFilter}
             />
 
-            {/* started */}
-            <div className="px-3 py-1 text-white my-3 bg-started w-fit rounded-lg">started</div>
-            <TasksTable tasks={filteredTasks.filter((task) => task.state === 'started')} />
-
-            {/* NA */}
-            <div className="px-3 py-1 text-white my-3 bg-NA w-fit rounded-lg">NA</div>
-            <TasksTable tasks={filteredTasks.filter((task) => task.state === 'NA')} />
-
-            {/* finished */}
-            <div className="px-3 py-1 text-white my-3 bg-finished w-fit rounded-lg">finished</div>
-            <TasksTable tasks={filteredTasks.filter((task) => task.state === 'finished')} />
-
-            {/* holding */}
-            <div id="holding" className="px-3 py-1 text-white my-3 bg-holding w-fit rounded-lg">holding</div>
-            <TasksTable tasks={filteredTasks.filter((task) => task.state === 'holding')} />
+            {/* Task State Sections */}
+            <div className="space-y-6">
+                {['in_progress', 'cancelled', 'completed', 'pending'].map((state) => (
+                    <div key={state}>
+                        <div className={`px-3 py-1 text-white my-3 bg-${state} w-fit rounded-lg`}>{state}</div>
+                        <TasksTable tasks={filteredTasks.filter((task) => task.state === state)} />
+                    </div>
+                ))}
+            </div>
         </div>
-    </>
+    );
 }

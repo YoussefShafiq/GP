@@ -2,18 +2,13 @@ import { BringToFront, Calendar, ChevronDown } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 export default function TasksTable({ tasks = [] }) {
-    // State to manage which dropdown is open
     const [openDropdownId, setOpenDropdownId] = useState(null);
-
-    // Ref to detect clicks outside the dropdown
     const dropdownRef = useRef(null);
 
-    // Function to handle dropdown toggle
     const toggleDropdown = (id) => {
         setOpenDropdownId(openDropdownId === id ? null : id);
     };
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -28,12 +23,12 @@ export default function TasksTable({ tasks = [] }) {
     }, []);
 
     return (
-        <div className="relative overflow-y-visible shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-left rtl:text-right overflow-y-visible text-gray-500 dark:text-gray-400">
+        <div className="relative md:overflow-visible overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         {["Task Name", "Assigned to", "Deadline", "Priority", "State", "Tags"].map((header, index) => (
-                            <th key={index} scope="col" className="px-6 py-3">
+                            <th key={index} scope="col" className="px-6 py-3 whitespace-nowrap">
                                 {header}
                             </th>
                         ))}
@@ -65,7 +60,6 @@ export default function TasksTable({ tasks = [] }) {
                                             {person.name.split('')[0]}
                                         </div>
                                     ))}
-                                    {/* Show a "+X" indicator if there are more than 5 people */}
                                     {task.assignedTo.length > 5 && (
                                         <div
                                             className="w-6 h-6 flex items-center justify-center text-white bg-gray-400 drop-shadow-xl rounded-full uppercase cursor-default"
@@ -77,21 +71,21 @@ export default function TasksTable({ tasks = [] }) {
                                 </div>
                             </td>
                             {/* Deadline Column */}
-                            <td className="px-6 py-4">
+                            <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
                                     <Calendar className="mr-2" color="red" />
                                     {task.deadline}
                                 </div>
                             </td>
                             {/* Priority Column */}
-                            <td className="px-6 py-4">
+                            <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
                                     <BringToFront className="mr-2" color="#19f" />
                                     {task.priority}
                                 </div>
                             </td>
                             {/* State Column */}
-                            <td className="px-6 py-4">
+                            <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center space-x-2">
                                     <span className={`uppercase py-1 px-2 ${task.state ? `bg-${task.state}` : 'bg-gray-400'} drop-shadow text-white rounded-lg w-20 text-center`}>
                                         {task.state}
@@ -117,7 +111,7 @@ export default function TasksTable({ tasks = [] }) {
                                                 className="text-sm text-white dark:text-gray-200 flex flex-col"
                                                 aria-labelledby={`dropdownHoverButton${rowIndex}`}
                                             >
-                                                {["finished", "started", "NA", "holding",].map((item, itemIndex) => (
+                                                {["completed", "in_progress", "cancelled", "pending",].map((item, itemIndex) => (
                                                     <button key={itemIndex}>
                                                         <div
                                                             className={`block px-7 py-2 hover:bg-white hover:bg-opacity-20 dark:hover:bg-gray-600 dark:hover:text-white ${itemIndex < 3 ? 'border-b-[1px]' : ''} `}
@@ -132,7 +126,7 @@ export default function TasksTable({ tasks = [] }) {
                                 </div>
                             </td>
                             {/* Tags Column */}
-                            <td className="px-6 py-4">{task.tags}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{task.tags}</td>
                         </tr>
                     ))}
                 </tbody>

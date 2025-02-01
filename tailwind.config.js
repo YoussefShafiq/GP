@@ -1,10 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   safelist: [
-    'bg-finished',
-    'bg-NA',
-    'bg-started',
-    'bg-holding',
+    "pending",
+    "in_progress",
+    "completed",
+    "cancelled",
+    "on_hold",
+    "in_review",
   ],
   darkMode: 'class',
   content: [
@@ -40,11 +42,12 @@ export default {
         dark: '#111',
         notes: '#35586f',
 
-
-        finished: '#7dad4e',
-        NA: '#c6001d',
-        started: '#49afcd',
-        holding: '#b0b0b0',
+        pending: '#808080',
+        in_progress: '#1E90FF',
+        completed: '#32CD32',
+        cancelled: '#FF4500',
+        on_hold: '#FFA500',
+        in_review: '#9370DB',
       },
     },
   },

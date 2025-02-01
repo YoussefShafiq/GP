@@ -183,7 +183,11 @@ export default function ProjectTeams() {
             });
             resetForm();
             setUpdateProjectForm(false);
-            setselectedProject(response.data.data); // Update selectedProject with the new data
+            setselectedProject(response.data.data.project); // Update selectedProject with the new data
+            // console.log("response:");
+
+            console.log(response);
+
             sidebarProjects.refetch();
             refetch();
         } catch (error) {

@@ -154,197 +154,31 @@ const FilterBar = ({ onSearch, onFilter, onSort, onStateFilter }) => {
 };
 
 export default function Mytasks() {
-    const [tasks, setTasks] = useState(
-        [
-            {
-                "taskName": "UI Design",
-                "assignedTo": [
-                    {
-                        "name": "Layla Ahmed",
-                        "color": "#25D366"
-                    }, // WhatsApp green
-                    {
-                        "name": "Omar Ali",
-                        "color": "#128C7E"
-                    }, // WhatsApp dark teal
-                    {
-                        "name": "Layla Ahmed",
-                        "color": "#25D366"
-                    }, // WhatsApp green
-                    {
-                        "name": "Omar Ali",
-                        "color": "#128C7E"
-                    }, // WhatsApp dark teal
-                    {
-                        "name": "Nour Youssef",
-                        "color": "#075E54"
-                    }, // WhatsApp dark green
-
-                ],
-                "deadline": "25/11",
-                "priority": "High",
-                "state": "in_progress",
-                "tags": "design, figma, UI"
-            },
-            {
-                "taskName": "API Development",
-                "assignedTo": [
-                    {
-                        "name": "Youssef Shafek",
-                        "color": "#FFB300"
-                    }, // Yellow-orange
-                    {
-                        "name": "Mariam Saleh",
-                        "color": "#FF5722"
-                    }, // Bright orange
-                    {
-                        "name": "Tarek Khaled",
-                        "color": "#D32F2F"
-                    } // Red
-                ],
-                "deadline": "28/11",
-                "priority": "Normal",
-                "state": "pending",
-                "tags": "backend, node, API backend, node, API backend, node, API backend, node, API backend, node, API"
-            },
-            {
-                "taskName": "Testing & QA",
-                "assignedTo": [
-                    {
-                        "name": "Ahmed Mohammed",
-                        "color": "#4CAF50"
-                    }, // Strong green
-                    {
-                        "name": "Alaa Wael",
-                        "color": "#8BC34A"
-                    } // Light green
-                ],
-                "deadline": "30/11",
-                "priority": "Low",
-                "state": "in_progress",
-                "tags": "testing, QA, manual"
-            },
-            {
-                "taskName": "Deployment",
-                "assignedTo": [
-                    {
-                        "name": "Noha Khaled",
-                        "color": "#FF9800"
-                    }, // Bright amber
-                    {
-                        "name": "Ibrahim Nader",
-                        "color": "#F44336"
-                    } // Bold red
-                ],
-                "deadline": "01/12",
-                "priority": "High",
-                "state": "cancelled",
-                "tags": "deployment, AWS, CI/CD"
-            },
-            {
-                "taskName": "Database Setup",
-                "assignedTo": [
-                    {
-                        "name": "Fatima Ali",
-                        "color": "#8E24AA"
-                    }, // Vibrant purple
-                    {
-                        "name": "Hassan Mohamed",
-                        "color": "#F50057"
-                    } // Deep pink
-                ],
-                "deadline": "05/12",
-                "priority": "Normal",
-                "state": "completed",
-                "tags": "database, setup, SQL"
-            },
-            {
-                "taskName": "Frontend Development",
-                "assignedTo": [
-                    {
-                        "name": "Samira Ahmed",
-                        "color": "#00BCD4"
-                    }, // Cyan
-                    {
-                        "name": "Mohamed Fawzy",
-                        "color": "#2196F3"
-                    } // Blue
-                ],
-                "deadline": "10/12",
-                "priority": "High",
-                "state": "in_progress",
-                "tags": "frontend, React, UI"
-            },
-            {
-                "taskName": "User Research",
-                "assignedTo": [
-                    {
-                        "name": "Laila Ibrahim",
-                        "color": "#9C27B0"
-                    }, // Purple
-                    {
-                        "name": "Tamer Elshamy",
-                        "color": "#3F51B5"
-                    } // Indigo
-                ],
-                "deadline": "12/12",
-                "priority": "Low",
-                "state": "pending",
-                "tags": "research, user testing, feedback"
-            },
-            {
-                "taskName": "Code Review",
-                "assignedTo": [
-                    {
-                        "name": "Yasmin Salah",
-                        "color": "#FF4081"
-                    }, // Pink
-                    {
-                        "name": "Ahmed Elhady",
-                        "color": "#F57C00"
-                    } // Orange
-                ],
-                "deadline": "15/12",
-                "priority": "Normal",
-                "state": "completed",
-                "tags": "code review, peer review"
-            },
-            {
-                "taskName": "Marketing Campaign",
-                "assignedTo": [
-                    {
-                        "name": "Ramy Elmasry",
-                        "color": "#00E5FF"
-                    }, // Light blue
-                    {
-                        "name": "Dalia Kassem",
-                        "color": "#FF9800"
-                    } // Amber
-                ],
-                "deadline": "20/12",
-                "priority": "High",
-                "state": "cancelled",
-                "tags": "marketing, campaign, digital"
-            },
-            {
-                "taskName": "Client Meeting",
-                "assignedTo": [
-                    {
-                        "name": "Ahmed ElFayoumy",
-                        "color": "#8BC34A"
-                    }, // Green
-                    {
-                        "name": "Mona Gamal",
-                        "color": "#9E9D24"
-                    } // Olive green
-                ],
-                "deadline": "18/12",
-                "priority": "Normal",
-                "state": "in_progress",
-                "tags": "client, meeting, discussion"
-            }
-        ]
-    );
+    const [tasks, setTasks] = useState([
+        {
+            "name": "UI Design",
+            "members": [
+                { "name": "Layla Ahmed", "color": "#25D366" },
+                { "name": "Omar Ali", "color": "#128C7E" },
+            ],
+            "deadline": "2025-02-03 00:00:00",
+            "priority": "High",
+            "status": 2, // Use numbers consistently
+            "tags": "design, figma, UI"
+        },
+        {
+            "name": "API Development",
+            "members": [
+                { "name": "Youssef Shafek", "color": "#FFB300" },
+                { "name": "Mariam Saleh", "color": "#FF5722" },
+            ],
+            "deadline": "2025-02-03 00:00:00",
+            "priority": "Normal",
+            "status": 1, // Use numbers consistently
+            "tags": "backend, node, API"
+        },
+        // Other tasks...
+    ]);
 
     const [filteredTasks, setFilteredTasks] = useState(tasks);
 
@@ -432,10 +266,10 @@ export default function Mytasks() {
 
             {/* Task State Sections */}
             <div className="space-y-6">
-                {['pending', 'in_progress', 'completed', 'cancelled', 'on_hold', 'in_review'].map((state) => (
-                    <div key={state}>
-                        <div className={`px-3 py-1 text-white my-3 bg-${state} w-fit rounded-lg`}>{state.replace('_', ' ')}</div>
-                        <TasksTable tasks={filteredTasks.filter((task) => task.state === state)} />
+                {['pending', 'in_progress', 'completed', 'cancelled', 'on_hold', 'in_review'].map((status, index) => (
+                    <div key={status}>
+                        <div className={`px-3 py-1 text-white my-3 bg-${status} w-fit rounded-lg`}>{status.replace('_', ' ')}</div>
+                        <TasksTable tasks={filteredTasks.filter((task) => task.status === index + 1)} />
                     </div>
                 ))}
             </div>

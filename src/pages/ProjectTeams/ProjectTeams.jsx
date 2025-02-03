@@ -546,11 +546,11 @@ export default function ProjectTeams() {
                                 <>
                                     {data?.data.data.teams.map((team) => (
                                         // materials folders
-                                        <div key={team.id} class="relative bg-white rounded-lg shadow-lg p-6 w-full">
-                                            <div class="absolute w-1/2 -top-4 left-0 bg-white h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl"></div>
-                                            <div class="">
-                                                <h2 class="text-lg font-bold text-gray-800">{team.name}</h2>
-                                                <p class="text-sm text-gray-500 mt-2">Apr 2, 2023</p>
+                                        <div key={team.id} className="relative bg-white rounded-lg shadow-lg p-6 w-full">
+                                            <div className="absolute w-1/2 -top-4 left-0 bg-white h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl"></div>
+                                            <div className="">
+                                                <h2 className="text-lg font-bold text-gray-800">{team.name}</h2>
+                                                <p className="text-sm text-gray-500 mt-2">Apr 2, 2023</p>
                                             </div>
                                         </div>
                                     ))}

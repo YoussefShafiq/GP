@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import img from '../../assets/images/avatar.jpg';
-import { BadgeCheck, Cake, Laptop, Mail, Phone } from 'lucide-react';
+import { BadgeCheck, Cake, Copy, IdCard, Laptop, Mail, Phone } from 'lucide-react';
 import { faEarthAfrica, faMars, faVenus, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGithub, faInstagram, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -129,8 +129,24 @@ export default function Profile() {
                                                 className="text-darkblue inline top-0 relative -translate-y-1/4"
                                                 fill="white"
                                             />
+                                            <div
+                                                className="p-2  rounded-lg cursor-pointer "
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText('bearer ' + localStorage.getItem('userToken'));
+                                                    toast.success('added to clipboard', {
+                                                        duration: 2000,
+                                                        position: 'bottom-right',
+                                                    });
+                                                }}
+                                            >
+                                                <Copy size={18} className="text-gray-50" />
+                                            </div>
                                         </h2>}
                                         {/* {isLoading ? <div className="w-2/3 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> :} */}
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <IdCard size={30} className="text-white" />
+                                        {isLoading ? <div className="w-1/2 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data?.data.user.id}</h2>}
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Laptop size={30} className="text-white" />

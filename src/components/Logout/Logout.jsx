@@ -13,15 +13,14 @@ export default function Logout() {
     }
 
     async function logout() {
+        localStorage.setItem('userToken', '')
+        navigate('/login');
         try {
             let { data } = await axios.post('https://brainmate.fly.dev/api/v1/auth/logout', {}, {
                 headers
             })
             setToken('')
-            localStorage.setItem('userToken', '')
             console.log(data);
-            navigate('/login');
-
         } catch (error) {
             console.log(error);
             setToken('')

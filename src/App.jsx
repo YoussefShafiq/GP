@@ -27,6 +27,7 @@ import ProjectContextProvider from './context/ProjectsContext'
 import ProjectTeams from './pages/ProjectTeams/ProjectTeams'
 import TeamsContextProvider from './context/TeamsContext'
 import Team from './pages/Team/Team'
+import ManageTeamMembers from './pages/ManageTeamMembers/ManageTeamMembers'
 
 let routers = createBrowserRouter([
 
@@ -46,6 +47,7 @@ let routers = createBrowserRouter([
       { path: 'profile/updateprofile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
       { path: 'project', element: <ProtectedRoute><ProjectTeams /></ProtectedRoute> },
       { path: 'project/team', element: <ProtectedRoute><Team /></ProtectedRoute> },
+      { path: 'project/team/manage-members', element: <ProtectedRoute><ManageTeamMembers /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]
   }

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useMemo } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon } from 'lucide-react';
+import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -216,6 +216,12 @@ export default function Team() {
                                     <span className="text-black">{teamData?.data.data.team.team_code}</span>
                                     <Copy size={18} className="text-gray-500" />
                                 </div>
+                                {teamData?.data?.data.team.role === 'manager' && <button
+                                    onClick={() => navigate('manage-members')}
+                                    className="rounded-full bg-white text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                                >
+                                    <Settings size={25} />
+                                </button>}
                                 <button onClick={() => setUpdateTeamForm(true)} className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
                                 <button onClick={() => setDeleteTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
                                 <button onClick={() => setInviteMemberForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>

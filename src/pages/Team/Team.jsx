@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit } from 'lucide-react';
+import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { useQuery, useQueryClient } from '@tanstack/react-query'; // Import useQueryClient
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { TeamsContext } from '../../context/TeamsContext';
 import LeaveTeamForm from '../../components/LeaveTeamForm/LeaveTeamForm';
@@ -12,6 +12,7 @@ import UpdateTeamForm from '../../components/UpdateTeamForm/UpdateTeamForm';
 import InviteMemberForm from '../../components/InviteMemberForm/InviteMemberForm';
 import AddTaskForm from '../../components/AddTaskForm/AddTaskForm';
 import TasksTable from '../../components/TasksTable/TasksTable';
+import FilterBar from '../../components/FilterBar/FilterBar'; // Import the FilterBar component
 
 export default function Team() {
     let { selectedProject, setselectedProject } = useContext(projectContext);
@@ -21,9 +22,16 @@ export default function Team() {
     const [updateTeamForm, setUpdateTeamForm] = useState(false);
     const [inviteMemberForm, setInviteMemberForm] = useState(false);
     const [addTaskForm, setAddTaskForm] = useState(false);
+    const [filteredTasks, setFilteredTasks] = useState([]);
+    const [searchName, setSearchName] = useState('');
+    const [searchTag, setSearchTag] = useState('');
+    const [filterPriority, setFilterPriority] = useState('');
+    const [sortPriority, setSortPriority] = useState('');
+    const [sortDeadline, setSortDeadline] = useState('');
+    const [filterState, setFilterState] = useState('');
     const token = localStorage.getItem('userToken');
     const navigate = useNavigate();
-    const queryClient = useQueryClient(); // Initialize queryClient
+    const queryClient = useQueryClient();
 
     // Get team details function
     function getTeamDetails() {
@@ -67,7 +75,7 @@ export default function Team() {
     }
 
     // Get team tasks query
-    let { data: teamTasks, isError } = useQuery({
+    let { data: teamTasks, isError, isRefetching: refetchingTasks } = useQuery({
         queryKey: ['teamTasks', selectedTeam?.id],
         queryFn: getTeamTasks,
         enabled: !!selectedTeam,
@@ -77,6 +85,74 @@ export default function Team() {
     const invalidateTeamTasks = () => {
         queryClient.invalidateQueries(['teamTasks', selectedTeam?.id]);
     };
+
+    // Handle search, filter, and sort
+    const handleSearch = (name, tag) => {
+        setSearchName(name);
+        setSearchTag(tag);
+    };
+
+    const handleFilter = (priority) => {
+        setFilterPriority(priority);
+    };
+
+    const handleSort = (type, order) => {
+        if (type === 'priority') {
+            setSortPriority(order);
+            setSortDeadline('');
+        } else if (type === 'deadline') {
+            setSortDeadline(order);
+            setSortPriority('');
+        }
+    };
+
+    const handleStateFilter = (state) => {
+        setFilterState(state);
+    };
+
+    // Filter and sort tasks
+    const filteredAndSortedTasks = useMemo(() => {
+        let tasks = teamTasks?.data?.data?.tasks || [];
+
+        // Filter by name
+        if (searchName) {
+            tasks = tasks.filter(task => task.name.toLowerCase().includes(searchName.toLowerCase()));
+        }
+
+        // Filter by tag
+        if (searchTag) {
+            tasks = tasks.filter(task => task.tags?.some(tag => tag.toLowerCase().includes(searchTag.toLowerCase())));
+        }
+
+        // Filter by priority
+        if (filterPriority) {
+            tasks = tasks.filter(task => task.priority === filterPriority);
+        }
+
+        // Filter by state
+        if (filterState) {
+            tasks = tasks.filter(task => task.status === filterState);
+        }
+
+        // Sort by priority
+        if (sortPriority) {
+            tasks = tasks.sort((a, b) => {
+                const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+                return sortPriority === 'asc' ? priorityOrder[a.priority] - priorityOrder[b.priority] : priorityOrder[b.priority] - priorityOrder[a.priority];
+            });
+        }
+
+        // Sort by deadline
+        if (sortDeadline) {
+            tasks = tasks.sort((a, b) => {
+                const deadlineA = new Date(a.deadline);
+                const deadlineB = new Date(b.deadline);
+                return sortDeadline === 'asc' ? deadlineA - deadlineB : deadlineB - deadlineA;
+            });
+        }
+
+        return tasks;
+    }, [teamTasks, searchName, searchTag, filterPriority, sortPriority, sortDeadline, filterState]);
 
     if (!selectedTeam) {
         return (
@@ -89,42 +165,29 @@ export default function Team() {
         );
     }
 
-    console.log(teamTasks?.data?.data.tasks);
-
     return (
         <>
-            {/* Leave Team Form */}
             <LeaveTeamForm isOpen={leaveTeamForm} onClose={() => setLeaveTeamForm(false)} selectedTeam={selectedTeam} setselectedTeam={setselectedTeam} />
-
-            {/* Delete Team Form */}
             <DeleteTeamForm isOpen={deleteTeamForm} onClose={() => setDeleteTeamForm(false)} selectedTeam={selectedTeam} setselectedTeam={setselectedTeam} />
-
-            {/* Update Team Form */}
             <UpdateTeamForm isOpen={updateTeamForm} onClose={() => setUpdateTeamForm(false)} selectedTeam={selectedTeam} setselectedTeam={setselectedTeam} />
-
-            {/* Invite Member Form */}
             <InviteMemberForm isOpen={inviteMemberForm} onClose={() => setInviteMemberForm(false)} selectedTeam={selectedTeam} />
-
-            {/* Add Task Form */}
             <AddTaskForm
                 isOpen={addTaskForm}
                 onClose={() => {
                     setAddTaskForm(false);
-                    invalidateTeamTasks(); // Invalidate the teamTasks query when the form is closed
+                    invalidateTeamTasks();
                 }}
                 selectedTeam={selectedTeam}
                 token={token}
                 teamMembers={teamMembers}
             />
 
-            {/* Loading Skeleton */}
             {isTeamLoading ? (
                 <div className="p-5">
                     <div className="flex justify-between items-center mb-5">
                         <div className='text-light font-semibold flex items-center'>
                             <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> / <div className="ps-1 cursor-pointer">{selectedTeam?.name}</div>
                         </div>
-                        {/* Buttons Skeleton */}
                         <div className="flex gap-2">
                             <div className="h-10 w-10 bg-gray-300 rounded-full animate-pulse"></div>
                             <div className="h-10 w-10 bg-gray-300 rounded-full animate-pulse"></div>
@@ -133,14 +196,13 @@ export default function Team() {
                 </div>
             ) : (
                 <div className="p-5">
-                    <div className="flex justify-between items-center mb-5 h-9">
-                        {/* Path */}
+                    <div className="flex sticky top-12 bg-white p-5 z-50 justify-between items-center mb-5 h-16">
                         <div className='text-light font-semibold flex items-center'>
                             <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> / <div className="ps-1 cursor-pointer">{selectedTeam?.name}</div>
                         </div>
                         <div className="flex gap-2">
+                            {refetchingTasks && <div className="flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                             {teamData?.data?.data.team.role !== 'member' && (<>
-                                {/* Team Code with Copy Icon */}
                                 <div
                                     className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200"
                                     onClick={() => {
@@ -162,14 +224,19 @@ export default function Team() {
                             <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
                         </div>
                     </div>
-                    {/* body */}
                     <div className="p-5">
+                        <FilterBar
+                            onSearch={handleSearch}
+                            onFilter={handleFilter}
+                            onSort={handleSort}
+                            onStateFilter={handleStateFilter}
+                        />
                         {teamTasks?.data?.data && (
                             <div className="space-y-6">
                                 {['pending', 'in_progress', 'completed', 'cancelled', 'on_hold', 'in_review'].map((status, index) => (
                                     <div key={status}>
                                         <div className={`px-3 py-1 text-white my-3 bg-${status} w-fit rounded-lg`}>{status.replace('_', ' ')}</div>
-                                        <TasksTable tasks={teamTasks?.data?.data?.tasks.filter((task) => Number(task.status) === index + 1)} />
+                                        <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === index + 1)} />
                                     </div>
                                 ))}
                             </div>

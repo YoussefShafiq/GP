@@ -163,7 +163,7 @@ export default function Mytasks() {
             ],
             "deadline": "2025-02-03 00:00:00",
             "priority": "High",
-            "status": 2, // Use numbers consistently
+            "status": 1, // Use numbers consistently
             "tags": "design, figma, UI"
         },
         {

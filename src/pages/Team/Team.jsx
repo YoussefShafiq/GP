@@ -245,7 +245,7 @@ export default function Team() {
                                         <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === index + 1)} />
                                     </div>
                                 ))}
-                            </div>
+                            </div> 
                         )}
                     </div>
                 </div>

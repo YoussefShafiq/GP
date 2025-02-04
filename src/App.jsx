@@ -28,6 +28,9 @@ import ProjectTeams from './pages/ProjectTeams/ProjectTeams'
 import TeamsContextProvider from './context/TeamsContext'
 import Team from './pages/Team/Team'
 import ManageTeamMembers from './pages/ManageTeamMembers/ManageTeamMembers'
+import TaskContextProvider from './context/TaskContext'
+import TaskDetails from './pages/TaskDetails/TaskDetails'
+import TeamInvitationConfirm from './pages/TeamInvitationConfirm/TeamInvitationConfirm'
 
 let routers = createBrowserRouter([
 
@@ -38,6 +41,7 @@ let routers = createBrowserRouter([
   {
     path: '', element: <Layout />, children: [
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
+      { path: 'team-invitation-confirm', element: <ProtectedRoute><TeamInvitationConfirm /></ProtectedRoute> },
       { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
       { path: 'mytasks', element: <ProtectedRoute><Mytasks /></ProtectedRoute> },
       { path: 'teamspaces', element: <ProtectedRoute><TeamSpaces /></ProtectedRoute> },
@@ -48,6 +52,7 @@ let routers = createBrowserRouter([
       { path: 'project', element: <ProtectedRoute><ProjectTeams /></ProtectedRoute> },
       { path: 'project/team', element: <ProtectedRoute><Team /></ProtectedRoute> },
       { path: 'project/team/manage-members', element: <ProtectedRoute><ManageTeamMembers /></ProtectedRoute> },
+      { path: 'project/team/task-details', element: <ProtectedRoute><TaskDetails /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]
   }
@@ -59,20 +64,22 @@ function App() {
 
 
   return <>
-    <TeamsContextProvider>
-      <ProjectContextProvider>
-        <NotesContextProvider>
-          <QueryClientProvider client={query}>
-            <UserDataContextProvider>
-              <SidebarContextProvider>
-                <RouterProvider router={routers} />
-                <Toaster />
-              </SidebarContextProvider>
-            </UserDataContextProvider>
-          </QueryClientProvider>
-        </NotesContextProvider>
-      </ProjectContextProvider>
-    </TeamsContextProvider>
+    <TaskContextProvider>
+      <TeamsContextProvider>
+        <ProjectContextProvider>
+          <NotesContextProvider>
+            <QueryClientProvider client={query}>
+              <UserDataContextProvider>
+                <SidebarContextProvider>
+                  <RouterProvider router={routers} />
+                  <Toaster />
+                </SidebarContextProvider>
+              </UserDataContextProvider>
+            </QueryClientProvider>
+          </NotesContextProvider>
+        </ProjectContextProvider>
+      </TeamsContextProvider>
+    </TaskContextProvider>
   </>
 }
 

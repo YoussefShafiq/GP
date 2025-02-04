@@ -121,7 +121,7 @@ export default function Team() {
 
         // Filter by tag
         if (searchTag) {
-            tasks = tasks.filter(task => task.tags?.some(tag => tag.toLowerCase().includes(searchTag.toLowerCase())));
+            tasks = tasks.filter(task => task.tags.toLowerCase().includes(searchTag.toLowerCase()));
         }
 
         // Filter by priority
@@ -196,7 +196,7 @@ export default function Team() {
                 </div>
             ) : (
                 <div className="p-5">
-                    <div className="flex sticky top-12 bg-white p-5 z-50 justify-between items-center mb-5 h-16">
+                    <div className="flex sticky top-12 bg-white p-5 z-[49] justify-between items-center mb-5 h-16">
                         <div className='text-light font-semibold flex items-center'>
                             <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> / <div className="ps-1 cursor-pointer">{selectedTeam?.name}</div>
                         </div>
@@ -216,16 +216,16 @@ export default function Team() {
                                     <span className="text-black">{teamData?.data.data.team.team_code}</span>
                                     <Copy size={18} className="text-gray-500" />
                                 </div>
-                                {teamData?.data?.data.team.role === 'manager' && <button
+                                {teamData?.data?.data.team.role === 'manager' && <button title='manage team members'
                                     onClick={() => navigate('manage-members')}
                                     className="rounded-full bg-white text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                                 >
                                     <Settings size={25} />
                                 </button>}
-                                <button onClick={() => setUpdateTeamForm(true)} className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
-                                <button onClick={() => setDeleteTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
-                                <button onClick={() => setInviteMemberForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
-                                <button onClick={() => setAddTaskForm(true)} className="rounded-full bg-white text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
+                                <button onClick={() => setUpdateTeamForm(true)} title='update team name' className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
+                                <button onClick={() => setDeleteTeamForm(true)} title='delete team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                                <button onClick={() => setInviteMemberForm(true)} title='invite member to team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
+                                <button onClick={() => setAddTaskForm(true)} title='add task' className="rounded-full bg-white text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
                             </>)}
                             <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
                         </div>
@@ -239,13 +239,32 @@ export default function Team() {
                         />
                         {teamTasks?.data?.data && (
                             <div className="space-y-6">
-                                {['pending', 'in_progress', 'completed', 'cancelled', 'on_hold', 'in_review'].map((status, index) => (
-                                    <div key={status}>
-                                        <div className={`px-3 py-1 text-white my-3 bg-${status} w-fit rounded-lg`}>{status.replace('_', ' ')}</div>
-                                        <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === index + 1)} />
-                                    </div>
-                                ))}
-                            </div> 
+                                <div>
+                                    <div className="px-3 py-1 text-white my-3 bg-pending w-fit rounded-lg">pending</div>
+                                    <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 1)} />
+                                </div>
+                                <div>
+                                    <div className="px-3 py-1 text-white my-3 bg-in_progress w-fit rounded-lg">in progress</div>
+                                    <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 2)} />
+                                </div>
+                                <div>
+                                    <div className="px-3 py-1 text-white my-3 bg-completed w-fit rounded-lg">completed</div>
+                                    <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 3)} />
+                                </div>
+                                <div>
+                                    <div className="px-3 py-1 text-white my-3 bg-cancelled w-fit rounded-lg">cancelled</div>
+                                    <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 4)} />
+                                </div>
+                                <div>
+                                    <div className="px-3 py-1 text-white my-3 bg-on_hold w-fit rounded-lg">on hold</div>
+                                    <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 5)} />
+                                </div>
+                                <div>
+                                    <div className="px-3 py-1 text-white my-3 bg-in_review w-fit rounded-lg">in review</div>
+                                    <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 6)} />
+                                </div>
+
+                            </div>
                         )}
                     </div>
                 </div>

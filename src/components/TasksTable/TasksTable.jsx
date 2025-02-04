@@ -4,11 +4,15 @@ import axios from 'axios';
 import { BringToFront, Calendar } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { TeamsContext } from '../../context/TeamsContext';
+import { TaskContext } from '../../context/TaskContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function TasksTable({ tasks = [] }) {
+    let { selectedTask, setselectedTask } = useContext(TaskContext)
     let { selectedTeam } = useContext(TeamsContext);
     const queryClient = useQueryClient();
     const token = localStorage.getItem('userToken');
+    const navigate = useNavigate();
 
     const [loadingTaskId, setLoadingTaskId] = useState(null); // Track loading state per task
 
@@ -51,70 +55,78 @@ export default function TasksTable({ tasks = [] }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {tasks.map((task, rowIndex) => (
-                        <tr
-                            key={rowIndex}
-                            className="bg-white border-b dark:bg-white dark:bg-opacity-5 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                        >
-                            <th scope="row" className="min-w-40 flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                {task.name}
-                            </th>
-                            <td className="px-6 py-4">
-                                <div className="flex -space-x-2 max-w-[200px] overflow-hidden px-2">
-                                    {task.members.slice(0, 5).map((person, personIndex) => (
-                                        <div
-                                            key={personIndex}
-                                            className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
-                                            style={{ backgroundColor: person.color }}
-                                            title={person.name}
-                                        >
-                                            {person.name[0]}
-                                        </div>
-                                    ))}
-                                    {task.members.length > 5 && (
-                                        <div className="w-6 h-6 flex items-center justify-center text-white bg-gray-400 drop-shadow-xl rounded-full uppercase cursor-default"
-                                            title={`+${task.members.length - 5} more`}>
-                                            +{task.members.length - 5}
-                                        </div>
-                                    )}
-                                </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                    <Calendar className="mr-2" color="red" />
-                                    {task.deadline.substring(0, 10).replaceAll('-', '/')}
-                                </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                    <BringToFront className="mr-2" color="#19f" />
-                                    {task.priority}
-                                </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <select
-                                    className="text-sm text-gray-900 dark:text-white bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg p-1"
-                                    value={Number(task.status)}
-                                    onChange={(e) => handleStatusChange(task.id, e.target.value)}
-                                    disabled={loadingTaskId === task.id} // Disable when updating
-                                >
-                                    {[
-                                        { value: 1, label: 'pending' },
-                                        { value: 2, label: 'in_progress' },
-                                        { value: 3, label: 'completed' },
-                                        { value: 4, label: 'cancelled' },
-                                        { value: 5, label: 'on_hold' },
-                                        { value: 6, label: 'in_review' },
-                                    ].map((item) => (
-                                        <option key={item.value} value={item.value}>
-                                            {item.label.replace('_', ' ')}
-                                        </option>
-                                    ))}
-                                </select>
-                            </td>
-                            <td className="px-6 py-4 max-w-52 overflow-hidden whitespace-nowrap">{task.tags}</td>
-                        </tr>
-                    ))}
+                    {tasks.length > 0 ? <>
+                        {tasks.map((task, rowIndex) => (
+                            <tr onClick={() => {
+                                setselectedTask(task);
+                                navigate('task-details')
+                            }}
+                                key={rowIndex}
+                                className="bg-white border-b cursor-pointer dark:bg-white dark:bg-opacity-5 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                            >
+                                <th scope="row" className="min-w-40 flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                    {task.name}
+                                </th>
+                                <td className="px-6 py-4">
+                                    <div className="flex -space-x-2 max-w-[200px] overflow-hidden px-2">
+                                        {task.members.slice(0, 5).map((person, personIndex) => (
+                                            <div
+                                                key={personIndex}
+                                                className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
+                                                style={{ backgroundColor: person.color }}
+                                                title={person.name}
+                                            >
+                                                {person.name[0]}
+                                            </div>
+                                        ))}
+                                        {task.members.length > 5 && (
+                                            <div className="w-6 h-6 flex items-center justify-center text-white bg-gray-400 drop-shadow-xl rounded-full uppercase cursor-default"
+                                                title={`+${task.members.length - 5} more`}>
+                                                +{task.members.length - 5}
+                                            </div>
+                                        )}
+                                    </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <div className="flex items-center">
+                                        <Calendar className="mr-2" color="red" />
+                                        {task.deadline.substring(0, 10).replaceAll('-', '/')}
+                                    </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <div className="flex items-center">
+                                        <BringToFront className="mr-2" color="#19f" />
+                                        {task.priority}
+                                    </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <select
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="text-sm dark:bg-dark text-gray-900 dark:text-white bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg p-1"
+                                        value={Number(task.status)}
+                                        onChange={(e) => handleStatusChange(task.id, e.target.value)}
+                                        disabled={loadingTaskId === task.id} // Disable when updating
+                                    >
+                                        {[
+                                            { value: 1, label: 'pending' },
+                                            { value: 2, label: 'in_progress' },
+                                            { value: 3, label: 'completed' },
+                                            { value: 4, label: 'cancelled' },
+                                            { value: 5, label: 'on_hold' },
+                                            { value: 6, label: 'in_review' },
+                                        ].map((item) => (
+                                            <option key={item.value} value={item.value}>
+                                                {item.label.replace('_', ' ')}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </td>
+                                <td className="px-6 py-4 max-w-52 overflow-hidden whitespace-nowrap">{task.tags}</td>
+                            </tr>
+                        ))}
+                    </> : <>
+                        <td colSpan={6} className='text-center py-3' >No tasks found with this state </td>
+                    </>}
                 </tbody>
             </table>
         </div>

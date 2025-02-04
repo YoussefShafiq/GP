@@ -486,7 +486,7 @@ export default function ProjectTeams() {
             </>}
 
             <div className="p-5">
-                <div className="flex justify-between items-center mb-5 h-9">
+                <div className="flex justify-between items-center mb-5 h-16 ps-5">
                     {/* Path */}
                     <div className='text-light font-semibold flex items-center' >
                         <div onClick={() => navigate('/project')} className="pe-1 cursor-pointer">{selectedProject?.name}</div> /

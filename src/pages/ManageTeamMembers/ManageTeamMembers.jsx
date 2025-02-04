@@ -4,13 +4,20 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Trash2, Loader2Icon } from 'lucide-react';
+import { projectContext } from '../../context/ProjectsContext';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
 
 const ManageTeamMembers = () => {
-    const { selectedTeam } = useContext(TeamsContext);
+    let { selectedProject, setselectedProject } = useContext(projectContext);
+    let { selectedTeam, setselectedTeam } = useContext(TeamsContext);
     const token = localStorage.getItem('userToken');
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const [updatingRole, setUpdatingRole] = useState(null);
+    const [showConfirmation, setShowConfirmation] = useState(false); // State for showing the confirmation popup
+    const [memberToDelete, setMemberToDelete] = useState(null); // State to store the member ID to delete
 
     // Fetch team members
     const { data: teamMembers, isLoading, isError, isRefetching } = useQuery({
@@ -72,7 +79,7 @@ const ManageTeamMembers = () => {
             console.log("Remove Response:", response.data); // Logging response
             queryClient.invalidateQueries(['teamMembers', selectedTeam?.id]);
         },
-        onError: () => {
+        onError: (error) => {
             toast.error(error.response?.data?.message || 'failed to remove user', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -85,7 +92,21 @@ const ManageTeamMembers = () => {
     };
 
     const handleRemoveMember = (userId) => {
-        removeMemberMutation.mutate(userId);
+        setMemberToDelete(userId); // Set the member ID to delete
+        setShowConfirmation(true); // Show the confirmation popup
+    };
+
+    const confirmDelete = () => {
+        if (memberToDelete) {
+            removeMemberMutation.mutate(memberToDelete); // Delete the member
+        }
+        setShowConfirmation(false); // Hide the confirmation popup
+        setMemberToDelete(null); // Reset the member ID
+    };
+
+    const cancelDelete = () => {
+        setShowConfirmation(false); // Hide the confirmation popup
+        setMemberToDelete(null); // Reset the member ID
     };
 
     if (isLoading) {
@@ -98,7 +119,47 @@ const ManageTeamMembers = () => {
 
     return (
         <div className="p-5">
-            <h2 className="text-xl font-semibold mb-5">Manage Team Members</h2>
+            {/* Confirmation Popup with Framer Motion */}
+            <AnimatePresence>
+                {showConfirmation && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                            className="bg-white p-6 rounded-lg shadow-lg"
+                        >
+                            <h2 className="text-lg font-semibold mb-4">Are you sure you want to remove this member?</h2>
+                            <div className="flex justify-end gap-3">
+                                <button
+                                    onClick={cancelDelete}
+                                    className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={confirmDelete}
+                                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className='text-light font-semibold flex items-center h-6 px-5 mb-5'>
+                <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div>
+                / <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div>
+                / <div onClick={() => { navigate('/project/team/manage-members'); }} className="px-1 cursor-pointer">Manage Team Members</div>
+            </div>
+
             <table className="w-full border-collapse">
                 <thead>
                     <tr className="bg-gray-100">

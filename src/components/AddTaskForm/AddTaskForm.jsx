@@ -108,7 +108,7 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                         >
                             <X size={24} />
                         </button>
-                        <div className="m-auto w-fit bg-light text-white px-3 py-2 rounded-xl text-xl">{selectedTeam.name} {selectedTeam.id}</div>
+                        <div className="m-auto w-fit bg-light text-white px-3 py-2 rounded-xl text-xl">{selectedTeam.name}</div>
 
                         {/* Add Task Form */}
                         <form

@@ -59,7 +59,7 @@ export default function TasksTable({ tasks = [] }) {
                         {tasks.map((task, rowIndex) => (
                             <tr onClick={() => {
                                 setselectedTask(task);
-                                navigate('task-details')
+                                navigate('/task-details')
                             }}
                                 key={rowIndex}
                                 className="bg-white border-b cursor-pointer dark:bg-white dark:bg-opacity-5 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"

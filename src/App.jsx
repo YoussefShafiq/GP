@@ -52,7 +52,7 @@ let routers = createBrowserRouter([
       { path: 'project', element: <ProtectedRoute><ProjectTeams /></ProtectedRoute> },
       { path: 'project/team', element: <ProtectedRoute><Team /></ProtectedRoute> },
       { path: 'project/team/manage-members', element: <ProtectedRoute><ManageTeamMembers /></ProtectedRoute> },
-      { path: 'project/team/task-details', element: <ProtectedRoute><TaskDetails /></ProtectedRoute> },
+      { path: 'task-details', element: <ProtectedRoute><TaskDetails /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]
   }

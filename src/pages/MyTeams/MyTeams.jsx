@@ -93,19 +93,21 @@ export default function MyTeams() {
                                     <h2><span className='font-semibold'>role:</span> {team.role}</h2>
                                     <h2><span className='font-semibold'>created at:</span> {team.created_at.substring(0, 10).replaceAll('-', '/')}</h2>
                                 </div>
-                                <div className="my-2 flex items-center justify-center gap-2 md:gap-5">
-                                    <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
-                                        <button><Globe color='white' /></button>
-                                    </div>
-                                    <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
-                                        <button><Video color='white' /></button>
-                                    </div>
-                                    <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
-                                        <button><MessageCircleMore color='white' /></button>
+                                <div className="my-2 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-5">
+                                    <div className="flex items-center justify-center gap-2 md:gap-5">
+                                        <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
+                                            <button><Globe color='white' /></button>
+                                        </div>
+                                        <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
+                                            <button><Video color='white' /></button>
+                                        </div>
+                                        <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
+                                            <button><MessageCircleMore color='white' /></button>
+                                        </div>
                                     </div>
                                     {team.role !== 'member' && (
                                         <div
-                                            className="flex w-fit ms-auto items-center gap-2 p-2 bg-white shadow-inner rounded-lg cursor-pointer hover:bg-gray-50"
+                                            className="flex w-fit md:ms-auto items-center gap-2 p-2 bg-white shadow-inner rounded-lg cursor-pointer hover:bg-gray-50"
                                             onClick={(e) => {
                                                 e.stopPropagation()
                                                 navigator.clipboard.writeText(team.team_code);

@@ -3,6 +3,7 @@ import { TaskContext } from '../../context/TaskContext'
 import { useNavigate } from 'react-router-dom';
 import { TeamsContext } from '../../context/TeamsContext';
 import { projectContext } from '../../context/ProjectsContext';
+import { MousePointerClick } from 'lucide-react';
 
 export default function TaskDetails() {
     let { selectedTask, setselectedTask } = useContext(TaskContext)
@@ -10,6 +11,17 @@ export default function TaskDetails() {
     let { selectedTeam, setselectedTeam } = useContext(TeamsContext);
     const token = localStorage.getItem('userToken');
     const navigate = useNavigate();
+
+    if (!selectedTask) {
+        return (
+            <div className="h-[calc(100vh-48px)] flex justify-center items-center">
+                <div className="flex flex-col items-center gap-3">
+                    <MousePointerClick size={35} className='text-light' />
+                    <h2 className='capitalize'>please select task first</h2>
+                </div>
+            </div>
+        );
+    }
 
     return <>
         <div className="p-5">

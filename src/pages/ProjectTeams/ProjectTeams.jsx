@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, X, Trash, Edit, FolderMinus, Trash2 } from 'lucide-react';
+import { MousePointerClick, Plus, X, Trash, Edit, FolderMinus, Trash2, Loader2Icon } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
@@ -46,7 +46,7 @@ export default function ProjectTeams() {
         });
     }
 
-    let { data, isLoading, refetch } = useQuery({
+    let { data, isLoading, refetch, isRefetching } = useQuery({
         queryKey: ['projectTeams', selectedProject?.id], // Add selectedProject.id to queryKey
         queryFn: getProjectTeams,
         keepPreviousData: true,
@@ -491,12 +491,15 @@ export default function ProjectTeams() {
                     <div className='text-light font-semibold flex items-center' >
                         <div onClick={() => navigate('/project')} className="pe-1 cursor-pointer">{selectedProject?.name}</div> /
                     </div>
-                    {/* <div className='text-light font-semibold' >{selectedProject?.name} /</div> */}
-                    {data?.data.data.is_manager && <div className="flex gap-2">
-                        <button onClick={() => setAddProjectForm(true)} className="rounded-full bg-light text-white p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
-                        <button onClick={() => setUpdateProjectForm(true)} className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
-                        <button onClick={() => setDeleteProjectForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
-                    </div>}
+                    <div className="flex gap-2">
+                        {isRefetching && <div className="flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
+                        {/* <div className='text-light font-semibold' >{selectedProject?.name} /</div> */}
+                        {data?.data.data.is_manager && <div className="flex gap-2">
+                            <button onClick={() => setAddProjectForm(true)} className="rounded-full bg-light text-white p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
+                            <button onClick={() => setUpdateProjectForm(true)} className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
+                            <button onClick={() => setDeleteProjectForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                        </div>}
+                    </div>
                 </div>
 
                 {/* Accessible teams */}

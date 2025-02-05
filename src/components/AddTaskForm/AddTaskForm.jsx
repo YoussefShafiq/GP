@@ -308,8 +308,8 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                                                     className={`${index % 2 === 0 ? 'bg-stone-50' : 'bg-stone-100'
                                                         } flex flex-col px-1 py-2 hover:bg-white cursor-pointer`}
                                                 >
-                                                    <div className="">{user.name}</div>
-                                                    <div className="text-[11px] text-gray-700">{user.email}</div>
+                                                    <div className="flex items-center gap-1"><span>{user.name}</span><span className='text-xs opacity-80'>({user.role})</span></div>
+                                                    <div className="text-[11px] opacity-90">{user.email}</div>
                                                 </motion.div>
                                             ))}
                                         </motion.div>

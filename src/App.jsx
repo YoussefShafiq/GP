@@ -14,7 +14,7 @@ import ForgetPass from './pages/ForgetPass/ForgetPass'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
 import GoHome from './components/GoHome/GoHome'
 import { Toaster } from 'react-hot-toast'
-import TeamSpaces from './pages/TeamSpaces/TeamSpaces'
+import TeamSpaces from './pages/MyTeams/MyTeams'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Notes from './pages/Notes/Notes'
@@ -31,6 +31,7 @@ import ManageTeamMembers from './pages/ManageTeamMembers/ManageTeamMembers'
 import TaskContextProvider from './context/TaskContext'
 import TaskDetails from './pages/TaskDetails/TaskDetails'
 import TeamInvitationConfirm from './pages/TeamInvitationConfirm/TeamInvitationConfirm'
+import MyTeams from './pages/MyTeams/MyTeams'
 
 let routers = createBrowserRouter([
 
@@ -44,7 +45,7 @@ let routers = createBrowserRouter([
       { path: 'team-invitation-confirm', element: <ProtectedRoute><TeamInvitationConfirm /></ProtectedRoute> },
       { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
       { path: 'mytasks', element: <ProtectedRoute><Mytasks /></ProtectedRoute> },
-      { path: 'teamspaces', element: <ProtectedRoute><TeamSpaces /></ProtectedRoute> },
+      { path: 'myteams', element: <ProtectedRoute><MyTeams /></ProtectedRoute> },
       { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },
       { path: 'workspaces', element: <ProtectedRoute><Workspaces /></ProtectedRoute> },
       { path: 'profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },

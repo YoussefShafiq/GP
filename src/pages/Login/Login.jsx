@@ -152,7 +152,7 @@ export default function Login() {
                                         </div>
                                     }
                                 </div>
-                                <div className='text-darkTeal text-end mb-5' ><Link to={'/forgetpassword'}>forget password?</Link></div>
+                                <div className='text-darkTeal text-end mt-2 mb-5' ><Link to={'/forgetpassword'}>forget password?</Link></div>
                                 <button
                                     type="submit"
                                     disabled={loading}

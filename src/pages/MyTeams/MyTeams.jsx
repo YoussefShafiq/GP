@@ -33,10 +33,10 @@ export default function MyTeams() {
         <>
             {/* team spaces controls */}
             <div className="flex flex-col md:flex-row justify-between items-center space-x-3 p-5 text-black ">
-                <h1 className='font-semibold text-xl capitalize text-light flex gap-3 '>my teams {!isRefetching && <div className="flex md:hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}</h1>
+                <h1 className='font-semibold text-xl capitalize text-light flex gap-3 '>my teams {isRefetching && <div className="flex md:hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}</h1>
 
                 <div className="flex flex-col w-full md:w-fit mt-4 md:mt-0 md:flex-row gap-3">
-                    {!isRefetching && <div className="hidden md:flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
+                    {isRefetching && <div className="hidden md:flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                     <input
                         type="text"
                         placeholder="Search by team name"

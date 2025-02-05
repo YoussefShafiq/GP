@@ -14,11 +14,11 @@ export default function TaskDetails() {
     return <>
         <div className="p-5">
             <div className='text-light font-semibold flex items-center h-6 px-5'>
-                {!selectedTask.assigned_to_me && <>
+                {!selectedTask?.assigned_to_me && <>
                     <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> /
                     <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div> /
                 </>}
-                {selectedTask.assigned_to_me && <>
+                {selectedTask?.assigned_to_me && <>
                     <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div> /
                 </>}
                 <div onClick={() => { navigate('/project/team/task-details'); }} className="px-1 cursor-pointer">{selectedTask?.name}</div>

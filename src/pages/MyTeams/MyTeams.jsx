@@ -1,13 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Copy, Globe, Loader2Icon, MessageCircleMore, Pin, Video } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { projectContext } from '../../context/ProjectsContext';
+import { TeamsContext } from '../../context/TeamsContext';
 
 export default function MyTeams() {
     const token = localStorage.getItem('userToken');
     const [teamNameSearch, setTeamNameSearch] = useState('');
     const [projectNameSearch, setProjectNameSearch] = useState('');
+    let { selectedProject, setselectedProject } = useContext(projectContext);
+    let { selectedTeam, setselectedTeam } = useContext(TeamsContext);
+    const navigate = useNavigate()
 
     function getMyTeams() {
         return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/get/my-teams`, {
@@ -25,7 +31,7 @@ export default function MyTeams() {
     // Filter teams based on search terms
     const filteredTeams = data?.data?.data.teams.filter(team => {
         const matchesTeamName = team.name.toLowerCase().includes(teamNameSearch.toLowerCase());
-        const matchesProjectName = team.name.toLowerCase().includes(projectNameSearch.toLowerCase());
+        const matchesProjectName = team.project.name.toLowerCase().includes(projectNameSearch.toLowerCase());
         return matchesTeamName && matchesProjectName;
     });
 
@@ -72,14 +78,18 @@ export default function MyTeams() {
                 ) : (
                     <>
                         {filteredTeams?.map((team) => (
-                            <div key={team.id} className="relative rounded-3xl mt-5 md:w-[calc(33%-10px)] w-full bg-base shadow-lg p-4">
+                            <div onClick={() => {
+                                setselectedProject(team.project);
+                                setselectedTeam(team);
+                                navigate('/project/team')
+                            }} key={team.id} className="relative rounded-3xl mt-5 md:w-[calc(33%-10px)] w-full bg-base shadow-lg p-4 cursor-pointer hover:scale-[1.02] duration-300">
                                 {/* icon */}
                                 <div className="absolute left-1/2 -translate-x-1/2 -translate-y-10">
                                     <div className="bg-light shadow-inner text-white p-3 rounded-full text-xl">{team.name}</div>
                                 </div>
                                 {/* content */}
                                 <div className="mt-3">
-                                    <h2><span className='font-semibold'>project:</span> {team.project_id}</h2>
+                                    <h2><span className='font-semibold'>project:</span> {team.project.name}</h2>
                                     <h2><span className='font-semibold'>role:</span> {team.role}</h2>
                                     <h2><span className='font-semibold'>created at:</span> {team.created_at.substring(0, 10).replaceAll('-', '/')}</h2>
                                 </div>
@@ -95,8 +105,9 @@ export default function MyTeams() {
                                     </div>
                                     {team.role !== 'member' && (
                                         <div
-                                            className="flex w-fit ms-auto items-center gap-2 p-2 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200"
-                                            onClick={() => {
+                                            className="flex w-fit ms-auto items-center gap-2 p-2 bg-white shadow-inner rounded-lg cursor-pointer hover:bg-gray-50"
+                                            onClick={(e) => {
+                                                e.stopPropagation()
                                                 navigator.clipboard.writeText(team.team_code);
                                                 toast.success('added to clipboard', {
                                                     duration: 2000,

@@ -547,7 +547,7 @@ export default function ProjectTeams() {
                         <div className="flex flex-col flex-wrap justify-center items-center gap-7">
                             {data?.data.data.teams?.length > 0 ? (
                                 <>
-                                    {data?.data.data.teams.map((team) => (
+                                    {data?.data.data.teams.filter(team => team.hasAccess).map((team) => (
                                         // materials folders
                                         <div key={team.id} className="relative bg-white rounded-lg shadow-lg p-6 w-full">
                                             <div className="absolute w-1/2 -top-4 left-0 bg-white h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl"></div>
@@ -584,7 +584,7 @@ export default function ProjectTeams() {
                                                     key={team.id}
                                                     className="cursor-not-allowed py-3 px-4 rounded-3xl bg-base opacity-50 shadow-inner bg-opacity-40 text-lg h-fit"
                                                 >
-                                                    {team.name} {team.id}
+                                                    {team.name}
                                                 </div>
                                             ))
                                         }

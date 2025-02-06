@@ -196,15 +196,16 @@ export default function Team() {
                 </div>
             ) : (
                 <div className="p-5">
-                    <div className="flex sticky top-12 bg-white p-5 z-[49] justify-between items-center mb-5 h-16">
+                    <div className="flex flex-col md:flex-row sticky top-12 bg-white md:p-5 z-[49] justify-between items-center mb-5 h-16">
                         <div className='text-light font-semibold flex items-center'>
                             <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> / <div className="ps-1 cursor-pointer">{selectedTeam?.name}</div>
+                            {refetchingTasks && <div className="md:hidden flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                         </div>
-                        <div className="flex gap-2">
-                            {refetchingTasks && <div className="flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
+                        <div className="flex flex-wrap justify-center gap-2">
+                            {refetchingTasks && <div className="md:flex hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                             {teamData?.data?.data.team.role !== 'member' && (<>
                                 <div
-                                    className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200"
+                                    className="flex md:w-fit justify-between items-center gap-2 p-2 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200"
                                     onClick={() => {
                                         navigator.clipboard.writeText(teamData?.data.data.team.team_code);
                                         toast.success('added to clipboard', {
@@ -213,7 +214,7 @@ export default function Team() {
                                         });
                                     }}
                                 >
-                                    <span className="text-black">{teamData?.data.data.team.team_code}</span>
+                                    <span className="text-black hidden md:block">{teamData?.data.data.team.team_code}</span>
                                     <Copy size={18} className="text-gray-500" />
                                 </div>
                                 {teamData?.data?.data.team.role === 'manager' && <button title='manage team members'
@@ -230,7 +231,7 @@ export default function Team() {
                             <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
                         </div>
                     </div>
-                    <div className="p-5">
+                    <div className="md:p-5">
                         <FilterBar
                             onSearch={handleSearch}
                             onFilter={handleFilter}

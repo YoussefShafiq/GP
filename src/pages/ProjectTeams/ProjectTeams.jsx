@@ -486,13 +486,14 @@ export default function ProjectTeams() {
             </>}
 
             <div className="p-5">
-                <div className="flex justify-between items-center mb-5 h-16 ps-5">
+                <div className="flex md:flex-row flex-col justify-between items-center mb-5 h-16 ps-5">
                     {/* Path */}
                     <div className='text-light font-semibold flex items-center' >
                         <div onClick={() => navigate('/project')} className="pe-1 cursor-pointer">{selectedProject?.name}</div> /
+                        {isRefetching && <div className="md:hidden flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                     </div>
                     <div className="flex gap-2">
-                        {isRefetching && <div className="flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
+                        {isRefetching && <div className="md:flex hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                         {/* <div className='text-light font-semibold' >{selectedProject?.name} /</div> */}
                         {data?.data.data.is_manager && <div className="flex gap-2">
                             <button onClick={() => setAddProjectForm(true)} className="rounded-full bg-light text-white p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>

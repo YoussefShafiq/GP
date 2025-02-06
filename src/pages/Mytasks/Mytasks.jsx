@@ -117,14 +117,14 @@ export default function MyTasks() {
     return (
         <div className="p-5">
             <div className="flex sticky top-12 bg-white p-5 z-[49] justify-between items-center mb-0 h-16">
-                <div className='text-light font-semibold flex items-center'>
+                <div className='text-light font-semibold flex w-full justify-center items-center'>
                     <div className="ps-1 cursor-pointer">My Tasks</div>
                 </div>
                 <div className="flex gap-2">
                     {refetchingTasks && <div className="flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                 </div>
             </div>
-            <div className="p-5">
+            <div className="md:p-5">
                 <FilterBar
                     onSearch={handleSearch}
                     onFilter={handleFilter}

@@ -1,6 +1,6 @@
-// FilterBar.js
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, ArrowUpDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
 
 const FilterBar = ({ onSearch, onFilter, onSort, onStateFilter }) => {
     const [searchName, setSearchName] = useState('');
@@ -71,63 +71,73 @@ const FilterBar = ({ onSearch, onFilter, onSort, onStateFilter }) => {
                 >
                     {isExpanded ? 'Hide Filters' : 'Show Filters'}
                 </button>
-                {(isExpanded || window.innerWidth >= 768) && (
-                    <div className="flex flex-col md:flex-row gap-4">
-                        <div className="flex items-center gap-2 flex-1">
-                            <Filter className="text-highlight" />
-                            <select
-                                value={filterPriority}
-                                onChange={(e) => handleFilter(e.target.value)}
-                                className="p-2 border border-gray-300 rounded-lg w-full"
-                            >
-                                <option value="">All Priorities</option>
-                                <option value="high">high</option>
-                                <option value="medium">medium</option>
-                                <option value="low">low</option>
-                            </select>
-                        </div>
-                        <div className="flex items-center gap-2 flex-1">
-                            <Filter className="text-highlight" />
-                            <select
-                                value={filterState}
-                                onChange={(e) => handleStateFilter(e.target.value)}
-                                className="p-2 border border-gray-300 rounded-lg w-full"
-                            >
-                                <option value="">All States</option>
-                                <option value="1">pending</option>
-                                <option value="2">in progress</option>
-                                <option value="3">completed</option>
-                                <option value="4">cancelled</option>
-                                <option value="5">on hold</option>
-                                <option value="6">in review</option>
-                            </select>
-                        </div>
-                        <div className="flex items-center gap-2 flex-1">
-                            <ArrowUpDown className="text-highlight" />
-                            <select
-                                value={sortPriority}
-                                onChange={(e) => handleSort('priority', e.target.value)}
-                                className="p-2 border border-gray-300 rounded-lg w-full"
-                            >
-                                <option value="">Sort by Priority</option>
-                                <option value="asc">Priority: Low to High</option>
-                                <option value="desc">Priority: High to Low</option>
-                            </select>
-                        </div>
-                        <div className="flex items-center gap-2 flex-1">
-                            <ArrowUpDown className="text-highlight" />
-                            <select
-                                value={sortDeadline}
-                                onChange={(e) => handleSort('deadline', e.target.value)}
-                                className="p-2 border border-gray-300 rounded-lg w-full"
-                            >
-                                <option value="">Sort by Deadline</option>
-                                <option value="asc">Deadline: Earliest to Latest</option>
-                                <option value="desc">Deadline: Latest to Earliest</option>
-                            </select>
-                        </div>
-                    </div>
-                )}
+                <AnimatePresence>
+                    {(isExpanded || window.innerWidth >= 768) && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }} // Initial state (hidden)
+                            animate={{ opacity: 1, height: 'auto' }} // Animate to visible state
+                            exit={{ opacity: 0, height: 0 }} // Animate to hidden state
+                            transition={{ duration: 0.3 }} // Animation duration
+                            className="overflow-hidden"
+                        >
+                            <div className="flex flex-col md:flex-row gap-4">
+                                <div className="flex items-center gap-2 flex-1">
+                                    <Filter className="text-highlight" />
+                                    <select
+                                        value={filterPriority}
+                                        onChange={(e) => handleFilter(e.target.value)}
+                                        className="p-2 border border-gray-300 rounded-lg w-full"
+                                    >
+                                        <option value="">All Priorities</option>
+                                        <option value="high">high</option>
+                                        <option value="medium">medium</option>
+                                        <option value="low">low</option>
+                                    </select>
+                                </div>
+                                <div className="flex items-center gap-2 flex-1">
+                                    <Filter className="text-highlight" />
+                                    <select
+                                        value={filterState}
+                                        onChange={(e) => handleStateFilter(e.target.value)}
+                                        className="p-2 border border-gray-300 rounded-lg w-full"
+                                    >
+                                        <option value="">All States</option>
+                                        <option value="1">pending</option>
+                                        <option value="2">in progress</option>
+                                        <option value="3">completed</option>
+                                        <option value="4">cancelled</option>
+                                        <option value="5">on hold</option>
+                                        <option value="6">in review</option>
+                                    </select>
+                                </div>
+                                <div className="flex items-center gap-2 flex-1">
+                                    <ArrowUpDown className="text-highlight" />
+                                    <select
+                                        value={sortPriority}
+                                        onChange={(e) => handleSort('priority', e.target.value)}
+                                        className="p-2 border border-gray-300 rounded-lg w-full"
+                                    >
+                                        <option value="">Sort by Priority</option>
+                                        <option value="asc">Priority: Low to High</option>
+                                        <option value="desc">Priority: High to Low</option>
+                                    </select>
+                                </div>
+                                <div className="flex items-center gap-2 flex-1">
+                                    <ArrowUpDown className="text-highlight" />
+                                    <select
+                                        value={sortDeadline}
+                                        onChange={(e) => handleSort('deadline', e.target.value)}
+                                        className="p-2 border border-gray-300 rounded-lg w-full"
+                                    >
+                                        <option value="">Sort by Deadline</option>
+                                        <option value="asc">Deadline: Earliest to Latest</option>
+                                        <option value="desc">Deadline: Latest to Earliest</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useMemo } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings } from 'lucide-react';
+import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -12,11 +12,13 @@ import UpdateTeamForm from '../../components/UpdateTeamForm/UpdateTeamForm';
 import InviteMemberForm from '../../components/InviteMemberForm/InviteMemberForm';
 import AddTaskForm from '../../components/AddTaskForm/AddTaskForm';
 import TasksTable from '../../components/TasksTable/TasksTable';
+import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
 import FilterBar from '../../components/FilterBar/FilterBar'; // Import the FilterBar component
 
 export default function Team() {
     let { selectedProject, setselectedProject } = useContext(projectContext);
     let { selectedTeam, setselectedTeam } = useContext(TeamsContext);
+    const [teamOptionsDropdown, setteamOptionsDropdown] = useState(false)
     const [deleteTeamForm, setDeleteTeamForm] = useState(false);
     const [leaveTeamForm, setLeaveTeamForm] = useState(false);
     const [updateTeamForm, setUpdateTeamForm] = useState(false);
@@ -196,12 +198,12 @@ export default function Team() {
                 </div>
             ) : (
                 <div className="p-5">
-                    <div className="flex flex-col md:flex-row sticky top-12 bg-white md:p-5 z-[49] justify-between items-center mb-5 h-16">
-                        <div className='text-light font-semibold flex items-center'>
+                    <div className="flex flex-col md:flex-row sticky top-12 bg-white rounded-xl p-3 md:p-5 z-[49] justify-between md:items-center gap-3 mb-5 h-16">
+                        <div className='text-light font-semibold flex items-center '>
                             <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> / <div className="ps-1 cursor-pointer">{selectedTeam?.name}</div>
                             {refetchingTasks && <div className="md:hidden flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                         </div>
-                        <div className="flex flex-wrap justify-center gap-2">
+                        <div className="hidden md:flex flex-wrap justify-center gap-2">
                             {refetchingTasks && <div className="md:flex hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                             {teamData?.data?.data.team.role !== 'member' && (<>
                                 <div
@@ -229,6 +231,51 @@ export default function Team() {
                                 <button onClick={() => setAddTaskForm(true)} title='add task' className="rounded-full bg-white text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
                             </>)}
                             <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
+                        </div>
+
+                        <div className="absolute top-6 right-0 ms-auto md:hidden flex">
+                            <button onClick={() => setteamOptionsDropdown(!teamOptionsDropdown)} className='flex justify-end bg-gray-300 rounded-full p-1.5'>
+                                <ChevronDown />
+                            </button>
+                            <AnimatePresence>
+                                {teamOptionsDropdown && (
+                                    <motion.div
+                                        className="absolute flex flex-col top-full right-0 justify-center gap-2 bg-white p-3 rounded-xl overflow-hidden"
+                                        initial={{ opacity: 0, y: -20 }} // Initial state (hidden)
+                                        animate={{ opacity: 1, y: 0 }}   // Animate to visible state
+                                        exit={{ opacity: 0, y: -20 }}    // Animate to hidden state
+                                        transition={{ duration: 0.3 }}   // Animation duration
+                                    >
+                                        {refetchingTasks && <div className="md:flex hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
+                                        {teamData?.data?.data.team.role !== 'member' && (<>
+                                            <div
+                                                className="flex md:w-fit justify-between items-center gap-2 p-2 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(teamData?.data.data.team.team_code);
+                                                    toast.success('added to clipboard', {
+                                                        duration: 2000,
+                                                        position: 'bottom-right',
+                                                    });
+                                                }}
+                                            >
+                                                <span className="text-black hidden md:block">{teamData?.data.data.team.team_code}</span>
+                                                <Copy size={18} className="text-gray-500" />
+                                            </div>
+                                            {teamData?.data?.data.team.role === 'manager' && <button title='manage team members'
+                                                onClick={() => navigate('manage-members')}
+                                                className="rounded-full bg-white text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                                            >
+                                                <Settings size={25} />
+                                            </button>}
+                                            <button onClick={() => setUpdateTeamForm(true)} title='update team name' className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
+                                            <button onClick={() => setDeleteTeamForm(true)} title='delete team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                                            <button onClick={() => setInviteMemberForm(true)} title='invite member to team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
+                                            <button onClick={() => setAddTaskForm(true)} title='add task' className="rounded-full bg-white text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
+                                        </>)}
+                                        <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     </div>
                     <div className="md:p-5">

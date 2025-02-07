@@ -79,7 +79,7 @@ export default function Login() {
                 })
                 setToken(data.data.token)
                 localStorage.setItem('userToken', data.data.token)
-                navigate('/')
+                navigate('/notes')
                 setThirdpartyAuthenticationLoading(false)
 
             } catch (error) {

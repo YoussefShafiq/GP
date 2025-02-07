@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import img from '../../assets/images/avatar.jpg';
+import img from '../../assets/images/userImage.jpg';
 import { BadgeCheck, Cake, Copy, IdCard, Laptop, Mail, Phone } from 'lucide-react';
 import { faEarthAfrica, faMars, faVenus, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

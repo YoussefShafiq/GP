@@ -32,6 +32,9 @@ import TaskContextProvider from './context/TaskContext'
 import TaskDetails from './pages/TaskDetails/TaskDetails'
 import TeamInvitationConfirm from './pages/TeamInvitationConfirm/TeamInvitationConfirm'
 import MyTeams from './pages/MyTeams/MyTeams'
+import Chat from './pages/Chat/Chat'
+import ChatContextProvider from './context/ChatContext'
+// import { pusher, PusherContext } from './context/PusherContext'
 
 let routers = createBrowserRouter([
 
@@ -43,12 +46,13 @@ let routers = createBrowserRouter([
     path: '', element: <Layout />, children: [
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
       { path: 'team-invitation-confirm', element: <ProtectedRoute><TeamInvitationConfirm /></ProtectedRoute> },
+      { path: 'profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
       { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
       { path: 'mytasks', element: <ProtectedRoute><Mytasks /></ProtectedRoute> },
       { path: 'myteams', element: <ProtectedRoute><MyTeams /></ProtectedRoute> },
-      { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },
+      { path: 'chat', element: <ProtectedRoute><Chat /></ProtectedRoute> },
       { path: 'workspaces', element: <ProtectedRoute><Workspaces /></ProtectedRoute> },
-      { path: 'profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
+      { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },
       { path: 'profile/updateprofile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
       { path: 'project', element: <ProtectedRoute><ProjectTeams /></ProtectedRoute> },
       { path: 'project/team', element: <ProtectedRoute><Team /></ProtectedRoute> },
@@ -65,22 +69,26 @@ function App() {
 
 
   return <>
-    <TaskContextProvider>
-      <TeamsContextProvider>
-        <ProjectContextProvider>
-          <NotesContextProvider>
-            <QueryClientProvider client={query}>
-              <UserDataContextProvider>
-                <SidebarContextProvider>
-                  <RouterProvider router={routers} />
-                  <Toaster />
-                </SidebarContextProvider>
-              </UserDataContextProvider>
-            </QueryClientProvider>
-          </NotesContextProvider>
-        </ProjectContextProvider>
-      </TeamsContextProvider>
-    </TaskContextProvider>
+    {/* <PusherContext.Provider value={pusher} > */}
+    <ChatContextProvider>
+      <TaskContextProvider>
+        <TeamsContextProvider>
+          <ProjectContextProvider>
+            <NotesContextProvider>
+              <QueryClientProvider client={query}>
+                <UserDataContextProvider>
+                  <SidebarContextProvider>
+                    <RouterProvider router={routers} />
+                    <Toaster />
+                  </SidebarContextProvider>
+                </UserDataContextProvider>
+              </QueryClientProvider>
+            </NotesContextProvider>
+          </ProjectContextProvider>
+        </TeamsContextProvider>
+      </TaskContextProvider>
+    </ChatContextProvider>
+    {/* </PusherContext.Provider> */}
   </>
 }
 

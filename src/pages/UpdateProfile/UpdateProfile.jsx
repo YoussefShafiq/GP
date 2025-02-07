@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import img from '../../assets/images/avatar.jpg';
+import img from '../../assets/images/userImage.jpg';
 import { useFormik } from 'formik';
 import { object, string, date, array } from 'yup';
 import { useNavigate } from 'react-router-dom';

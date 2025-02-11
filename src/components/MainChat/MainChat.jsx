@@ -176,7 +176,7 @@ export default function MainChat() {
                                 }`}
                         >
                             {/* <div className="text-sm font-semibold">{message.sender?.name}</div> */}
-                            <div className="text-sm font-semibold">{message?.sender?.id !== profileData?.data?.data.user.id ? message.sender.name : ''}</div>
+                            <div className="text-sm font-semibold">{message?.sender?.id !== profileData?.data?.data.user.id ? message?.sender?.name : ''}</div>
                             <div className="text-sm">{message?.message}</div>
                             <div
                                 className={`text-xs mt-1 ${message?.sender_id === profileData?.data?.data.user.id ? 'text-gray-200' : 'text-gray-500'

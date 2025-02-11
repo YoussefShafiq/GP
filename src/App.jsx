@@ -14,7 +14,6 @@ import ForgetPass from './pages/ForgetPass/ForgetPass'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
 import GoHome from './components/GoHome/GoHome'
 import { Toaster } from 'react-hot-toast'
-import TeamSpaces from './pages/MyTeams/MyTeams'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Notes from './pages/Notes/Notes'
@@ -35,7 +34,6 @@ import MyTeams from './pages/MyTeams/MyTeams'
 import Chat from './pages/Chat/Chat'
 import ChatContextProvider from './context/ChatContext'
 import Materials from './pages/Materials/Materials'
-// import { pusher, PusherContext } from './context/PusherContext'
 
 let routers = createBrowserRouter([
 
@@ -71,7 +69,6 @@ function App() {
 
 
   return <>
-    {/* <PusherContext.Provider value={pusher} > */}
     <ChatContextProvider>
       <TaskContextProvider>
         <TeamsContextProvider>
@@ -90,7 +87,6 @@ function App() {
         </TeamsContextProvider>
       </TaskContextProvider>
     </ChatContextProvider>
-    {/* </PusherContext.Provider> */}
   </>
 }
 

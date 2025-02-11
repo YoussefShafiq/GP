@@ -1,5 +1,5 @@
 import { Search, Users } from 'lucide-react';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MainChat from '../../components/MainChat/MainChat';
 import { ChatContext } from '../../context/ChatContext';
 import { useQuery } from '@tanstack/react-query';
@@ -7,6 +7,8 @@ import axios from 'axios';
 
 export default function Chat() {
     const { selectedChat, setselectedChat } = useContext(ChatContext);
+    const [filteredChats, setfilteredChats] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(''); // State to hold the search query
     const token = localStorage.getItem('userToken');
 
     // Handle ESC key press
@@ -24,7 +26,6 @@ export default function Chat() {
         };
     }, [setselectedChat]);
 
-
     const { data, isLoading } = useQuery({
         queryKey: 'chat teams',
         queryFn: () =>
@@ -33,10 +34,25 @@ export default function Chat() {
                     Authorization: `Bearer ${token}`,
                 },
             }),
-    })
+        onSuccess: (data) => {
+            // Initialize filteredChats with all teams when data is fetched
+            setfilteredChats(data.data.data.teams);
+        },
+    });
 
-    console.log(data?.data.data.teams);
+    // Filter chats based on search query
+    useEffect(() => {
+        if (data?.data?.data.teams) {
+            const filtered = data.data.data.teams.filter((team) =>
+                team.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setfilteredChats(filtered);
+        }
+    }, [searchQuery, data]); // Re-run when searchQuery or data changes
 
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value); // Update search query state
+    };
 
     return (
         <>
@@ -50,6 +66,8 @@ export default function Chat() {
                     <div className="flex relative items-center gap-2 p-2 px-5">
                         <Search className="text-light absolute left-7 top-1/2 -translate-y-1/2" />
                         <input
+                            id="chatSearch"
+                            onChange={handleSearchChange} // Use the correct handler
                             type="text"
                             placeholder="Search..."
                             className="p-2 ps-10 border border-gray-300 rounded-lg w-full focus:ring-light duration-300 focus-within:border-light"
@@ -58,11 +76,13 @@ export default function Chat() {
 
                     {/* Chat List */}
                     <div className="flex flex-col mt-2">
-
                         {!isLoading && <>
-                            {data?.data.data.teams.map((team) => (
-                                <div onClick={() => setselectedChat(team)}
-                                    className={`flex items-center p-4 border-b border-light bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200 ${selectedChat?.id === team?.id ? 'bg-white bg-opacity-100' : ''} `}>
+                            {filteredChats.map((team) => (
+                                <div
+                                    key={team.id} // Add a key for React rendering
+                                    onClick={() => setselectedChat(team)}
+                                    className={`flex items-center p-4 border-b border-light bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200 ${selectedChat?.id === team?.id ? 'bg-white bg-opacity-100' : ''} `}
+                                >
                                     <div className="rounded-full p-1 bg-gray-100 text-light text-center">
                                         <Users size={30} fill="#00adb5" />
                                     </div>
@@ -76,7 +96,6 @@ export default function Chat() {
                                 </div>
                             ))}
                         </>}
-
                     </div>
                 </div>
 

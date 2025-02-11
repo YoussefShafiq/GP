@@ -81,7 +81,7 @@ export default function Chat() {
                                 <div
                                     key={team.id} // Add a key for React rendering
                                     onClick={() => setselectedChat(team)}
-                                    className={`flex items-center p-4 border-b border-light bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200 ${selectedChat?.id === team?.id ? 'bg-white bg-opacity-100' : ''} `}
+                                    className={`flex items-center p-4 border-b border-light bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200 ${selectedChat?.id === team?.id ? 'bg-gray-100 bg-opacity-95' : ''} `}
                                 >
                                     <div className="rounded-full p-1 bg-gray-100 text-light text-center">
                                         <Users size={30} fill="#00adb5" />

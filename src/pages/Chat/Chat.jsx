@@ -2,9 +2,12 @@ import { Search, Users } from 'lucide-react';
 import React, { useContext, useEffect } from 'react';
 import MainChat from '../../components/MainChat/MainChat';
 import { ChatContext } from '../../context/ChatContext';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 export default function Chat() {
     const { selectedChat, setselectedChat } = useContext(ChatContext);
+    const token = localStorage.getItem('userToken');
 
     // Handle ESC key press
     useEffect(() => {
@@ -20,6 +23,20 @@ export default function Chat() {
             document.removeEventListener("keydown", handleKeyDown);
         };
     }, [setselectedChat]);
+
+
+    const { data, isLoading } = useQuery({
+        queryKey: 'chat teams',
+        queryFn: () =>
+            axios.get(`https://brainmate.fly.dev/api/v1/chat/teams`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+    })
+
+    console.log(data?.data.data.teams);
+
 
     return (
         <>
@@ -41,35 +58,25 @@ export default function Chat() {
 
                     {/* Chat List */}
                     <div className="flex flex-col mt-2">
-                        {/* Chat Item */}
-                        <div onClick={() => setselectedChat({ name: "frontend" })}
-                            className="flex items-center p-4 border-b border-light bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200">
-                            <div className="rounded-full p-1 bg-gray-100 text-light text-center">
-                                <Users size={30} fill="#00adb5" />
-                            </div>
-                            <div className="flex flex-col ml-3 flex-grow">
-                                <div className="flex justify-between items-center">
-                                    <div className="font-semibold">Frontend <span className='text-xs font-light text-gray-500' >(brainmate)</span> </div>
-                                    <div className="text-sm text-gray-500">02:23pm</div>
-                                </div>
-                                <div className="text-sm text-gray-500">Hey, are you available for a call?</div>
-                            </div>
-                        </div>
 
-                        {/* Add more chat items here */}
-                        <div onClick={() => setselectedChat({ name: "backend" })}
-                            className="flex items-center p-4 border-b border-light bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200">
-                            <div className="rounded-full p-1 bg-gray-100 text-light text-center">
-                                <Users size={30} fill="#00adb5" />
-                            </div>
-                            <div className="flex flex-col ml-3 flex-grow">
-                                <div className="flex justify-between items-center">
-                                    <div className="font-semibold">Backend <span className='text-xs font-light text-gray-500' >(brainmate)</span> </div>
-                                    <div className="text-sm text-gray-500">10:15am</div>
+                        {!isLoading && <>
+                            {data?.data.data.teams.map((team) => (
+                                <div onClick={() => setselectedChat(team)}
+                                    className={`flex items-center p-4 border-b border-light bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200 ${selectedChat?.id === team?.id ? 'bg-white bg-opacity-100' : ''} `}>
+                                    <div className="rounded-full p-1 bg-gray-100 text-light text-center">
+                                        <Users size={30} fill="#00adb5" />
+                                    </div>
+                                    <div className="flex flex-col ml-3 flex-grow">
+                                        <div className="flex justify-between items-center">
+                                            <div className="font-semibold">{team?.name} <span className='text-xs font-light text-gray-500' >({team?.project.name})</span> </div>
+                                            <div className="text-sm text-gray-500">02:23pm</div>
+                                        </div>
+                                        <div className="text-sm text-gray-500">Hey, are you available for a call?</div>
+                                    </div>
                                 </div>
-                                <div className="text-sm text-gray-500">Let's discuss the project updates.</div>
-                            </div>
-                        </div>
+                            ))}
+                        </>}
+
                     </div>
                 </div>
 

@@ -34,6 +34,7 @@ import TeamInvitationConfirm from './pages/TeamInvitationConfirm/TeamInvitationC
 import MyTeams from './pages/MyTeams/MyTeams'
 import Chat from './pages/Chat/Chat'
 import ChatContextProvider from './context/ChatContext'
+import Materials from './pages/Materials/Materials'
 // import { pusher, PusherContext } from './context/PusherContext'
 
 let routers = createBrowserRouter([
@@ -50,6 +51,7 @@ let routers = createBrowserRouter([
       { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
       { path: 'mytasks', element: <ProtectedRoute><Mytasks /></ProtectedRoute> },
       { path: 'myteams', element: <ProtectedRoute><MyTeams /></ProtectedRoute> },
+      { path: 'materials', element: <ProtectedRoute><Materials /></ProtectedRoute> },
       { path: 'chat', element: <ProtectedRoute><Chat /></ProtectedRoute> },
       { path: 'workspaces', element: <ProtectedRoute><Workspaces /></ProtectedRoute> },
       { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },

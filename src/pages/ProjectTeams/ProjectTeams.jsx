@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, X, Trash, Edit, FolderMinus, Trash2, Loader2Icon } from 'lucide-react';
+import { MousePointerClick, Plus, X, Trash, Edit, FolderMinus, Trash2, Loader2Icon, Lock, Unlock } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
@@ -486,7 +486,7 @@ export default function ProjectTeams() {
             </>}
 
             <div className="p-5">
-                <div className="flex md:flex-row flex-col justify-between items-center mb-5 h-16 ps-5">
+                <div className="flex md:flex-row flex-col justify-between items-center mb-0 border-b h-16 ps-5 p-5 ">
                     {/* Path */}
                     <div className='text-light font-semibold flex items-center' >
                         <div onClick={() => navigate('/project')} className="pe-1 cursor-pointer">{selectedProject?.name}</div> /
@@ -497,105 +497,90 @@ export default function ProjectTeams() {
                         {/* <div className='text-light font-semibold' >{selectedProject?.name} /</div> */}
                         {data?.data.data.is_manager && <div className="flex gap-2">
                             <button onClick={() => setAddProjectForm(true)} className="rounded-full bg-light text-white p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
-                            <button onClick={() => setUpdateProjectForm(true)} className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
-                            <button onClick={() => setDeleteProjectForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                            <button onClick={() => setUpdateProjectForm(true)} className="rounded-full  text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
+                            <button onClick={() => setDeleteProjectForm(true)} className="rounded-full  text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
                         </div>}
                     </div>
                 </div>
 
-                {/* Accessible teams */}
-                <h2 className='text-xl capitalize font-semibold text-highlight mb-3'>My teams</h2>
-                <div className="flex justify-between">
+                <div className="mt-3">
+                    {/* Accessible teams */}
+                    <h2 className='text-xl capitalize font-semibold text-highlight mb-3'>My teams</h2>
+                    <div className="flex justify-between">
 
-                    <div className="w-full md:w-[70%] flex flex-wrap h-fit gap-3">
-                        {isLoading ? <>
-                            <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
-                            <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
-                            <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
-                        </>
-                            : <>
-                                {data?.data.data.teams?.filter(team => team.hasAccess).length > 0 ? (
-                                    <>
-                                        {data?.data.data.teams
-                                            .filter(team => team.hasAccess) // Filter teams with access
-                                            .map((team) => (
-                                                <div
-                                                    key={team.id}
-                                                    onClick={() => { setselectedTeam(team); navigate('team') }}
-                                                    className="cursor-pointer py-3 px-4 rounded-3xl bg-base shadow-inner bg-opacity-40 text-lg h-fit"
-                                                >
-                                                    {team.name}
-                                                </div>
-                                            ))
-                                        }
-                                    </>
-                                ) : (
-                                    <div className="capitalize text-gray-400 text-center w-full">No teams with access to show</div>
-                                )}
+                        <div className="w-full md:w-[70%] flex flex-wrap h-fit gap-3">
+                            {isLoading ? <>
+                                <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
+                                <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
+                                <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
                             </>
-                        }
-                    </div>
+                                : <>
 
-                    {/* materials */}
-                    <div className="hidden md:flex flex-col md:w-[30%] h-full bg-base p-5 rounded-2xl max-h-[50vh] overflow-y-scroll">
-                        <h2 className='capitalize text-2xl font-semibold text-darkblue' >materials</h2>
-
-                        <div className="flex justify-between items-center mb-3">
-                            <div className="flex items-center gap-1.5 text-gray-600 py-3"><FolderMinus strokeWidth={1.5} /><h2>folders</h2></div>
-                            <Link to={'/materials'} className='text-light' >see more</Link>
-                        </div>
-
-                        <div className="flex flex-col flex-wrap justify-center items-center gap-7">
-                            {data?.data.data.teams?.length > 0 ? (
-                                <>
-                                    {data?.data.data.teams.filter(team => team.hasAccess).map((team) => (
-                                        // materials folders
-                                        <div key={team.id} className="relative bg-white rounded-lg shadow-lg p-6 w-full">
-                                            <div className="absolute w-1/2 -top-4 left-0 bg-white h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl"></div>
-                                            <div className="">
-                                                <h2 className="text-lg font-bold text-gray-800">{team.name}</h2>
-                                                <p className="text-sm text-gray-500 mt-2">Apr 2, 2023</p>
-                                            </div>
-                                        </div>
-                                    ))}
+                                    {data?.data.data.teams?.filter(team => team.hasAccess).length > 0 ? (
+                                        <>
+                                            {data?.data.data.teams
+                                                .filter(team => team.hasAccess) // Filter teams with access
+                                                .map((team) => (
+                                                    <div
+                                                        key={team.id}
+                                                        onClick={() => { setselectedTeam(team); navigate('team') }}
+                                                        className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base shadow-inner w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
+                                                    >
+                                                        {team.name}
+                                                        <Unlock size={20} className='opacity-80 text-gray-500' />
+                                                    </div>
+                                                ))
+                                            }
+                                            {data?.data.data.teams
+                                                .filter(team => team.hasAccess === false) // Explicitly check for false
+                                                .map((team) => (
+                                                    <div
+                                                        key={team.id}
+                                                        className="flex justify-between items-center cursor-not-allowed py-3 px-4  rounded-lg bg-base shadow-inner w-[calc(33.33333%-12px)] opacity-50  bg-opacity-40 text-lg h-fit"
+                                                    >
+                                                        {team.name}
+                                                        <Lock size={20} className='text-highlight' />
+                                                    </div>
+                                                ))
+                                            }
+                                        </>
+                                    ) : (
+                                        <div className="capitalize text-gray-400 text-center w-full">No teams with access to show</div>
+                                    )}
                                 </>
-                            ) : (
-                                <div className="capitalize text-gray-400 text-center w-full">add teams to show</div>
-                            )}
+                            }
                         </div>
-                    </div>
-                </div>
-                {/* Non-accessible teams */}
-                <div>
-                    <div className="w-[95%] mx-auto my-8 h-[1px] bg-gray-300"></div>
-                    <h2 className='text-xl capitalize font-semibold text-highlight mb-3'>Other teams</h2>
-                    <div className="w-full flex flex-wrap h-fit gap-3">
-                        {isLoading ? <>
-                            <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
-                            <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
-                            <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
-                        </>
-                            : <>
-                                {data?.data.data.teams?.filter(team => team.hasAccess === false).length > 0 ? (
+
+                        {/* materials */}
+                        <div className="hidden md:flex flex-col md:w-[30%] h-full bg-base p-5 rounded-2xl max-h-[70vh] overflow-y-scroll">
+                            <h2 className='capitalize text-2xl font-semibold text-darkblue' >materials</h2>
+
+                            <div className="flex justify-between items-center mb-3">
+                                <div className="flex items-center gap-1.5 text-gray-600 py-3"><FolderMinus strokeWidth={1.5} /><h2>folders</h2></div>
+                                <Link to={'/materials'} className='text-light' >see more</Link>
+                            </div>
+
+                            <div className="flex flex-col flex-wrap justify-center items-center gap-7">
+                                {data?.data.data.teams?.length > 0 ? (
                                     <>
-                                        {data?.data.data.teams
-                                            .filter(team => team.hasAccess === false) // Explicitly check for false
-                                            .map((team) => (
-                                                <div
-                                                    key={team.id}
-                                                    className="cursor-not-allowed py-3 px-4 rounded-3xl bg-base opacity-50 shadow-inner bg-opacity-40 text-lg h-fit"
-                                                >
-                                                    {team.name}
+                                        {data?.data.data.teams.filter(team => team.hasAccess).map((team) => (
+                                            // materials folders
+                                            <div key={team.id} className="relative bg-white rounded-lg shadow-lg p-6 w-full">
+                                                <div className="absolute w-1/2 -top-4 left-0 bg-white h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl"></div>
+                                                <div className="">
+                                                    <h2 className="text-lg font-bold text-gray-800">{team.name}</h2>
+                                                    <p className="text-sm text-gray-500 mt-2">Apr 2, 2023</p>
                                                 </div>
-                                            ))
-                                        }
+                                            </div>
+                                        ))}
                                     </>
                                 ) : (
-                                    <div className="capitalize text-gray-400 text-center w-full">No teams without access to show</div>
+                                    <div className="capitalize text-gray-400 text-center w-full">add teams to show</div>
                                 )}
-                            </>
-                        }
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </>

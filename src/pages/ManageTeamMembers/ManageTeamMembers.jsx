@@ -154,7 +154,7 @@ const ManageTeamMembers = () => {
                 )}
             </AnimatePresence>
 
-            <div className='text-light font-semibold flex items-center h-6 px-5 mb-5'>
+            <div className='text-light font-semibold flex items-center h-6 px-5 mb-5 border-b p-5'>
                 <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div>
                 / <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div>
                 / <div onClick={() => { navigate('/project/team/manage-members'); }} className="px-1 cursor-pointer">Manage Team Members</div>

@@ -185,8 +185,8 @@ export default function Team() {
             />
 
             {isTeamLoading ? (
-                <div className="p-5">
-                    <div className="flex justify-between items-center mb-5">
+                <div className="p-5 ">
+                    <div className="flex justify-between items-center mb-5 border-b h-16 p-5">
                         <div className='text-light font-semibold flex items-center'>
                             <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> / <div className="ps-1 cursor-pointer">{selectedTeam?.name}</div>
                         </div>
@@ -198,7 +198,7 @@ export default function Team() {
                 </div>
             ) : (
                 <div className="p-5">
-                    <div className="flex flex-col md:flex-row sticky top-12 bg-white rounded-xl p-3 md:p-5 z-[49] justify-between md:items-center gap-3 mb-5 h-16">
+                    <div className="flex flex-col border-b md:flex-row sticky top-12 bg-white p-3 md:p-5 z-[49] justify-between md:items-center gap-3 mb-5 h-16">
                         <div className='text-light font-semibold flex items-center '>
                             <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> / <div className="ps-1 cursor-pointer">{selectedTeam?.name}</div>
                             {refetchingTasks && <div className="md:hidden flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}

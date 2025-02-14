@@ -6,7 +6,9 @@ import toast from 'react-hot-toast';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const InviteMemberForm = ({ isOpen, onClose, selectedTeam, token }) => {
+const InviteMemberForm = ({ isOpen, onClose, selectedTeam }) => {
+    const token = localStorage.getItem('userToken');
+
     const inviteValidationSchema = object({
         email: string().email('Invalid email').required('Email is required'),
         role_id: string().required('Role is required'),

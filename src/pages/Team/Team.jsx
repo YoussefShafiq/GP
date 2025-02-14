@@ -261,14 +261,16 @@ export default function Team() {
                                                 <span className="text-black hidden md:block">{teamData?.data.data.team.team_code}</span>
                                                 <Copy size={18} className="text-gray-500" />
                                             </div>
-                                            {teamData?.data?.data.team.role === 'manager' && <button title='manage team members'
-                                                onClick={() => navigate('manage-members')}
-                                                className="rounded-full bg-white text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
-                                            >
-                                                <Settings size={25} />
-                                            </button>}
+                                            {teamData?.data?.data.team.role === 'manager' && <>
+                                                <button title='manage team members'
+                                                    onClick={() => navigate('manage-members')}
+                                                    className="rounded-full bg-white text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                                                >
+                                                    <Settings size={25} />
+                                                </button>
+                                                <button onClick={() => setDeleteTeamForm(true)} title='delete team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                                            </>}
                                             <button onClick={() => setUpdateTeamForm(true)} title='update team name' className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
-                                            <button onClick={() => setDeleteTeamForm(true)} title='delete team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
                                             <button onClick={() => setInviteMemberForm(true)} title='invite member to team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
                                             <button onClick={() => setAddTaskForm(true)} title='add task' className="rounded-full bg-white text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
                                         </>)}

@@ -1,9 +1,11 @@
-import { MessageSquareMore, Paperclip, Send, Smile, User, Users } from 'lucide-react';
+import { Clock3, MessageSquareMore, Paperclip, Send, Smile, User, Users } from 'lucide-react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ChatContext } from '../../context/ChatContext';
 import Pusher from 'pusher-js';
+import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import EmojiPicker from 'emoji-picker-react'; // Import the Emoji Picker
 
 export default function MainChat() {
     const { selectedChat } = useContext(ChatContext);
@@ -12,10 +14,31 @@ export default function MainChat() {
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [sendingMessages, setSendingMessages] = useState({});
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false); // State to manage emoji picker visibility
     const token = localStorage.getItem('userToken');
 
     const chatContainerRef = useRef(null); // Reference for chat container
+    const emojiPickerRef = useRef(null); // Ref for the emoji picker
 
+    // Handle click outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
+                setShowEmojiPicker(false);
+            }
+        };
+
+        // Add event listener when emoji picker is open
+        if (showEmojiPicker) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        // Cleanup event listener on unmount
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showEmojiPicker]);
     // Fetch profile data
     function getProfileData() {
         return axios.get('https://brainmate.fly.dev/api/v1/profile', {
@@ -47,11 +70,7 @@ export default function MainChat() {
 
     useEffect(() => {
         console.log(messages[messages.length - 1]);
-
-
-
-    }, [messages])
-
+    }, [messages]);
 
     // Fetch messages from API
     const fetchMessages = async (page, shouldScrollToBottom = false) => {
@@ -90,8 +109,10 @@ export default function MainChat() {
         const channel = pusher.subscribe(`team.${selectedChat.id}`);
 
         channel.bind('new-chat-message', (newMessage) => {
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
-            setTimeout(scrollToBottom, 100); // Scroll to bottom when new message arrives
+            if (newMessage.sender_id !== profileData?.data?.data.user.id) {
+                setMessages((prevMessages) => [...prevMessages, newMessage]);
+                setTimeout(scrollToBottom, 100); // Scroll to bottom when new message arrives
+            }
         });
 
         return () => {
@@ -102,6 +123,26 @@ export default function MainChat() {
     // Handle sending a new message
     const handleSendMessage = async () => {
         if (!newMessage.trim()) return;
+
+        setTimeout(scrollToBottom, 100); // Scroll to bottom when new message arrives
+
+        const tempMessageId = Date.now(); // Temporary ID for the message
+        const tempMessage = {
+            id: tempMessageId,
+            message: newMessage,
+            sender_id: profileData?.data?.data.user.id,
+            created_at: new Date().toISOString(),
+            sender: profileData?.data?.data.user,
+        };
+
+        // Add the message to the sending state
+        setSendingMessages((prev) => ({ ...prev, [tempMessageId]: true }));
+
+        // Add the message to the messages list
+        setMessages((prevMessages) => [...prevMessages, tempMessage]);
+
+        // Clear the input
+        setNewMessage('');
 
         try {
             const response = await axios.post(
@@ -118,11 +159,23 @@ export default function MainChat() {
             );
 
             if (response.data.success) {
-                setNewMessage(''); // Clear input
-                setTimeout(scrollToBottom, 100); // Ensure scrolling after sending message
+                // Remove the temporary message and add the real one
+                setMessages((prevMessages) =>
+                    prevMessages.map((msg) =>
+                        msg.id === tempMessageId ? response.data.data : msg
+                    )
+                );
             }
         } catch (error) {
             console.error('Error sending message:', error);
+            // Optionally, you can mark the message as failed
+        } finally {
+            // Remove the message from the sending state
+            setSendingMessages((prev) => {
+                const updated = { ...prev };
+                delete updated[tempMessageId];
+                return updated;
+            });
         }
     };
 
@@ -137,9 +190,14 @@ export default function MainChat() {
             });
 
             setTimeout(() => {
-                e.target.scrollTop = e.target.scrollHeight - previousScrollHeight;
+                e.target.scrolltop = e.target.scrollHeight - previousScrollHeight;
             }, 100); // Maintain scroll position
         }
+    };
+
+    // Handle emoji selection
+    const handleEmojiClick = (emojiObject) => {
+        setNewMessage((prevMessage) => prevMessage + emojiObject.emoji); // Append the selected emoji to the message
     };
 
     if (!selectedChat) {
@@ -152,8 +210,6 @@ export default function MainChat() {
             </div>
         );
     }
-
-
 
     return (
         <>
@@ -185,14 +241,20 @@ export default function MainChat() {
                             className={`ml-3 p-3 rounded-lg shadow-sm max-w-[70%] ${message?.sender_id === profileData?.data?.data.user.id ? 'bg-light text-white' : 'bg-white'
                                 }`}
                         >
-                            {/* <div className="text-sm font-semibold">{message.sender?.name}</div> */}
                             <div className="text-sm font-semibold">{message?.sender_id !== profileData?.data?.data.user.id ? message?.sender?.name : ''}</div>
                             <div className="text-sm">{message?.message}</div>
-                            <div
-                                className={`text-xs mt-1 ${message?.sender_id === profileData?.data?.data.user.id ? 'text-gray-200' : 'text-gray-500'
-                                    }`}
-                            >
-                                {new Date(message?.created_at).toLocaleTimeString()}
+                            <div className="flex items-center justify-between">
+                                <div
+                                    className={`text-xs mt-1 ${message?.sender_id === profileData?.data?.data.user.id ? 'text-gray-200' : 'text-gray-500'
+                                        }`}
+                                >
+                                    {new Date(message?.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </div>
+                                {sendingMessages[message.id] && (
+                                    <div className="ml-2">
+                                        <Clock3 size={14} />
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -210,7 +272,10 @@ export default function MainChat() {
                         onChange={(e) => setNewMessage(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                     />
-                    <button className="p-2 text-gray-500 hover:text-light transition-all">
+                    <button
+                        className="p-2 text-gray-500 hover:text-light transition-all"
+                        onClick={() => setShowEmojiPicker((prev) => !prev)} // Toggle emoji picker visibility
+                    >
                         <Smile size={20} />
                     </button>
                     <button className="p-2 text-gray-500 hover:text-light transition-all">
@@ -220,6 +285,12 @@ export default function MainChat() {
                         <Send size={20} />
                     </button>
                 </div>
+                {/* Emoji Picker */}
+                {showEmojiPicker && (
+                    <div ref={emojiPickerRef} className="absolute bottom-16 right-4">
+                        <EmojiPicker onEmojiClick={handleEmojiClick} />
+                    </div>
+                )}
             </div>
         </>
     );

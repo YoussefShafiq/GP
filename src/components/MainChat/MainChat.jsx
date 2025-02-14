@@ -181,8 +181,11 @@ export default function MainChat() {
 
     // Handle infinite scroll to load older messages
     const handleScroll = (e) => {
+
         if (e.target.scrollTop === 0 && currentPage < totalPages && !loading) {
             const previousScrollHeight = e.target.scrollHeight; // Store scroll height before loading
+            const targetDistance = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight;
+
 
             setCurrentPage((prevPage) => {
                 fetchMessages(prevPage + 1);
@@ -190,8 +193,9 @@ export default function MainChat() {
             });
 
             setTimeout(() => {
-                e.target.scrolltop = e.target.scrollHeight - previousScrollHeight;
-            }, 100); // Maintain scroll position
+                e.target.scrollTop = e.target.scrollHeight - targetDistance - 558;
+
+            }, 1000); // Maintain scroll position
         }
     };
 

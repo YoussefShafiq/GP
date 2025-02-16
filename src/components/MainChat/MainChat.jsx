@@ -1,10 +1,14 @@
-import { Clock3, MessageSquareMore, Paperclip, Send, Smile, User, Users } from 'lucide-react';
+import { Clock3, Loader2Icon, MessageSquareMore, Paperclip, Send, Smile, User, Users, X, MoreVertical, Copy, Trash } from 'lucide-react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ChatContext } from '../../context/ChatContext';
 import Pusher from 'pusher-js';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import EmojiPicker from 'emoji-picker-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
+import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function MainChat() {
     const { selectedChat } = useContext(ChatContext);
@@ -15,7 +19,42 @@ export default function MainChat() {
     const [totalPages, setTotalPages] = useState(1);
     const [sendingMessages, setSendingMessages] = useState({});
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [files, setFiles] = useState([]); // State for multiple file attachments
+    const [activeMessageId, setActiveMessageId] = useState(null); // Track which message's menu is open
     const token = localStorage.getItem('userToken');
+
+    // Ref for detecting clicks outside the menu
+    const menuRef = useRef(null);
+
+    // Handle click outside the menu
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setActiveMessageId(null); // Close the menu
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    // Get team details function
+    function getChatDetails() {
+        return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedChat.id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    }
+
+    // Get team details query
+    let { data: chatData, isLoading: isChatDataLoading, error: ChatDataError } = useQuery({
+        queryKey: ['chatDetails', selectedChat?.id],
+        queryFn: getChatDetails,
+        enabled: !!selectedChat,
+    });
 
     const chatContainerRef = useRef(null);
     const emojiPickerRef = useRef(null);
@@ -112,8 +151,8 @@ export default function MainChat() {
         const pusher = new Pusher('d42fd688ba933368ee26', { cluster: 'mt1', forceTLS: true });
         const channel = pusher.subscribe(`team.${selectedChat.id}`);
 
+        // Listen for new messages
         channel.bind('new-chat-message', (newMessage) => {
-            console.log('selected chat:', selectedChatRef.current); // Use the ref value
             console.log('New message received:', newMessage);
 
             // Check if the message belongs to the currently selected chat
@@ -123,14 +162,35 @@ export default function MainChat() {
             }
         });
 
+        // Listen for deleted messages
+        channel.bind('message-deleted', (deletedMessage) => {
+            console.log('Message deleted:', deletedMessage);
+
+            // Remove the deleted message from the UI
+            setMessages((prevMessages) =>
+                prevMessages.filter((msg) => msg.id !== deletedMessage.id)
+            );
+        });
+
         return () => {
             pusher.unsubscribe(`team.${selectedChat.id}`);
         };
     };
 
+    // Handle file selection
+    const handleFileChange = (e) => {
+        const selectedFiles = Array.from(e.target.files);
+        setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+    };
+
+    // Handle file removal
+    const handleRemoveFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    };
+
     // Handle sending a new message
     const handleSendMessage = async () => {
-        if (!newMessage.trim()) return;
+        if (!newMessage.trim() && files.length === 0) return;
 
         setTimeout(scrollToBottom, 100); // Scroll to bottom when new message arrives
 
@@ -141,6 +201,7 @@ export default function MainChat() {
             sender_id: profileData?.data?.data.user.id,
             created_at: new Date().toISOString(),
             sender: profileData?.data?.data.user,
+            media: files.map((file) => file.name),
         };
 
         // Add the message to the sending state
@@ -149,20 +210,27 @@ export default function MainChat() {
         // Add the message to the messages list
         setMessages((prevMessages) => [...prevMessages, tempMessage]);
 
-        // Clear the input
+        // Clear the input and files
         setNewMessage('');
+        setFiles([]);
 
         try {
+            const formData = new FormData();
+            formData.append('message', newMessage);
+            formData.append('team_id', selectedChat.id);
+            formData.append('type', files.length > 0 ? 'file' : 'text');
+            files.forEach((file) => {
+                formData.append('media[]', file); // Append each file
+            });
+
             const response = await axios.post(
                 'https://brainmate.fly.dev/api/v1/chat/send',
+                formData,
                 {
-                    message: newMessage,
-                    team_id: selectedChat.id,
-                    type: 'text',
-                    media: null,
-                },
-                {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
                 }
             );
 
@@ -189,7 +257,7 @@ export default function MainChat() {
 
     // Handle infinite scroll to load older messages
     const handleScroll = (e) => {
-        if (e.target.scrollTop === 400 && currentPage < totalPages && !loading) {
+        if (e.target.scrollTop === 0 && currentPage < totalPages && !loading) {
             const targetDistance = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight;
 
             setCurrentPage((prevPage) => {
@@ -208,6 +276,61 @@ export default function MainChat() {
         setNewMessage((prevMessage) => prevMessage + emojiObject.emoji); // Append the selected emoji to the message
     };
 
+    // Handle copy message
+    const handleCopyMessage = (message) => {
+        navigator.clipboard.writeText(message);
+        toast.success('Copied to clipboard', {
+            duration: 2000,
+            position: 'bottom-right',
+        });
+        setActiveMessageId(null); // Close the menu
+    };
+
+    // Handle delete message
+    const handleDeleteMessage = async (messageId) => {
+        // Optimistically remove the message from the UI
+        setMessages((prevMessages) =>
+            prevMessages.filter((msg) => msg.id !== messageId)
+        );
+
+        // Close the menu after deletion
+        setActiveMessageId(null);
+
+        try {
+            // Send the delete request to the server
+            const response = await axios.delete(
+                `https://brainmate.fly.dev/api/v1/chat/messages/${messageId}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            if (response.data.success) {
+                toast.success('Message deleted', {
+                    duration: 2000,
+                    position: 'bottom-right',
+                    icon: <Trash color='#f05252' />
+                });
+            } else {
+                // If the server request fails, revert the optimistic update
+                setMessages((prevMessages) => [...prevMessages, messages.find((msg) => msg.id === messageId)]);
+                toast.error('Failed to delete message', {
+                    duration: 2000,
+                    position: 'bottom-right',
+                });
+            }
+        } catch (error) {
+            console.error('Error deleting message:', error);
+
+            // Revert the optimistic update if the request fails
+            setMessages((prevMessages) => [...prevMessages, messages.find((msg) => msg.id === messageId)]);
+            toast.error('Failed to delete message', {
+                duration: 2000,
+                position: 'bottom-right',
+            });
+        }
+    };
+
     if (!selectedChat) {
         return (
             <div className="h-full flex justify-center items-center">
@@ -224,16 +347,38 @@ export default function MainChat() {
             {/* Chat Header */}
             <div className="p-4 border-b border-gray-200 flex items-center bg-white rounded-t-lg">
                 <div className="rounded-full p-1 bg-gray-100 text-light text-center">
-                    <Users size={30} fill="#00adb5" />
+                    <FontAwesomeIcon icon={faPeopleGroup} className='text-xl' />
                 </div>
-                <div className="ml-3">
-                    <div className="font-semibold">{selectedChat?.name}</div>
-                    <div className="text-sm text-gray-500">Online</div>
+                <div className="ml-3 w-full">
+                    <div className="font-semibold gap-3 flex justify-between items-center">
+                        {isChatDataLoading ? (
+                            <div className="h-4 bg-gray-200 rounded w-32 animate-pulse"></div>
+                        ) : (
+                            selectedChat?.name
+                        )}
+                        {loading && <div className="md:flex w-fit hidden text-blue-500"><Loader2Icon className='animate-spin' /></div>}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                        {isChatDataLoading ? (
+                            <div className="h-3 bg-gray-200 rounded w-48 mt-1 animate-pulse"></div>
+                        ) : (
+                            (() => {
+                                // Combine all member names into a single string
+                                const allNames = chatData?.data?.data?.team?.all_members
+                                    ?.map((member) => member.name)
+                                    .join(', ');
+
+                                return allNames?.length > 80
+                                    ? allNames.slice(0, 80) + '...'
+                                    : allNames;
+                            })()
+                        )}
+                    </div>
                 </div>
             </div>
 
             {/* Chat Messages */}
-            <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-scroll" onScroll={handleScroll}>
+            <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-scroll bg-chat-light bg-opacity-10" onScroll={handleScroll}>
                 {messages.map((message) => (
                     <div
                         key={message?.id}
@@ -241,20 +386,76 @@ export default function MainChat() {
                             }`}
                     >
                         {message?.sender_id !== profileData?.data?.data.user.id && (
-                            <div className="rounded-full p-1 bg-gray-100 text-light text-center">
-                                <User size={24} fill="#00adb5" />
+                            <div
+                                className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
+                                style={{ backgroundColor: message?.sender?.color }}
+                            >
+                                {message?.sender?.name[0]}
                             </div>
                         )}
                         <div
-                            className={`ml-3 p-3 rounded-lg shadow-sm max-w-[70%] ${message?.sender_id === profileData?.data?.data.user.id ? 'bg-light text-white' : 'bg-white'
+                            className={`ml-3 p-3 rounded-lg shadow-md max-w-[70%] relative ${message?.sender_id === profileData?.data?.data.user.id ? 'bg-light text-white' : 'bg-white'
                                 }`}
                         >
+
+
+                            {/* Menu with Copy and Delete buttons */}
+                            <AnimatePresence>
+                                {activeMessageId === message.id && (
+                                    <motion.div
+                                        ref={menuRef}
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        className="absolute bottom-3 right-0 bg-white rounded-lg shadow-md p-2 z-10"
+                                    >
+                                        <button
+                                            className="flex items-center gap-2 p-2 hover:bg-gray-100 text-dark w-full rounded-lg"
+                                            onClick={() => handleCopyMessage(message.message)}
+                                        >
+                                            <Copy size={16} />
+                                            <span>Copy</span>
+                                        </button>
+                                        {message.sender_id === profileData?.data?.data.user.id && (
+                                            <button
+                                                className="flex items-center gap-2 p-2 hover:bg-gray-100 w-full rounded-lg text-red-500"
+                                                onClick={() => handleDeleteMessage(message.id)}
+                                            >
+                                                <Trash size={16} />
+                                                <span>Delete</span>
+                                            </button>
+                                        )}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
                             <div className="text-sm font-semibold">{message?.sender_id !== profileData?.data?.data.user.id ? message?.sender?.name : ''}</div>
-                            <div className="text-sm">{message?.message}</div>
+                            <div className="text-sm">
+                                {message?.message.split('\n').map((line, index) => (
+                                    <React.Fragment key={index}>
+                                        {line}
+                                        <br />
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                            {message?.media && (
+                                <div className="mt-2 flex flex-wrap gap-2">
+                                    {message.media.map((media, index) => (
+                                        <a
+                                            key={index}
+                                            href={media.url} // Assuming the API returns a URL for the media
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-blue-500 underline"
+                                        >
+                                            {media.name}
+                                        </a>
+                                    ))}
+                                </div>
+                            )}
                             <div className="flex items-center justify-between">
                                 <div
-                                    className={`text-xs mt-1 ${message?.sender_id === profileData?.data?.data.user.id ? 'text-gray-200' : 'text-gray-500'
-                                        }`}
+                                    className={`text-xs mt-1 ${message?.sender_id === profileData?.data?.data.user.id ? 'text-gray-200' : 'text-gray-500'}`}
                                 >
                                     {new Date(message?.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </div>
@@ -263,6 +464,16 @@ export default function MainChat() {
                                         <Clock3 size={14} />
                                     </div>
                                 )}
+                                {/* Three dots button */}
+                                <button
+                                    className={`p-2 pe-0  ${message?.sender_id === profileData?.data?.data.user.id ? 'text-white' : 'text-dark'} rounded-full`}
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // Prevent event bubbling
+                                        setActiveMessageId(message.id === activeMessageId ? null : message.id); // Toggle menu
+                                    }}
+                                >
+                                    <MoreVertical size={16} />
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -271,14 +482,48 @@ export default function MainChat() {
 
             {/* Chat Input */}
             <div className="p-4 border-t border-gray-200 bg-white rounded-b-lg">
+                {/* File Previews */}
+                {files.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-2">
+                        {files.map((file, index) => (
+                            <div key={index} className="relative">
+                                {file.type.startsWith('image/') ? (
+                                    <img
+                                        src={URL.createObjectURL(file)}
+                                        alt={file.name}
+                                        className="w-16 h-16 object-cover rounded-lg"
+                                    />
+                                ) : (
+                                    <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-lg">
+                                        <Paperclip size={20} />
+                                    </div>
+                                )}
+                                <button
+                                    onClick={() => handleRemoveFile(index)}
+                                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                                >
+                                    <X size={12} />
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
                 <div className="flex items-center gap-2">
-                    <input
-                        type="text"
+                    <textarea
                         placeholder="Type a message..."
-                        className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-light focus:border-light duration-300"
+                        className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-light focus:border-light duration-300 resize-none"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault(); // Prevent default behavior (new line)
+                                handleSendMessage(); // Send the message
+                            }
+                            // Shift + Enter will create a new line (default behavior)
+                        }}
+                        rows={1} // Start with one row
+                        style={{ minHeight: '40px', maxHeight: '120px', overflowY: 'auto' }} // Adjust height dynamically
                     />
                     <button
                         className="p-2 text-gray-500 hover:text-light transition-all"
@@ -286,13 +531,20 @@ export default function MainChat() {
                     >
                         <Smile size={20} />
                     </button>
-                    <button className="p-2 text-gray-500 hover:text-light transition-all">
+                    <label className="p-2 text-gray-500 hover:text-light transition-all cursor-pointer">
                         <Paperclip size={20} />
-                    </button>
+                        <input
+                            type="file"
+                            className="hidden"
+                            onChange={handleFileChange}
+                            multiple // Allow multiple file selection
+                        />
+                    </label>
                     <button className="p-2 bg-light text-white rounded-lg hover:bg-darkblue transition-all" onClick={handleSendMessage}>
                         <Send size={20} />
                     </button>
                 </div>
+
                 {/* Emoji Picker */}
                 {showEmojiPicker && (
                     <div ref={emojiPickerRef} className="absolute bottom-16 right-4">

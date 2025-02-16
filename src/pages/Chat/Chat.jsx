@@ -5,6 +5,8 @@ import { ChatContext } from '../../context/ChatContext';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Pusher from 'pusher-js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 
 export default function Chat() {
     const { selectedChat, setselectedChat } = useContext(ChatContext);
@@ -129,36 +131,62 @@ export default function Chat() {
 
                     {/* Chat List */}
                     <div className="flex flex-col mt-2">
-                        {!isLoading && <>
-                            {filteredChats.map((team) => (
+                        {isLoading ? (
+                            Array.from({ length: 5 }).map((_, index) => (
                                 <div
-                                    key={team.id}
-                                    onClick={() => setselectedChat(team)}
-                                    className={`flex items-center p-4 border-b border-light bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200 ${selectedChat?.id === team?.id ? 'bg-gray-100 bg-opacity-95' : ''} `}
+                                    key={index}
+                                    className="flex items-center p-4 border-b border-gray-400 bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200"
                                 >
-                                    <div className="rounded-full p-1 bg-gray-100 text-light text-center">
-                                        <Users size={30} fill="#00adb5" />
+                                    <div className="rounded-full p-1 bg-gray-200 animate-pulse">
+                                        <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
                                     </div>
+
                                     <div className="flex flex-col ml-3 flex-grow">
                                         <div className="flex justify-between items-center">
-                                            <div className="font-semibold">{team?.name} <span className='text-xs font-light text-gray-500' >({team?.project.name})</span> </div>
+                                            <div className="font-semibold">
+                                                <div className="h-4 bg-gray-100 rounded w-32 animate-pulse"></div>
+                                                <div className="h-3 bg-gray-100 rounded w-24 mt-1 animate-pulse"></div>
+                                            </div>
+                                            <div className="text-sm text-gray-100">
+                                                <div className="h-4 bg-gray-100 rounded w-16 animate-pulse"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            ))
+                        ) :
+                            <>
+                                {filteredChats.map((team) => (
+                                    <div
+                                        key={team.id}
+                                        onClick={() => setselectedChat(team)}
+                                        className={`flex items-center p-4 border-b border-gray-400 bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200 ${selectedChat?.id === team?.id ? 'bg-gray-100 bg-opacity-95' : ''} `}
+                                    >
+                                        <div className="rounded-full p-1 bg-gray-100 text-light text-center">
+                                            <FontAwesomeIcon icon={faPeopleGroup} className='text-xl' />
+                                        </div>
+                                        <div className="flex flex-col ml-3 flex-grow">
+                                            <div className="flex justify-between items-center">
+                                                <div className="font-semibold">{team?.name} <span className='text-xs font-light text-gray-500' >({team?.project.name})</span> </div>
+                                                <div className="text-sm text-gray-500">
+                                                    {team?.last_message?.timestamp
+                                                        ? new Date(team.last_message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                                        : ''
+                                                    }
+                                                </div>
+                                            </div>
                                             <div className="text-sm text-gray-500">
-                                                {team?.last_message?.timestamp
-                                                    ? new Date(team.last_message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                                                    : ''
+                                                {team?.last_message?.message
+                                                    ? `${team.last_message.sender?.name?.split(' ')[0]}: ${team.last_message.message.substring(0, 25)}${team.last_message.message.length > 25 ? '...' : ''}`
+                                                    : 'Enter to start chat'
                                                 }
                                             </div>
                                         </div>
-                                        <div className="text-sm text-gray-500">
-                                            {team?.last_message?.message
-                                                ? `${team.last_message.sender?.name?.split(' ')[0]}: ${team.last_message.message.substring(0, 25)}${team.last_message.message.length > 25 ? '...' : ''}`
-                                                : 'Enter to start chat'
-                                            }
-                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </>}
+                                ))}
+                            </>
+                        }
                     </div>
                 </div>
 

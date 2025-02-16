@@ -32,6 +32,10 @@ export default {
           'transform-style': 'preserve-3d',
         },
       },
+      backgroundImage: {
+        'chat-light': "url('./src/assets/images/chatBackgroundLight.jpg')", // Path to your image
+        'chat-dark': "url('./src/assets/images/chatBackgroundDark.jpg')", // Path to your image
+      },
       colors: {
         primary: '#393E46',  // dark gray-blue
         base: '#EEEEEE',  // light gray

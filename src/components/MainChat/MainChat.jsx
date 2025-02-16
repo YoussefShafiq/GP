@@ -20,6 +20,14 @@ export default function MainChat() {
     const chatContainerRef = useRef(null);
     const emojiPickerRef = useRef(null);
 
+    // Create a ref to store the latest selectedChat value
+    const selectedChatRef = useRef(selectedChat);
+
+    // Update the ref whenever selectedChat changes
+    useEffect(() => {
+        selectedChatRef.current = selectedChat;
+    }, [selectedChat]);
+
     // Handle click outside
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -105,11 +113,11 @@ export default function MainChat() {
         const channel = pusher.subscribe(`team.${selectedChat.id}`);
 
         channel.bind('new-chat-message', (newMessage) => {
-            console.log('selected chat:', selectedChat);
+            console.log('selected chat:', selectedChatRef.current); // Use the ref value
             console.log('New message received:', newMessage);
 
             // Check if the message belongs to the currently selected chat
-            if (newMessage.team_id === selectedChat.id && newMessage.sender_id !== profileData?.data?.data.user.id) {
+            if (newMessage.team_id === selectedChatRef.current.id && newMessage.sender_id !== profileData?.data?.data.user.id) {
                 setMessages((prevMessages) => [...prevMessages, newMessage]);
                 setTimeout(scrollToBottom, 100); // Scroll to bottom when new message arrives
             }

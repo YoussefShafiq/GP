@@ -95,7 +95,7 @@ export default function Chat() {
             const timestampB = b.last_message && isValidDate(b.last_message.timestamp)
                 ? new Date(b.last_message.timestamp).getTime()
                 : 0;
-            console.log("Sorting:", timestampA, timestampB); // Debugging
+            // console.log("Sorting:", timestampA, timestampB); // Debugging
             return timestampB - timestampA; // Sort in descending order (newest first)
         });
     };

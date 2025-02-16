@@ -5,7 +5,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 // Register necessary components from Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function DonutChartWithCenterText({
+export default function DonutChart({
     labels = ['#133d57', '#f25287', '#00adb5'],
     dataPoints = [300, 50, 100],
     backgroundColors = [
@@ -37,7 +37,8 @@ export default function DonutChartWithCenterText({
     borderWidth = 0,
     cutout = '75%',
     centerText = '',
-    label = 'Donut Chart',
+    label = '',
+    fontSize = 16
 }) {
     // Define chart data based on the props received
     const data = {
@@ -106,7 +107,7 @@ export default function DonutChartWithCenterText({
             const centerY = height / 2; // Use height/2 for perfect vertical centering
 
             // Set font and text style
-            ctx.font = 'bold 45px Arial'; // Customize the font size and style
+            ctx.font = `bold  ${fontSize}px Arial`; // Customize the font size and style
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle'; // Ensures text is centered vertically
             ctx.fillStyle = '#666'; // Text color

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { BringToFront, Calendar } from 'lucide-react';
+import { BringToFront, Calendar, ClockAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { TeamsContext } from '../../context/TeamsContext';
 import { TaskContext } from '../../context/TaskContext';
@@ -42,6 +42,24 @@ export default function TasksTable({ tasks = [] }) {
         }
     }
 
+    function getProfileData() {
+        return axios.get('https://brainmate.fly.dev/api/v1/profile', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+    }
+
+    let { data, isLoading, isError } = useQuery({
+        queryKey: 'ProfileData',
+        queryFn: getProfileData
+    })
+
+    // Check if the current user is in the assigned members
+    const isCurrentUserAssigned = (task) => {
+        return task.members.some(member => member.id !== data?.data?.data.user.id);
+    };
+
     return (
         <div className="relative md:overflow-visible overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -62,16 +80,16 @@ export default function TasksTable({ tasks = [] }) {
                                 navigate('/task-details')
                             }}
                                 key={rowIndex}
-                                className="bg-white border-b cursor-pointer dark:bg-white dark:bg-opacity-5 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                className={`bg-white border-b cursor-pointer dark:bg-white dark:bg-opacity-5 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  `}
                             >
                                 <th scope="row" className="min-w-40 flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    {task.name}
+                                    {task.is_overdue && <ClockAlert className='text-red-600 me-2' size={28} strokeWidth={2} />} {task.name}
                                 </th>
                                 <td className="px-6 py-4">
                                     <div className="flex -space-x-2 max-w-[200px] overflow-hidden px-2">
                                         {task.members.slice(0, 5).map((person, personIndex) => (
                                             <div
-                                                key={personIndex}
+                                                key={person.id}
                                                 className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
                                                 style={{ backgroundColor: person.color }}
                                                 title={person.name}
@@ -105,7 +123,7 @@ export default function TasksTable({ tasks = [] }) {
                                         className="text-sm dark:bg-dark text-gray-900 dark:text-white bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg p-1"
                                         value={Number(task.status)}
                                         onChange={(e) => handleStatusChange(task.id, e.target.value)}
-                                        disabled={loadingTaskId === task.id} // Disable when updating
+                                        disabled={loadingTaskId === task.id || isCurrentUserAssigned(task)} // Disable when updating or if current user is assigned
                                     >
                                         {[
                                             { value: 1, label: 'pending' },

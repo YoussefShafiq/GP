@@ -182,8 +182,7 @@ export default function MainChat() {
     // Handle infinite scroll to load older messages
     const handleScroll = (e) => {
 
-        if (e.target.scrollTop === 0 && currentPage < totalPages && !loading) {
-            const previousScrollHeight = e.target.scrollHeight; // Store scroll height before loading
+        if (e.target.scrollTop === 400 && currentPage < totalPages && !loading) {
             const targetDistance = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight;
 
 

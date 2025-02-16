@@ -94,7 +94,7 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                     onClick={onClose}
                 >
                     <motion.div
-                        className="bg-white rounded-lg shadow-lg border p-6 w-5/6 md:w-1/2 relative max-h-[95vh] overflow-y-auto"
+                        className="bg-white rounded-lg shadow-lg border p-6 w-5/6 md:w-2/3 relative max-h-[95vh] overflow-y-auto"
                         initial={{ y: 0, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 0, opacity: 0 }}
@@ -113,10 +113,10 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                         {/* Add Task Form */}
                         <form
                             onSubmit={addTaskFormik.handleSubmit}
-                            className="w-full mt-5 flex flex-col gap-y-5"
+                            className="w-full mt-5 flex flex-wrap gap-x-[10px] gap-y-5"
                         >
                             {/* Task Name */}
-                            <div className="relative z-0 w-full group">
+                            <div className="relative z-0 w-full md:w-1/2 group">
                                 <input
                                     type="text"
                                     name="name"
@@ -136,6 +136,60 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                                 {addTaskFormik.errors.name && addTaskFormik.touched.name && (
                                     <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
                                         {addTaskFormik.errors.name}
+                                    </div>
+                                )}
+                            </div>
+
+
+                            {/* Task Priority */}
+                            <div className="relative z-0 w-full md:w-[calc(25%-10px)] group">
+                                <select
+                                    name="priority"
+                                    id="priority"
+                                    onChange={addTaskFormik.handleChange}
+                                    onBlur={addTaskFormik.handleBlur}
+                                    value={addTaskFormik.values.priority}
+                                    className="block py-2 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                >
+                                    <option value="" disabled>Select Priority</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                                <label
+                                    htmlFor="priority"
+                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                >
+                                    Priority
+                                </label>
+                                {addTaskFormik.errors.priority && addTaskFormik.touched.priority && (
+                                    <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
+                                        {addTaskFormik.errors.priority}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Task Deadline */}
+                            <div className="relative z-0 w-full md:w-[calc(25%-10px)] group">
+                                <input
+                                    type="date"
+                                    name="deadline"
+                                    id="deadline"
+                                    onChange={addTaskFormik.handleChange}
+                                    onBlur={addTaskFormik.handleBlur}
+                                    value={addTaskFormik.values.deadline}
+                                    className="block py-2 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    placeholder=" "
+                                />
+                                <label
+                                    htmlFor="deadline"
+                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                >
+                                    Deadline
+                                </label>
+                                {addTaskFormik.errors.deadline && addTaskFormik.touched.deadline && (
+                                    <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
+                                        {addTaskFormik.errors.deadline}
                                     </div>
                                 )}
                             </div>
@@ -188,58 +242,6 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                                 )}
                             </div>
 
-                            {/* Task Priority */}
-                            <div className="relative z-0 w-full group">
-                                <select
-                                    name="priority"
-                                    id="priority"
-                                    onChange={addTaskFormik.handleChange}
-                                    onBlur={addTaskFormik.handleBlur}
-                                    value={addTaskFormik.values.priority}
-                                    className="block py-2 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
-                                >
-                                    <option value="" disabled>Select Priority</option>
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                </select>
-                                <label
-                                    htmlFor="priority"
-                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
-                                >
-                                    Priority
-                                </label>
-                                {addTaskFormik.errors.priority && addTaskFormik.touched.priority && (
-                                    <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
-                                        {addTaskFormik.errors.priority}
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Task Deadline */}
-                            <div className="relative z-0 w-full group">
-                                <input
-                                    type="date"
-                                    name="deadline"
-                                    id="deadline"
-                                    onChange={addTaskFormik.handleChange}
-                                    onBlur={addTaskFormik.handleBlur}
-                                    value={addTaskFormik.values.deadline}
-                                    className="block py-2 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
-                                    placeholder=" "
-                                />
-                                <label
-                                    htmlFor="deadline"
-                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
-                                >
-                                    Deadline
-                                </label>
-                                {addTaskFormik.errors.deadline && addTaskFormik.touched.deadline && (
-                                    <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
-                                        {addTaskFormik.errors.deadline}
-                                    </div>
-                                )}
-                            </div>
 
                             {/* Assign to Members */}
                             <div className="relative z-0 w-full group">

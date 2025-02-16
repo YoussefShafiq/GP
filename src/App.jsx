@@ -63,6 +63,8 @@ let routers = createBrowserRouter([
   }
 ])
 
+// console.error = () => { };
+
 let query = new QueryClient()
 
 function App() {

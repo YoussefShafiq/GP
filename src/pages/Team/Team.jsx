@@ -53,11 +53,12 @@ export default function Team() {
 
     // Get team members function
     function getTeamMembers() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        if (teamData?.data?.data.team.role !== 'member')
+            return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
     }
 
     // Get team members query
@@ -65,6 +66,7 @@ export default function Team() {
         queryKey: ['teamMembers', selectedTeam?.id],
         queryFn: getTeamMembers,
         enabled: !!selectedTeam,
+
     });
 
     // Get team tasks function

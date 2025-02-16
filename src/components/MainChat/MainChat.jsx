@@ -2,10 +2,9 @@ import { Clock3, MessageSquareMore, Paperclip, Send, Smile, User, Users } from '
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ChatContext } from '../../context/ChatContext';
 import Pusher from 'pusher-js';
-import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import EmojiPicker from 'emoji-picker-react'; // Import the Emoji Picker
+import EmojiPicker from 'emoji-picker-react';
 
 export default function MainChat() {
     const { selectedChat } = useContext(ChatContext);
@@ -15,11 +14,11 @@ export default function MainChat() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [sendingMessages, setSendingMessages] = useState({});
-    const [showEmojiPicker, setShowEmojiPicker] = useState(false); // State to manage emoji picker visibility
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const token = localStorage.getItem('userToken');
 
-    const chatContainerRef = useRef(null); // Reference for chat container
-    const emojiPickerRef = useRef(null); // Ref for the emoji picker
+    const chatContainerRef = useRef(null);
+    const emojiPickerRef = useRef(null);
 
     // Handle click outside
     useEffect(() => {
@@ -29,16 +28,15 @@ export default function MainChat() {
             }
         };
 
-        // Add event listener when emoji picker is open
         if (showEmojiPicker) {
             document.addEventListener('mousedown', handleClickOutside);
         }
 
-        // Cleanup event listener on unmount
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [showEmojiPicker]);
+
     // Fetch profile data
     function getProfileData() {
         return axios.get('https://brainmate.fly.dev/api/v1/profile', {
@@ -60,6 +58,8 @@ export default function MainChat() {
 
     // Fetch messages when selectedChat changes
     useEffect(() => {
+        console.log('selected chat use effect', selectedChat);
+
         if (selectedChat) {
             setMessages([]); // Clear messages when chat changes
             setCurrentPage(1);
@@ -67,10 +67,6 @@ export default function MainChat() {
             initializePusher();
         }
     }, [selectedChat]);
-
-    useEffect(() => {
-        console.log(messages[messages.length - 1]);
-    }, [messages]);
 
     // Fetch messages from API
     const fetchMessages = async (page, shouldScrollToBottom = false) => {
@@ -109,7 +105,11 @@ export default function MainChat() {
         const channel = pusher.subscribe(`team.${selectedChat.id}`);
 
         channel.bind('new-chat-message', (newMessage) => {
-            if (newMessage.sender_id !== profileData?.data?.data.user.id) {
+            console.log('selected chat:', selectedChat);
+            console.log('New message received:', newMessage);
+
+            // Check if the message belongs to the currently selected chat
+            if (newMessage.team_id === selectedChat.id && newMessage.sender_id !== profileData?.data?.data.user.id) {
                 setMessages((prevMessages) => [...prevMessages, newMessage]);
                 setTimeout(scrollToBottom, 100); // Scroll to bottom when new message arrives
             }
@@ -181,10 +181,8 @@ export default function MainChat() {
 
     // Handle infinite scroll to load older messages
     const handleScroll = (e) => {
-
         if (e.target.scrollTop === 400 && currentPage < totalPages && !loading) {
             const targetDistance = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight;
-
 
             setCurrentPage((prevPage) => {
                 fetchMessages(prevPage + 1);
@@ -193,7 +191,6 @@ export default function MainChat() {
 
             setTimeout(() => {
                 e.target.scrollTop = e.target.scrollHeight - targetDistance - 558;
-
             }, 1000); // Maintain scroll position
         }
     };

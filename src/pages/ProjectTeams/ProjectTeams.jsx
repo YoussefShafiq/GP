@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, X, Trash, Edit, FolderMinus, Trash2, Loader2Icon, Lock, Unlock } from 'lucide-react';
+import { MousePointerClick, Plus, X, Trash, Edit, FolderMinus, Trash2, Loader2Icon, Lock, Unlock, Square } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
@@ -9,6 +9,8 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { TeamsContext } from '../../context/TeamsContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 export default function ProjectTeams() {
     let { selectedProject, setselectedProject } = useContext(projectContext);
@@ -504,7 +506,6 @@ export default function ProjectTeams() {
                 </div>
 
                 <div className="mt-3">
-                    {/* Accessible teams */}
                     <h2 className='text-xl capitalize font-semibold text-highlight mb-3'>My teams</h2>
                     <div className="flex justify-between">
 
@@ -516,21 +517,23 @@ export default function ProjectTeams() {
                             </>
                                 : <>
 
+                                    {/* Accessible teams */}
                                     {data?.data.data.teams?.filter(team => team.hasAccess).length > 0 ? (
                                         <>
                                             {data?.data.data.teams
                                                 .filter(team => team.hasAccess) // Filter teams with access
                                                 .map((team) => (
                                                     <div
-                                                        key={team.id}
-                                                        onClick={() => { setselectedTeam(team); navigate('team') }}
-                                                        className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base shadow-inner w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
+                                                    key={team.id}
+                                                    onClick={() => { setselectedTeam(team); navigate('team') }}
+                                                    className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base shadow-inner w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
                                                     >
                                                         {team.name}
                                                         <Unlock size={20} className='opacity-80 text-gray-500' />
                                                     </div>
                                                 ))
                                             }
+                                            {/* Non-Accessible teams */}
                                             {data?.data.data.teams
                                                 .filter(team => team.hasAccess === false) // Explicitly check for false
                                                 .map((team) => (
@@ -565,11 +568,17 @@ export default function ProjectTeams() {
                                     <>
                                         {data?.data.data.teams.filter(team => team.hasAccess).map((team) => (
                                             // materials folders
-                                            <div key={team.id} className="relative bg-white rounded-lg shadow-lg p-6 w-full">
-                                                <div className="absolute w-1/2 -top-4 left-0 bg-white h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl"></div>
+                                            <div key={team.id} className="relative bg-white rounded-lg shadow-lg p-6 w-full rounded-tl-none mt-5 cursor-pointer ">
+                                                <div className="absolute w-1/2 -top-6 left-0 bg-white h-6 text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl "></div>
                                                 <div className="">
-                                                    <h2 className="text-lg font-bold text-gray-800">{team.name}</h2>
-                                                    <p className="text-sm text-gray-500 mt-2">Apr 2, 2023</p>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="aspect-square p-1.5 rounded-lg bg-highlight"><Square fill='#eee' color='#eee' size={8} /></div>
+                                                        <h2 className="text-lg font-bold text-gray-800">{team.name}</h2>
+                                                    </div>
+                                                    <div className="flex justify-between items-center w-full">
+                                                        <p className="text-sm text-gray-500 mt-2">{team.created_at.substring(0, 10)}</p>
+                                                        <FontAwesomeIcon icon={faEllipsisVertical} />
+                                                    </div>
                                                 </div>
                                             </div>
                                         ))}

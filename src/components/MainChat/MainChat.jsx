@@ -342,6 +342,14 @@ export default function MainChat() {
         );
     }
 
+    const isMessageDeletable = (messageTimestamp) => {
+        const messageTime = new Date(messageTimestamp).getTime(); // Convert message timestamp to milliseconds
+        const currentTime = new Date().getTime(); // Get current time in milliseconds
+        const timeDifferenceInMinutes = (currentTime - messageTime) / (1000 * 60); // Convert difference to minutes
+
+        return timeDifferenceInMinutes <= 10; // Return true if the difference is <= 10 minutes
+    };
+
     return (
         <>
             {/* Chat Header */}
@@ -416,7 +424,7 @@ export default function MainChat() {
                                             <Copy size={16} />
                                             <span>Copy</span>
                                         </button>
-                                        {message.sender_id === profileData?.data?.data.user.id && (
+                                        {message.sender_id === profileData?.data?.data.user.id && isMessageDeletable(message.created_at) && (
                                             <button
                                                 className="flex items-center gap-2 p-2 hover:bg-gray-100 w-full rounded-lg text-red-500"
                                                 onClick={() => handleDeleteMessage(message.id)}

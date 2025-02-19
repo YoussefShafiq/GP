@@ -83,3 +83,4 @@ input[type="range"]::-moz-range-thumb {
 html {
   @apply dark:bg-dark bg-white
 }
+

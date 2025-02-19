@@ -32,9 +32,7 @@ export default function Login() {
                 position: 'bottom-right'
             })
             setToken(data.data.token)
-            localStorage.setItem('userToken', data.data.token)
             setUsername(data.data.setUsername)
-            localStorage.setItem('username', data.data.user.name)
             navigate('/')
 
         } catch (error) {

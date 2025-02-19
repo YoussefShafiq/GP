@@ -55,9 +55,12 @@ export default function TasksTable({ tasks = [] }) {
         queryFn: getProfileData
     })
 
+    console.log(selectedTeam);
+
+
     // Check if the current user is in the assigned members
-    const isCurrentUserAssigned = (task) => {
-        return task.members.some(member => member.id !== data?.data?.data.user.id);
+    const isUserHasNoAccess = (task) => {
+        return (selectedTeam.role === "member") && (task.members.some(member => member.id !== data?.data?.data.user.id));
     };
 
     return (
@@ -123,7 +126,7 @@ export default function TasksTable({ tasks = [] }) {
                                         className="text-sm dark:bg-dark text-gray-900 dark:text-white bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg p-1"
                                         value={Number(task.status)}
                                         onChange={(e) => handleStatusChange(task.id, e.target.value)}
-                                        disabled={loadingTaskId === task.id || isCurrentUserAssigned(task)} // Disable when updating or if current user is assigned
+                                        disabled={loadingTaskId === task.id || isUserHasNoAccess(task)} // Disable when updating or if current user is assigned
                                     >
                                         {[
                                             { value: 1, label: 'pending' },

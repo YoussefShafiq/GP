@@ -37,7 +37,6 @@ export default function Signup() {
                 setToken(data.data.token)
                 localStorage.setItem('userToken', data.data.token)
                 setUsername(data.data.setUsername)
-                localStorage.setItem('username', data.data.username)
                 navigate('/')
                 toast.success('signed up successfully', {
                     duration: 2000,

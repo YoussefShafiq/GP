@@ -415,7 +415,7 @@ export default function MainChat() {
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -10 }}
-                                        className="absolute bottom-3 right-0 bg-white rounded-lg shadow-md p-2 z-10"
+                                        className="absolute bottom-10 right-0 bg-white rounded-lg shadow-md p-2 z-10"
                                     >
                                         <button
                                             className="flex items-center gap-2 p-2 hover:bg-gray-100 text-dark w-full rounded-lg"

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useMemo } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings } from 'lucide-react';
+import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -117,8 +117,8 @@ export default function MyTasks() {
     return (
         <div className="p-5">
             <div className="flex sticky top-12 bg-white p-5 z-[49] justify-between items-center mb-0 h-16">
-                <div className='text-light font-semibold flex w-full justify-center items-center'>
-                    <div className="ps-1 cursor-pointer">My Tasks</div>
+                <div className='text-black flex w-full items-center'>
+                    <div className="ps-1 cursor-pointer">My Tasks</div><ChevronRight strokeWidth={0.7} />
                 </div>
                 <div className="flex gap-2">
                     {refetchingTasks && <div className="flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}

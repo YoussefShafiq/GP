@@ -1,6 +1,6 @@
 import React, { useContext, useState, useMemo } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings, ChevronDown } from 'lucide-react';
+import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings, ChevronDown, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -184,13 +184,14 @@ export default function Team() {
                 selectedTeam={selectedTeam}
                 token={token}
                 teamMembers={teamMembers}
+                mode="add"
             />
 
             {isTeamLoading ? (
                 <div className="p-5 ">
                     <div className="flex justify-between items-center mb-5 border-b h-16 p-5">
-                        <div className='text-light font-semibold flex items-center'>
-                            <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> / <div className="ps-1 cursor-pointer">{selectedTeam?.name}</div>
+                        <div className='text-gray-400 flex items-center'>
+                            <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} /><div className="ps-1 cursor-pointer">{selectedTeam?.name}</div>
                         </div>
                         <div className="flex gap-2">
                             <div className="h-10 w-10 bg-gray-300 rounded-full animate-pulse"></div>
@@ -201,8 +202,8 @@ export default function Team() {
             ) : (
                 <div className="p-5">
                     <div className="flex flex-col border-b md:flex-row sticky top-12 bg-white p-3 md:p-5 z-[49] justify-between md:items-center gap-3 mb-5 h-16">
-                        <div className='text-light font-semibold flex items-center '>
-                            <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> / <div className="ps-1 cursor-pointer">{selectedTeam?.name}</div>
+                        <div className='text-gray-400 flex items-center '>
+                            <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} /><div className="ps-1 cursor-pointer text-black ">{selectedTeam?.name}</div>
                             {refetchingTasks && <div className="md:hidden flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                         </div>
                         <div className="hidden md:flex flex-wrap justify-center gap-2">

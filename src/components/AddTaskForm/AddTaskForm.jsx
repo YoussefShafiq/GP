@@ -1,27 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, XIcon, ChevronDown } from 'lucide-react';
 import { useFormik } from 'formik';
 import { object, string, date, array } from 'yup';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
+import { TaskContext } from '../../context/TaskContext';
 
-const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
+const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, taskData }) => {
     const [assignTobtn, setAssignTobtn] = useState(false);
+    let { selectedTask } = useContext(TaskContext)
     const [teamMembersState, setTeamMembersState] = useState([]);
-    const [selectedMembers, setSelectedMembers] = useState([])
-
-    // Form validation schema for add task
-    const addTaskValidationSchema = object({
+    const [selectedMembers, setSelectedMembers] = useState([]);
+    const [sendingTask, setsendingTask] = useState(false)
+    const { refetch: refetchTask } = useQuery({
+        queryKey: ['taskData', selectedTask],
+        queryFn: () =>
+            axios.get(`https://brainmate.fly.dev/api/v1/tasks/${selectedTask.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+    });
+    // Form validation schema for task
+    const taskValidationSchema = object({
         name: string().required('Task name is required'),
         description: string().required('Description is required'),
-        tags: string().required('tags is required'),
+        tags: string().required('Tags are required'),
         priority: string().required('Priority is required'),
         deadline: date().required('Deadline is required'),
         members: array().min(1, 'At least one member is required'),
     });
 
-    // Formik form handling for add task
+    // Pre-fill form values if in "Update" mode
+    useEffect(() => {
+        if (mode === 'update' && taskData) {
+            addTaskFormik.setValues({
+                name: taskData.name,
+                description: taskData.description,
+                tags: taskData.tags,
+                priority: taskData.priority,
+                deadline: taskData.deadline.split(' ')[0],
+                members: taskData.members.map((member) => member.id),
+            });
+            setSelectedMembers(taskData.members);
+        }
+    }, [mode, taskData]);
+
+    // Formik form handling for task
     const addTaskFormik = useFormik({
         initialValues: {
             name: '',
@@ -30,36 +57,59 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
             tags: '',
             priority: '',
             deadline: '',
-            members: selectedMembers.map(member => member.id),
+            members: [],
         },
-        validationSchema: addTaskValidationSchema,
+        validationSchema: taskValidationSchema,
         onSubmit: async (values, formikHelpers) => {
             try {
                 // Add selected members to the form values
                 values.members = selectedMembers.map((member) => member.id);
 
-                // Make the API call
-                const response = await axios.post(
-                    `https://brainmate.fly.dev/api/v1/tasks`,
-                    values,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+                let response;
+                if (mode === 'add') {
+                    setsendingTask(true)
+                    // Add task API call
+                    response = await axios.post(
+                        `https://brainmate.fly.dev/api/v1/tasks`,
+                        values,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    setsendingTask(false)
+                    toast.success('Task added successfully', {
+                        duration: 1000,
+                        position: 'bottom-right',
+                    });
+                } else if (mode === 'update') {
+                    setsendingTask(true)
+                    // Update task API call
+                    response = await axios.put(
+                        `https://brainmate.fly.dev/api/v1/tasks/${taskData.id}`,
+                        values,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    setsendingTask(false)
+                    refetchTask()
+                    toast.success('Task updated successfully', {
+                        duration: 1000,
+                        position: 'bottom-right',
+                    });
+                }
 
-                // Handle success
-                toast.success('Task added successfully', {
-                    duration: 1000,
-                    position: 'bottom-right',
-                });
+                // Reset form and close modal
                 formikHelpers.resetForm();
                 onClose();
                 setSelectedMembers([]); // Clear selected members
             } catch (error) {
                 // Handle error
-                toast.error(error.response?.data?.message || 'Error adding task', {
+                toast.error(error.response?.data?.message || 'Error processing task', {
                     duration: 3000,
                     position: 'bottom-right',
                 });
@@ -110,7 +160,7 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                         </button>
                         <div className="m-auto w-fit bg-light text-white px-3 py-2 rounded-xl text-xl">{selectedTeam.name}</div>
 
-                        {/* Add Task Form */}
+                        {/* Task Form */}
                         <form
                             onSubmit={addTaskFormik.handleSubmit}
                             className="w-full mt-5 flex flex-wrap gap-x-[10px] gap-y-5"
@@ -139,7 +189,6 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                                     </div>
                                 )}
                             </div>
-
 
                             {/* Task Priority */}
                             <div className="relative z-0 w-full md:w-[calc(25%-10px)] group">
@@ -233,7 +282,7 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                                     htmlFor="tags"
                                     className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
-                                    tags
+                                    Tags
                                 </label>
                                 {addTaskFormik.errors.tags && addTaskFormik.touched.tags && (
                                     <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
@@ -241,7 +290,6 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                                     </div>
                                 )}
                             </div>
-
 
                             {/* Assign to Members */}
                             <div className="relative z-0 w-full group">
@@ -273,7 +321,7 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                                     onClick={() => setAssignTobtn(!assignTobtn)}
                                     className="flex justify-between items-center cursor-pointer"
                                 >
-                                    <span>members</span>
+                                    <span>Members</span>
                                     <ChevronDown
                                         className={`${assignTobtn ? 'rotate-180 text-light' : ''} duration-300`}
                                     />
@@ -283,7 +331,7 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                                     htmlFor="role_id"
                                     className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
-                                    assigned to
+                                    Assigned To
                                 </label>
 
                                 <AnimatePresence>
@@ -326,8 +374,9 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
                                 onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
+                                disabled={sendingTask}
                             >
-                                Add Task
+                                {mode === 'add' ? 'Add Task' : 'Update Task'}
                             </button>
                         </form>
                     </motion.div>
@@ -337,4 +386,4 @@ const AddTaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers }) => {
     );
 };
 
-export default AddTaskForm;
+export default TaskForm;

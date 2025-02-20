@@ -3,7 +3,7 @@ import { TaskContext } from '../../context/TaskContext'
 import { useNavigate } from 'react-router-dom';
 import { TeamsContext } from '../../context/TeamsContext';
 import { projectContext } from '../../context/ProjectsContext';
-import { Bomb, Clock, Laptop, MousePointerClick, Send, Trash2 } from 'lucide-react';
+import { Bomb, ChevronRight, Clock, Edit, Laptop, MousePointerClick, Send, Trash2 } from 'lucide-react';
 import TasksTable from '../../components/TasksTable/TasksTable';
 import deadlineKiller from '../../assets/images/deadline killer.png'
 import worker from '../../assets/images/computer-worker.png'
@@ -11,6 +11,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import TaskForm from '../../components/AddTaskForm/AddTaskForm';
 
 export default function TaskDetails() {
     let { selectedTask, setselectedTask } = useContext(TaskContext)
@@ -19,10 +20,12 @@ export default function TaskDetails() {
     const token = localStorage.getItem('userToken');
     const navigate = useNavigate();
     const [showConfirmation, setShowConfirmation] = useState(false); // State for showing the confirmation popup
+    const [isUpdateTaskFormOpen, setIsUpdateTaskFormOpen] = useState(false); // State for update form
     const queryClient = useQueryClient(); // For invalidating queries
-    const [noteDescription, setNoteDescription] = useState(''); // State for note input
+    const [noteDescription, setNoteDescription] = useState(''); // State for note inputuses
+    const [addingNote, setaddingNote] = useState(false)
 
-    const { data: taskData, isLoading: taskDataIsLoading } = useQuery({
+    const { data: taskData, isLoading: taskDataIsLoading, refetch } = useQuery({
         queryKey: ['taskData', selectedTask],
         queryFn: () =>
             axios.get(`https://brainmate.fly.dev/api/v1/tasks/${selectedTask.id}`, {
@@ -99,7 +102,23 @@ export default function TaskDetails() {
     const cancelDelete = () => {
         setShowConfirmation(false); // Hide the confirmation popup
     };
+    // Get team members function
+    function getTeamMembers() {
+        if (teamData?.data?.data.team.role !== 'member')
+            return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+    }
 
+    // Get team members query
+    let { data: teamMembers } = useQuery({
+        queryKey: ['teamMembers', selectedTeam?.id],
+        queryFn: getTeamMembers,
+        enabled: !!selectedTeam,
+
+    });
     async function confirmDelete() {
         try {
             await axios.delete(
@@ -148,6 +167,7 @@ export default function TaskDetails() {
                 duration: 1000,
                 position: 'bottom-right',
             });
+            setaddingNote(false)
             setNoteDescription(''); // Clear the input after successful submission
         },
         onError: (error) => {
@@ -160,6 +180,7 @@ export default function TaskDetails() {
 
     // Handle adding a note
     const handleAddNote = (e) => {
+        setaddingNote(true)
         e.preventDefault(); // Prevent form submission
         if (noteDescription.trim()) {
             addNoteMutation.mutate(noteDescription); // Call the mutation
@@ -182,6 +203,13 @@ export default function TaskDetails() {
             </div>
         );
     }
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'auto',
+        });
+    }, []);
+
 
     return <>
 
@@ -218,33 +246,56 @@ export default function TaskDetails() {
                 </motion.div>
             )}
         </AnimatePresence>
+
+        {isUpdateTaskFormOpen && (
+            <TaskForm
+                isOpen={isUpdateTaskFormOpen}
+                onClose={() => setIsUpdateTaskFormOpen(false)}
+                selectedTeam={selectedTeam}
+                token={token}
+                teamMembers={teamMembers}
+                mode="update"
+                taskData={taskData?.data?.data?.task} // Pass the task data to pre-fill the form
+                refetchTask={refetch}
+            />
+        )}
         <div className="p-5">
             {/* path */}
-            <div className='text-light font-semibold flex items-center h-6 px-5'>
-                {!selectedTask?.assigned_to_me && <>
-                    <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div> /
-                    <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div> /
+            <div className='text-gray-400 flex justify-between items-center h-16 px-5'>
+                <div className='flex items-center ' >
+                    {!selectedTask?.assigned_to_me && <>
+                        <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} />
+                        <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div><ChevronRight strokeWidth={0.7} />
+                    </>}
+                    {selectedTask?.assigned_to_me && <>
+                        <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div><ChevronRight strokeWidth={0.7} />
+                    </>}
+                    <div onClick={() => { navigate('/project/team/task-details'); }} className="px-1 cursor-pointer text-black">{selectedTask?.name}</div>
+                </div>
+                {taskData?.data.data.task.role !== 'member' && <>
+                    <div className="flex justify-end gap-2 mb-4">
+                        <button
+                            onClick={() => setIsUpdateTaskFormOpen(true)} // Open the update form
+                            title='update task'
+                            className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                            <Edit size={25} />
+                        </button>
+                        <button
+                            onClick={() => handleRemoveTask(selectedTask.id)}
+                            title='delete task'
+                            className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+
+                            <Trash2 size={22} />
+                        </button>
+                    </div>
                 </>}
-                {selectedTask?.assigned_to_me && <>
-                    <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div> /
-                </>}
-                <div onClick={() => { navigate('/project/team/task-details'); }} className="px-1 cursor-pointer">{selectedTask?.name}</div>
             </div>
 
             {/* task details */}
             <div className="p-3">
                 {/* task in table */}
-                {taskData?.data.data.task.role !== 'member' && <>
-                    <div className="flex justify-end mb-4">
-                        <button
-                            onClick={() => handleRemoveTask(selectedTask.id)}
-                            className="text-red-600 hover:text-red-800 duration-200"
-                        >
-                            <Trash2 size={22} />
-                        </button>
-                    </div>
-                </>}
-                {taskDataIsLoading ? <><TasksTable tasks={[selectedTask]} /></> : <><TasksTable tasks={[taskData?.data?.data?.task]} /></>}
+
+                {taskDataIsLoading ? <><TasksTable tasks={[selectedTask]}/></> : <><TasksTable tasks={[taskData?.data?.data?.task]} /></>}
 
                 <div className="flex justify-between gap-10 mt-8">
                     <div className="flex flex-col w-[calc(66.666%-8px)] gap-5">
@@ -354,7 +405,7 @@ export default function TaskDetails() {
                                 <button
                                     type="submit"
                                     className="p-2 bg-light text-white rounded-lg hover:bg-darkblue transition-all"
-                                    disabled={addNoteMutation.isLoading} // Disable button while loading
+                                    disabled={addingNote} // Disable button while loading
                                 >
                                     {addNoteMutation.isLoading ? 'Adding...' : <Send size={20} />}
                                 </button>

@@ -5,13 +5,14 @@ import { BringToFront, Calendar, ClockAlert } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { TeamsContext } from '../../context/TeamsContext';
 import { TaskContext } from '../../context/TaskContext';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function TasksTable({ tasks = [] }) {
     let { selectedTask, setselectedTask } = useContext(TaskContext)
     let { selectedTeam } = useContext(TeamsContext);
     const queryClient = useQueryClient();
     const token = localStorage.getItem('userToken');
+    const location = useLocation(); // Get the current location
     const navigate = useNavigate();
 
     const [loadingTaskId, setLoadingTaskId] = useState(null); // Track loading state per task
@@ -83,8 +84,10 @@ export default function TasksTable({ tasks = [] }) {
                     {tasks.length > 0 ? <>
                         {tasks.map((task, rowIndex) => (
                             <tr onClick={() => {
-                                setselectedTask(task);
-                                navigate('/task-details')
+                                if (location.pathname !== '/task-details') {
+                                    setselectedTask(task); // Set the selected task
+                                    navigate('/task-details'); // Navigate to the task details page
+                                }
                             }}
                                 key={rowIndex}
                                 className={`bg-white border-b cursor-pointer dark:bg-white dark:bg-opacity-5 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  `}

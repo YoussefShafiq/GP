@@ -3,7 +3,7 @@ import { TeamsContext } from '../../context/TeamsContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Trash2, Loader2Icon } from 'lucide-react';
+import { Trash2, Loader2Icon, ChevronRight } from 'lucide-react';
 import { projectContext } from '../../context/ProjectsContext';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
@@ -154,10 +154,10 @@ const ManageTeamMembers = () => {
                 )}
             </AnimatePresence>
 
-            <div className='text-light font-semibold flex items-center h-6 px-5 mb-5 border-b p-5'>
+            <div className='text-gray-400 flex items-center h-6 px-5 mb-5 border-b p-5'>
                 <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div>
-                / <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div>
-                / <div onClick={() => { navigate('/project/team/manage-members'); }} className="px-1 cursor-pointer">Manage Team Members</div>
+                <ChevronRight strokeWidth={0.7} /><div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div>
+                <ChevronRight strokeWidth={0.7} /><div onClick={() => { navigate('/project/team/manage-members'); }} className="px-1 cursor-pointer text-black">Manage Team Members</div>
             </div>
 
             <table className="w-full border-collapse">

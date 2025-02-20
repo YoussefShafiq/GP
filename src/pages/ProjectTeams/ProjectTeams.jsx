@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, X, Trash, Edit, FolderMinus, Trash2, Loader2Icon, Lock, Unlock, Square } from 'lucide-react';
+import { MousePointerClick, Plus, X, Trash, Edit, FolderMinus, Trash2, Loader2Icon, Lock, Unlock, Square, ChevronRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
@@ -490,8 +490,8 @@ export default function ProjectTeams() {
             <div className="p-5">
                 <div className="flex md:flex-row flex-col justify-between items-center mb-0 border-b h-16 ps-5 p-5 ">
                     {/* Path */}
-                    <div className='text-light font-semibold flex items-center' >
-                        <div onClick={() => navigate('/project')} className="pe-1 cursor-pointer">{selectedProject?.name}</div> /
+                    <div className='text-black flex items-center' >
+                        <div onClick={() => navigate('/project')} className="pe-1 cursor-pointer">{selectedProject?.name}</div> <ChevronRight strokeWidth={0.7} />
                         {isRefetching && <div className="md:hidden flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                     </div>
                     <div className="flex gap-2">
@@ -524,9 +524,9 @@ export default function ProjectTeams() {
                                                 .filter(team => team.hasAccess) // Filter teams with access
                                                 .map((team) => (
                                                     <div
-                                                    key={team.id}
-                                                    onClick={() => { setselectedTeam(team); navigate('team') }}
-                                                    className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base shadow-inner w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
+                                                        key={team.id}
+                                                        onClick={() => { setselectedTeam(team); navigate('team') }}
+                                                        className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base shadow-inner w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
                                                     >
                                                         {team.name}
                                                         <Unlock size={20} className='opacity-80 text-gray-500' />

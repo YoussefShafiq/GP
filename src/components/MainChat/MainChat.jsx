@@ -362,7 +362,7 @@ export default function MainChat() {
                         {isChatDataLoading ? (
                             <div className="h-4 bg-gray-200 rounded w-32 animate-pulse"></div>
                         ) : (
-                            selectedChat?.name
+                            <div>{selectedChat?.name} <span className='text-xs font-light text-gray-500' >({selectedChat?.project.name})</span></div>
                         )}
                         {loading && <div className="md:flex w-fit hidden text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                     </div>

@@ -300,30 +300,32 @@ export default function TaskDetails() {
                 <div className="flex justify-between gap-10 mt-8">
                     <div className="flex flex-col w-[calc(66.666%-8px)] gap-5">
                         {/* Task Progress Bar */}
-                        <div className="relative w-full bg-gray-200 rounded-full h-3 dark:bg-gray-300 my-3">
-                            <div
-                                className="h-3 rounded-full relative"
-                                style={progressBarStyle}
-                            >
-                                {/* Icon at the end of the progress bar */}
+                        {!taskDataIsLoading &&
+                            <div className="relative w-full bg-gray-200 rounded-full h-3 dark:bg-gray-300 my-3">
                                 <div
-                                    className="absolute right-0 flex items-center gap-1 -mt-9 transform z-10 "
+                                    className="h-3 rounded-full relative"
+                                    style={progressBarStyle}
+                                >
+                                    {/* Icon at the end of the progress bar */}
+                                    <div
+                                        className="absolute right-0 flex items-center gap-1 -mt-9 transform z-10 "
+                                        style={{ top: '50%' }}
+                                    >
+                                        {/* <Bomb size={16} className="text-red-600" />  */}
+                                        <img src={deadlineKiller} className='w-6' alt="" />
+                                    </div>
+
+                                </div>
+                                <div
+                                    className="absolute right-0 flex items-center gap-1 -mt-7 transform "
                                     style={{ top: '50%' }}
                                 >
                                     {/* <Bomb size={16} className="text-red-600" />  */}
-                                    <img src={deadlineKiller} className='w-6' alt="" />
+                                    <img src={worker} className='w-6' alt="" />
                                 </div>
-
+                                <div className="text-end dark:text-gray-300">{daysLeftDisplay} day left</div>
                             </div>
-                            <div
-                                className="absolute right-0 flex items-center gap-1 -mt-7 transform "
-                                style={{ top: '50%' }}
-                            >
-                                {/* <Bomb size={16} className="text-red-600" />  */}
-                                <img src={worker} className='w-6' alt="" />
-                            </div>
-                            <div className="text-end dark:text-gray-300">{daysLeftDisplay} day left</div>
-                        </div>
+                        }
                         {/* task description */}
                         <div className="">
                             <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100' >task description</h2>

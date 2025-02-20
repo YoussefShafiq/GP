@@ -60,7 +60,11 @@ export default function TasksTable({ tasks = [] }) {
 
     // Check if the current user is in the assigned members
     const isUserHasNoAccess = (task) => {
-        return (selectedTeam.role === "member") && (task.members.some(member => member.id !== data?.data?.data.user.id));
+        if (selectedTeam) {
+            return (selectedTeam.role === "member") && (task.members.every(member => member.id !== data?.data?.data.user.id));
+        } else {
+            return (task.members.every(member => member.id !== data?.data?.data.user.id));
+        }
     };
 
     return (

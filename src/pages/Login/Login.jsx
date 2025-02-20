@@ -31,6 +31,7 @@ export default function Login() {
                 duration: 2000,
                 position: 'bottom-right'
             })
+            localStorage.setItem('userToken', data.data.token)
             setToken(data.data.token)
             setUsername(data.data.setUsername)
             navigate('/')

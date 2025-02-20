@@ -330,11 +330,7 @@ export default function TaskDetails() {
                         <div className="">
                             <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100' >task description</h2>
                             {taskDataIsLoading ? <>
-                                <div name="task description" id="task description" className='w-full flex flex-col gap-3 outline-dashed outline-2 p-3 max-h-52 rounded-xl overflow-y-auto' >
-                                    <div className="h-4 w-full bg-gray-300 rounded-lg animate-pulse"></div>
-                                    <div className="h-4 w-1/3 bg-gray-300 rounded-lg animate-pulse"></div>
-                                    <div className="h-4 w-2/3 bg-gray-300 rounded-lg animate-pulse"></div>
-                                </div>
+                                <div name="task description" id="task description" className='w-full outline-dashed dark:outline-gray-300 dark:text-white outline-2 p-3 max-h-52 rounded-xl overflow-y-auto' >{selectedTask?.description}</div>
                             </> :
                                 <div name="task description" id="task description" className='w-full outline-dashed dark:outline-gray-300 dark:text-white outline-2 p-3 max-h-52 rounded-xl overflow-y-auto' >{taskData?.data?.data?.task?.description}</div>
                             }
@@ -342,24 +338,45 @@ export default function TaskDetails() {
                         {/* assigned to */}
                         <div className="bg-base dark:bg-neutral-800 max-h-96 p-4 rounded-2xl shadow-xl overflow-y-auto">
                             <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100' >assigned to</h2>
-                            <div className="flex flex-col flex-wrap gap-3">
-                                {selectedTask.members.map((person) => (
-                                    <div className="flex gap-2 border-b pb-3">
-                                        <div
-                                            key={person.id}
-                                            className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
-                                            style={{ backgroundColor: person.color }}
-                                            title={person.name}
-                                        >
-                                            {person.name[0]}
+                            {taskDataIsLoading ? <>
+                                <div className="flex flex-col flex-wrap gap-3">
+                                    {selectedTask.members.map((person) => (
+                                        <div className="flex gap-2 border-b pb-3">
+                                            <div
+                                                key={person.id}
+                                                className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
+                                                style={{ backgroundColor: person.color }}
+                                                title={person.name}
+                                            >
+                                                {person.name[0]}
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <p className='dark:text-gray-50' >{person.name} <span className='text-xs text-gray-500 dark:text-gray-400 font-light' >{person.role || '(member)'}</span></p>
+                                                <p className='text-xs text-gray-600 dark:text-gray-500' >{person.email || `${person.name.replaceAll(' ', '_')}@gmail.com`}</p>
+                                            </div>
                                         </div>
-                                        <div className="flex flex-col">
-                                            <p className='dark:text-gray-50' >{person.name} <span className='text-xs text-gray-500 dark:text-gray-400 font-light' >{person.role || '(member)'}</span></p>
-                                            <p className='text-xs text-gray-600 dark:text-gray-500' >{person.email || `${person.name.replaceAll(' ', '_')}@gmail.com`}</p>
+                                    ))}
+                                </div>
+                            </> : <>
+                                <div className="flex flex-col flex-wrap gap-3">
+                                    {taskData.data.data.task.members.map((person) => (
+                                        <div className="flex gap-2 border-b pb-3">
+                                            <div
+                                                key={person.id}
+                                                className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
+                                                style={{ backgroundColor: person.color }}
+                                                title={person.name}
+                                            >
+                                                {person.name[0]}
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <p className='dark:text-gray-50' >{person.name} <span className='text-xs text-gray-500 dark:text-gray-400 font-light' >{person.role || '(member)'}</span></p>
+                                                <p className='text-xs text-gray-600 dark:text-gray-500' >{person.email || `${person.name.replaceAll(' ', '_')}@gmail.com`}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+                            </>}
                         </div>
                     </div>
                     <div className="flex flex-col w-[calc(35.333%-8px)] gap-y-6">

@@ -270,20 +270,20 @@ export default function TaskDetails() {
                     {selectedTask?.assigned_to_me && <>
                         <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div><ChevronRight strokeWidth={0.7} />
                     </>}
-                    <div onClick={() => { navigate('/project/team/task-details'); }} className="px-1 cursor-pointer text-black">{selectedTask?.name}</div>
+                    <div onClick={() => { navigate('/project/team/task-details'); }} className="px-1 cursor-pointer text-white">{selectedTask?.name}</div>
                 </div>
                 {taskData?.data.data.task.role !== 'member' && <>
                     <div className="flex justify-end gap-2 mb-4">
                         <button
                             onClick={() => setIsUpdateTaskFormOpen(true)} // Open the update form
                             title='update task'
-                            className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                            className="rounded-full bg-white dark:bg-dark text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
                             <Edit size={25} />
                         </button>
                         <button
                             onClick={() => handleRemoveTask(selectedTask.id)}
                             title='delete task'
-                            className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                            className="rounded-full bg-white dark:bg-dark text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
 
                             <Trash2 size={22} />
                         </button>
@@ -295,12 +295,12 @@ export default function TaskDetails() {
             <div className="p-3">
                 {/* task in table */}
 
-                {taskDataIsLoading ? <><TasksTable tasks={[selectedTask]}/></> : <><TasksTable tasks={[taskData?.data?.data?.task]} /></>}
+                {taskDataIsLoading ? <><TasksTable tasks={[selectedTask]} /></> : <><TasksTable tasks={[taskData?.data?.data?.task]} /></>}
 
                 <div className="flex justify-between gap-10 mt-8">
                     <div className="flex flex-col w-[calc(66.666%-8px)] gap-5">
                         {/* Task Progress Bar */}
-                        <div className="relative w-full bg-gray-200 rounded-full h-3 dark:bg-gray-700 my-3">
+                        <div className="relative w-full bg-gray-200 rounded-full h-3 dark:bg-gray-300 my-3">
                             <div
                                 className="h-3 rounded-full relative"
                                 style={progressBarStyle}
@@ -322,11 +322,11 @@ export default function TaskDetails() {
                                 {/* <Bomb size={16} className="text-red-600" />  */}
                                 <img src={worker} className='w-6' alt="" />
                             </div>
-                            <div className="text-end">{daysLeftDisplay} day left</div>
+                            <div className="text-end dark:text-gray-300">{daysLeftDisplay} day left</div>
                         </div>
                         {/* task description */}
                         <div className="">
-                            <h2 className='capitalize mb-3 font-semibold text-gray-700' >task description</h2>
+                            <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100' >task description</h2>
                             {taskDataIsLoading ? <>
                                 <div name="task description" id="task description" className='w-full flex flex-col gap-3 outline-dashed outline-2 p-3 max-h-52 rounded-xl overflow-y-auto' >
                                     <div className="h-4 w-full bg-gray-300 rounded-lg animate-pulse"></div>
@@ -334,12 +334,12 @@ export default function TaskDetails() {
                                     <div className="h-4 w-2/3 bg-gray-300 rounded-lg animate-pulse"></div>
                                 </div>
                             </> :
-                                <div name="task description" id="task description" className='w-full outline-dashed outline-2 p-3 max-h-52 rounded-xl overflow-y-auto' >{taskData?.data?.data?.task?.description}</div>
+                                <div name="task description" id="task description" className='w-full outline-dashed dark:outline-gray-300 dark:text-white outline-2 p-3 max-h-52 rounded-xl overflow-y-auto' >{taskData?.data?.data?.task?.description}</div>
                             }
                         </div>
                         {/* assigned to */}
-                        <div className="bg-base max-h-96 p-4 rounded-2xl shadow-xl overflow-y-auto">
-                            <h2 className='capitalize mb-3 font-semibold text-gray-700' >assigned to</h2>
+                        <div className="bg-base dark:bg-neutral-800 max-h-96 p-4 rounded-2xl shadow-xl overflow-y-auto">
+                            <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100' >assigned to</h2>
                             <div className="flex flex-col flex-wrap gap-3">
                                 {selectedTask.members.map((person) => (
                                     <div className="flex gap-2 border-b pb-3">
@@ -352,8 +352,8 @@ export default function TaskDetails() {
                                             {person.name[0]}
                                         </div>
                                         <div className="flex flex-col">
-                                            <p>{person.name} <span className='text-xs text-gray-500 font-light' >{person.role || '(member)'}</span></p>
-                                            <p className='text-xs text-gray-600' >{person.email || `${person.name.replaceAll(' ', '_')}@gmail.com`}</p>
+                                            <p className='dark:text-gray-50' >{person.name} <span className='text-xs text-gray-500 dark:text-gray-400 font-light' >{person.role || '(member)'}</span></p>
+                                            <p className='text-xs text-gray-600 dark:text-gray-500' >{person.email || `${person.name.replaceAll(' ', '_')}@gmail.com`}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -362,21 +362,21 @@ export default function TaskDetails() {
                     </div>
                     <div className="flex flex-col w-[calc(35.333%-8px)] gap-y-6">
                         {/* task notes */}
-                        <div className="flex flex-col bg-base p-5 rounded-3xl shadow-xl max-h-96 relative">
-                            <h2 className='capitalize ms-4 font-semibold text-gray-700'>Task Notes</h2>
+                        <div className="flex flex-col bg-base dark:bg-neutral-800 p-5 rounded-3xl shadow-xl max-h-96 relative">
+                            <h2 className='capitalize ms-4 font-semibold text-gray-700 dark:text-gray-100'>Task Notes</h2>
 
                             {/* <!-- Make the ol take up the remaining space and be scrollable --> */}
-                            <div className="flex-1 p-5 pb-0 overflow-y-auto">
+                            <div className="flex-1 p-5 pb-0 overflow-y-auto dark:text-gray-100">
                                 {taskData?.data?.data.task.notes.length == 0 ? <>
                                     <div className="text-center">No notes found</div>
                                 </> : <>
                                     <ol className="relative border-s border-gray-400 dark:border-gray-700 ">
                                         {taskData?.data?.data.task.notes.map((note) => (
                                             <li key={note.id} className="mb-5 ms-6">
-                                                <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-4 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                                                <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 dark:bg-blue-900">
                                                     <div
                                                         className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
-                                                        style={{ backgroundColor: "#09c" }}
+                                                        style={{ backgroundColor: note.user.color }}
                                                         title={note.user.email}
                                                     >
                                                         Y
@@ -384,7 +384,7 @@ export default function TaskDetails() {
                                                 </span>
                                                 <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex dark:bg-gray-700 dark:border-gray-600">
                                                     <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{formatTimeAgo(note.created_at)}</time>
-                                                    <div className="text-sm font-normal text-gray-500 dark:text-gray-300"><span className='font-bold text-black'>{note.user.name}</span> {note.description}</div>
+                                                    <div className="text-sm font-normal text-gray-500 dark:text-gray-300"><span className='font-bold text-black dark:text-white'>{note.user.name}</span> {note.description}</div>
                                                 </div>
                                             </li>
                                         ))}
@@ -393,7 +393,7 @@ export default function TaskDetails() {
                             </div>
 
                             {/* <!-- Fix the input and button at the bottom --> */}
-                            <form onSubmit={handleAddNote} className="flex justify-between items-center gap-2 bg-base mt-4 flex-shrink-0">
+                            <form onSubmit={handleAddNote} className="flex justify-between items-center gap-2 bg-base dark:bg-neutral-800 mt-4 flex-shrink-0">
                                 <textarea
                                     placeholder="Add Notes..."
                                     className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-light focus:border-light duration-300 resize-none"
@@ -404,7 +404,7 @@ export default function TaskDetails() {
                                 />
                                 <button
                                     type="submit"
-                                    className="p-2 bg-light text-white rounded-lg hover:bg-darkblue transition-all"
+                                    className="p-2 bg-light text-white rounded-lg hover:bg-darkblue h-full aspect-square flex items-center justify-center transition-all"
                                     disabled={addingNote} // Disable button while loading
                                 >
                                     {addNoteMutation.isLoading ? 'Adding...' : <Send size={20} />}
@@ -412,8 +412,8 @@ export default function TaskDetails() {
                             </form>
                         </div>
                         {/* activity log */}
-                        <div className="bg-base ps-10 p-5 rounded-3xl shadow-xl max-h-96 overflow-y-auto" >
-                            <h2 className='capitalize mb-2 font-semibold text-gray-700' >Activity Log</h2>
+                        <div className="bg-base dark:bg-neutral-800 ps-10 p-5 rounded-3xl shadow-xl max-h-96 overflow-y-auto" >
+                            <h2 className='capitalize mb-2 font-semibold text-gray-700 dark:text-gray-100' >Activity Log</h2>
 
                             <ol class="relative border-s mt-5 border-gray-400 dark:border-gray-700">
                                 <li class="mb-5 ms-6">

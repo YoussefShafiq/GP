@@ -292,30 +292,30 @@ export default function Team() {
                         />
                         {teamTasks?.data?.data && (
                             <div className="space-y-6">
-                                <div>
+                                {(filterState == '' || filterState == 1) && <div>
                                     <div className="px-3 py-1 text-white my-3 bg-pending w-fit rounded-lg">pending</div>
                                     <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 1)} />
-                                </div>
-                                <div>
+                                </div>}
+                                {(filterState == '' || filterState == 2) && <div>
                                     <div className="px-3 py-1 text-white my-3 bg-in_progress w-fit rounded-lg">in progress</div>
                                     <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 2)} />
-                                </div>
-                                <div>
+                                </div>}
+                                {(filterState == '' || filterState == 3) && <div>
                                     <div className="px-3 py-1 text-white my-3 bg-completed w-fit rounded-lg">completed</div>
                                     <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 3)} />
-                                </div>
-                                <div>
+                                </div>}
+                                {(filterState == '' || filterState == 4) && <div>
                                     <div className="px-3 py-1 text-white my-3 bg-cancelled w-fit rounded-lg">cancelled</div>
                                     <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 4)} />
-                                </div>
-                                <div>
+                                </div>}
+                                {(filterState == '' || filterState == 5) && <div>
                                     <div className="px-3 py-1 text-white my-3 bg-on_hold w-fit rounded-lg">on hold</div>
                                     <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 5)} />
-                                </div>
-                                <div>
+                                </div>}
+                                {(filterState == '' || filterState == 6) && <div>
                                     <div className="px-3 py-1 text-white my-3 bg-in_review w-fit rounded-lg">in review</div>
                                     <TasksTable tasks={filteredAndSortedTasks.filter((task) => Number(task.status) === 6)} />
-                                </div>
+                                </div>}
 
                             </div>
                         )}

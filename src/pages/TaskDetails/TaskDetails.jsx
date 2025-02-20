@@ -270,7 +270,7 @@ export default function TaskDetails() {
                     {selectedTask?.assigned_to_me && <>
                         <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div><ChevronRight strokeWidth={0.7} />
                     </>}
-                    <div onClick={() => { navigate('/project/team/task-details'); }} className="px-1 cursor-pointer text-white">{selectedTask?.name}</div>
+                    <div onClick={() => { navigate('/task-details'); }} className="px-1 cursor-pointer text-black dark:text-white">{selectedTask?.name}</div>
                 </div>
                 {taskData?.data.data.task.role !== 'member' && <>
                     <div className="flex justify-end gap-2 mb-4">

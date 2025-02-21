@@ -1,4 +1,4 @@
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, MousePointerClick } from 'lucide-react';
 import React, { useContext } from 'react'
 import { MaterialsContext } from '../../context/MaterialsContext';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,17 @@ export default function MaterialsItems() {
     const { selectedProjectFolder, setselectedProjectFolder, selectedTeamFolder, setselectedTeamFolder } = useContext(MaterialsContext)
     const navigate = useNavigate()
     const token = localStorage.getItem('userToken');
+
+    if (!selectedTeamFolder) {
+        return (
+            <div className="h-[calc(100vh-48px)] flex justify-center items-center">
+                <div className="flex flex-col items-center gap-3">
+                    <MousePointerClick size={35} className='text-light' />
+                    <h2 className='capitalize'>Please select team folder first</h2>
+                </div>
+            </div>
+        );
+    }
 
     return <>
 

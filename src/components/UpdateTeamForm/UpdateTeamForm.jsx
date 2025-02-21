@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
 import toast from 'react-hot-toast';
@@ -9,10 +9,12 @@ import { TeamsContext } from '../../context/TeamsContext';
 
 export default function UpdateTeamForm({ isOpen, onClose }) {
     const { selectedTeam, setselectedTeam } = useContext(TeamsContext);
+    const [updating, setupdating] = useState(false)
     const token = localStorage.getItem('userToken');
 
     // Update a team
     async function updateTeam(values, { resetForm }) {
+        setupdating(true)
         try {
             const response = await axios.put(
                 `https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}`,
@@ -27,10 +29,12 @@ export default function UpdateTeamForm({ isOpen, onClose }) {
                 duration: 1000,
                 position: 'bottom-right',
             });
+            setupdating(false)
             resetForm();
             onClose();
             setselectedTeam(response.data.data.team);
         } catch (error) {
+            setupdating(false)
             toast.error(error.response?.data?.message || 'Error updating team', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -123,6 +127,7 @@ export default function UpdateTeamForm({ isOpen, onClose }) {
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
                                 onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
+                                disabled={updating}
                             >
                                 Update Team
                             </button>

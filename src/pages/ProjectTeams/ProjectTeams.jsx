@@ -10,14 +10,17 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { TeamsContext } from '../../context/TeamsContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faL } from '@fortawesome/free-solid-svg-icons';
+import { MaterialsContext } from '../../context/MaterialsContext';
 
 export default function ProjectTeams() {
+    const { selectedProjectFolder, setselectedProjectFolder, selectedTeamFolder, setselectedTeamFolder } = useContext(MaterialsContext)
     let { selectedProject, setselectedProject } = useContext(projectContext);
     let { selectedTeam, setselectedTeam } = useContext(TeamsContext);
     const [addProjectForm, setAddProjectForm] = useState(false);
     const [deleteProjectForm, setDeleteProjectForm] = useState(false);
     const [updateProjectForm, setUpdateProjectForm] = useState(false);
+    const [sendingRequest, setsendingRequest] = useState(false)
     const token = localStorage.getItem('userToken');
     const projectFormRef = useRef(null);
     const navigate = useNavigate();
@@ -71,9 +74,7 @@ export default function ProjectTeams() {
 
     // Add a new team
     async function addTeam(values, { resetForm }) {
-        console.log("Adding team with values:", values); // Debugging
-        console.log("Selected Project ID:", selectedProject.id); // Debugging
-        setAddProjectForm(false);
+        setsendingRequest(true)
         try {
             let response = await axios.post(
                 `https://brainmate.fly.dev/api/v1/projects/${selectedProject.id}/teams/create`,
@@ -88,9 +89,13 @@ export default function ProjectTeams() {
                 duration: 1000,
                 position: 'bottom-right',
             });
+            setAddProjectForm(false);
+            setsendingRequest(false)
             resetForm();
             refetch(); // Refetch teams after adding a new team
         } catch (error) {
+            setAddProjectForm(false);
+            setsendingRequest(false)
             toast.error(error.response?.data?.message || 'Error adding team', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -124,6 +129,7 @@ export default function ProjectTeams() {
             return;
         }
 
+        setsendingRequest(true)
         try {
             await axios.delete(
                 `https://brainmate.fly.dev/api/v1/projects/${selectedProject.id}`,
@@ -137,11 +143,13 @@ export default function ProjectTeams() {
                 duration: 1000,
                 position: 'bottom-right',
             });
+            setsendingRequest(false)
             resetForm();
             setDeleteProjectForm(false);
             setselectedProject(null);
             sidebarProjects.refetch();
         } catch (error) {
+            setsendingRequest(false)
             toast.error(error.response?.data?.message || 'Error deleting project', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -169,6 +177,7 @@ export default function ProjectTeams() {
 
     // Update a project
     async function updateProject(values, { resetForm }) {
+        setsendingRequest(true)
         try {
             const response = await axios.put(
                 `https://brainmate.fly.dev/api/v1/projects/${selectedProject.id}`,
@@ -183,16 +192,14 @@ export default function ProjectTeams() {
                 duration: 1000,
                 position: 'bottom-right',
             });
+            setsendingRequest(false)
             resetForm();
             setUpdateProjectForm(false);
             setselectedProject(response.data.data.project); // Update selectedProject with the new data
-            // console.log("response:");
-
-            console.log(response);
-
             sidebarProjects.refetch();
             refetch();
         } catch (error) {
+            setsendingRequest(false)
             toast.error(error.response?.data?.message || 'Error updating project', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -306,6 +313,7 @@ export default function ProjectTeams() {
                                         style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                         onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
                                         onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
+                                        disabled={sendingRequest}
                                     >
                                         Add team
                                     </button>
@@ -379,6 +387,7 @@ export default function ProjectTeams() {
                                         style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                         onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
                                         onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
+                                        disabled={sendingRequest}
                                     >
                                         Delete Project
                                     </button>
@@ -477,6 +486,7 @@ export default function ProjectTeams() {
                                         style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                         onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
                                         onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
+                                        disabled={sendingRequest}
                                     >
                                         Update Project
                                     </button>
@@ -560,7 +570,9 @@ export default function ProjectTeams() {
 
                             <div className="flex justify-between items-center mb-3">
                                 <div className="flex items-center gap-1.5 text-gray-600 py-3"><FolderMinus strokeWidth={1.5} /><h2>folders</h2></div>
-                                <Link to={'/materials'} className='text-light' >see more</Link>
+                                <Link to={'/materials/project'} onClick={() => {
+                                    setselectedProjectFolder(selectedProject)
+                                }} className='text-light' >see more</Link>
                             </div>
 
                             <div className="flex flex-col flex-wrap justify-center items-center gap-7">
@@ -568,7 +580,11 @@ export default function ProjectTeams() {
                                     <>
                                         {data?.data.data.teams.filter(team => team.hasAccess).map((team) => (
                                             // materials folders
-                                            <div key={team.id} className="relative bg-white rounded-lg shadow-lg p-6 w-full rounded-tl-none mt-5 cursor-pointer ">
+                                            <div key={team.id} onClick={()=>{
+                                                setselectedProjectFolder(selectedProject);
+                                                setselectedTeamFolder(team)
+                                                navigate('/materials/project/team')
+                                            }} className="relative bg-white rounded-lg shadow-lg p-6 w-full rounded-tl-none mt-5 cursor-pointer ">
                                                 <div className="absolute w-1/2 -top-6 left-0 bg-white h-6 text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl "></div>
                                                 <div className="">
                                                     <div className="flex items-center gap-2">

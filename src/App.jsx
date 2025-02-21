@@ -34,6 +34,9 @@ import MyTeams from './pages/MyTeams/MyTeams'
 import Chat from './pages/Chat/Chat'
 import ChatContextProvider from './context/ChatContext'
 import Materials from './pages/Materials/Materials'
+import MaterialsContextProvider from './context/MaterialsContext'
+import MaterialTeams from './components/MaterialTeams/MaterialTeams'
+import MaterialsItems from './components/MaterialsItems/MaterialsItems'
 
 let routers = createBrowserRouter([
 
@@ -50,6 +53,8 @@ let routers = createBrowserRouter([
       { path: 'mytasks', element: <ProtectedRoute><Mytasks /></ProtectedRoute> },
       { path: 'myteams', element: <ProtectedRoute><MyTeams /></ProtectedRoute> },
       { path: 'materials', element: <ProtectedRoute><Materials /></ProtectedRoute> },
+      { path: 'materials/project', element: <ProtectedRoute><MaterialTeams /></ProtectedRoute> },
+      { path: 'materials/project/team', element: <ProtectedRoute><MaterialsItems /></ProtectedRoute> },
       { path: 'chat', element: <ProtectedRoute><Chat /></ProtectedRoute> },
       { path: 'workspaces', element: <ProtectedRoute><Workspaces /></ProtectedRoute> },
       { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },
@@ -71,24 +76,26 @@ function App() {
 
 
   return <>
-    <ChatContextProvider>
-      <TaskContextProvider>
-        <TeamsContextProvider>
-          <ProjectContextProvider>
-            <NotesContextProvider>
-              <QueryClientProvider client={query}>
-                <UserDataContextProvider>
-                  <SidebarContextProvider>
-                    <RouterProvider router={routers} />
-                    <Toaster />
-                  </SidebarContextProvider>
-                </UserDataContextProvider>
-              </QueryClientProvider>
-            </NotesContextProvider>
-          </ProjectContextProvider>
-        </TeamsContextProvider>
-      </TaskContextProvider>
-    </ChatContextProvider>
+    <MaterialsContextProvider>
+      <ChatContextProvider>
+        <TaskContextProvider>
+          <TeamsContextProvider>
+            <ProjectContextProvider>
+              <NotesContextProvider>
+                <QueryClientProvider client={query}>
+                  <UserDataContextProvider>
+                    <SidebarContextProvider>
+                      <RouterProvider router={routers} />
+                      <Toaster />
+                    </SidebarContextProvider>
+                  </UserDataContextProvider>
+                </QueryClientProvider>
+              </NotesContextProvider>
+            </ProjectContextProvider>
+          </TeamsContextProvider>
+        </TaskContextProvider>
+      </ChatContextProvider>
+    </MaterialsContextProvider>
   </>
 }
 

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
 import toast from 'react-hot-toast';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function DeleteTeamForm({ isOpen, onClose }) {
     const { selectedTeam, setselectedTeam } = useContext(TeamsContext);
+    const [deletingTeam, setdeletingTeam] = useState(false)
     const token = localStorage.getItem('userToken');
     const navigate = useNavigate();
 
@@ -22,6 +23,7 @@ export default function DeleteTeamForm({ isOpen, onClose }) {
             });
             return;
         }
+        setdeletingTeam(true)
 
         try {
             await axios.delete(
@@ -32,6 +34,7 @@ export default function DeleteTeamForm({ isOpen, onClose }) {
                     },
                 }
             );
+            setdeletingTeam(false)
             toast.success('Team deleted successfully', {
                 duration: 1000,
                 position: 'bottom-right',
@@ -41,6 +44,7 @@ export default function DeleteTeamForm({ isOpen, onClose }) {
             setselectedTeam(null);
             navigate('/project');
         } catch (error) {
+            setdeletingTeam(false)
             toast.error(error.response?.data?.message || 'Error deleting team', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -126,6 +130,7 @@ export default function DeleteTeamForm({ isOpen, onClose }) {
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
                                 onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
+                                disabled={deletingTeam}
                             >
                                 Delete Team
                             </button>

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
 import toast from 'react-hot-toast';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function LeaveTeamForm({ isOpen, onClose }) {
     const { selectedTeam, setselectedTeam } = useContext(TeamsContext);
+    const [leavingTeam, setleavingTeam] = useState(false)
     const token = localStorage.getItem('userToken');
     const navigate = useNavigate();
 
@@ -22,6 +23,7 @@ export default function LeaveTeamForm({ isOpen, onClose }) {
             });
             return;
         }
+        setleavingTeam(true)
 
         try {
             await axios.post(
@@ -33,6 +35,7 @@ export default function LeaveTeamForm({ isOpen, onClose }) {
                     },
                 }
             );
+            setleavingTeam(false)
             toast.success('Team left successfully', {
                 duration: 1000,
                 position: 'bottom-right',
@@ -42,6 +45,7 @@ export default function LeaveTeamForm({ isOpen, onClose }) {
             setselectedTeam(null);
             navigate('/project');
         } catch (error) {
+            setleavingTeam(false)
             toast.error(error.response?.data?.message || 'Error leaving team', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -127,6 +131,7 @@ export default function LeaveTeamForm({ isOpen, onClose }) {
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
                                 onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
+                                disabled={leavingTeam}
                             >
                                 Leave Team
                             </button>

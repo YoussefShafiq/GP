@@ -63,6 +63,9 @@ const ManageTeamMembers = () => {
             return response;
         },
         onSuccess: (response) => {
+            if (response.data.message === 'User role updated to manager successfully.') {
+                navigate('/')
+            }
             toast.success(response.data.message, {
                 duration: 2000,
                 position: 'bottom-right',

@@ -3,7 +3,7 @@ import { TaskContext } from '../../context/TaskContext'
 import { useNavigate } from 'react-router-dom';
 import { TeamsContext } from '../../context/TeamsContext';
 import { projectContext } from '../../context/ProjectsContext';
-import { Bomb, ChevronRight, Clock, Edit, Laptop, MoreVertical, MousePointerClick, Paperclip, RefreshCcw, Send, Trash2 } from 'lucide-react';
+import { Bomb, ChevronRight, Clock, Edit, Laptop, Loader2Icon, MoreVertical, MousePointerClick, Paperclip, RefreshCcw, Send, Trash2 } from 'lucide-react';
 import TasksTable from '../../components/TasksTable/TasksTable';
 import deadlineKiller from '../../assets/images/deadline killer.png'
 import worker from '../../assets/images/computer-worker.png'
@@ -26,7 +26,7 @@ export default function TaskDetails() {
     const [addingNote, setaddingNote] = useState(false)
     const [showDeleteAttachmentConfirmation, setShowDeleteAttachmentConfirmation] = useState(false);
     const [attachmentToDelete, setAttachmentToDelete] = useState(null);
-    const { data: taskData, isLoading: taskDataIsLoading, refetch } = useQuery({
+    const { data: taskData, isLoading: taskDataIsLoading, refetch, isRefetching } = useQuery({
         queryKey: ['taskData', selectedTask],
         queryFn: () =>
             axios.get(`https://brainmate.fly.dev/api/v1/tasks/${selectedTask.id}`, {
@@ -365,10 +365,11 @@ export default function TaskDetails() {
                     <div onClick={() => { navigate('/task-details'); }} className="px-1 cursor-pointer text-black dark:text-white">{selectedTask?.name}</div>
                 </div>
                 <div className="flex justify-end gap-2 mb-4">
+                    {isRefetching && <div className="hidden md:flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                     <button
                         onClick={() => refetch()} // Open the update form
-                        title='update task'
-                        className="rounded-full bg-white dark:bg-dark text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                        title='refresh'
+                        className="rounded-full bg-white dark:bg-dark text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
                         <RefreshCcw size={25} />
                     </button>
                     {taskData?.data.data.task.role !== 'member' && <>

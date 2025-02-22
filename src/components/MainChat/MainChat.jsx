@@ -439,7 +439,7 @@ export default function MainChat() {
 
                             <div className="text-sm font-semibold">{message?.sender_id !== profileData?.data?.data.user.id ? message?.sender?.name : ''}</div>
                             <div className="text-sm">
-                                {message?.message.split('\n').map((line, index) => (
+                                {message?.message?.split('\n').map((line, index) => (
                                     <React.Fragment key={index}>
                                         {line}
                                         <br />

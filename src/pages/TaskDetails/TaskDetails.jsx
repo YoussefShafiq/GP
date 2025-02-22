@@ -3,7 +3,7 @@ import { TaskContext } from '../../context/TaskContext'
 import { useNavigate } from 'react-router-dom';
 import { TeamsContext } from '../../context/TeamsContext';
 import { projectContext } from '../../context/ProjectsContext';
-import { Bomb, ChevronRight, Clock, Edit, Laptop, MoreVertical, MousePointerClick, Paperclip, Send, Trash2 } from 'lucide-react';
+import { Bomb, ChevronRight, Clock, Edit, Laptop, MoreVertical, MousePointerClick, Paperclip, RefreshCcw, Send, Trash2 } from 'lucide-react';
 import TasksTable from '../../components/TasksTable/TasksTable';
 import deadlineKiller from '../../assets/images/deadline killer.png'
 import worker from '../../assets/images/computer-worker.png'
@@ -364,8 +364,14 @@ export default function TaskDetails() {
                     </>}
                     <div onClick={() => { navigate('/task-details'); }} className="px-1 cursor-pointer text-black dark:text-white">{selectedTask?.name}</div>
                 </div>
-                {taskData?.data.data.task.role !== 'member' && <>
-                    <div className="flex justify-end gap-2 mb-4">
+                <div className="flex justify-end gap-2 mb-4">
+                    <button
+                        onClick={() => refetch()} // Open the update form
+                        title='update task'
+                        className="rounded-full bg-white dark:bg-dark text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                        <RefreshCcw size={25} />
+                    </button>
+                    {taskData?.data.data.task.role !== 'member' && <>
                         <button
                             onClick={() => setIsUpdateTaskFormOpen(true)} // Open the update form
                             title='update task'
@@ -379,8 +385,8 @@ export default function TaskDetails() {
 
                             <Trash2 size={22} />
                         </button>
-                    </div>
-                </>}
+                    </>}
+                </div>
             </div>
 
             {/* task details */}

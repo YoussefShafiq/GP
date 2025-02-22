@@ -51,7 +51,7 @@ export default function Home() {
             <div className="p-3 md:p-5">
                 <div className="flex flex-col-reverse lg:flex-row gap-5">
                     {/* TO-Do side */}
-                    <div className="flex flex-col gap-4 md:w-1/2 bg-base shadow-xl rounded-3xl p-5">
+                    <div className="flex flex-col gap-4 lg:w-1/2 bg-base shadow-xl rounded-3xl p-5">
                         <div className="flex items-center gap-2 relative">
                             <Clipboard className="text-gray-400" />
                             <Clock2 size={13} className="absolute text-gray-400 top-4 left-4 bg-base" />
@@ -116,7 +116,7 @@ export default function Home() {
                     </div>
 
                     {/* right side */}
-                    <div className="flex flex-col md:w-1/2 h-full gap-5">
+                    <div className="flex flex-col lg:w-1/2 h-full gap-5">
                         {/* charts */}
                         <div className="flex flex-col md:flex-row flex-wrap items-center justify-between p-5 bg-base shadow-xl rounded-3xl w-full">
                             <div className="capitalize text-xl w-full font-semibold">tasks stats</div>

@@ -351,9 +351,9 @@ export default function TaskDetails() {
                 refetchTask={refetch}
             />
         )}
-        <div className="p-5">
+        <div className="p-2 md:p-5">
             {/* path */}
-            <div className='text-gray-400 flex justify-between items-center h-16 px-5'>
+            <div className='text-gray-400 flex md:flex-row flex-col justify-between items-center h-16 px-5'>
                 <div className='flex items-center ' >
                     {!selectedTask?.assigned_to_me && <>
                         <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} />
@@ -396,8 +396,8 @@ export default function TaskDetails() {
 
                 {taskDataIsLoading ? <><TasksTable tasks={[selectedTask]} /></> : <><TasksTable tasks={[taskData?.data?.data?.task]} /></>}
 
-                <div className="flex justify-between gap-10 mt-8">
-                    <div className="flex flex-col w-[calc(66.666%-8px)] gap-5">
+                <div className="flex flex-col lg:flex-row justify-between gap-10 mt-8">
+                    <div className="flex flex-col lg:w-[calc(66.666%-8px)] gap-5">
                         {/* Task Progress Bar */}
                         {!taskDataIsLoading &&
                             <div className="relative w-full bg-gray-200 rounded-full h-3 dark:bg-gray-300 my-3">
@@ -460,8 +460,18 @@ export default function TaskDetails() {
                             )}
                         </AnimatePresence>
 
+                        {/* task description */}
+                        <div className="mt-2">
+                            <h2 className='capitalize mb-2 font-semibold text-gray-700 dark:text-gray-100' >task description</h2>
+                            {taskDataIsLoading ? <>
+                                <div name="task description" id="task description" className='w-full dark:outline-gray-300 dark:text-white rounded-xl overflow-y-auto' >{selectedTask?.description}</div>
+                            </> :
+                                <div name="task description" id="task description" className='w-full dark:outline-gray-300 dark:text-white rounded-xl overflow-y-auto' >{taskData?.data?.data?.task?.description}</div>
+                            }
+                        </div>
+
                         {/* Attachments Section */}
-                        <div className="mt-8">
+                        <div className="">
                             <div className="flex justify-between items-center mb-2">
                                 <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100'>Attachments</h2>
                                 {/* Add Attachment Button */}
@@ -483,7 +493,7 @@ export default function TaskDetails() {
                                     />
                                 </div>
                             </div>
-                            <div className="flex flex-wrap gap-4">
+                            <div className="flex lg:flex-row flex-col flex-wrap gap-4">
 
 
                                 {/* Display Attachments */}
@@ -529,15 +539,6 @@ export default function TaskDetails() {
                             </div>
                         </div>
 
-                        {/* task description */}
-                        <div className="">
-                            <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100' >task description</h2>
-                            {taskDataIsLoading ? <>
-                                <div name="task description" id="task description" className='w-full outline-dashed dark:outline-gray-300 dark:text-white outline-2 p-3 max-h-52 rounded-xl overflow-y-auto' >{selectedTask?.description}</div>
-                            </> :
-                                <div name="task description" id="task description" className='w-full outline-dashed dark:outline-gray-300 dark:text-white outline-2 p-3 max-h-52 rounded-xl overflow-y-auto' >{taskData?.data?.data?.task?.description}</div>
-                            }
-                        </div>
                         {/* assigned to */}
                         <div className="bg-base dark:bg-neutral-800 max-h-96 p-4 rounded-2xl shadow-xl overflow-y-auto">
                             <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100' >assigned to</h2>
@@ -582,7 +583,8 @@ export default function TaskDetails() {
                             </>}
                         </div>
                     </div>
-                    <div className="flex flex-col w-[calc(35.333%-8px)] gap-y-6">
+                    {/* right side */}
+                    <div className="flex flex-col lg:w-[calc(35.333%-8px)] gap-y-6">
                         {/* task notes */}
                         <div className="flex flex-col bg-base dark:bg-neutral-800 p-5 rounded-3xl shadow-xl max-h-96 relative">
                             <h2 className='capitalize ms-4 font-semibold text-gray-700 dark:text-gray-100'>Task Notes</h2>

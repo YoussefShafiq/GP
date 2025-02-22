@@ -60,7 +60,7 @@ export default function MyTeams() {
                 </div>
             </div>
 
-            {/* team spaces list */}
+            {/* teams list */}
             <div className="p-5 flex flex-wrap gap-5">
                 {isLoading ? (
                     <>
@@ -82,9 +82,9 @@ export default function MyTeams() {
                                 setselectedProject(team.project);
                                 setselectedTeam(team);
                                 navigate('/project/team')
-                            }} key={team.id} className="relative rounded-3xl mt-5 md:w-[calc(33%-10px)] w-full bg-base shadow-lg p-4 cursor-pointer hover:scale-[1.02] duration-300">
-                                {/* icon */}
-                                <div className="absolute left-1/2 -translate-x-1/2 -translate-y-10">
+                            }} key={team.id} className="relative rounded-3xl mt-5 md:w-[calc(50%-10px)] lg:w-[calc(33%-10px)] w-full bg-base shadow-lg p-4 pt-7 cursor-pointer hover:scale-[1.02] duration-300">
+                                {/* name */}
+                                <div className="absolute w-max max-w-full left-1/2 -translate-x-1/2 -translate-y-full">
                                     <div className="bg-light shadow-inner text-white p-3 rounded-full text-xl">{team.name}</div>
                                 </div>
                                 {/* content */}

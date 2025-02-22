@@ -498,7 +498,7 @@ export default function ProjectTeams() {
             </>}
 
             <div className="p-5">
-                <div className="flex md:flex-row flex-col justify-between items-center mb-0 border-b h-16 ps-5 p-5 ">
+                <div className="flex md:flex-row flex-col justify-between items-center mb-0 border-b gap-3 md:gap-0 md:h-16 ps-5 p-5 ">
                     {/* Path */}
                     <div className='text-black flex items-center' >
                         <div onClick={() => navigate('/project')} className="pe-1 cursor-pointer">{selectedProject?.name}</div> <ChevronRight strokeWidth={0.7} />
@@ -516,7 +516,7 @@ export default function ProjectTeams() {
                 </div>
 
                 <div className="mt-3">
-                    <h2 className='text-xl capitalize font-semibold text-highlight mb-3'>My teams</h2>
+                    <h2 className='text-xl capitalize font-semibold text-darkblue mb-3'>All teams</h2>
                     <div className="flex justify-between">
 
                         <div className="w-full md:w-[70%] flex flex-wrap h-fit gap-3">
@@ -536,7 +536,7 @@ export default function ProjectTeams() {
                                                     <div
                                                         key={team.id}
                                                         onClick={() => { setselectedTeam(team); navigate('team') }}
-                                                        className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base shadow-inner w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
+                                                        className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base shadow-inner w-full lg:w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
                                                     >
                                                         {team.name}
                                                         <Unlock size={20} className='opacity-80 text-gray-500' />

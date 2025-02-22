@@ -3,7 +3,7 @@ import { TaskContext } from '../../context/TaskContext'
 import { useNavigate } from 'react-router-dom';
 import { TeamsContext } from '../../context/TeamsContext';
 import { projectContext } from '../../context/ProjectsContext';
-import { Bomb, ChevronRight, Clock, Edit, Laptop, MousePointerClick, Send, Trash2 } from 'lucide-react';
+import { Bomb, ChevronRight, Clock, Edit, Laptop, MoreVertical, MousePointerClick, Paperclip, Send, Trash2 } from 'lucide-react';
 import TasksTable from '../../components/TasksTable/TasksTable';
 import deadlineKiller from '../../assets/images/deadline killer.png'
 import worker from '../../assets/images/computer-worker.png'
@@ -24,7 +24,8 @@ export default function TaskDetails() {
     const queryClient = useQueryClient(); // For invalidating queries
     const [noteDescription, setNoteDescription] = useState(''); // State for note inputuses
     const [addingNote, setaddingNote] = useState(false)
-
+    const [showDeleteAttachmentConfirmation, setShowDeleteAttachmentConfirmation] = useState(false);
+    const [attachmentToDelete, setAttachmentToDelete] = useState(null);
     const { data: taskData, isLoading: taskDataIsLoading, refetch } = useQuery({
         queryKey: ['taskData', selectedTask],
         queryFn: () =>
@@ -211,6 +212,97 @@ export default function TaskDetails() {
     }, []);
 
 
+
+    // Function to handle file upload
+    const handleFileUpload = async (e) => {
+        const files = Array.from(e.target.files);
+        const maxSize = 8 * 1024 * 1024; // 8MB
+
+        // Check file sizes
+        const oversizedFiles = files.filter(file => file.size > maxSize);
+        if (oversizedFiles.length > 0) {
+            toast.error('File size exceeds 8MB limit', {
+                duration: 3000,
+                position: 'bottom-right',
+            });
+            return;
+        }
+
+        const formData = new FormData();
+        files.forEach(file => {
+            formData.append('attachments[]', file);
+        });
+
+        try {
+            const response = await axios.post(
+                `https://brainmate.fly.dev/api/v1/tasks/${selectedTask.id}/attachments`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+            toast.success('Attachments uploaded successfully', {
+                duration: 1000,
+                position: 'bottom-right',
+            });
+            refetch(); // Refetch task data to update the attachments list
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Error uploading attachments', {
+                duration: 3000,
+                position: 'bottom-right',
+            });
+        }
+    };
+
+    // Function to handle file deletion
+    const handleFileDelete = async (attachmentId) => {
+        try {
+            await axios.delete(
+                `https://brainmate.fly.dev/api/v1/tasks/attachments/${attachmentId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            toast.success('Attachment deleted successfully', {
+                duration: 1000,
+                position: 'bottom-right',
+            });
+            refetch(); // Refetch task data to update the attachments list
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Error deleting attachment', {
+                duration: 3000,
+                position: 'bottom-right',
+            });
+        }
+    };
+
+    // Function to show delete confirmation for an attachment
+    const confirmDeleteAttachment = (attachmentId) => {
+        setAttachmentToDelete(attachmentId);
+        setShowDeleteAttachmentConfirmation(true);
+    };
+
+    // Function to cancel delete confirmation
+    const cancelDeleteAttachment = () => {
+        setAttachmentToDelete(null);
+        setShowDeleteAttachmentConfirmation(false);
+    };
+
+    // Function to proceed with attachment deletion
+    const proceedDeleteAttachment = async () => {
+        if (attachmentToDelete) {
+            await handleFileDelete(attachmentToDelete);
+            setAttachmentToDelete(null);
+            setShowDeleteAttachmentConfirmation(false);
+        }
+    };
+
+
     return <>
 
         <AnimatePresence>
@@ -326,6 +418,110 @@ export default function TaskDetails() {
                                 <div className="text-end dark:text-gray-300">{daysLeftDisplay} day left</div>
                             </div>
                         }
+                        {/* Delete Attachment Confirmation Popup */}
+                        <AnimatePresence>
+                            {showDeleteAttachmentConfirmation && (
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+                                >
+                                    <motion.div
+                                        initial={{ scale: 0.8, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        exit={{ scale: 0.8, opacity: 0 }}
+                                        className="bg-white p-6 rounded-lg shadow-lg"
+                                    >
+                                        <h2 className="text-lg font-semibold mb-4">Are you sure you want to delete this attachment?</h2>
+                                        <div className="flex justify-end gap-3">
+                                            <button
+                                                onClick={cancelDeleteAttachment}
+                                                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={proceedDeleteAttachment}
+                                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        {/* Attachments Section */}
+                        <div className="mt-8">
+                            <div className="flex justify-between items-center mb-2">
+                                <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100'>Attachments</h2>
+                                {/* Add Attachment Button */}
+                                <div className="flex items-center p-2 py-1 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer dark:border-gray-700">
+                                    <label htmlFor="file-upload" className="cursor-pointer flex items-center gap-2">
+                                        <div className="w-6 h-6">
+                                            <Paperclip size={22} className="text-gray-500 dark:text-gray-400" />
+                                        </div>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                                            Add Attachment
+                                        </p>
+                                    </label>
+                                    <input
+                                        id="file-upload"
+                                        type="file"
+                                        multiple
+                                        onChange={handleFileUpload}
+                                        className="hidden"
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex flex-wrap gap-4">
+
+
+                                {/* Display Attachments */}
+                                {taskData?.data?.data?.task?.attachments?.length > 0 ? (
+                                    taskData.data.data.task.attachments.map((attachment, index) => (
+                                        <div
+                                            key={index}
+                                            className="flex flex-col items-center p-3 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer dark:border-gray-700 relative"
+                                            onClick={() => window.open('https://brainmate.fly.dev/' + attachment.media, '_blank')}
+                                        >
+                                            {/* File Icon Based on File Type */}
+                                            {['.jpg', '.png', '.svg', '.jpeg'].some(ext => attachment.name.toLowerCase().endsWith(ext)) ? (
+                                                <img
+                                                    src={`https://brainmate.fly.dev/${attachment.media}`}
+                                                    alt={attachment.name}
+                                                    className="w-16 h-16 object-cover rounded-lg"
+                                                />
+                                            ) : (
+                                                <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-lg dark:bg-gray-700">
+                                                    <Paperclip size={24} className="text-gray-500 dark:text-gray-400" />
+                                                </div>
+                                            )}
+
+                                            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 text-center">
+                                                {attachment.name}
+                                            </p>
+
+                                            {/* More Vertical Icon for Delete */}
+                                            <div
+                                                className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    confirmDeleteAttachment(attachment.id);
+                                                }}
+                                            >
+                                                <MoreVertical size={16} className="text-gray-500 dark:text-gray-400" />
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="text-gray-500 dark:text-gray-400">No attachments found.</p>
+                                )}
+                            </div>
+                        </div>
+
                         {/* task description */}
                         <div className="">
                             <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100' >task description</h2>

@@ -592,7 +592,7 @@ export default function ProjectTeams() {
                                                         <h2 className="text-lg font-bold text-gray-800">{team.name}</h2>
                                                     </div>
                                                     <div className="flex justify-between items-center w-full">
-                                                        <p className="text-sm text-gray-500 mt-2">{team.created_at.substring(0, 10)}</p>
+                                                        <p className="text-sm text-gray-500 mt-2">{team?.created_at?.substring(0, 10)}</p>
                                                         <FontAwesomeIcon icon={faEllipsisVertical} />
                                                     </div>
                                                 </div>

@@ -1,19 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, XIcon, ChevronDown } from 'lucide-react';
-import { useFormik } from 'formik';
+import { Formik, useFormik } from 'formik';
 import { object, string, date, array } from 'yup';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
 import { TaskContext } from '../../context/TaskContext';
+import { ThreeDots } from 'react-loader-spinner';
 
 const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, taskData }) => {
     const [assignTobtn, setAssignTobtn] = useState(false);
-    let { selectedTask } = useContext(TaskContext)
     const [teamMembersState, setTeamMembersState] = useState([]);
     const [selectedMembers, setSelectedMembers] = useState([]);
-    const [sendingTask, setsendingTask] = useState(false)
+    const [sendingTask, setsendingTask] = useState(false);
+    const [attachments, setAttachments] = useState([]); // State for attachments
+    const memberIds = (selectedMembers || []).map((member) => member.id);
+    let { selectedTask } = useContext(TaskContext);
+
     const { refetch: refetchTask } = useQuery({
         queryKey: ['taskData', selectedTask],
         queryFn: () =>
@@ -23,6 +27,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                 },
             }),
     });
+
     // Form validation schema for task
     const taskValidationSchema = object({
         name: string().required('Task name is required'),
@@ -31,9 +36,9 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
         priority: string().required('Priority is required'),
         deadline: date().required('Deadline is required'),
         members: array().min(1, 'At least one member is required'),
+        attachments: array(), // Optional: Add validation rules if needed
     });
 
-    // Pre-fill form values if in "Update" mode
     useEffect(() => {
         if (mode === 'update' && taskData) {
             addTaskFormik.setValues({
@@ -42,9 +47,11 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                 tags: taskData.tags,
                 priority: taskData.priority,
                 deadline: taskData.deadline.split(' ')[0],
-                members: taskData.members.map((member) => member.id),
+                members: taskData.members.map((member) => member.id) || [], // Ensure this is an array
+                attachments: taskData.attachments || [], // Ensure this is an array
             });
-            setSelectedMembers(taskData.members);
+            setSelectedMembers(taskData.members || []); // Ensure this is an array
+            setAttachments(taskData.attachments || []); // Ensure this is an array
         }
     }, [mode, taskData]);
 
@@ -57,34 +64,56 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
             tags: '',
             priority: '',
             deadline: '',
-            members: [],
+            members: [], // Ensure this is an empty array
+            attachments: [], // Ensure this is an empty array
         },
         validationSchema: taskValidationSchema,
         onSubmit: async (values, formikHelpers) => {
             try {
-                // Add selected members to the form values
+                // Ensure `members` is an array
                 values.members = selectedMembers.map((member) => member.id);
+
+                // Create FormData object for multipart/form-data
+                const formData = new FormData();
+
+                // Append non-array fields
+                Object.keys(values).forEach((key) => {
+                    if (key !== 'members' && key !== 'attachments') {
+                        formData.append(key, values[key]);
+                    }
+                });
+
+                // Append `members` as an array
+                values.members.forEach((memberId) => {
+                    formData.append('members[]', memberId); // Use 'members[]' for array format
+                });
+
+                // Append attachments as an array
+                values.attachments.forEach((file) => {
+                    formData.append('attachments[]', file); // Use 'attachments[]' for array format
+                });
 
                 let response;
                 if (mode === 'add') {
-                    setsendingTask(true)
+                    setsendingTask(true);
                     // Add task API call
                     response = await axios.post(
                         `https://brainmate.fly.dev/api/v1/tasks`,
-                        values,
+                        formData,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
+                                'Content-Type': 'multipart/form-data',
                             },
                         }
                     );
-                    setsendingTask(false)
+                    setsendingTask(false);
                     toast.success('Task added successfully', {
                         duration: 1000,
                         position: 'bottom-right',
                     });
                 } else if (mode === 'update') {
-                    setsendingTask(true)
+                    setsendingTask(true);
                     // Update task API call
                     response = await axios.put(
                         `https://brainmate.fly.dev/api/v1/tasks/${taskData.id}`,
@@ -95,8 +124,8 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                             },
                         }
                     );
-                    setsendingTask(false)
-                    refetchTask()
+                    setsendingTask(false);
+                    refetchTask();
                     toast.success('Task updated successfully', {
                         duration: 1000,
                         position: 'bottom-right',
@@ -107,7 +136,9 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                 formikHelpers.resetForm();
                 onClose();
                 setSelectedMembers([]); // Clear selected members
+                setAttachments([]); // Clear attachments
             } catch (error) {
+                setsendingTask(false);
                 // Handle error
                 toast.error(error.response?.data?.message || 'Error processing task', {
                     duration: 3000,
@@ -116,6 +147,19 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
             }
         },
     });
+
+    const handleFileUpload = (e) => {
+        const files = Array.from(e.target.files);
+        setAttachments((prev) => [...prev, ...files]);
+        addTaskFormik.setFieldValue('attachments', [...addTaskFormik.values.attachments, ...files]);
+    };
+
+    const handleFileDelete = (index) => {
+        setAttachments((prev) => prev.filter((_, i) => i !== index));
+        const updatedAttachments = addTaskFormik.values.attachments.filter((_, i) => i !== index);
+        addTaskFormik.setFieldValue('attachments', updatedAttachments);
+    };
+
 
     useEffect(() => {
         if (teamMembers?.data?.data.users) {
@@ -128,8 +172,9 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
     }, [teamMembers, selectedMembers]);
 
     useEffect(() => {
-        // Update the form's `members` field whenever `selectedMembers` changes
-        addTaskFormik.setFieldValue('members', selectedMembers.map(member => member.id));
+        // Ensure `selectedMembers` is an array and map it to an array of IDs
+        const memberIds = (selectedMembers || []).map((member) => member.id);
+        addTaskFormik.setFieldValue('members', memberIds); // This will always be an array
     }, [selectedMembers]);
 
     return (
@@ -367,6 +412,36 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                 </AnimatePresence>
                             </div>
 
+                            {/* Attachments Section */}
+                            {mode === 'add' && <div className="relative z-0 w-full group">
+                                <label
+                                    htmlFor="attachments"
+                                    className="block text-sm text-gray-700 mb-2"
+                                >
+                                    Attachments
+                                </label>
+                                <input
+                                    type="file"
+                                    id="attachments"
+                                    name="attachments"
+                                    multiple
+                                    onChange={handleFileUpload}
+                                    className="block w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                />
+                                <div className="mt-3 flex flex-wrap gap-2">
+                                    {addTaskFormik.values.attachments.map((file, index) => (
+                                        <div key={index} className="flex gap-1 items-center bg-gray-300 w-fit p-2 rounded-full">
+                                            {file.name}
+                                            <XIcon
+                                                size={15}
+                                                onClick={() => handleFileDelete(index)}
+                                                className="cursor-pointer"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>}
+
                             {/* Submit Button */}
                             <button
                                 type="submit"
@@ -376,7 +451,20 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                 onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
                                 disabled={sendingTask}
                             >
-                                {mode === 'add' ? 'Add Task' : 'Update Task'}
+                                {sendingTask ? <>
+
+                                    <ThreeDots
+                                        visible={true}
+                                        height="20"
+                                        width="43"
+                                        color={'white'}
+                                        radius="9"
+                                        ariaLabel="three-dots-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="w-fit m-auto"
+                                    /></> : <>
+                                    {mode === 'add' ? 'Add Task' : 'Update Task'}
+                                </>}
                             </button>
                         </form>
                     </motion.div>

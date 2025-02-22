@@ -118,7 +118,7 @@ export default function TasksTable({ tasks = [] }) {
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <div className="flex items-center">
                                         <Calendar className="mr-2" color="red" />
-                                        {task.deadline.substring(0, 10).replaceAll('-', '/')}
+                                        {task?.deadline?.substring(0, 10).replaceAll('-', '/')}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">

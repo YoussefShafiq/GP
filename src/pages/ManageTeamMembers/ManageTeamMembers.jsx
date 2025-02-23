@@ -313,6 +313,7 @@ const ManageTeamMembers = () => {
             <table className="w-full border-collapse">
                 <thead>
                     <tr className="bg-gray-100">
+                        <th className="p-3 text-left">ID</th>
                         <th className="p-3 text-left">Name</th>
                         <th className="p-3 text-left">Email</th>
                         <th className="p-3 text-left">Role</th>
@@ -322,6 +323,7 @@ const ManageTeamMembers = () => {
                 <tbody>
                     {teamMembers?.data?.data.users.map((member) => (
                         <tr key={member.id} className="border-b">
+                            <td className="p-3">{member.id}</td>
                             <td className="p-3">{member.name}</td>
                             <td className="p-3">{member.email}</td>
                             <td className="p-3">

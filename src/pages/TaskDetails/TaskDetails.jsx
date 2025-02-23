@@ -631,7 +631,7 @@ export default function TaskDetails() {
                                                         style={{ backgroundColor: note.user.color }}
                                                         title={note.user.email}
                                                     >
-                                                        Y
+                                                        {note.user.name[0]}
                                                     </div>
                                                 </span>
                                                 <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex dark:bg-gray-700 dark:border-gray-600">
@@ -664,58 +664,54 @@ export default function TaskDetails() {
                             </form>
                         </div>
                         {/* activity log */}
-                        <div className="bg-base dark:bg-neutral-800 ps-10 p-5 rounded-3xl shadow-xl max-h-96 overflow-y-auto" >
-                            <h2 className='capitalize mb-2 font-semibold text-gray-700 dark:text-gray-100' >Activity Log</h2>
+                        <div className="flex flex-col bg-base dark:bg-neutral-800 p-5 rounded-3xl shadow-xl max-h-96 relative">
+                            <h2 className='capitalize ms-4 font-semibold text-gray-700 dark:text-gray-100'>Activity Log</h2>
 
-                            <ol class="relative border-s mt-5 border-gray-400 dark:border-gray-700">
-                                <li class="mb-5 ms-6">
-                                    <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-4 ring-white dark:ring-gray-900 dark:bg-blue-900">
-                                        <div
-                                            className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
-                                            style={{ backgroundColor: "#09c" }}
-                                            title={"youssef mohammed shafek"}
-                                        >
-                                            Y
-                                        </div>
-                                    </span>
-                                    <div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex dark:bg-gray-700 dark:border-gray-600">
-                                        <time class="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">just now</time>
-                                        <div class="text-sm font-normal text-gray-500 dark:text-gray-300">Bonnie moved <a href="#" class="font-semibold text-blue-600 dark:text-blue-500 hover:underline">Jese Leos</a> to <span class="bg-gray-100 text-gray-800 text-xs font-normal me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-600 dark:text-gray-300">Funny Group</span></div>
-                                    </div>
-                                </li>
-                                <li class="mb-5 ms-6">
-                                    <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-4 ring-white dark:ring-gray-900 dark:bg-blue-900">
-                                        <div
-                                            className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
-                                            style={{ backgroundColor: "#d2d" }}
-                                            title={"youssef mohammed shafek"}
-                                        >
-                                            H
-                                        </div>
-                                    </span>
-                                    <div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex dark:bg-gray-700 dark:border-gray-600">
-                                        <time class="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">just now</time>
-                                        <div class="text-sm font-normal text-gray-500 dark:text-gray-300">Bonnie moved <a href="#" class="font-semibold text-blue-600 dark:text-blue-500 hover:underline">Jese Leos</a> to <span class="bg-gray-100 text-gray-800 text-xs font-normal me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-600 dark:text-gray-300">Funny Group</span></div>
-                                    </div>
-                                </li>
-                                <li class="mb-5 ms-6">
-                                    <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-4 ring-white dark:ring-gray-900 dark:bg-blue-900">
-                                        <div
-                                            className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
-                                            style={{ backgroundColor: "#283" }}
-                                            title={"youssef mohammed shafek"}
-                                        >
-                                            K
-                                        </div>
-                                    </span>
-                                    <div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex dark:bg-gray-700 dark:border-gray-600">
-                                        <time class="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">just now</time>
-                                        <div class="text-sm font-normal text-gray-500 dark:text-gray-300">Bonnie moved <a href="#" class="font-semibold text-blue-600 dark:text-blue-500 hover:underline">Jese Leos</a> to <span class="bg-gray-100 text-gray-800 text-xs font-normal me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-600 dark:text-gray-300">Funny Group</span></div>
-                                    </div>
-                                </li>
+                            {/* <!-- Make the ol take up the remaining space and be scrollable --> */}
+                            <div className="flex-1 p-5 pb-0 overflow-y-auto dark:text-gray-100">
+                                {!taskData?.data?.data.task.activities ? <>
+                                    <div className="text-center">No activity data found</div>
+                                </> : <>
+                                    <ol className="relative border-s border-gray-400 dark:border-gray-700 ">
+                                        {taskData?.data?.data.task.activities?.map((note) => (
+                                            <li key={note.id} className="mb-5 ms-6">
+                                                <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 dark:bg-blue-900">
+                                                    <div
+                                                        className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
+                                                        style={{ backgroundColor: note.user.color }}
+                                                        title={note.user.email}
+                                                    >
+                                                        {note.user.name[0]}
+                                                    </div>
+                                                </span>
+                                                <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex dark:bg-gray-700 dark:border-gray-600">
+                                                    <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{formatTimeAgo(note.created_at)}</time>
+                                                    <div className="text-sm font-normal text-gray-500 dark:text-gray-300 break-words"><span className='font-bold text-black dark:text-white'>{note.user.name}</span> {note.description}</div>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ol>
+                                </>}
+                            </div>
 
-
-                            </ol>
+                            {/* <!-- Fix the input and button at the bottom --> */}
+                            <form onSubmit={handleAddNote} className="flex justify-between items-center gap-2 bg-base dark:bg-neutral-800 mt-4 flex-shrink-0">
+                                <textarea
+                                    placeholder="Add Notes..."
+                                    className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-light focus:border-light duration-300 resize-none"
+                                    rows={1}
+                                    style={{ minHeight: '40px', maxHeight: '120px', overflowY: 'auto' }}
+                                    value={noteDescription}
+                                    onChange={(e) => setNoteDescription(e.target.value)}
+                                />
+                                <button
+                                    type="submit"
+                                    className="p-2 bg-light text-white rounded-lg hover:bg-darkblue h-full aspect-square flex items-center justify-center transition-all"
+                                    disabled={addingNote} // Disable button while loading
+                                >
+                                    {addNoteMutation.isLoading ? 'Adding...' : <Send size={20} />}
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

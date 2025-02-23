@@ -197,16 +197,16 @@ export default function Profile() {
                         </div>
                         <div className="flex lg:flex-col flex-row gap-6 items-center justify-center text-3xl lg:w-[calc(10%-12px)] p-3 lg:p-0 bg-darkblue rounded-3xl shadow-xl flex-wrap">
                             <a href={data?.data?.data.user.social.facebook} target='_blank'>
-                                <FontAwesomeIcon icon={faFacebook} className='drop-shadow-lg' />
+                                <FontAwesomeIcon icon={faFacebook} className={` ${!data?.data?.data.user.social.facebook && 'opacity-20'} drop-shadow-lg`} />
                             </a>
                             <a href={data?.data?.data.user.social.github} target='_blank'>
-                                <FontAwesomeIcon icon={faGithub} className='drop-shadow-lg' />
+                                <FontAwesomeIcon icon={faGithub} className={` ${!data?.data?.data.user.social.github && 'opacity-20'} drop-shadow-lg`} />
                             </a>
                             <a href={data?.data?.data.user.social.linkedin} target='_blank'>
-                                <FontAwesomeIcon icon={faLinkedin} className='drop-shadow-lg' />
+                                <FontAwesomeIcon icon={faLinkedin} className={` ${!data?.data?.data.user.social.linkedin && 'opacity-20'} drop-shadow-lg`} />
                             </a>
                             <a href={data?.data?.data.user.social.website} target='_blank'>
-                                <FontAwesomeIcon icon={faEarthAfrica} className='drop-shadow-lg' />
+                                <FontAwesomeIcon icon={faEarthAfrica} className={` ${!data?.data?.data.user.social.website && 'opacity-20'} drop-shadow-lg`} />
                             </a>
                         </div>
                     </div>

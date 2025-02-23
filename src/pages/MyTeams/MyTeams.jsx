@@ -6,11 +6,13 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { projectContext } from '../../context/ProjectsContext';
 import { TeamsContext } from '../../context/TeamsContext';
+import { ChatContext } from '../../context/ChatContext';
 
 export default function MyTeams() {
     const token = localStorage.getItem('userToken');
     const [teamNameSearch, setTeamNameSearch] = useState('');
     const [projectNameSearch, setProjectNameSearch] = useState('');
+    const { selectedChat, setselectedChat } = useContext(ChatContext);
     let { selectedProject, setselectedProject } = useContext(projectContext);
     let { selectedTeam, setselectedTeam } = useContext(TeamsContext);
     const navigate = useNavigate()
@@ -89,20 +91,27 @@ export default function MyTeams() {
                                 </div>
                                 {/* content */}
                                 <div className="mt-3">
-                                    <h2><span className='font-semibold'>project:</span> {team.project.name}</h2>
-                                    <h2><span className='font-semibold'>role:</span> {team.role}</h2>
-                                    <h2><span className='font-semibold'>created at:</span> {team.created_at.substring(0, 10).replaceAll('-', '/')}</h2>
+                                    <h2><span className='font-semibold'>Project:</span> {team.project.name}</h2>
+                                    <h2><span className='font-semibold'>Role:</span> {team.role}</h2>
+                                    <h2><span className='font-semibold'>Created at:</span> {team.created_at.substring(0, 10).replaceAll('-', '-')}</h2>
                                 </div>
                                 <div className="my-2 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-5">
                                     <div className="flex items-center justify-center gap-2 md:gap-5">
                                         <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
-                                            <button><Globe color='white' /></button>
-                                        </div>
-                                        <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
                                             <button><Video color='white' /></button>
                                         </div>
-                                        <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
-                                            <button><MessageCircleMore color='white' /></button>
+                                        <div onClick={(e) => {
+                                            navigate('/chat');
+                                            e.stopPropagation();
+                                            setselectedChat({
+                                                'id': team.id,
+                                                'name': team.name,
+                                                'project': {
+                                                    'name': team.project.name
+                                                }
+                                            })
+                                        }} className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
+                                            <button onClick={() => navigate('/chat')} ><MessageCircleMore color='white' /></button>
                                         </div>
                                     </div>
                                     {team.role !== 'member' && (

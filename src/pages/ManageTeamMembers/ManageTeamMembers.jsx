@@ -3,7 +3,7 @@ import { TeamsContext } from '../../context/TeamsContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Trash2, Loader2Icon, ChevronRight } from 'lucide-react';
+import { Trash2, Loader2Icon, ChevronRight, MousePointerClick } from 'lucide-react';
 import { projectContext } from '../../context/ProjectsContext';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -207,6 +207,17 @@ const ManageTeamMembers = () => {
 
             <div className="text-black mt-5 text-center">Failed to load team members.</div>
         </div>
+    }
+
+    if (!selectedTeam) {
+        return (
+            <div className="h-[calc(100vh-48px)] flex justify-center items-center">
+                <div className="flex flex-col items-center gap-3">
+                    <MousePointerClick size={35} className='text-light' />
+                    <h2 className='capitalize'>please select team first</h2>
+                </div>
+            </div>
+        );
     }
 
     return (

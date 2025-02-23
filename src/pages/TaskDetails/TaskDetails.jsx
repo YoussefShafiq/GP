@@ -6,6 +6,7 @@ import { projectContext } from '../../context/ProjectsContext';
 import { Bomb, ChevronRight, Clock, Edit, Laptop, Loader2Icon, MoreVertical, MousePointerClick, Paperclip, RefreshCcw, Send, Trash2 } from 'lucide-react';
 import TasksTable from '../../components/TasksTable/TasksTable';
 import deadlineKiller from '../../assets/images/deadline killer.png'
+import uploadingimg from '../../assets/images/uploading.gif'
 import worker from '../../assets/images/computer-worker.png'
 import RIP from '../../assets/images/RIPicon.png'
 import success from '../../assets/images/success.png'
@@ -28,6 +29,8 @@ export default function TaskDetails() {
     const [addingNote, setaddingNote] = useState(false)
     const [showDeleteAttachmentConfirmation, setShowDeleteAttachmentConfirmation] = useState(false);
     const [attachmentToDelete, setAttachmentToDelete] = useState(null);
+    const [uploading, setuploading] = useState(false);
+
     const { data: taskData, isLoading: taskDataIsLoading, refetch, isRefetching } = useQuery({
         queryKey: ['taskData', selectedTask],
         queryFn: () =>
@@ -236,6 +239,7 @@ export default function TaskDetails() {
         });
 
         try {
+            setuploading(true)
             const response = await axios.post(
                 `https://brainmate.fly.dev/api/v1/tasks/${selectedTask.id}/attachments`,
                 formData,
@@ -246,12 +250,14 @@ export default function TaskDetails() {
                     },
                 }
             );
+            setuploading(false)
             toast.success('Attachments uploaded successfully', {
                 duration: 1000,
                 position: 'bottom-right',
             });
             refetch(); // Refetch task data to update the attachments list
         } catch (error) {
+            setuploading(false)
             toast.error(error.response?.data?.message || 'Error uploading attachments', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -355,7 +361,7 @@ export default function TaskDetails() {
         )}
         <div className="p-2 md:p-5">
             {/* path */}
-            <div className='text-gray-400 flex md:flex-row flex-col justify-between items-center h-16 px-5'>
+            <div className='text-gray-400 flex md:flex-row flex-col justify-between items-center lg:h-16 px-5'>
                 <div className='flex items-center ' >
                     {!selectedTask?.assigned_to_me && <>
                         <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} />
@@ -492,22 +498,27 @@ export default function TaskDetails() {
                             <div className="flex justify-between items-center mb-2">
                                 <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100'>Attachments</h2>
                                 {/* Add Attachment Button */}
-                                <div className="flex items-center p-2 py-1 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer dark:border-gray-700">
-                                    <label htmlFor="file-upload" className="cursor-pointer flex items-center gap-2">
-                                        <div className="w-6 h-6">
-                                            <Paperclip size={22} className="text-gray-500 dark:text-gray-400" />
-                                        </div>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                                            Add Attachment
-                                        </p>
-                                    </label>
-                                    <input
-                                        id="file-upload"
-                                        type="file"
-                                        multiple
-                                        onChange={handleFileUpload}
-                                        className="hidden"
-                                    />
+                                <div className="flex gap-2 items-center">
+                                    {uploading && <div className="hidden md:flex items-center text-blue-500"><img src={uploadingimg} alt="" className='w-6' /></div>}
+                                    <div className={`flex items-center p-2 py-1 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer dark:border-gray-700 ${uploading && 'opacity-50 cursor-wait'} `}>
+
+                                        <label htmlFor="file-upload" className={` ${uploading ? 'cursor-wait' : 'cursor-pointer'} flex items-center gap-2`}>
+                                            <div className="w-6 h-6">
+                                                <Paperclip size={22} className="text-gray-500 dark:text-gray-400" />
+                                            </div>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                                                Add Attachment
+                                            </p>
+                                        </label>
+                                        <input
+                                            id="file-upload"
+                                            type="file"
+                                            multiple
+                                            onChange={handleFileUpload}
+                                            className="hidden"
+                                            disabled={uploading}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <div className="flex lg:flex-row flex-col flex-wrap gap-4">
@@ -625,7 +636,7 @@ export default function TaskDetails() {
                                                 </span>
                                                 <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex dark:bg-gray-700 dark:border-gray-600">
                                                     <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{formatTimeAgo(note.created_at)}</time>
-                                                    <div className="text-sm font-normal text-gray-500 dark:text-gray-300"><span className='font-bold text-black dark:text-white'>{note.user.name}</span> {note.description}</div>
+                                                    <div className="text-sm font-normal text-gray-500 dark:text-gray-300 break-words"><span className='font-bold text-black dark:text-white'>{note.user.name}</span> {note.description}</div>
                                                 </div>
                                             </li>
                                         ))}

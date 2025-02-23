@@ -136,7 +136,7 @@ export default function Sidebar() {
             onClick={() => setAddProjectForm(false)}
           >
             <motion.div
-              className="bg-white rounded-lg shadow-lg border p-6 w-1/3 relative max-h-[95vh] overflow-y-auto"
+              className="bg-white rounded-lg shadow-lg border p-6 w-4/5 lg:w-1/3 relative max-h-[95vh] overflow-y-auto"
               initial={{ y: 0, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 0, opacity: 0 }}
@@ -230,7 +230,7 @@ export default function Sidebar() {
             onClick={() => setJoinTeamForm(false)}
           >
             <motion.div
-              className="bg-white rounded-lg shadow-lg border p-6 w-1/3 relative max-h-[95vh] overflow-y-auto"
+              className="bg-white rounded-lg shadow-lg border p-6 w-4/5 lg:w-1/3 relative max-h-[95vh] overflow-y-auto"
               initial={{ y: 0, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 0, opacity: 0 }}

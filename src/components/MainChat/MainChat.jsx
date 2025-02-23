@@ -438,7 +438,7 @@ export default function MainChat() {
                             </AnimatePresence>
 
                             <div className="text-sm font-semibold">{message?.sender_id !== profileData?.data?.data.user.id ? message?.sender?.name : ''}</div>
-                            <div className="text-sm">
+                            <div className="text-sm break-words">
                                 {message?.message.split('\n').map((line, index) => (
                                     <React.Fragment key={index}>
                                         {line}

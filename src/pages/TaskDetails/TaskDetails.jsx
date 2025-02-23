@@ -7,6 +7,8 @@ import { Bomb, ChevronRight, Clock, Edit, Laptop, Loader2Icon, MoreVertical, Mou
 import TasksTable from '../../components/TasksTable/TasksTable';
 import deadlineKiller from '../../assets/images/deadline killer.png'
 import worker from '../../assets/images/computer-worker.png'
+import RIP from '../../assets/images/RIPicon.png'
+import success from '../../assets/images/success.png'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
 import axios from 'axios';
@@ -406,23 +408,38 @@ export default function TaskDetails() {
                                     style={progressBarStyle}
                                 >
                                     {/* Icon at the end of the progress bar */}
-                                    <div
+                                    {progressPercentage != 100 && <div
                                         className="absolute right-0 flex items-center gap-1 -mt-9 transform z-10 "
                                         style={{ top: '50%' }}
                                     >
                                         {/* <Bomb size={16} className="text-red-600" />  */}
                                         <img src={deadlineKiller} className='w-6' alt="" />
-                                    </div>
+                                    </div>}
+                                    {progressPercentage == 100 && <>
+                                        {taskData?.data?.data?.task?.is_overdue ? <div
+                                            className="absolute right-0 flex items-center gap-1 -mt-[33px] transform z-10 opacity-60"
+                                            style={{ top: '50%' }}
+                                        >
+                                            {/* <Bomb size={16} className="text-red-600" />  */}
+                                            <img src={RIP} className='w-6' alt="" />
+                                        </div> : <div
+                                            className="absolute right-0 flex items-center gap-1 -mt-[30px] transform z-10"
+                                            style={{ top: '50%' }}
+                                        >
+                                            {/* <Bomb size={16} className="text-red-600" />  */}
+                                            <img src={success} className='w-6' alt="" />
+                                        </div>}
+                                    </>}
 
                                 </div>
-                                <div
+                                {progressPercentage != 100 && <div
                                     className="absolute right-0 flex items-center gap-1 -mt-7 transform "
                                     style={{ top: '50%' }}
                                 >
                                     {/* <Bomb size={16} className="text-red-600" />  */}
                                     <img src={worker} className='w-6' alt="" />
-                                </div>
-                                <div className="text-end dark:text-gray-300">{daysLeftDisplay} day left</div>
+                                </div>}
+                                {progressPercentage != 100 ? <div className="text-end dark:text-gray-300">{daysLeftDisplay} day left</div> : <div className="text-end dark:text-gray-300">It's over</div>}
                             </div>
                         }
                         {/* Delete Attachment Confirmation Popup */}

@@ -539,7 +539,7 @@ export default function MainChat() {
                     >
                         <Smile size={20} />
                     </button>
-                    <label className="p-2 text-gray-500 hover:text-light transition-all cursor-pointer">
+                    {/* <label className="p-2 text-gray-500 hover:text-light transition-all cursor-pointer">
                         <Paperclip size={20} />
                         <input
                             type="file"
@@ -547,7 +547,7 @@ export default function MainChat() {
                             onChange={handleFileChange}
                             multiple // Allow multiple file selection
                         />
-                    </label>
+                    </label> */}
                     <button className="p-2 bg-light text-white rounded-lg hover:bg-darkblue transition-all" onClick={handleSendMessage}>
                         <Send size={20} />
                     </button>

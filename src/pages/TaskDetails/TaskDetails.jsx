@@ -15,6 +15,8 @@ import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import TaskForm from '../../components/AddTaskForm/AddTaskForm';
+import { Tooltip } from '@heroui/tooltip';
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function TaskDetails() {
     let { selectedTask, setselectedTask } = useContext(TaskContext)
@@ -27,6 +29,7 @@ export default function TaskDetails() {
     const queryClient = useQueryClient(); // For invalidating queries
     const [noteDescription, setNoteDescription] = useState(''); // State for note inputuses
     const [addingNote, setaddingNote] = useState(false)
+    const [deletingAttachment, setdeletingAttachment] = useState(false)
     const [showDeleteAttachmentConfirmation, setShowDeleteAttachmentConfirmation] = useState(false);
     const [attachmentToDelete, setAttachmentToDelete] = useState(null);
     const [uploading, setuploading] = useState(false);
@@ -40,6 +43,9 @@ export default function TaskDetails() {
                 },
             }),
     });
+
+    console.log(selectedTask);
+
 
     function formatTimeAgo(createdAt) {
         const now = new Date();
@@ -267,6 +273,7 @@ export default function TaskDetails() {
 
     // Function to handle file deletion
     const handleFileDelete = async (attachmentId) => {
+        setdeletingAttachment(true)
         try {
             await axios.delete(
                 `https://brainmate.fly.dev/api/v1/tasks/attachments/${attachmentId}`,
@@ -276,12 +283,14 @@ export default function TaskDetails() {
                     },
                 }
             );
+            setdeletingAttachment(false)
             toast.success('Attachment deleted successfully', {
                 duration: 1000,
                 position: 'bottom-right',
             });
             refetch(); // Refetch task data to update the attachments list
         } catch (error) {
+            setdeletingAttachment(false)
             toast.error(error.response?.data?.message || 'Error deleting attachment', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -363,37 +372,47 @@ export default function TaskDetails() {
             {/* path */}
             <div className='text-gray-400 flex md:flex-row flex-col justify-between items-center lg:h-16 px-5'>
                 <div className='flex items-center ' >
-                    {!selectedTask?.assigned_to_me && <>
-                        <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} />
-                        <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div><ChevronRight strokeWidth={0.7} />
-                    </>}
-                    {selectedTask?.assigned_to_me && <>
-                        <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div><ChevronRight strokeWidth={0.7} />
+                    {selectedTask.members ? <>
+                        {!selectedTask?.assigned_to_me && <>
+                            <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} />
+                            <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div><ChevronRight strokeWidth={0.7} />
+                        </>}
+                        {selectedTask?.assigned_to_me && <>
+                            <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div><ChevronRight strokeWidth={0.7} />
+                        </>}
+                    </> : <>
+                        <div onClick={() => { navigate('/'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">Home</div><ChevronRight strokeWidth={0.7} />
                     </>}
                     <div onClick={() => { navigate('/task-details'); }} className="px-1 cursor-pointer text-black dark:text-white">{selectedTask?.name}</div>
                 </div>
                 <div className="flex justify-end gap-2 mb-4">
                     {isRefetching && <div className="hidden md:flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
-                    <button
-                        onClick={() => refetch()} // Open the update form
-                        title='refresh'
-                        className="rounded-full bg-white dark:bg-dark text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                        <RefreshCcw size={25} />
-                    </button>
+                    <Tooltip delay={350} closeDelay={0} content='refresh' >
+                        <button
+                            onClick={() => refetch()} // Open the update form
+                            title='refresh'
+                            className="rounded-full bg-white dark:bg-dark text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                            <RefreshCcw size={25} />
+                        </button>
+                    </Tooltip>
                     {taskData?.data.data.task.role !== 'member' && <>
-                        <button
-                            onClick={() => setIsUpdateTaskFormOpen(true)} // Open the update form
-                            title='update task'
-                            className="rounded-full bg-white dark:bg-dark text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                            <Edit size={25} />
-                        </button>
-                        <button
-                            onClick={() => handleRemoveTask(selectedTask.id)}
-                            title='delete task'
-                            className="rounded-full bg-white dark:bg-dark text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                        <Tooltip delay={350} closeDelay={0} content='update task' >
+                            <button
+                                onClick={() => setIsUpdateTaskFormOpen(true)} // Open the update form
+                                title='update task'
+                                className="rounded-full bg-white dark:bg-dark text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                <Edit size={25} />
+                            </button>
+                        </Tooltip>
+                        <Tooltip delay={350} closeDelay={0} content='delete task' >
+                            <button
+                                onClick={() => handleRemoveTask(selectedTask.id)}
+                                title='delete task'
+                                className="rounded-full bg-white dark:bg-dark text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
 
-                            <Trash2 size={22} />
-                        </button>
+                                <Trash2 size={22} />
+                            </button>
+                        </Tooltip>
                     </>}
                 </div>
             </div>
@@ -401,8 +420,39 @@ export default function TaskDetails() {
             {/* task details */}
             <div className="p-3">
                 {/* task in table */}
+                {taskDataIsLoading ? <>
+                    {selectedTask.members ? <TasksTable tasks={[selectedTask]} /> : <>
 
-                {taskDataIsLoading ? <><TasksTable tasks={[selectedTask]} /></> : <><TasksTable tasks={[taskData?.data?.data?.task]} /></>}
+                        <table className="w-full rounded-xl overflow-hidden text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
+                                <tr>
+                                    {["Task Name", "Assigned to", "Deadline", "Priority", "Status", "Tags"].map((header, index) => (
+                                        <th key={index} scope="col" className="px-6 py-3 whitespace-nowrap">
+                                            {header}
+                                        </th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <td colSpan={6} className='text-center py-3' >
+                                    <ThreeDots
+                                        visible={true}
+                                        height="20"
+                                        width="43"
+                                        color="#133d57"
+                                        radius="9"
+                                        ariaLabel="three-dots-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="w-fit m-auto"
+                                    />
+                                </td>
+
+                            </tbody>
+                        </table>
+
+                    </>}
+                </> : <><TasksTable tasks={[taskData?.data?.data?.task]} /></>}
 
                 <div className="flex flex-col lg:flex-row justify-between gap-10 mt-8">
                     <div className="flex flex-col lg:w-[calc(66.666%-8px)] gap-5">
@@ -473,7 +523,8 @@ export default function TaskDetails() {
                                             </button>
                                             <button
                                                 onClick={proceedDeleteAttachment}
-                                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:cursor-wait"
+                                                disabled={deletingAttachment}
                                             >
                                                 Delete
                                             </button>
@@ -570,10 +621,10 @@ export default function TaskDetails() {
                         {/* assigned to */}
                         <div className="bg-base dark:bg-neutral-800 max-h-96 p-4 rounded-2xl shadow-xl overflow-y-auto">
                             <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100' >assigned to</h2>
-                            {taskDataIsLoading ? <>
+                            {(taskDataIsLoading && selectedTeam) ? <>
                                 <div className="flex flex-col flex-wrap gap-3">
-                                    {selectedTask.members.map((person) => (
-                                        <div className="flex gap-2 border-b pb-3">
+                                    {selectedTask?.members?.map((person) => (
+                                        <div key={person.id} className="flex gap-2 border-b pb-3">
                                             <div
                                                 key={person.id}
                                                 className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
@@ -591,7 +642,7 @@ export default function TaskDetails() {
                                 </div>
                             </> : <>
                                 <div className="flex flex-col flex-wrap gap-3">
-                                    {taskData.data.data.task.members.map((person) => (
+                                    {taskData?.data?.data?.task?.members?.map((person) => (
                                         <div className="flex gap-2 border-b pb-3">
                                             <div
                                                 key={person.id}
@@ -618,7 +669,7 @@ export default function TaskDetails() {
                             <h2 className='capitalize ms-4 font-semibold text-gray-700 dark:text-gray-100'>Task Notes</h2>
 
                             {/* <!-- Make the ol take up the remaining space and be scrollable --> */}
-                            <div className="flex-1 p-5 pb-0 overflow-y-auto dark:text-gray-100">
+                            <div className="flex-1 md:p-5 p-5 pe-0 pb-0 overflow-y-auto dark:text-gray-100">
                                 {taskData?.data?.data.task.notes.length == 0 ? <>
                                     <div className="text-center">No notes found</div>
                                 </> : <>
@@ -626,17 +677,18 @@ export default function TaskDetails() {
                                         {taskData?.data?.data.task.notes.map((note) => (
                                             <li key={note.id} className="mb-5 ms-6">
                                                 <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 dark:bg-blue-900">
-                                                    <div
-                                                        className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
-                                                        style={{ backgroundColor: note.user.color }}
-                                                        title={note.user.email}
-                                                    >
-                                                        {note.user.name[0]}
-                                                    </div>
+                                                    <Tooltip content={note.user.email} delay={350} closeDelay={0}>
+                                                        <div
+                                                            className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
+                                                            style={{ backgroundColor: note.user.color }}
+                                                        >
+                                                            {note.user.name[0]}
+                                                        </div>
+                                                    </Tooltip>
                                                 </span>
-                                                <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex dark:bg-gray-700 dark:border-gray-600">
-                                                    <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{formatTimeAgo(note.created_at)}</time>
-                                                    <div className="text-sm font-normal text-gray-500 dark:text-gray-300 break-words"><span className='font-bold text-black dark:text-white'>{note.user.name}</span> {note.description}</div>
+                                                <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs md:flex dark:bg-gray-700 dark:border-gray-600">
+                                                    <time className="mb-1 text-xs font-normal text-gray-400 order-1 md:order-last sm:mb-0">{formatTimeAgo(note.created_at)}</time>
+                                                    <div className="text-sm font-normal text-gray-500 dark:text-gray-300 break-words md:max-w-[calc(100%-30px)]"><span className='font-bold text-black dark:text-white'>{note.user.name}</span> {note.description}</div>
                                                 </div>
                                             </li>
                                         ))}
@@ -676,13 +728,14 @@ export default function TaskDetails() {
                                         {taskData?.data?.data.task.activities?.map((note) => (
                                             <li key={note.id} className="mb-5 ms-6">
                                                 <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 dark:bg-blue-900">
-                                                    <div
-                                                        className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
-                                                        style={{ backgroundColor: note.user.color }}
-                                                        title={note.user.email}
-                                                    >
-                                                        {note.user.name[0]}
-                                                    </div>
+                                                    <Tooltip content={note.user.email} delay={350} closeDelay={0}>
+                                                        <div
+                                                            className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
+                                                            style={{ backgroundColor: note.user.color }}
+                                                        >
+                                                            {note.user.name[0]}
+                                                        </div>
+                                                    </Tooltip>
                                                 </span>
                                                 <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex dark:bg-gray-700 dark:border-gray-600">
                                                     <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{formatTimeAgo(note.created_at)}</time>
@@ -693,25 +746,6 @@ export default function TaskDetails() {
                                     </ol>
                                 </>}
                             </div>
-
-                            {/* <!-- Fix the input and button at the bottom --> */}
-                            <form onSubmit={handleAddNote} className="flex justify-between items-center gap-2 bg-base dark:bg-neutral-800 mt-4 flex-shrink-0">
-                                <textarea
-                                    placeholder="Add Notes..."
-                                    className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-light focus:border-light duration-300 resize-none"
-                                    rows={1}
-                                    style={{ minHeight: '40px', maxHeight: '120px', overflowY: 'auto' }}
-                                    value={noteDescription}
-                                    onChange={(e) => setNoteDescription(e.target.value)}
-                                />
-                                <button
-                                    type="submit"
-                                    className="p-2 bg-light text-white rounded-lg hover:bg-darkblue h-full aspect-square flex items-center justify-center transition-all"
-                                    disabled={addingNote} // Disable button while loading
-                                >
-                                    {addNoteMutation.isLoading ? 'Adding...' : <Send size={20} />}
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>

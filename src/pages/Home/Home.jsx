@@ -1,12 +1,15 @@
 import { Circle, Clipboard, Clock2, Dot, ShieldCheck } from 'lucide-react';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import DonutChart from '../../components/DonutChart/DonutChart';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { TaskContext } from '../../context/TaskContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
     const token = localStorage.getItem('userToken');
-
+    let { selectedTask, setselectedTask } = useContext(TaskContext)
+    const navigate = useNavigate()
     const { data: homeStatsData, isLoading: homeStatsLoading } = useQuery({
         queryKey: ['homeStats'],
         queryFn: () =>
@@ -95,9 +98,12 @@ export default function Home() {
                                             <Circle size={20} className="text-highlight" />
                                         </div>
                                         <div className="flex flex-col w-5/6">
-                                            <h2 className="font-semibold">{task.name}</h2>
+                                            <h2 className="font-semibold cursor-pointer" onClick={() => {
+                                                setselectedTask(task);
+                                                navigate('/task-details')
+                                            }}>{task.name}</h2>
                                             <div className="text-gray-700 max-w-[80%] my-3">{task.description}</div>
-                                            <div className="flex justify-between">
+                                            <div className="flex md:flex-row flex-col justify-between">
                                                 <div>
                                                     Priority: <span className="text-light">{task.priority}</span>
                                                 </div>

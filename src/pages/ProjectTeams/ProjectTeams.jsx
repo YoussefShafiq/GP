@@ -12,6 +12,7 @@ import { TeamsContext } from '../../context/TeamsContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faL } from '@fortawesome/free-solid-svg-icons';
 import { MaterialsContext } from '../../context/MaterialsContext';
+import { Tooltip } from '@heroui/tooltip';
 
 export default function ProjectTeams() {
     const { selectedProjectFolder, setselectedProjectFolder, selectedTeamFolder, setselectedTeamFolder } = useContext(MaterialsContext)
@@ -58,7 +59,6 @@ export default function ProjectTeams() {
         enabled: !!selectedProject, // Only fetch if selectedProject is defined
     });
 
-    console.log(data);
 
     let sidebarProjects = useQuery({
         queryKey: ['allprojects'],
@@ -508,9 +508,15 @@ export default function ProjectTeams() {
                         {isRefetching && <div className="md:flex hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                         {/* <div className='text-light font-semibold' >{selectedProject?.name} /</div> */}
                         {data?.data.data.is_manager && <div className="flex gap-2">
-                            <button onClick={() => setAddProjectForm(true)} className="rounded-full bg-light text-white p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
-                            <button onClick={() => setUpdateProjectForm(true)} className="rounded-full  text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
-                            <button onClick={() => setDeleteProjectForm(true)} className="rounded-full  text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                            <Tooltip delay={350} closeDelay={0} content='add team'>
+                                <button onClick={() => setAddProjectForm(true)} className="rounded-full bg-light text-white p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
+                            </Tooltip>
+                            <Tooltip delay={350} closeDelay={0} content='update project'>
+                                <button onClick={() => setUpdateProjectForm(true)} className="rounded-full  text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
+                            </Tooltip>
+                            <Tooltip delay={350} closeDelay={0} content='delete project'>
+                                <button onClick={() => setDeleteProjectForm(true)} className="rounded-full  text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                            </Tooltip>
                         </div>}
                     </div>
                 </div>
@@ -580,7 +586,7 @@ export default function ProjectTeams() {
                                     <>
                                         {data?.data.data.teams.filter(team => team.hasAccess).map((team) => (
                                             // materials folders
-                                            <div key={team.id} onClick={()=>{
+                                            <div key={team.id} onClick={() => {
                                                 setselectedProjectFolder(selectedProject);
                                                 setselectedTeamFolder(team)
                                                 navigate('/materials/project/team')

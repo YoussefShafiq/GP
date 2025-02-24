@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { TeamsContext } from '../../context/TeamsContext';
 import { TaskContext } from '../../context/TaskContext';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Tooltip } from '@heroui/tooltip';
 
 export default function TasksTable({ tasks = [] }) {
     let { selectedTask, setselectedTask } = useContext(TaskContext)
@@ -56,7 +57,6 @@ export default function TasksTable({ tasks = [] }) {
         queryFn: getProfileData
     })
 
-    console.log(selectedTeam);
 
 
     // Check if the current user is in the assigned members
@@ -98,14 +98,16 @@ export default function TasksTable({ tasks = [] }) {
                                 <td className="px-6 py-4">
                                     <div className="flex -space-x-2 max-w-[200px] overflow-hidden px-2">
                                         {task.members.slice(0, 5).map((person, personIndex) => (
-                                            <div
-                                                key={person.id}
-                                                className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
-                                                style={{ backgroundColor: person.color }}
-                                                title={person.name}
-                                            >
-                                                {person.name[0]}
-                                            </div>
+                                            <Tooltip key={person.id} content={person.name} delay={0} closeDelay={0} >
+                                                <div
+                                                    key={person.id}
+                                                    className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
+                                                    style={{ backgroundColor: person.color }}
+
+                                                >
+                                                    {person.name[0]}
+                                                </div>
+                                            </Tooltip>
                                         ))}
                                         {task.members.length > 5 && (
                                             <div className="w-6 h-6 flex items-center justify-center text-white bg-gray-400 drop-shadow-xl rounded-full uppercase cursor-default"

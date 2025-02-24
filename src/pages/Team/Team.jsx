@@ -14,6 +14,7 @@ import AddTaskForm from '../../components/AddTaskForm/AddTaskForm';
 import TasksTable from '../../components/TasksTable/TasksTable';
 import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
 import FilterBar from '../../components/FilterBar/FilterBar'; // Import the FilterBar component
+import { Tooltip } from '@heroui/tooltip';
 
 export default function Team() {
     let { selectedProject, setselectedProject } = useContext(projectContext);
@@ -222,18 +223,30 @@ export default function Team() {
                                     <span className="text-black hidden md:block">{teamData?.data.data.team.team_code}</span>
                                     <Copy size={18} className="text-gray-500" />
                                 </div>
-                                {teamData?.data?.data.team.role === 'manager' && <button title='manage team members'
-                                    onClick={() => navigate('manage-members')}
-                                    className="rounded-full bg-white text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
-                                >
-                                    <Settings size={25} />
-                                </button>}
-                                <button onClick={() => setUpdateTeamForm(true)} title='update team name' className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
-                                <button onClick={() => setDeleteTeamForm(true)} title='delete team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
-                                <button onClick={() => setInviteMemberForm(true)} title='invite member to team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
-                                <button onClick={() => setAddTaskForm(true)} title='add task' className="rounded-full bg-white text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
+                                {teamData?.data?.data.team.role === 'manager' && <Tooltip delay={350} closeDelay={0} content='manage team members'>
+                                    <button
+                                        onClick={() => navigate('manage-members')}
+                                        className="rounded-full bg-white text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                                    >
+                                        <Settings size={25} />
+                                    </button>
+                                </Tooltip>}
+                                <Tooltip delay={350} closeDelay={0} content='update team name' >
+                                    <button onClick={() => setUpdateTeamForm(true)} className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
+                                </Tooltip>
+                                <Tooltip delay={350} closeDelay={0} content='delete team' >
+                                    <button onClick={() => setDeleteTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                                </Tooltip>
+                                <Tooltip delay={350} closeDelay={0} content='invite member to team' >
+                                    <button onClick={() => setInviteMemberForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
+                                </Tooltip>
+                                <Tooltip delay={350} closeDelay={0} content='add task' >
+                                    <button onClick={() => setAddTaskForm(true)} className="rounded-full bg-white text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
+                                </Tooltip>
                             </>)}
-                            <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
+                            <Tooltip delay={350} closeDelay={0} content='leave team' >
+                                <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
+                            </Tooltip>
                         </div>
 
                         <div className="absolute top-6 right-0 ms-auto md:hidden flex">

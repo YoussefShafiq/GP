@@ -1,3 +1,4 @@
+const {heroui} = require('@heroui/theme');
 /** @type {import('tailwindcss').Config} */
 export default {
   safelist: [
@@ -13,6 +14,7 @@ export default {
     "./node_modules/flowbite/**/*.js",
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@heroui/theme/dist/components/(select|popover|form|listbox|divider|button|ripple|spinner|scroll-shadow).js"
   ],
   theme: {
     extend: {
@@ -55,8 +57,6 @@ export default {
       },
     },
   },
-  plugins: [
-    require('flowbite/plugin')
-  ],
+  plugins: [require('flowbite/plugin'),heroui()],
 }
 

@@ -227,7 +227,10 @@ export default function Home() {
                                                 <Circle size={20} className="text-highlight" />
                                             </div>
                                             <div className="flex flex-col">
-                                                <h2 className="font-semibold">{task.name}</h2>
+                                                <h2 className="font-semibold cursor-pointer" onClick={() => {
+                                                    setselectedTask(task);
+                                                    navigate('/task-details')
+                                                }}>{task.name}</h2>
                                                 <div className="text-gray-700 max-w-[80%] my-3">{task.description}</div>
                                                 <div className="flex flex-col justify-between">
                                                     <div className="text-gray-500">Deadline: {task.deadline.substring(0, 10)}</div>

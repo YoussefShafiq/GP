@@ -28,6 +28,8 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
             }),
     });
 
+    console.log(taskData);
+
     // Form validation schema for task
     const taskValidationSchema = object({
         name: string().required('Task name is required'),
@@ -148,6 +150,8 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
         },
     });
 
+    
+
     const handleFileUpload = (e) => {
         const files = Array.from(e.target.files);
         setAttachments((prev) => [...prev, ...files]);
@@ -203,7 +207,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                         >
                             <X size={24} />
                         </button>
-                        <div className="m-auto w-fit bg-light text-white px-3 py-2 rounded-xl text-xl">{selectedTeam.name}</div>
+                        <div className="m-auto w-fit bg-light text-white px-3 py-2 rounded-xl text-xl">{selectedTeam?.name || selectedTask?.name}</div>
 
                         {/* Task Form */}
                         <form

@@ -44,7 +44,16 @@ export default function TaskDetails() {
             }),
     });
 
-    console.log(selectedTask);
+    useEffect(() => {
+        if (taskData?.data?.data?.task && !(selectedTask.members)) {
+            setselectedTask(taskData?.data?.data?.task)
+        }
+
+        console.log(selectedTask);
+
+
+    }, [taskData])
+
 
 
     function formatTimeAgo(createdAt) {
@@ -372,17 +381,26 @@ export default function TaskDetails() {
             {/* path */}
             <div className='text-gray-400 flex md:flex-row flex-col justify-between items-center lg:h-16 px-5'>
                 <div className='flex items-center ' >
+
                     {selectedTask.members ? <>
-                        {!selectedTask?.assigned_to_me && <>
-                            <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} />
-                            <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div><ChevronRight strokeWidth={0.7} />
-                        </>}
-                        {selectedTask?.assigned_to_me && <>
-                            <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div><ChevronRight strokeWidth={0.7} />
-                        </>}
+                        {selectedTask?.assigned_to_me ? <>
+                            {!(selectedTask?.notes) && <>
+                                <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div><ChevronRight strokeWidth={0.7} />
+                            </>}
+                            {(selectedTask?.notes) && <>
+                                <div onClick={() => { navigate('/'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">Home</div><ChevronRight strokeWidth={0.7} />
+                            </>}
+                        </> :
+                            <>
+                                <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} />
+                                <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div><ChevronRight strokeWidth={0.7} />
+                            </>}
+
                     </> : <>
                         <div onClick={() => { navigate('/'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">Home</div><ChevronRight strokeWidth={0.7} />
                     </>}
+
+
                     <div onClick={() => { navigate('/task-details'); }} className="px-1 cursor-pointer text-black dark:text-white">{selectedTask?.name}</div>
                 </div>
                 <div className="flex justify-end gap-2 mb-4">
@@ -395,15 +413,16 @@ export default function TaskDetails() {
                             <RefreshCcw size={25} />
                         </button>
                     </Tooltip>
-                    {taskData?.data.data.task.role !== 'member' && <>
-                        <Tooltip delay={350} closeDelay={0} content='update task' >
+
+                    {(taskData?.data.data.task.role === 'leader' || taskData?.data.data.task.role === 'manager') && <>
+                        {selectedTask.members && <Tooltip delay={350} closeDelay={0} content='update task' >
                             <button
                                 onClick={() => setIsUpdateTaskFormOpen(true)} // Open the update form
                                 title='update task'
                                 className="rounded-full bg-white dark:bg-dark text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
                                 <Edit size={25} />
                             </button>
-                        </Tooltip>
+                        </Tooltip>}
                         <Tooltip delay={350} closeDelay={0} content='delete task' >
                             <button
                                 onClick={() => handleRemoveTask(selectedTask.id)}

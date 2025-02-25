@@ -6,6 +6,7 @@ import { ChevronRight, FolderMinus, Square } from 'lucide-react'
 import React, { useContext } from 'react'
 import { MaterialsContext } from '../../context/MaterialsContext';
 import { useNavigate } from 'react-router-dom';
+import MaterialFolderSkeleton from '../../components/MaterialFolderSkeleton/MaterialFolderSkeleton';
 
 export default function Materials() {
     const { selectedProjectFolder, setselectedProjectFolder } = useContext(MaterialsContext)
@@ -38,13 +39,16 @@ export default function Materials() {
             {/* folders */}
             <div className="flex flex-wrap gap-3">
                 {isLoading ? <>
-
+                    <MaterialFolderSkeleton />
+                    <MaterialFolderSkeleton />
+                    <MaterialFolderSkeleton />
+                    <MaterialFolderSkeleton />
                 </> : <>
                     {data?.data.data.projects.map((project) => (
                         <div key={project.id} onClick={() => {
                             setselectedProjectFolder(project)
                             navigate('project')
-                        }} className="relative bg-base rounded-lg shadow-lg p-6 w-[calc(25%-10px)] rounded-tl-none mt-5 cursor-pointer ">
+                        }} className="relative bg-base rounded-lg shadow-lg p-6 w-full lg:w-[calc(25%-10px)] rounded-tl-none mt-5 cursor-pointer ">
                             <div className="absolute w-1/2 -top-6 left-0 bg-base h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl "></div>
                             <div className="">
                                 <div className="flex items-center gap-2">

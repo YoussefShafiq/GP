@@ -69,7 +69,7 @@ export default function TaskDetails() {
 
         // Handle future dates
         if (timeDifference < 0) {
-            return "in the future";
+            return "just now";
         }
 
         const seconds = Math.floor(timeDifference / 1000);

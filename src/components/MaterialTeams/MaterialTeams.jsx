@@ -6,6 +6,7 @@ import { ChevronRight, FolderMinus, MousePointerClick, Square } from 'lucide-rea
 import React, { useContext } from 'react'
 import { MaterialsContext } from '../../context/MaterialsContext';
 import { useNavigate } from 'react-router-dom';
+import MaterialFolderSkeleton from '../MaterialFolderSkeleton/MaterialFolderSkeleton';
 
 export default function MaterialTeams() {
     const { selectedProjectFolder, setselectedProjectFolder, selectedTeamFolder, setselectedTeamFolder } = useContext(MaterialsContext)
@@ -40,7 +41,7 @@ export default function MaterialTeams() {
     return <>
         <div className="p-5">
             {/* path */}
-            <div className='text-gray-400 flex justify-between items-center h-10 mb-5 px-5'>
+            <div className='text-gray-400 flex flex-wrap justify-between items-center h-10 mb-5 px-5'>
                 <div className='flex items-center ' >
                     <div onClick={() => { navigate('/materials'); }} className="pe-1 cursor-pointer">Materials</div><ChevronRight strokeWidth={0.7} />
                     <div onClick={() => { navigate('/materials/project'); }} className="pe-1 cursor-pointer text-black">{selectedProjectFolder?.name}</div>
@@ -51,13 +52,16 @@ export default function MaterialTeams() {
             {/* folders */}
             <div className="flex flex-wrap gap-3">
                 {isLoading ? <>
-
+                    <MaterialFolderSkeleton />
+                    <MaterialFolderSkeleton />
+                    <MaterialFolderSkeleton />
+                    <MaterialFolderSkeleton />
                 </> : <>
                     {data?.data.data.teams.filter(team => team.hasAccess).map((team) => (
                         <div key={team.id} onClick={() => {
                             setselectedTeamFolder(team)
                             navigate('team')
-                        }} className="relative bg-base rounded-lg shadow-lg p-6 w-[calc(25%-10px)] rounded-tl-none mt-5 cursor-pointer ">
+                        }} className="relative bg-base rounded-lg shadow-lg p-6 w-full lg:w-[calc(25%-10px)] rounded-tl-none mt-5 cursor-pointer ">
                             <div className="absolute w-1/2 -top-6 left-0 bg-base h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl "></div>
                             <div className="">
                                 <div className="flex items-center gap-2">

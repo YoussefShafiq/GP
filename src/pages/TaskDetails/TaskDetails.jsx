@@ -565,7 +565,7 @@ export default function TaskDetails() {
 
                         {/* Attachments Section */}
                         <div className="">
-                            <div className="flex flex-wrap justify-between items-center mb-2">
+                            <div className="flex flex-wrap md:flex-row flex-col justify-between items-center mb-2">
                                 <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100'>Attachments</h2>
                                 {/* Add Attachment Button */}
                                 <div className="flex gap-2 items-center">

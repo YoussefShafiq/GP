@@ -7,6 +7,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
 import MaterialFolderSkeleton from '../MaterialFolderSkeleton/MaterialFolderSkeleton';
+import uploadingimg from '../../assets/images/uploading.gif'
 
 export default function MaterialsItems() {
     const { selectedProjectFolder, selectedTeamFolder } = useContext(MaterialsContext);

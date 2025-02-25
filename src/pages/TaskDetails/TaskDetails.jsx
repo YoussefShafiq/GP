@@ -380,7 +380,7 @@ export default function TaskDetails() {
         <div className="p-2 md:p-5">
             {/* path */}
             <div className='text-gray-400 flex md:flex-row flex-col justify-between items-center lg:h-16 px-5'>
-                <div className='flex items-center ' >
+                <div className='flex flex-wrap items-center ' >
 
                     {selectedTask.members ? <>
                         {selectedTask?.assigned_to_me ? <>
@@ -565,7 +565,7 @@ export default function TaskDetails() {
 
                         {/* Attachments Section */}
                         <div className="">
-                            <div className="flex justify-between items-center mb-2">
+                            <div className="flex flex-wrap justify-between items-center mb-2">
                                 <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100'>Attachments</h2>
                                 {/* Add Attachment Button */}
                                 <div className="flex gap-2 items-center">
@@ -740,25 +740,26 @@ export default function TaskDetails() {
 
                             {/* <!-- Make the ol take up the remaining space and be scrollable --> */}
                             <div className="flex-1 p-5 pb-0 overflow-y-auto dark:text-gray-100">
-                                {!taskData?.data?.data.task.activities ? <>
-                                    <div className="text-center">No activity data found</div>
+                                {!taskData?.data?.data.task.logs ? <>
+                                    <div className="text-center">No logs found</div>
                                 </> : <>
                                     <ol className="relative border-s border-gray-400 dark:border-gray-700 ">
-                                        {taskData?.data?.data.task.activities?.map((note) => (
-                                            <li key={note.id} className="mb-5 ms-6">
+                                        {taskData?.data?.data?.task.logs.map((log) => (
+                                            <li key={log.id} className="mb-5 ms-6">
                                                 <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 dark:bg-blue-900">
-                                                    <Tooltip content={note.user.email} delay={350} closeDelay={0}>
+                                                    <Tooltip content={log.user.email} delay={350} closeDelay={0}>
                                                         <div
                                                             className={`w-6 h-6 flex items-center justify-center text-white drop-shadow-xl rounded-full uppercase cursor-default`}
-                                                            style={{ backgroundColor: note.user.color }}
+                                                            style={{ backgroundColor: log.user.color }}
                                                         >
-                                                            {note.user.name[0]}
+                                                            {log.user.name[0]}
                                                         </div>
                                                     </Tooltip>
                                                 </span>
                                                 <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex dark:bg-gray-700 dark:border-gray-600">
-                                                    <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{formatTimeAgo(note.created_at)}</time>
-                                                    <div className="text-sm font-normal text-gray-500 dark:text-gray-300 break-words"><span className='font-bold text-black dark:text-white'>{note.user.name}</span> {note.description}</div>
+                                                    <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{formatTimeAgo(log.created_at)}</time>
+
+                                                    <div className="text-sm font-normal text-gray-500 dark:text-gray-300 break-words"><span className='font-bold text-black dark:text-white'>{log.user.name}</span> {log.description}</div>
                                                 </div>
                                             </li>
                                         ))}

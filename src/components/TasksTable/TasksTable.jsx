@@ -97,7 +97,7 @@ export default function TasksTable({ tasks = [] }) {
                                 </th>
                                 <td className="px-6 py-4">
                                     <div className="flex -space-x-2 max-w-[200px] overflow-hidden px-2">
-                                        {task.members.slice(0, 5).map((person, personIndex) => (
+                                        {task.members.slice(0, 5).map((person) => (
                                             <Tooltip key={person.id} content={person.name} delay={0} closeDelay={0} >
                                                 <div
                                                     key={person.id}
@@ -151,7 +151,9 @@ export default function TasksTable({ tasks = [] }) {
                                         ))}
                                     </select>
                                 </td>
-                                <td className="px-6 py-4 max-w-52 overflow-hidden whitespace-nowrap">{task.tags}</td>
+                                <Tooltip content={task.tags} closeDelay={0} delay={350}>
+                                    <td className="px-6 py-4 max-w-52 overflow-hidden whitespace-nowrap">{task.tags}</td>
+                                </Tooltip>
                             </tr>
                         ))}
                     </> : <>

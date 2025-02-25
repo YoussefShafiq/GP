@@ -526,10 +526,12 @@ export default function ProjectTeams() {
                     <div className="flex justify-between">
 
                         <div className="w-full md:w-[70%] flex flex-wrap h-fit gap-3">
-                            {isLoading ? <>
-                                <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
-                                <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
-                                <div className="py-3 px-4 rounded-3xl bg-base text-xl h-fit animate-pulse w-24"></div>
+                            {!isLoading ? <>
+                                <div className="py-3 px-4 rounded-lg bg-base shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
+                                <div className="py-3 px-4 rounded-lg bg-base shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
+                                <div className="py-3 px-4 rounded-lg bg-base shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
+                                <div className="py-3 px-4 rounded-lg bg-base shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
+                                <div className="py-3 px-4 rounded-lg bg-base shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
                             </>
                                 : <>
 

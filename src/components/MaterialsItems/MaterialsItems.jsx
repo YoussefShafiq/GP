@@ -22,7 +22,7 @@ export default function MaterialsItems() {
     const { data: attachmentsData, isLoading, isError, isRefetching } = useQuery({
         queryKey: ['attachments', { folderId: selectedTeamFolder?.id }], // Correct query key format
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/tasks/${selectedTeamFolder.id}/attachments`, {
+            axios.get(`https://brainmate.fly.dev/api/v1/materials/${selectedTeamFolder.id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             }),
         enabled: !!selectedTeamFolder?.id, // Only fetch if folderId is available
@@ -43,7 +43,7 @@ export default function MaterialsItems() {
 
         try {
             setUploading(true);
-            await axios.post(`https://brainmate.fly.dev/api/v1/tasks/${selectedTeamFolder.id}/attachments`, formData, {
+            await axios.post(`https://brainmate.fly.dev/api/v1/materials/${selectedTeamFolder.id}`, formData, {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
             });
             toast.success('Attachments uploaded successfully');
@@ -59,7 +59,7 @@ export default function MaterialsItems() {
     const handleFileDelete = async (attachmentId) => {
         setDeletingAttachment(true);
         try {
-            await axios.delete(`https://brainmate.fly.dev/api/v1/tasks/attachments/${attachmentId}`, {
+            await axios.delete(`https://brainmate.fly.dev/api/v1/materials/${attachmentId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             toast.success('Attachment deleted successfully');

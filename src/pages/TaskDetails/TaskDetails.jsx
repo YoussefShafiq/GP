@@ -706,7 +706,7 @@ export default function TaskDetails() {
                                                     </Tooltip>
                                                 </span>
                                                 <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs md:flex dark:bg-gray-700 dark:border-gray-600">
-                                                    <time className="mb-1 text-xs font-normal text-gray-400 order-1 md:order-last sm:mb-0">{formatTimeAgo(note.created_at)}</time>
+                                                    <time className="mb-1 text-center w-10 text-xs font-normal text-gray-400 order-1 md:order-last sm:mb-0">{formatTimeAgo(note.created_at)}</time>
                                                     <div className="text-sm font-normal text-gray-500 dark:text-gray-300 break-words md:max-w-[calc(100%-30px)]"><span className='font-bold text-black dark:text-white'>{note.user.name}</span> {note.description}</div>
                                                 </div>
                                             </li>
@@ -758,8 +758,7 @@ export default function TaskDetails() {
                                                     </Tooltip>
                                                 </span>
                                                 <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex  dark:bg-gray-700 dark:border-gray-600">
-                                                    <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{formatTimeAgo(log.created_at)}</time>
-                                                    {/* <event className='w-full text-xs font-thin ' ><p className='bg-highlight w-fit text-xs font-thin text-white rounded-lg px-1'>{log.event}</p></event> */}
+                                                    <time className="mb-1 text-center w-10 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{formatTimeAgo(log.created_at)}</time>
                                                     <div className="text-sm font-normal text-gray-500 dark:text-gray-300 break-words"><span className='font-bold text-black dark:text-white'>{log.user.name}</span> {log.description}<div className={`${log.event === 'updated' ? 'bg-yellow-400' : log.event === 'viewed' ? 'bg-blue-500' : 'bg-green-500'} w-fit mt-1 me-1 text-xs font-thin text-white rounded-lg px-1`}>{log.event}</div></div>
                                                 </div>
                                             </li>

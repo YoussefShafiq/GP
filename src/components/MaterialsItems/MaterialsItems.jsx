@@ -130,7 +130,7 @@ export default function MaterialsItems() {
                         </div>
                     </div>
                 </div>
-                <div className="flex lg:flex-row flex-col flex-wrap gap-4">
+                <div className="flex lg:flex-row flex-col flex-wrap gap-3">
                     {isLoading ? <>
                         <MaterialFolderSkeleton />
                         <MaterialFolderSkeleton />
@@ -153,9 +153,10 @@ export default function MaterialsItems() {
                                     </div>
                                 </div>
                             ))
-                        ) : (
-                            <p className="text-gray-500 dark:text-gray-400">No attachments found.</p>
-                        )}
+                        ) : <>
+                            <p className="text-gray-500 dark:text-gray-400 w-full text-center">No attachments found.</p>
+                        </>
+                        }
                     </>}
                 </div>
             </div>

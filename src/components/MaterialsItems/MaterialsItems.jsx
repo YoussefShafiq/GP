@@ -35,7 +35,10 @@ export default function MaterialsItems() {
         const maxSize = 8 * 1024 * 1024; // 8MB
         const oversizedFiles = files.filter(file => file.size > maxSize);
         if (oversizedFiles.length > 0) {
-            toast.error('File size exceeds 8MB limit');
+            toast.error('File size exceeds 8MB limit', {
+                duration: 1000,
+                position: 'bottom-right',
+            });
             return;
         }
 
@@ -47,10 +50,16 @@ export default function MaterialsItems() {
             await axios.post(`https://brainmate.fly.dev/api/v1/materials/${selectedTeamFolder.id}`, formData, {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
             });
-            toast.success('Attachments uploaded successfully');
+            toast.success('Attachments uploaded successfully', {
+                duration: 1000,
+                position: 'bottom-right',
+            });
             queryClient.invalidateQueries(['attachments', { folderId: selectedTeamFolder?.id }]); // Invalidate and refetch
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Error uploading attachments');
+            toast.error(error.response?.data?.message || 'Error uploading attachments', {
+                duration: 1000,
+                position: 'bottom-right',
+            });
         } finally {
             setUploading(false);
         }
@@ -63,10 +72,16 @@ export default function MaterialsItems() {
             await axios.delete(`https://brainmate.fly.dev/api/v1/materials/${attachmentId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast.success('Attachment deleted successfully');
+            toast.success('Attachment deleted successfully', {
+                duration: 1000,
+                position: 'bottom-right',
+            });
             queryClient.invalidateQueries(['attachments', { folderId: selectedTeamFolder?.id }]); // Invalidate and refetch
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Error deleting attachment');
+            toast.error(error.response?.data?.message || 'Error deleting attachment', {
+                duration: 1000,
+                position: 'bottom-right',
+            });
         } finally {
             setDeletingAttachment(false);
         }
@@ -138,8 +153,8 @@ export default function MaterialsItems() {
                         <MaterialFolderSkeleton />
                         <MaterialFolderSkeleton />
                     </> : <>
-                        {attachmentsData?.data?.attachments?.length > 0 ? (
-                            attachmentsData.data.attachments.map((attachment, index) => (
+                        {attachmentsData?.data?.data?.attachments?.length > 0 ? (
+                            attachmentsData.data.data.attachments.map((attachment, index) => (
                                 <div key={index} className="flex flex-col items-center p-3 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer dark:border-gray-700 relative" onClick={() => window.open('https://brainmate.fly.dev/' + attachment.media, '_blank')}>
                                     {['.jpg', '.png', '.svg', '.jpeg'].some(ext => attachment.name.toLowerCase().endsWith(ext)) ? (
                                         <img src={`https://brainmate.fly.dev/${attachment.media}`} alt={attachment.name} className="w-16 h-16 object-cover rounded-lg" />

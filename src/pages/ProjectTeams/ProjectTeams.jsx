@@ -557,7 +557,7 @@ export default function ProjectTeams() {
                                                 .map((team) => (
                                                     <div
                                                         key={team.id}
-                                                        className="flex justify-between items-center cursor-not-allowed py-3 px-4  rounded-lg bg-base shadow-inner w-[calc(33.33333%-12px)] opacity-50  bg-opacity-40 text-lg h-fit"
+                                                        className="flex justify-between items-center cursor-not-allowed py-3 px-4  rounded-lg bg-base shadow-inner w-full lg:w-[calc(33.33333%-12px)] opacity-50  bg-opacity-40 text-lg h-fit"
                                                     >
                                                         {team.name}
                                                         <Lock size={20} className='text-highlight' />

@@ -114,7 +114,7 @@ export default function TaskDetails() {
     // Gradient for the progress bar
     const progressBarStyle = {
         width: `${progressPercentage}%`,
-        background: 'linear-gradient(90deg, #f54545, #f54545)', // Example gradient
+        background: taskData?.data?.data?.task?.status !== "3" ? 'linear-gradient(90deg, #f54545, #f54545)' : 'linear-gradient(90deg, #2ab32a, #37e637)',
     };
 
     const handleRemoveTask = (TaskId) => {
@@ -480,11 +480,10 @@ export default function TaskDetails() {
                                     style={progressBarStyle}
                                 >
                                     {/* Icon at the end of the progress bar */}
-                                    {progressPercentage != 100 && <div
+                                    {progressPercentage != 100 && taskData?.data?.data?.task?.status !== "3" && <div
                                         className="absolute right-0 flex items-center gap-1 -mt-9 transform z-10 "
                                         style={{ top: '50%' }}
                                     >
-                                        {/* <Bomb size={16} className="text-red-600" />  */}
                                         <img src={deadlineKiller} className='w-6' alt="" />
                                     </div>}
                                     {progressPercentage == 100 && <>
@@ -498,7 +497,6 @@ export default function TaskDetails() {
                                             className="absolute right-0 flex items-center gap-1 -mt-[30px] transform z-10"
                                             style={{ top: '50%' }}
                                         >
-                                            {/* <Bomb size={16} className="text-red-600" />  */}
                                             <img src={success} className='w-6' alt="" />
                                         </div>}
                                     </>}
@@ -508,7 +506,6 @@ export default function TaskDetails() {
                                     className="absolute right-0 flex items-center gap-1 -mt-7 transform "
                                     style={{ top: '50%' }}
                                 >
-                                    {/* <Bomb size={16} className="text-red-600" />  */}
                                     <img src={worker} className='w-6' alt="" />
                                 </div>}
                                 {progressPercentage != 100 ? <div className="text-end dark:text-gray-300">{daysLeftDisplay} day left</div> : <div className="text-end dark:text-gray-300">It's over</div>}

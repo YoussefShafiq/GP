@@ -69,7 +69,7 @@ export default function TasksTable({ tasks = [] }) {
     };
 
     return (
-        <div className="relative md:overflow-visible overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg scrollbar-hide">
             <table className="w-full rounded-xl overflow-hidden text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
                     <tr>

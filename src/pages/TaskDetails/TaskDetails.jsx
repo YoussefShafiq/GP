@@ -401,7 +401,7 @@ export default function TaskDetails() {
                     </>}
 
 
-                    <div onClick={() => { navigate('/task-details'); }} className="px-1 cursor-pointer text-black dark:text-white">{selectedTask?.name}</div>
+                    <div onClick={() => { navigate('/task-details'); }} className="px-1 cursor-pointer text-black dark:text-white">{(taskData?.data.data.task.name || selectedTask?.name)}</div>
                 </div>
                 <div className="flex justify-end gap-2 mb-4">
                     {isRefetching && <div className="hidden md:flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}

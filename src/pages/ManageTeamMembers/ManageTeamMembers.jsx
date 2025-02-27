@@ -36,6 +36,22 @@ const ManageTeamMembers = () => {
         enabled: !!selectedTeam,
     });
 
+    // Get team details function
+    function getTeamDetails() {
+        return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    }
+
+    // Get team details query
+    let { data: teamData, isLoading: isTeamLoading, error: teamError } = useQuery({
+        queryKey: ['teamDetails', selectedTeam?.id],
+        queryFn: getTeamDetails,
+        enabled: !!selectedTeam,
+    });
+
     // Fetch current user's email
     const getProfileData = () => {
         return axios.get('https://brainmate.fly.dev/api/v1/profile', {
@@ -312,7 +328,7 @@ const ManageTeamMembers = () => {
             </AnimatePresence>
 
             {/* Breadcrumb Navigation */}
-            <div className='text-gray-400 flex items-center h-6 px-5 mb-5 border-b p-5'>
+            <div className='text-gray-400 flex items-center px-5 mb-5 border-b p-5 flex-wrap'>
                 <div onClick={() => { navigate('/project'); setselectedTeam(null); }} className="pe-1 cursor-pointer">{selectedProject?.name}</div>
                 <ChevronRight strokeWidth={0.7} />
                 <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div>
@@ -320,47 +336,50 @@ const ManageTeamMembers = () => {
                 <div onClick={() => { navigate('/project/team/manage-members'); }} className="px-1 cursor-pointer text-black">Manage Team Members</div>
             </div>
 
-            {/* Team Members Table */}
-            <table className="w-full border-collapse">
-                <thead>
-                    <tr className="bg-gray-100">
-                        <th className="p-3 text-left">ID</th>
-                        <th className="p-3 text-left">Name</th>
-                        <th className="p-3 text-left">Email</th>
-                        <th className="p-3 text-left">Role</th>
-                        <th className="p-3 text-left">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {teamMembers?.data?.data.users.map((member) => (
-                        <tr key={member.id} className="border-b">
-                            <td className="p-3">{member.id}</td>
-                            <td className="p-3">{member.name}</td>
-                            <td className="p-3">{member.email}</td>
-                            <td className="p-3">
-                                <select
-                                    value={member.role === 'member' ? '3' : member.role === 'leader' ? '2' : '3'}
-                                    onChange={(e) => handleRoleChange(member.id, e.target.value)}
-                                    className="p-2 border border-gray-300 rounded-lg"
-                                    disabled={updatingRole === member.id}
-                                >
-                                    <option value="1">Manager</option>
-                                    <option value="2">Leader</option>
-                                    <option value="3">Member</option>
-                                </select>
-                            </td>
-                            <td className="p-3">
-                                <button
-                                    onClick={() => handleRemoveMember(member.id)}
-                                    className="text-red-600 hover:text-red-800"
-                                >
-                                    <Trash2 size={20} />
-                                </button>
-                            </td>
+            <div className="overflow-x-auto scrollbar-hide">
+                {/* Team Members Table */}
+                <table className="w-full border-collapse  ">
+                    <thead>
+                        <tr className="bg-gray-100">
+                            <th className="p-3 text-left">ID</th>
+                            <th className="p-3 text-left">Name</th>
+                            <th className="p-3 text-left">Email</th>
+                            <th className="p-3 text-left">Role</th>
+                            <th className="p-3 text-left">Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {teamMembers?.data?.data.users.map((member) => (
+                            <tr key={member.id} className="border-b">
+                                <td className="p-3">{member.id}</td>
+                                <td className="p-3">{member.name}</td>
+                                <td className="p-3">{member.email}</td>
+                                <td className="p-3">
+                                    <select
+                                        value={member.role === 'member' ? '3' : member.role === 'leader' ? '2' : '1'}
+                                        onChange={(e) => handleRoleChange(member.id, e.target.value)}
+                                        className="p-2 border border-gray-300 rounded-lg"
+                                        disabled={updatingRole === member.id || teamData?.data?.data.team.role !== 'manager'}
+                                    >
+                                        <option value="1">Manager</option>
+                                        <option value="2">Leader</option>
+                                        <option value="3">Member</option>
+                                    </select>
+                                </td>
+                                <td className="p-3">
+                                    <button
+                                        onClick={() => handleRemoveMember(member.id)}
+                                        className="text-red-600 hover:text-red-800 disabled:opacity-30"
+                                        disabled={teamData?.data?.data.team.role !== 'manager'}
+                                    >
+                                        <Trash2 size={20} />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

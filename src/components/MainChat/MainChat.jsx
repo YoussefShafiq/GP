@@ -1,4 +1,4 @@
-import { Clock3, Loader2Icon, MessageSquareMore, Paperclip, Send, Smile, User, Users, X, MoreVertical, Copy, Trash } from 'lucide-react';
+import { Clock3, Loader2Icon, MessageSquareMore, Paperclip, Send, Smile, User, Users, X, MoreVertical, Copy, Trash, SidebarClose, ArrowLeftIcon } from 'lucide-react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ChatContext } from '../../context/ChatContext';
 import Pusher from 'pusher-js';
@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function MainChat() {
-    const { selectedChat } = useContext(ChatContext);
+    const { selectedChat, setselectedChat } = useContext(ChatContext);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [loading, setLoading] = useState(false);
@@ -354,6 +354,7 @@ export default function MainChat() {
         <>
             {/* Chat Header */}
             <div className="p-4 border-b border-gray-200 flex items-center bg-white rounded-t-lg">
+                <button onClick={() => { setselectedChat(null) }} className='lg:hidden' ><ArrowLeftIcon /> </button>
                 <div className="rounded-full p-1 bg-gray-100 text-light text-center">
                     <FontAwesomeIcon icon={faPeopleGroup} className='text-xl' />
                 </div>
@@ -366,7 +367,7 @@ export default function MainChat() {
                         )}
                         {loading && <div className="md:flex w-fit hidden text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-gray-500 lg:block hidden">
                         {isChatDataLoading ? (
                             <div className="h-3 bg-gray-200 rounded w-48 mt-1 animate-pulse"></div>
                         ) : (

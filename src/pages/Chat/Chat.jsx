@@ -111,9 +111,9 @@ export default function Chat() {
 
     return (
         <>
-            <div className="p-2 bg-blueblack h-[calc(100vh-3rem)] flex gap-1">
+            <div className="p-2 bg-blueblack h-[calc(100vh-3rem)] flex lg:gap-1">
                 {/* Sidebar for Chat List */}
-                <div className="bg-base w-[30%] flex flex-col overflow-y-scroll shadow-inner h-full justify-start rounded-l-lg">
+                <div className={`bg-base ${selectedChat ? 'w-0' : 'w-full'} transition-all lg:w-[30%] flex flex-col overflow-y-auto shadow-inner h-full justify-start rounded-l-lg`}>
                     {/* Header */}
                     <div className="p-5 pb-2 text-xl capitalize font-semibold text-blueblack">Chats</div>
 
@@ -191,7 +191,7 @@ export default function Chat() {
                 </div>
 
                 {/* Main Chat Window */}
-                <div className="bg-gray-50 w-[70%] rounded-r-lg flex flex-col shadow-inner">
+                <div className={`bg-gray-50 ${selectedChat ? 'w-full' : 'w-0'} transition-all lg:w-[70%] overflow-hidden rounded-r-lg flex flex-col shadow-inner`}>
                     <MainChat />
                 </div>
             </div>

@@ -130,7 +130,7 @@ export default function Home() {
                                 <>
                                     {/* Loading placeholders */}
                                     {[...Array(3)].map((_, index) => (
-                                        <div key={index} className="w-[calc(33.333%-40px)]">
+                                        <div key={index} className="w-1/2 md:w-[calc(33.333%-40px)]">
                                             <div className="animate-pulse">
                                                 <div className="rounded-full bg-base border-[24px] border-gray-300 opacity-50 h-40 w-40 mx-auto"></div>
                                                 <div className="h-5 bg-gray-300 opacity-50 rounded mt-4 w-1/2 ms-3"></div>

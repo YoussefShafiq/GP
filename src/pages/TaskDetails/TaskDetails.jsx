@@ -125,20 +125,17 @@ export default function TaskDetails() {
     };
     // Get team members function
     function getTeamMembers() {
-        if (teamData?.data?.data.team.role !== 'member')
-            return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+        return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTask.team_id}/users`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
     }
 
     // Get team members query
     let { data: teamMembers } = useQuery({
-        queryKey: ['teamMembers', selectedTeam?.id],
+        queryKey: ['teamMembers', selectedTask?.team_id],
         queryFn: getTeamMembers,
-        enabled: !!selectedTeam,
-
     });
     async function confirmDelete() {
         try {
@@ -653,7 +650,7 @@ export default function TaskDetails() {
                                                 {person.name[0]}
                                             </div>
                                             <div className="flex flex-col">
-                                                <p className='dark:text-gray-50' >{person.name} <span className='text-xs text-gray-500 dark:text-gray-400 font-light' >{person.role || '(member)'}</span></p>
+                                                <p className='dark:text-gray-50' >{person.name} <span className='text-xs text-gray-500 dark:text-gray-400 font-light' >({person.role})</span></p>
                                                 <p className='text-xs text-gray-600 dark:text-gray-500' >{person.email || `${person.name.replaceAll(' ', '_')}@gmail.com`}</p>
                                             </div>
                                         </div>
@@ -672,7 +669,7 @@ export default function TaskDetails() {
                                                 {person.name[0]}
                                             </div>
                                             <div className="flex flex-col">
-                                                <p className='dark:text-gray-50' >{person.name} <span className='text-xs text-gray-500 dark:text-gray-400 font-light' >{person.role || '(member)'}</span></p>
+                                                <p className='dark:text-gray-50' >{person.name} <span className='text-xs text-gray-500 dark:text-gray-400 font-light' >{person.role}</span></p>
                                                 <p className='text-xs text-gray-600 dark:text-gray-500' >{person.email || `${person.name.replaceAll(' ', '_')}@gmail.com`}</p>
                                             </div>
                                         </div>

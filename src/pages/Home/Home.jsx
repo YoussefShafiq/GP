@@ -92,31 +92,33 @@ export default function Home() {
                             </>
                         ) : (
                             <>
-                                {toDoTasksData?.data?.data.tasks.map((task) => (
-                                    <div key={task.id} className="border border-opacity-30 border-black p-3 rounded-2xl flex gap-3">
-                                        <div>
-                                            <Circle size={20} className="text-highlight" />
-                                        </div>
-                                        <div className="flex flex-col w-5/6">
-                                            <h2 className="font-semibold cursor-pointer" onClick={() => {
-                                                setselectedTask(task);
-                                                navigate('/task-details')
-                                            }}>{task.name}</h2>
-                                            <div className="text-gray-700 max-w-[80%] my-3">{task.description}</div>
-                                            <div className="flex md:flex-row flex-col justify-between">
-                                                <div>
-                                                    Priority: <span className="text-light">{task.priority}</span>
-                                                </div>
-                                                <div>
-                                                    Status: <span className="text-highlight">{statusMap[task.status] || 'unknown'}</span>
-                                                </div>
-                                                <div>
-                                                    Deadline: <span className="text-gray-500">{task.deadline.substring(0, 10)}</span>
+                                {toDoTasksData?.data?.data.tasks.length <= 0 ? <div className='text-center p-3 capitalize'>no tasks to do</div> : <>
+                                    {toDoTasksData?.data?.data.tasks.map((task) => (
+                                        <div key={task.id} className="border border-opacity-30 border-black p-3 rounded-2xl flex gap-3">
+                                            <div>
+                                                <Circle size={20} className="text-highlight" />
+                                            </div>
+                                            <div className="flex flex-col w-5/6">
+                                                <h2 className="font-semibold cursor-pointer" onClick={() => {
+                                                    setselectedTask(task);
+                                                    navigate('/task-details')
+                                                }}>{task.name}</h2>
+                                                <div className="text-gray-700 max-w-[80%] my-3">{task.description}</div>
+                                                <div className="flex md:flex-row flex-col justify-between">
+                                                    <div>
+                                                        Priority: <span className="text-light">{task.priority}</span>
+                                                    </div>
+                                                    <div>
+                                                        Status: <span className="text-highlight">{statusMap[task.status] || 'unknown'}</span>
+                                                    </div>
+                                                    <div>
+                                                        Deadline: <span className="text-gray-500">{task.deadline.substring(0, 10)}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </>}
                             </>
                         )}
                     </div>
@@ -221,23 +223,25 @@ export default function Home() {
                                 </>
                             ) : (
                                 <>
-                                    {inreviewTasksData?.data?.data?.tasks.map((task) => (
-                                        <div key={task.id} className="border border-opacity-30 border-black p-3 rounded-2xl flex gap-3">
-                                            <div>
-                                                <Circle size={20} className="text-highlight" />
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <h2 className="font-semibold cursor-pointer" onClick={() => {
-                                                    setselectedTask(task);
-                                                    navigate('/task-details')
-                                                }}>{task.name}</h2>
-                                                <div className="text-gray-700 max-w-[80%] my-3">{task.description}</div>
-                                                <div className="flex flex-col justify-between">
-                                                    <div className="text-gray-500">Deadline: {task.deadline.substring(0, 10)}</div>
+                                    {inreviewTasksData?.data?.data?.tasks.length <= 0 ? <div className='text-center p-3 capitalize'>No in review tasks</div> : <>
+                                        {inreviewTasksData?.data?.data?.tasks.map((task) => (
+                                            <div key={task.id} className="border border-opacity-30 border-black p-3 rounded-2xl flex gap-3">
+                                                <div>
+                                                    <Circle size={20} className="text-highlight" />
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <h2 className="font-semibold cursor-pointer" onClick={() => {
+                                                        setselectedTask(task);
+                                                        navigate('/task-details')
+                                                    }}>{task.name}</h2>
+                                                    <div className="text-gray-700 max-w-[80%] my-3">{task.description}</div>
+                                                    <div className="flex flex-col justify-between">
+                                                        <div className="text-gray-500">Deadline: {task.deadline.substring(0, 10)}</div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </>}
                                 </>
                             )}
                         </div>

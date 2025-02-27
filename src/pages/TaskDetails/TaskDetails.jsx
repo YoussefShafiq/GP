@@ -97,7 +97,9 @@ export default function TaskDetails() {
 
     // Convert dates to timestamps
     const creationTimestamp = new Date(taskData?.data?.data?.task?.created_at).getTime();
-    const deadlineTimestamp = new Date(taskData?.data?.data?.task.deadline).getTime();
+    const deadlineDate = new Date(taskData?.data?.data?.task.deadline);
+    deadlineDate.setHours(23, 59, 59, 999);
+    const deadlineTimestamp = deadlineDate.getTime();
     const todayTimestamp = new Date().getTime();
 
     // Calculate progress

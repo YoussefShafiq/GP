@@ -97,9 +97,9 @@ export default function MyTeams() {
                                 </div>
                                 <div className="my-2 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-5">
                                     <div className="flex items-center justify-center gap-2 md:gap-5">
-                                        <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
+                                        {/* <div className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
                                             <button><Video color='white' /></button>
-                                        </div>
+                                        </div> */}
                                         <div onClick={(e) => {
                                             navigate('/chat');
                                             e.stopPropagation();
@@ -110,7 +110,7 @@ export default function MyTeams() {
                                                     'name': team.project.name
                                                 }
                                             })
-                                        }} className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full">
+                                        }} className="bg-darkblue flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
                                             <button onClick={() => navigate('/chat')} ><MessageCircleMore color='white' /></button>
                                         </div>
                                     </div>

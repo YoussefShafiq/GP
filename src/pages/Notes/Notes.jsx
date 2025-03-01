@@ -145,7 +145,7 @@ export default function Notes() {
                             onClick={() => setaddnoteForm(false)} // Close modal on background click
                         >
                             <motion.div
-                                className="bg-white bg-opacity-15 rounded-lg shadow-lg border p-6 w-1/3 relative max-h-[95vh] overflow-y-auto" // Consistent size and styling
+                                className="bg-white bg-opacity-15 rounded-lg shadow-lg border p-6 w-4/5 lg:w-1/3 relative max-h-[95vh] overflow-y-auto" // Consistent size and styling
                                 initial={{ y: 0, opacity: 0 }} // Initial state for the form (fade out)
                                 animate={{ y: 0, opacity: 1 }} // Animate to this state (fade in)
                                 exit={{ y: 0, opacity: 0 }} // Exit animation for the form (fade out)

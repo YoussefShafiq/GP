@@ -261,7 +261,45 @@ export default function NoteDetails() {
                 // Show note details if a note is selected and data is loaded
                 data?.data?.data?.note && (
                     <div className="flex flex-col pt-3 px-5">
-                        <button onClick={() => setSelectedNote(null)} className='text-red-500 flex items-center'><X />Close</button>
+                        <div className="flex lg:hidden justify-between items-center">
+                            <button onClick={() => setSelectedNote(null)} className='text-red-500 flex items-center'><X />Close</button>
+                            {/* Save and favorite buttons */}
+                            {!isNoteDeleted && (
+                                <div className="gap-3 flex">
+                                    {/* Favorite Button */}
+                                    {data?.data?.data?.note.isFavorite ? (
+                                        <button
+                                            className="text-red-500"
+                                            onClick={() => toggleFavorite(0)}
+                                            disabled={isFavoriteLoading}
+                                        >
+                                            <Heart fill="#f05252 " />
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="text-red-500"
+                                            onClick={() => toggleFavorite(1)}
+                                            disabled={isFavoriteLoading}
+                                        >
+                                            <Heart />
+                                        </button>
+                                    )}
+
+                                    {/* Save Button */}
+                                    <button
+                                        className={`${noteContent === data.data.data.note.content &&
+                                            noteTitle === data.data.data.note.title &&
+                                            selectedFolderId === data.data.data.note.folder.id
+                                            ? 'opacity-30 cursor-default'
+                                            : 'opacity-100 drop-shadow-lg'
+                                            } text-white transition-all`}
+                                        onClick={updateNote}
+                                    >
+                                        <Save />
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                         <div className="flex justify-between items-center relative">
                             <input
                                 type="text"
@@ -275,7 +313,7 @@ export default function NoteDetails() {
                             {!selectedNote}
                             {/* Save and favorite buttons */}
                             {!isNoteDeleted && (
-                                <div className="flex gap-3">
+                                <div className="lg:flex gap-3 hidden">
                                     {/* Favorite Button */}
                                     {data?.data?.data?.note.isFavorite ? (
                                         <button

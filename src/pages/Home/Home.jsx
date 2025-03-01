@@ -187,7 +187,7 @@ export default function Home() {
                                         />
                                     </div>
 
-                                    <div className="w-[calc(33.333%-40px)] md:hidden">
+                                    <div className="w-[calc(33.333%-15px)] md:hidden">
                                         <DonutChart
                                             key={`completed-${homeStatsData?.data?.data?.statistics.completed.percentage}`} // Force re-render
                                             labels={['Completed']}
@@ -202,7 +202,7 @@ export default function Home() {
                                         />
                                     </div>
 
-                                    <div className="w-[calc(33.333%-40px)] md:hidden">
+                                    <div className="w-[calc(33.333%-15px)] md:hidden">
                                         <DonutChart
                                             key={`in-progress-${homeStatsData?.data?.data?.statistics.in_progress.percentage}`} // Force re-render
                                             labels={['In Progress']}
@@ -217,7 +217,7 @@ export default function Home() {
                                         />
                                     </div>
 
-                                    <div className="w-[calc(33.333%-40px)] md:hidden">
+                                    <div className="w-[calc(33.333%-15px)] md:hidden">
                                         <DonutChart
                                             key={`pending-${homeStatsData?.data?.data?.statistics.pending.percentage}`} // Force re-render
                                             labels={['Pending']}

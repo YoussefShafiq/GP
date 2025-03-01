@@ -1,4 +1,4 @@
-import { CalendarDays, Folder, Heart, NotebookText, Save, Star, Trash2 } from 'lucide-react';
+import { CalendarDays, Folder, Heart, NotebookText, Save, Star, Trash2, X } from 'lucide-react';
 import React, { useContext, useState, useEffect } from 'react';
 import { NotesContext } from '../../context/NotesContext';
 import { useQuery } from '@tanstack/react-query';
@@ -213,7 +213,7 @@ export default function NoteDetails() {
     const isNoteDeleted = data?.data?.data?.note?.deleted_at !== null;
 
     return (
-        <div className="w-1/2 bg-darkblue h-[calc(100vh-48px)] overflow-y-scroll relative" style={{ scrollbarWidth: 'none' }}>
+        <div className={`${selectedNote ? 'w-full lg:w-1/2' : 'w-0 lg:w-1/2 overflow-hidden'} bg-darkblue h-[calc(100vh-48px)] overflow-y-scroll relative transition-all`} style={{ scrollbarWidth: 'none' }}>
             {/* Show "Select a note to view" if no note is selected */}
 
             {!selectedNote ? (
@@ -261,6 +261,7 @@ export default function NoteDetails() {
                 // Show note details if a note is selected and data is loaded
                 data?.data?.data?.note && (
                     <div className="flex flex-col pt-3 px-5">
+                        <button onClick={() => setSelectedNote(null)} className='text-red-500 flex items-center'><X />Close</button>
                         <div className="flex justify-between items-center relative">
                             <input
                                 type="text"

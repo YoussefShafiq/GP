@@ -289,7 +289,7 @@ export default function Sidebar() {
       </AnimatePresence>
 
       {/* Sidebar */}
-      <div className={`${!sidebarOpen ? "w-0 overflow-hidden md:w-16" : "w-48"} transition-all h-[calc(100vh-48px)] fixed left-0 z-50 bg-darkblue flex flex-col px-0 text-white mt-12 text-[13px]`}>
+      <div className={`${!sidebarOpen ? "w-0 overflow-hidden md:w-16" : "w-48 border-e md:border-none"} transition-all h-[calc(100vh-48px)] fixed left-0 z-50 bg-darkblue flex flex-col px-0 text-white mt-12 text-[13px]`}>
         <div className="px-3 pb-3 border-b">
           <div className={`flex ${!sidebarOpen ? "flex-col-reverse items-center mt-3" : ""} justify-between relative after:absolute after:content-[""] after:h-[1px] after:w-full after:bg-gray-500 after:bottom-1 `} >
             <Link to={'profile'} className='text-darkTeal bg-white rounded-3xl w-fit my-5 '><CircleUserRound color='#0b2534' /></Link>

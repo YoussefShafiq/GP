@@ -238,7 +238,7 @@ export default function Notes() {
                 </AnimatePresence>
 
                 {/* Main Content */}
-                <div className="flex flex-wrap border-s box-border text-sm">
+                <div className="flex flex-wrap md:border-s box-border text-sm">
                     <div className={`${selectedNote ? 'w-0 lg:w-1/4 overflow-hidden' : 'w-1/2 lg:w-1/4'} bg-darkblue h-[calc(100vh-48px)] overflow-y-scroll transition-all`} style={{ scrollbarWidth: 'none' }}>
                         {/* Recents */}
                         <RecentNotes />

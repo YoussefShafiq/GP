@@ -107,7 +107,7 @@ export default function DonutChart({
             const centerY = height / 2; // Use height/2 for perfect vertical centering
 
             // Set font and text style
-            ctx.font = `bold  ${fontSize}px Arial`; // Customize the font size and style
+            ctx.font = `bold  ${fontSize}px  Arial`; // Customize the font size and style
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle'; // Ensures text is centered vertically
             ctx.fillStyle = '#666'; // Text color
@@ -139,7 +139,7 @@ export default function DonutChart({
                             style={{ backgroundColor: backgroundColors[index] }} // Background color still dynamically set
                         ></div>
                         {/* Label Text */}
-                        <span className="text-sm text-gray-800 dark:text-gray-50 capitalize">{label}</span>
+                        <span className="text-[10px] w-max md:text-sm text-gray-800 dark:text-gray-50 capitalize">{label}</span>
                     </div>
                 ))}
             </div>

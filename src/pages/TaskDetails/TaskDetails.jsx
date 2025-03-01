@@ -378,7 +378,7 @@ export default function TaskDetails() {
         )}
         <div className="p-2 md:p-5">
             {/* path */}
-            <div className='text-gray-400 flex md:flex-row flex-col justify-between items-center lg:h-16 px-5'>
+            <div className='text-gray-400 flex md:flex-row flex-col justify-between md:items-center lg:h-16 px-5'>
                 <div className='flex flex-wrap items-center ' >
 
                     {selectedTask.members ? <>

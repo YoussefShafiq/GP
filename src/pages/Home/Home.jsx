@@ -126,7 +126,7 @@ export default function Home() {
                     {/* right side */}
                     <div className="flex flex-col lg:w-1/2 h-full gap-5">
                         {/* charts */}
-                        <div className="flex flex-col md:flex-row flex-wrap items-center justify-between p-5 bg-base shadow-xl rounded-3xl w-full">
+                        <div className="flex flex-row flex-wrap items-center justify-between p-5 bg-base shadow-xl rounded-3xl w-full">
                             <div className="capitalize text-xl w-full font-semibold">tasks stats</div>
                             {homeStatsLoading ? (
                                 <>
@@ -142,7 +142,7 @@ export default function Home() {
                                 </>
                             ) : (
                                 <>
-                                    <div className="w-1/2 md:w-[calc(33.333%-40px)]">
+                                    <div className="w-[calc(33.333%-40px)] hidden md:block">
                                         <DonutChart
                                             key={`completed-${homeStatsData?.data?.data?.statistics.completed.percentage}`} // Force re-render
                                             labels={['Completed']}
@@ -157,7 +157,7 @@ export default function Home() {
                                         />
                                     </div>
 
-                                    <div className="w-1/2 md:w-[calc(33.333%-40px)]">
+                                    <div className="w-[calc(33.333%-40px)] hidden md:block">
                                         <DonutChart
                                             key={`in-progress-${homeStatsData?.data?.data?.statistics.in_progress.percentage}`} // Force re-render
                                             labels={['In Progress']}
@@ -172,7 +172,7 @@ export default function Home() {
                                         />
                                     </div>
 
-                                    <div className="w-1/2 md:w-[calc(33.333%-40px)]">
+                                    <div className="w-[calc(33.333%-40px)] hidden md:block">
                                         <DonutChart
                                             key={`pending-${homeStatsData?.data?.data?.statistics.pending.percentage}`} // Force re-render
                                             labels={['Pending']}
@@ -184,6 +184,51 @@ export default function Home() {
                                             hoverColors={['#007c82', '#ccc']}
                                             centerText={`${homeStatsData?.data?.data?.statistics.pending.percentage}%`}
                                             fontSize={25}
+                                        />
+                                    </div>
+
+                                    <div className="w-[calc(33.333%-40px)] md:hidden">
+                                        <DonutChart
+                                            key={`completed-${homeStatsData?.data?.data?.statistics.completed.percentage}`} // Force re-render
+                                            labels={['Completed']}
+                                            dataPoints={[
+                                                homeStatsData?.data?.data?.statistics.completed.count,
+                                                homeStatsData?.data?.data?.statistics.total_tasks - homeStatsData?.data?.data?.statistics.completed.count,
+                                            ]}
+                                            backgroundColors={['#f25287', '#ccc']}
+                                            hoverColors={['#bf406a', '#ccc']}
+                                            centerText={`${homeStatsData?.data?.data?.statistics.completed.percentage}%`}
+                                            fontSize={20}
+                                        />
+                                    </div>
+
+                                    <div className="w-[calc(33.333%-40px)] md:hidden">
+                                        <DonutChart
+                                            key={`in-progress-${homeStatsData?.data?.data?.statistics.in_progress.percentage}`} // Force re-render
+                                            labels={['In Progress']}
+                                            dataPoints={[
+                                                homeStatsData?.data?.data?.statistics.in_progress.count,
+                                                homeStatsData?.data?.data?.statistics.total_tasks - homeStatsData?.data?.data?.statistics.in_progress.count,
+                                            ]}
+                                            backgroundColors={['#133d57', '#ccc']}
+                                            hoverColors={['#071924', '#ccc']}
+                                            centerText={`${homeStatsData?.data?.data?.statistics.in_progress.percentage}%`}
+                                            fontSize={20}
+                                        />
+                                    </div>
+
+                                    <div className="w-[calc(33.333%-40px)] md:hidden">
+                                        <DonutChart
+                                            key={`pending-${homeStatsData?.data?.data?.statistics.pending.percentage}`} // Force re-render
+                                            labels={['Pending']}
+                                            dataPoints={[
+                                                homeStatsData?.data?.data?.statistics.pending.count,
+                                                homeStatsData?.data?.data?.statistics.total_tasks - homeStatsData?.data?.data?.statistics.pending.count,
+                                            ]}
+                                            backgroundColors={['#00adb5', '#ccc']}
+                                            hoverColors={['#007c82', '#ccc']}
+                                            centerText={`${homeStatsData?.data?.data?.statistics.pending.percentage}%`}
+                                            fontSize={20}
                                         />
                                     </div>
                                 </>

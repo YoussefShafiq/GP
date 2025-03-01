@@ -117,7 +117,7 @@ export default function Profile() {
                     <div className="flex lg:flex-row flex-col gap-3">
                         <div className="flex md:flex-row flex-col justify-between gap-10 lg:w-[calc(90%-12px)] bg-darkblue rounded-3xl p-5 shadow-xl text-white">
                             <div className="flex md:flex-row flex-col md:gap-10 gap-2">
-                                <div className="md:w-1/3 flex justify-center items-center md:p-3">
+                                <div className="w-2/3 m-auto md:w-1/3 flex justify-center items-center md:p-3">
                                     <img src={img} alt="profile photo" className="w-full aspect-square object-cover rounded-full" />
                                 </div>
                                 <div className="py-5 flex flex-col gap-4 flex-1">

@@ -80,9 +80,9 @@ const Notifications = () => {
             });
 
             const channel = pusher.subscribe(`user.${profileData?.data?.data?.user?.id}`);
-            console.log(channel);
+            console.log('channel: ', channel);
 
-            channel.bind('notification.sent', (newNotification) => {
+            channel.bind('new-notification', (newNotification) => {
                 console.log('New notification received:', newNotification);
                 setNotifications(prevNotifications => [newNotification, ...prevNotifications]);
             });

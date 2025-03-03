@@ -27,9 +27,6 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                 },
             }),
     });
-
-    console.log(taskData);
-
     // Form validation schema for task
     const taskValidationSchema = object({
         name: string().required('Task name is required'),
@@ -150,7 +147,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
         },
     });
 
-    
+
 
     const handleFileUpload = (e) => {
         const files = Array.from(e.target.files);

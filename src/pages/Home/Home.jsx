@@ -144,7 +144,7 @@ export default function Home() {
                                 <>
                                     <div className="w-[calc(33.333%-40px)] hidden md:block">
                                         <DonutChart
-                                            key={`completed-${homeStatsData?.data?.data?.statistics.completed.percentage}`} // Force re-render
+                                            key={`completed-${Math.floor(homeStatsData?.data?.data?.statistics.completed.percentage * 10) / 10}`} // Force re-render
                                             labels={['Completed']}
                                             dataPoints={[
                                                 homeStatsData?.data?.data?.statistics.completed.count,
@@ -152,14 +152,14 @@ export default function Home() {
                                             ]}
                                             backgroundColors={['#f25287', '#ccc']}
                                             hoverColors={['#bf406a', '#ccc']}
-                                            centerText={`${homeStatsData?.data?.data?.statistics.completed.percentage}%`}
+                                            centerText={`${Math.floor(homeStatsData?.data?.data?.statistics.completed.percentage * 10) / 10}%`}
                                             fontSize={25}
                                         />
                                     </div>
 
                                     <div className="w-[calc(33.333%-40px)] hidden md:block">
                                         <DonutChart
-                                            key={`in-progress-${homeStatsData?.data?.data?.statistics.in_progress.percentage}`} // Force re-render
+                                            key={`in-progress-${Math.floor(homeStatsData?.data?.data?.statistics.in_progress.percentage * 10) / 10}`} // Force re-render
                                             labels={['In Progress']}
                                             dataPoints={[
                                                 homeStatsData?.data?.data?.statistics.in_progress.count,
@@ -167,14 +167,14 @@ export default function Home() {
                                             ]}
                                             backgroundColors={['#133d57', '#ccc']}
                                             hoverColors={['#071924', '#ccc']}
-                                            centerText={`${homeStatsData?.data?.data?.statistics.in_progress.percentage}%`}
+                                            centerText={`${Math.floor(homeStatsData?.data?.data?.statistics.in_progress.percentage * 10) / 10}%`}
                                             fontSize={25}
                                         />
                                     </div>
 
                                     <div className="w-[calc(33.333%-40px)] hidden md:block">
                                         <DonutChart
-                                            key={`pending-${homeStatsData?.data?.data?.statistics.pending.percentage}`} // Force re-render
+                                            key={`pending-${Math.floor(homeStatsData?.data?.data?.statistics.pending.percentage * 10) / 10}`} // Force re-render
                                             labels={['Pending']}
                                             dataPoints={[
                                                 homeStatsData?.data?.data?.statistics.pending.count,
@@ -182,14 +182,14 @@ export default function Home() {
                                             ]}
                                             backgroundColors={['#00adb5', '#ccc']}
                                             hoverColors={['#007c82', '#ccc']}
-                                            centerText={`${homeStatsData?.data?.data?.statistics.pending.percentage}%`}
+                                            centerText={`${Math.floor(homeStatsData?.data?.data?.statistics.pending.percentage * 10) / 10}%`}
                                             fontSize={25}
                                         />
                                     </div>
 
                                     <div className="w-[calc(33.333%-15px)] md:hidden">
                                         <DonutChart
-                                            key={`completed-${homeStatsData?.data?.data?.statistics.completed.percentage}`} // Force re-render
+                                            key={`completed-${Math.floor(homeStatsData?.data?.data?.statistics.completed.percentage * 10) / 10}`} // Force re-render
                                             labels={['Completed']}
                                             dataPoints={[
                                                 homeStatsData?.data?.data?.statistics.completed.count,
@@ -197,14 +197,14 @@ export default function Home() {
                                             ]}
                                             backgroundColors={['#f25287', '#ccc']}
                                             hoverColors={['#bf406a', '#ccc']}
-                                            centerText={`${homeStatsData?.data?.data?.statistics.completed.percentage}%`}
+                                            centerText={`${Math.floor(homeStatsData?.data?.data?.statistics.completed.percentage * 10) / 10}%`}
                                             fontSize={20}
                                         />
                                     </div>
 
                                     <div className="w-[calc(33.333%-15px)] md:hidden">
                                         <DonutChart
-                                            key={`in-progress-${homeStatsData?.data?.data?.statistics.in_progress.percentage}`} // Force re-render
+                                            key={`in-progress-${Math.floor(homeStatsData?.data?.data?.statistics.in_progress.percentage * 10) / 10}`} // Force re-render
                                             labels={['In Progress']}
                                             dataPoints={[
                                                 homeStatsData?.data?.data?.statistics.in_progress.count,
@@ -212,14 +212,14 @@ export default function Home() {
                                             ]}
                                             backgroundColors={['#133d57', '#ccc']}
                                             hoverColors={['#071924', '#ccc']}
-                                            centerText={`${homeStatsData?.data?.data?.statistics.in_progress.percentage}%`}
+                                            centerText={`${Math.floor(homeStatsData?.data?.data?.statistics.in_progress.percentage * 10) / 10}%`}
                                             fontSize={20}
                                         />
                                     </div>
 
                                     <div className="w-[calc(33.333%-15px)] md:hidden">
                                         <DonutChart
-                                            key={`pending-${homeStatsData?.data?.data?.statistics.pending.percentage}`} // Force re-render
+                                            key={`pending-${Math.floor(homeStatsData?.data?.data?.statistics.pending.percentage * 10) / 10}`} // Force re-render
                                             labels={['Pending']}
                                             dataPoints={[
                                                 homeStatsData?.data?.data?.statistics.pending.count,
@@ -227,7 +227,7 @@ export default function Home() {
                                             ]}
                                             backgroundColors={['#00adb5', '#ccc']}
                                             hoverColors={['#007c82', '#ccc']}
-                                            centerText={`${homeStatsData?.data?.data?.statistics.pending.percentage}%`}
+                                            centerText={`${Math.floor(homeStatsData?.data?.data?.statistics.pending.percentage * 10) / 10}%`}
                                             fontSize={20}
                                         />
                                     </div>

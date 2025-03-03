@@ -110,7 +110,7 @@ export default function DonutChart({
             ctx.font = `bold  ${fontSize}px  Arial`; // Customize the font size and style
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle'; // Ensures text is centered vertically
-            ctx.fillStyle = '#666'; // Text color
+            ctx.fillStyle = '#888'; // Text color
 
             // Draw the text
             ctx.fillText(centerText, centerX, centerY);

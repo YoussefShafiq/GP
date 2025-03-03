@@ -10,7 +10,7 @@ export default function Navbar() {
   let { sidebarOpen, setSidebarOpen } = useContext(SidebarContext);
 
   return <>
-    <div className='fixed flex w-full bg-darkblue text-center h-12 z-[50] justify-between px-5' >
+    <div className='fixed flex w-full bg-darkblue dark:bg-darklayout text-center h-12 z-[50] justify-between px-5' >
       <div className='flex items-center' >
         <button className='w-fit md:hidden text-white' onClick={() => { setSidebarOpen(!sidebarOpen) }} ><PanelLeft /></button>
         <img className='h-full py-[2px]' src={whitelogo} alt="" />

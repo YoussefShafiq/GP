@@ -125,7 +125,7 @@ export default function MaterialsItems() {
                     <ChevronRight strokeWidth={0.7} />
                     <div onClick={() => navigate('/materials/project')} className="pe-1 cursor-pointer">{selectedProjectFolder?.name}</div>
                     <ChevronRight strokeWidth={0.7} />
-                    <div onClick={() => navigate('/materials/project')} className="pe-1 cursor-pointer text-black">{selectedTeamFolder?.name}</div>
+                    <div onClick={() => navigate('/materials/project')} className="pe-1 cursor-pointer text-black dark:text-white">{selectedTeamFolder?.name}</div>
                 </div>
             </div>
 
@@ -159,7 +159,7 @@ export default function MaterialsItems() {
                                     {['.jpg', '.png', '.svg', '.jpeg'].some(ext => attachment.name.toLowerCase().endsWith(ext)) ? (
                                         <img src={`https://brainmate.fly.dev/${attachment.media}`} alt={attachment.name} className="w-16 h-16 object-cover rounded-lg" />
                                     ) : (
-                                        <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-lg dark:bg-gray-700">
+                                        <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-lg dark:bg-dark2">
                                             <Paperclip size={24} className="text-gray-500 dark:text-gray-400" />
                                         </div>
                                     )}

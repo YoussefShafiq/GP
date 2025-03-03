@@ -44,7 +44,7 @@ export default function MaterialTeams() {
             <div className='text-gray-400 flex flex-wrap justify-between items-center h-10 mb-5 px-5'>
                 <div className='flex items-center ' >
                     <div onClick={() => { navigate('/materials'); }} className="pe-1 cursor-pointer">Materials</div><ChevronRight strokeWidth={0.7} />
-                    <div onClick={() => { navigate('/materials/project'); }} className="pe-1 cursor-pointer text-black">{selectedProjectFolder?.name}</div>
+                    <div onClick={() => { navigate('/materials/project'); }} className="pe-1 cursor-pointer text-black dark:text-white">{selectedProjectFolder?.name}</div>
                 </div>
             </div>
 
@@ -61,12 +61,12 @@ export default function MaterialTeams() {
                         <div key={team.id} onClick={() => {
                             setselectedTeamFolder(team)
                             navigate('team')
-                        }} className="relative bg-base rounded-lg shadow-lg p-6 w-full lg:w-[calc(25%-10px)] rounded-tl-none mt-5 cursor-pointer ">
-                            <div className="absolute w-1/2 -top-6 left-0 bg-base h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl "></div>
+                        }} className="relative bg-base dark:bg-dark2 rounded-lg shadow-lg p-6 w-full lg:w-[calc(25%-10px)] rounded-tl-none mt-5 cursor-pointer ">
+                            <div className="absolute w-1/2 -top-6 left-0 bg-base dark:bg-dark2 h-6 text-white text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl "></div>
                             <div className="">
                                 <div className="flex items-center gap-2">
                                     <div className="aspect-square p-1.5 rounded-lg bg-highlight"><Square fill='#eee' color='#eee' size={8} /></div>
-                                    <h2 className="text-lg font-bold text-gray-800">{team.name}</h2>
+                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white">{team.name}</h2>
                                 </div>
                                 <div className="flex justify-between items-center w-full">
                                     <p className="text-sm text-gray-500 mt-2">{team.created_at.substring(0, 10)}</p>

@@ -113,19 +113,19 @@ export default function Chat() {
         <>
             <div className="p-2 bg-blueblack h-[calc(100vh-3rem)] flex lg:gap-1">
                 {/* Sidebar for Chat List */}
-                <div className={`bg-base ${selectedChat ? 'w-0' : 'w-full'} transition-all lg:w-[30%] flex flex-col overflow-y-auto shadow-inner h-full justify-start rounded-l-lg`}>
+                <div className={`bg-base dark:bg-dark1 ${selectedChat ? 'w-0' : 'w-full'} transition-all lg:w-[30%] flex flex-col overflow-y-auto shadow-inner h-full justify-start rounded-l-lg`}>
                     {/* Header */}
-                    <div className="p-5 pb-2 text-xl capitalize font-semibold text-blueblack">Chats</div>
+                    <div className="p-5 pb-2 text-xl capitalize font-semibold text-blueblack dark:text-white">Chats</div>
 
                     {/* Search Bar */}
-                    <div className="flex relative items-center gap-2 p-2 px-5">
-                        <Search className="text-light absolute left-7 top-1/2 -translate-y-1/2" />
+                    <div className="flex relative items-center gap-2 p-2 px-5 ">
+                        <Search className="text-light dark:text-white dark:bg-dark2 absolute left-7 top-1/2 -translate-y-1/2" />
                         <input
                             id="chatSearch"
                             onChange={handleSearchChange}
                             type="text"
                             placeholder="Search..."
-                            className="p-2 ps-10 border border-gray-300 rounded-lg w-full focus:ring-light duration-300 focus-within:border-light"
+                            className="p-2 ps-10 border border-gray-300 dark:bg-dark2 rounded-lg w-full focus:ring-light duration-300 focus-within:border-light"
                         />
                     </div>
 
@@ -161,7 +161,7 @@ export default function Chat() {
                                     <div
                                         key={team.id}
                                         onClick={() => setselectedChat(team)}
-                                        className={`flex items-center p-4 border-b border-gray-400 bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200 ${selectedChat?.id === team?.id ? 'bg-gray-100 bg-opacity-95' : ''} `}
+                                        className={`flex items-center p-4 border-b border-gray-400 bg-darkblue bg-opacity-5 hover:bg-gray-100 dark:hover:bg-dark2 dark:hover:bg-opacity-50 cursor-pointer transition-all duration-200 ${selectedChat?.id === team?.id ? 'bg-gray-100 dark:bg-dark2 bg-opacity-95' : ''} `}
                                     >
                                         <div className="rounded-full p-1 bg-gray-100 text-light text-center">
                                             <FontAwesomeIcon icon={faPeopleGroup} className='text-xl' />
@@ -191,7 +191,7 @@ export default function Chat() {
                 </div>
 
                 {/* Main Chat Window */}
-                <div className={`bg-gray-50 ${selectedChat ? 'w-full' : 'w-0'} transition-all lg:w-[70%] overflow-hidden rounded-r-lg flex flex-col shadow-inner`}>
+                <div className={`bg-gray-50 dark:bg-dark1 ${selectedChat ? 'w-full' : 'w-0'} transition-all lg:w-[70%] overflow-hidden rounded-r-lg flex flex-col shadow-inner`}>
                     <MainChat />
                 </div>
             </div>

@@ -1,4 +1,4 @@
-const {heroui} = require('@heroui/theme');
+const { heroui } = require('@heroui/theme');
 /** @type {import('tailwindcss').Config} */
 export default {
   safelist: [
@@ -45,7 +45,10 @@ export default {
         darkblue: '#133d57',  // dark teal-blue
         blueblack: '#0b2534',  // most dark teal-blue
         highlight: '#f25287',  // pink-red
-        dark: '#111',
+        dark: '#02070a',
+        dark1: '#0c1c25',
+        dark2: '#182b37',
+        darklayout: '#0e2633',
         notes: '#35586f',
 
         pending: '#808080',
@@ -54,9 +57,10 @@ export default {
         cancelled: '#FF4500',
         on_hold: '#FFA500',
         in_review: '#9370DB',
+
       },
     },
   },
-  plugins: [require('flowbite/plugin'),heroui()],
+  plugins: [require('flowbite/plugin'), heroui()],
 }
 

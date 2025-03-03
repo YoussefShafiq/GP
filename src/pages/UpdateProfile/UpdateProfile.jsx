@@ -145,7 +145,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.name}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                 />
                                 {formik.errors.name && formik.touched.name &&
                                     <div className="text-sm text-red-600 mt-1">
@@ -161,7 +161,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.bio}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300 min-h-52"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300 min-h-52"
                                 />
                                 {formik.errors.bio && formik.touched.bio &&
                                     <div className="text-sm text-red-600 mt-1">
@@ -178,7 +178,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.birthdate}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                 />
                                 {formik.errors.birthdate && formik.touched.birthdate &&
                                     <div className="text-sm text-red-600 mt-1">
@@ -195,7 +195,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.email}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                 />
                                 {formik.errors.email && formik.touched.email &&
                                     <div className="text-sm text-red-600 mt-1">
@@ -212,7 +212,7 @@ export default function UpdateProfile() {
                                     value={formik.values.phone}
                                     onChange={handlePhoneInput}
                                     onBlur={formik.handleBlur}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                     pattern="[0-9]*"
                                 />
                                 {formik.errors.phone && formik.touched.phone &&
@@ -229,7 +229,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.gender}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                 >
                                     <option value="">Select Gender</option>
                                     <option value="Male">Male</option>
@@ -250,7 +250,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.position}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                 />
                                 {formik.errors.position && formik.touched.position &&
                                     <div className="text-sm text-red-600 mt-1">
@@ -266,7 +266,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.level}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                 >
                                     <option value="">Select Job Level</option>
                                     <option value="fresh">fresh</option>
@@ -291,9 +291,9 @@ export default function UpdateProfile() {
                                     onChange={handleSkillsChange}
                                     onBlur={formik.handleBlur}
                                     placeholder="Enter skills"
-                                    className="w-full p-chips"
+                                    className="w-full p-chips dark:bg-dark2"
                                     itemTemplate={(skill) => (
-                                        <div className="bg-gray-200 rounded-full px-3 py-1 text-sm">
+                                        <div className="bg-gray-200 dark:bg-dark1 rounded-full px-3 py-1 text-sm">
                                             {skill}
                                         </div>
                                     )}
@@ -313,7 +313,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.facebook}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                 />
                                 {formik.errors.facebook && formik.touched.facebook &&
                                     <div className="text-sm text-red-600 mt-1">
@@ -330,7 +330,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.github}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                 />
                                 {formik.errors.github && formik.touched.github &&
                                     <div className="text-sm text-red-600 mt-1">
@@ -347,7 +347,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.website}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                 />
                                 {formik.errors.website && formik.touched.website &&
                                     <div className="text-sm text-red-600 mt-1">
@@ -364,7 +364,7 @@ export default function UpdateProfile() {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.linkedin}
-                                    className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                    className="w-full p-2 bg-base dark:bg-dark2 rounded-xl border border-gray-300"
                                 />
                                 {formik.errors.linkedin && formik.touched.linkedin &&
                                     <div className="text-sm text-red-600 mt-1">
@@ -377,7 +377,7 @@ export default function UpdateProfile() {
                                 <button
                                     type="button"
                                     onClick={handleCancel}
-                                    className="mt-4 bg-white text-light outline-light outline outline-1 px-10 py-2 rounded-xl capitalize"
+                                    className="mt-4 bg-white dark:bg-dark text-light outline-light outline outline-1 px-10 py-2 rounded-xl capitalize"
                                 >
                                     Cancel
                                 </button>

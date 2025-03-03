@@ -353,7 +353,7 @@ export default function MainChat() {
     return (
         <>
             {/* Chat Header */}
-            <div className="p-4 border-b border-gray-200 flex items-center bg-white rounded-t-lg">
+            <div className="p-4 border-b border-gray-200 flex items-center bg-white dark:bg-dark1 rounded-t-lg">
                 <button onClick={() => { setselectedChat(null) }} className='lg:hidden' ><ArrowLeftIcon /> </button>
                 <div className="rounded-full p-1 bg-gray-100 text-light text-center">
                     <FontAwesomeIcon icon={faPeopleGroup} className='text-xl' />
@@ -387,7 +387,7 @@ export default function MainChat() {
             </div>
 
             {/* Chat Messages */}
-            <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-scroll bg-chat-light bg-opacity-10" onScroll={handleScroll}>
+            <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-scroll bg-chat-light dark:bg-chat-dark dark:bg-center bg-opacity-10" onScroll={handleScroll}>
                 {messages.map((message) => (
                     <div
                         key={message?.id}
@@ -403,7 +403,7 @@ export default function MainChat() {
                             </div>
                         )}
                         <div
-                            className={`ml-3 p-3 rounded-lg shadow-md max-w-[70%] relative ${message?.sender_id === profileData?.data?.data.user.id ? 'bg-light text-white' : 'bg-white'
+                            className={`ml-3 p-3 rounded-lg shadow-md max-w-[70%] relative ${message?.sender_id === profileData?.data?.data.user.id ? 'bg-light dark:bg-dark1 text-white' : 'bg-white dark:bg-dark2'
                                 }`}
                         >
 
@@ -447,7 +447,7 @@ export default function MainChat() {
                                     </React.Fragment>
                                 ))}
                             </div>
-                            {message?.media && (
+                            {/* {message?.media && (
                                 <div className="mt-2 flex flex-wrap gap-2">
                                     {message.media.map((media, index) => (
                                         <a
@@ -461,7 +461,7 @@ export default function MainChat() {
                                         </a>
                                     ))}
                                 </div>
-                            )}
+                            )} */}
                             <div className="flex items-center justify-between">
                                 <div
                                     className={`text-xs mt-1 ${message?.sender_id === profileData?.data?.data.user.id ? 'text-gray-200' : 'text-gray-500'}`}
@@ -475,7 +475,7 @@ export default function MainChat() {
                                 )}
                                 {/* Three dots button */}
                                 <button
-                                    className={`p-2 pe-0  ${message?.sender_id === profileData?.data?.data.user.id ? 'text-white' : 'text-dark'} rounded-full`}
+                                    className={`p-2 pe-0  ${message?.sender_id === profileData?.data?.data.user.id ? 'text-white' : 'text-dark dark:text-white'} rounded-full`}
                                     onClick={(e) => {
                                         e.stopPropagation(); // Prevent event bubbling
                                         setActiveMessageId(message.id === activeMessageId ? null : message.id); // Toggle menu
@@ -490,7 +490,7 @@ export default function MainChat() {
             </div>
 
             {/* Chat Input */}
-            <div className="p-4 border-t border-gray-200 bg-white rounded-b-lg">
+            <div className="p-4 border-t border-gray-200 bg-white dark:bg-dark1 rounded-b-lg">
                 {/* File Previews */}
                 {files.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-2">
@@ -521,7 +521,7 @@ export default function MainChat() {
                 <div className="flex items-center gap-2">
                     <textarea
                         placeholder="Type a message..."
-                        className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-light focus:border-light duration-300 resize-none"
+                        className="flex-1 p-2 border border-gray-300 dark:bg-dark1 rounded-lg focus:ring-light focus:border-light duration-300 resize-none"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         onKeyDown={(e) => {

@@ -634,7 +634,7 @@ export default function TaskDetails() {
                         </div>
 
                         {/* assigned to */}
-                        <div className="bg-base dark:bg-neutral-800 max-h-96 p-4 rounded-2xl shadow-xl overflow-y-auto">
+                        <div className="bg-base dark:bg-dark1 max-h-96 p-4 rounded-2xl shadow-xl overflow-y-auto">
                             <h2 className='capitalize mb-3 font-semibold text-gray-700 dark:text-gray-100' >assigned to</h2>
                             {(taskDataIsLoading && selectedTeam) ? <>
                                 <div className="flex flex-col flex-wrap gap-3">
@@ -680,7 +680,7 @@ export default function TaskDetails() {
                     {/* right side */}
                     <div className="flex flex-col lg:w-[calc(35.333%-8px)] gap-y-6">
                         {/* task notes */}
-                        <div className="flex flex-col bg-base dark:bg-neutral-800 p-5 rounded-3xl shadow-xl max-h-96 relative">
+                        <div className="flex flex-col bg-base dark:bg-dark1 p-5 rounded-3xl shadow-xl max-h-96 relative">
                             <h2 className='capitalize ms-4 font-semibold text-gray-700 dark:text-gray-100'>Task Notes</h2>
 
                             {/* <!-- Make the ol take up the remaining space and be scrollable --> */}
@@ -701,7 +701,7 @@ export default function TaskDetails() {
                                                         </div>
                                                     </Tooltip>
                                                 </span>
-                                                <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs md:flex dark:bg-gray-700 dark:border-gray-600">
+                                                <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs md:flex dark:bg-dark2 dark:border-gray-600">
                                                     <time className="mb-1 text-center w-10 text-xs font-normal text-gray-400 order-1 md:order-last sm:mb-0">{formatTimeAgo(note.created_at)}</time>
                                                     <div className="text-sm font-normal text-gray-500 dark:text-gray-300 break-words md:max-w-[calc(100%-30px)]"><span className='font-bold text-black dark:text-white'>{note.user.name}</span> {note.description}</div>
                                                 </div>
@@ -712,10 +712,10 @@ export default function TaskDetails() {
                             </div>
 
                             {/* <!-- Fix the input and button at the bottom --> */}
-                            <form onSubmit={handleAddNote} className="flex justify-between items-center gap-2 bg-base dark:bg-neutral-800 mt-4 flex-shrink-0">
+                            <form onSubmit={handleAddNote} className="flex justify-between items-center gap-2 bg-base dark:bg-dark1 mt-4 flex-shrink-0">
                                 <textarea
                                     placeholder="Add Notes..."
-                                    className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-light focus:border-light duration-300 resize-none"
+                                    className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-light focus:border-light duration-300 resize-none dark:bg-dark1 dark:text-white"
                                     rows={1}
                                     style={{ minHeight: '40px', maxHeight: '120px', overflowY: 'auto' }}
                                     value={noteDescription}
@@ -731,7 +731,7 @@ export default function TaskDetails() {
                             </form>
                         </div>
                         {/* activity log */}
-                        <div className="flex flex-col bg-base dark:bg-neutral-800 p-5 rounded-3xl shadow-xl max-h-96 relative">
+                        <div className="flex flex-col bg-base dark:bg-dark1 p-5 rounded-3xl shadow-xl max-h-96 relative">
                             <h2 className='capitalize ms-4 font-semibold text-gray-700 dark:text-gray-100'>Activity Log</h2>
 
                             {/* <!-- Make the ol take up the remaining space and be scrollable --> */}
@@ -753,7 +753,7 @@ export default function TaskDetails() {
                                                         </div>
                                                     </Tooltip>
                                                 </span>
-                                                <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex  dark:bg-gray-700 dark:border-gray-600">
+                                                <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex  dark:bg-dark2 dark:border-gray-600">
                                                     <time className="mb-1 text-center w-10 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">{formatTimeAgo(log.created_at)}</time>
                                                     <div className="text-sm font-normal text-gray-500 dark:text-gray-300 break-words"><span className='font-bold text-black dark:text-white'>{log.user.name}</span> {log.description}<div className={`${log.event === 'updated' ? 'bg-yellow-400' : log.event === 'viewed' ? 'bg-blue-500' : log.event === 'deleted' ? 'bg-red-600' : 'bg-green-500'} w-fit mt-1 me-1 text-xs font-thin text-white rounded-lg px-1`}>{log.event}</div></div>
                                                 </div>

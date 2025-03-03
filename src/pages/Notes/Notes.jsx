@@ -239,7 +239,7 @@ export default function Notes() {
 
                 {/* Main Content */}
                 <div className="flex flex-wrap md:border-s box-border text-sm">
-                    <div className={`${selectedNote ? 'w-0 lg:w-1/4 overflow-hidden' : 'w-1/2 lg:w-1/4'} bg-darkblue h-[calc(100vh-48px)] overflow-y-scroll transition-all`} style={{ scrollbarWidth: 'none' }}>
+                    <div className={`${selectedNote ? 'w-0 lg:w-1/4 overflow-hidden' : 'w-1/2 lg:w-1/4'} bg-darkblue dark:bg-darklayout h-[calc(100vh-48px)] overflow-y-scroll transition-all`} style={{ scrollbarWidth: 'none' }}>
                         {/* Recents */}
                         <RecentNotes />
 
@@ -290,7 +290,7 @@ export default function Notes() {
                             </div>
                         </div>
                     </div>
-                    <div className={`${selectedNote ? 'w-0 lg:w-1/4 overflow-hidden' : 'w-1/2 lg:w-1/4'} bg-notes h-[calc(100vh-48px)] overflow-y-scroll transition-all`} style={{ scrollbarWidth: 'none' }}>
+                    <div className={`${selectedNote ? 'w-0 lg:w-1/4 overflow-hidden' : 'w-1/2 lg:w-1/4'} bg-notes dark:bg-dark2 h-[calc(100vh-48px)] overflow-y-scroll transition-all`} style={{ scrollbarWidth: 'none' }}>
                         {/* Notes inside selected folder */}
                         <FolderNotes />
                     </div>

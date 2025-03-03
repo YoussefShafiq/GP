@@ -213,7 +213,7 @@ export default function NoteDetails() {
     const isNoteDeleted = data?.data?.data?.note?.deleted_at !== null;
 
     return (
-        <div className={`${selectedNote ? 'w-full lg:w-1/2' : 'w-0 lg:w-1/2 overflow-hidden'} bg-darkblue h-[calc(100vh-48px)] overflow-y-scroll relative transition-all`} style={{ scrollbarWidth: 'none' }}>
+        <div className={`${selectedNote ? 'w-full lg:w-1/2' : 'w-0 lg:w-1/2 overflow-hidden'} bg-darkblue dark:bg-darklayout h-[calc(100vh-48px)] overflow-y-scroll relative transition-all`} style={{ scrollbarWidth: 'none' }}>
             {/* Show "Select a note to view" if no note is selected */}
 
             {!selectedNote ? (
@@ -303,7 +303,7 @@ export default function NoteDetails() {
                         <div className="flex justify-between items-center relative">
                             <input
                                 type="text"
-                                className="text-white text-2xl font-inter font-bold mb-5 bg-darkblue p-0 border-0 focus:ring-0"
+                                className="text-white text-2xl font-inter font-bold mb-5 bg-transparent p-0 border-0 focus:ring-0"
                                 value={noteTitle}
                                 onChange={handleTitleChange}
                                 onBlur={handleBlur}
@@ -362,7 +362,7 @@ export default function NoteDetails() {
                                 <div className="capitalize">folder</div>
                             </div>
                             <select
-                                className="text-white bg-darkblue p-2 border-0 focus:ring-0"
+                                className="text-white bg-transparent p-2 border-0 focus:ring-0"
                                 value={selectedFolderId}
                                 onChange={handleFolderChange}
                                 onBlur={handleBlur}
@@ -372,7 +372,7 @@ export default function NoteDetails() {
                                     <option
                                         key={folder.id}
                                         value={folder.id}
-                                        className="bg-darkblue text-white hover:bg-blue-500 hover:text-white cursor-pointer"
+                                        className="bg-darkblue dark:bg-darklayout text-white hover:bg-blue-500 hover:text-white cursor-pointer"
                                     >
                                         {folder.name}
                                     </option>
@@ -381,7 +381,7 @@ export default function NoteDetails() {
                         </div>
                         <div className="h-[1px] w-full bg-white opacity-25 my-4"></div>
                         <textarea
-                            className="bg-darkblue p-0 text-white font-inter border-0 focus:ring-0 w-full h-48"
+                            className="bg-transparent p-0 text-white font-inter border-0 focus:ring-0 w-full h-48"
                             value={noteContent}
                             onChange={handleContentChange}
                             onBlur={handleBlur}

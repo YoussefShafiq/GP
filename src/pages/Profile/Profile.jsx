@@ -108,7 +108,7 @@ export default function Profile() {
                 <div className="flex flex-col gap-5 p-5 text-white">
                     {/* Profile Card */}
                     <div className="flex lg:flex-row flex-col gap-3">
-                        <div className="flex md:flex-row flex-col justify-between gap-10 lg:w-[calc(90%-12px)] bg-darkblue rounded-3xl p-5 shadow-xl text-white">
+                        <div className="flex md:flex-row flex-col justify-between gap-10 lg:w-[calc(90%-12px)] bg-darkblue dark:bg-dark1 rounded-3xl p-5 shadow-xl text-white">
                             <div className="flex md:flex-row flex-col md:gap-10 gap-2">
                                 <div className="w-2/3 m-auto md:w-1/3 flex justify-center items-center md:p-3">
                                     <img src={img} alt="profile photo" className="w-full aspect-square object-cover rounded-full" />
@@ -146,11 +146,11 @@ export default function Profile() {
                                         {isLoading ? <div className="w-1/2 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="capitalize">{data?.data?.data.user.level} {data?.data?.data.user.position}</h2>}
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <Mail size={30} className="text-darkblue" fill="white" />
+                                        <Mail size={30} className="text-darkblue dark:text-dark1" fill="white" />
                                         {isLoading ? <div className="w-2/3 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="break-words max-w-[80%]">{data?.data?.data.user.email}</h2>}
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <Phone size={30} className="text-darkblue" fill="white" />
+                                        <Phone size={30} className="text-darkblue dark:text-dark1" fill="white" />
                                         {isLoading ? <div className="w-1/2 h-5 rounded bg-white bg-opacity-30 animate-pulse"></div> : <h2 className="break-words max-w-[80%]">{data?.data?.data.user.phone}</h2>}
 
                                     </div>
@@ -188,7 +188,7 @@ export default function Profile() {
                                 </button>
                             </div>
                         </div>
-                        <div className="flex lg:flex-col flex-row gap-6 items-center justify-center text-3xl lg:w-[calc(10%-12px)] p-3 lg:p-0 bg-darkblue rounded-3xl shadow-xl flex-wrap">
+                        <div className="flex lg:flex-col flex-row gap-6 items-center justify-center text-3xl lg:w-[calc(10%-12px)] p-3 lg:p-0 bg-darkblue dark:bg-dark1 rounded-3xl shadow-xl flex-wrap">
                             <a href={data?.data?.data.user.social.facebook} target='_blank'>
                                 <FontAwesomeIcon icon={faFacebook} className={` ${!data?.data?.data.user.social.facebook && 'opacity-20'} drop-shadow-lg`} />
                             </a>
@@ -203,18 +203,18 @@ export default function Profile() {
                             </a>
                         </div>
                     </div>
-                    <div className="flex flex-col p-5 bg-base text-black rounded-3xl shadow-xl gap-2">
+                    <div className="flex flex-col p-5 bg-base dark:bg-dark2 dark:text-white text-black rounded-3xl shadow-xl gap-2">
                         <h2 className='font-bold text-2xl capitalize'>skills</h2>
 
                         <div className="flex flex-wrap gap-3">
                             {data?.data?.data?.user?.skills?.map((skill, index) => (
-                                <div key={index} className='bg-darkblue bg-opacity-5 shadow-inner rounded-3xl py-1 px-3' >{skill}</div>
+                                <div key={index} className='bg-darkblue dark:bg-white dark:bg-opacity-10 bg-opacity-5 shadow-inner rounded-3xl py-1 px-3' >{skill}</div>
                             ))}
                         </div>
                     </div>
-                    <div className="flex flex-col p-5 bg-base text-black rounded-3xl shadow-xl gap-2">
+                    <div className="flex flex-col p-5 bg-base dark:bg-dark2 dark:text-white text-black rounded-3xl shadow-xl gap-2">
                         <h2 className='font-bold text-2xl capitalize'>bio</h2>
-                        <p className='text-gray-800'>{data?.data?.data.user.bio}</p>
+                        <p className='text-gray-800 dark:text-white'>{data?.data?.data.user.bio}</p>
                     </div>
                 </div>
 

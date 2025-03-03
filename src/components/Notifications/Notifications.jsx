@@ -148,14 +148,14 @@ const Notifications = () => {
             </button>
 
             {/* Notification Dropdown */}
-            <div className={`absolute top-12 right-0 bg-white border-gray-200 rounded-lg shadow-lg w-60 md:w-80 ${isOpen ? 'h-96 border' : 'h-0'} overflow-y-auto border-t-0 transition-all`}>
+            <div className={`absolute top-12 right-0 bg-white dark:bg-dark2  border-gray-200 rounded-lg shadow-lg w-60 md:w-80 ${isOpen ? 'h-96 border' : 'h-0'} overflow-y-auto border-t-0 transition-all`}>
                 {notifications.map(notification => (
                     <div
                         key={notification.id}
-                        className={`p-4 border-b border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100' : 'bg-white hover:bg-gray-50'}  flex flex-col justify-between text-start`}
+                        className={`p-4 border-b  border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100 dark:hover:bg-white dark:hover:bg-opacity-5 dark:bg-dark1' : 'bg-white dark:hover:bg-white dark:hover:bg-opacity-10 dark:bg-dark2 hover:bg-gray-50'}  flex flex-col justify-between text-start`}
                     >
                         <div>
-                            <p className="text-sm font-medium text-gray-900">{notification.message}</p>
+                            <p className="text-sm font-medium text-gray-900 dark:text-white">{notification.message}</p>
                         </div>
                         <div className="flex justify-between items-center space-x-2">
                             <small className="text-xs text-gray-500">

@@ -54,10 +54,10 @@ export default function Home() {
             <div className="p-3 md:p-5">
                 <div className="flex flex-col-reverse lg:flex-row gap-5">
                     {/* TO-Do side */}
-                    <div className="flex flex-col gap-4 lg:w-1/2 bg-base shadow-xl rounded-3xl p-5">
+                    <div className="flex flex-col gap-4 lg:w-1/2 bg-base dark:bg-dark1 shadow-xl rounded-3xl p-5">
                         <div className="flex items-center gap-2 relative">
                             <Clipboard className="text-gray-400" />
-                            <Clock2 size={13} className="absolute text-gray-400 top-4 left-4 bg-base" />
+                            <Clock2 size={13} className="absolute text-gray-400 top-4 left-4 bg-base dark:bg-dark1" />
                             <h2 className="text-highlight font-semibold">To-Do</h2>
                         </div>
                         <div className="flex text-gray-500 text-sm">
@@ -69,22 +69,22 @@ export default function Home() {
                             <>
                                 {/* Loading placeholders */}
                                 {[...Array(4)].map((_, index) => (
-                                    <div key={index} className="border border-opacity-30 border-black p-3 rounded-2xl flex gap-3">
+                                    <div key={index} className="border border-opacity-30 border-black dark:border-slate-800 p-3 rounded-2xl flex gap-3">
                                         <div className="animate-pulse">
-                                            <div className="rounded-full bg-gray-300 h-5 w-5"></div>
+                                            <div className="rounded-full bg-gray-300 dark:bg-dark2 h-5 w-5"></div>
                                         </div>
                                         <div className="flex flex-col gap-2 w-full">
                                             <div className="animate-pulse">
-                                                <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                                                <div className="h-4 bg-gray-300 dark:bg-dark2 rounded w-3/4"></div>
                                             </div>
                                             <div className="animate-pulse">
-                                                <div className="h-3 bg-gray-300 rounded w-full my-3"></div>
-                                                <div className="h-3 bg-gray-300 rounded w-2/3"></div>
+                                                <div className="h-3 bg-gray-300 dark:bg-dark2 rounded w-full my-3"></div>
+                                                <div className="h-3 bg-gray-300 dark:bg-dark2 rounded w-2/3"></div>
                                             </div>
                                             <div className="animate-pulse flex justify-between">
-                                                <div className="h-3 bg-gray-300 rounded w-1/4"></div>
-                                                <div className="h-3 bg-gray-300 rounded w-1/4"></div>
-                                                <div className="h-3 bg-gray-300 rounded w-1/4"></div>
+                                                <div className="h-3 bg-gray-300 dark:bg-dark2 rounded w-1/4"></div>
+                                                <div className="h-3 bg-gray-300 dark:bg-dark2 rounded w-1/4"></div>
+                                                <div className="h-3 bg-gray-300 dark:bg-dark2 rounded w-1/4"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@ export default function Home() {
                             <>
                                 {toDoTasksData?.data?.data.tasks.length <= 0 ? <div className='text-center p-3 capitalize'>no tasks to do</div> : <>
                                     {toDoTasksData?.data?.data.tasks.map((task) => (
-                                        <div key={task.id} className="border border-opacity-30 border-black p-3 rounded-2xl flex gap-3">
+                                        <div key={task.id} className="border border-opacity-30 border-black dark:border-slate-800 p-3 rounded-2xl flex gap-3">
                                             <div>
                                                 <Circle size={20} className="text-highlight" />
                                             </div>
@@ -103,7 +103,7 @@ export default function Home() {
                                                     setselectedTask(task);
                                                     navigate('/task-details')
                                                 }}>{task.name}</h2>
-                                                <div className="text-gray-700 max-w-[80%] my-3">{task.description}</div>
+                                                <div className="text-gray-700 dark:text-gray-300 max-w-[80%] my-3">{task.description}</div>
                                                 <div className="flex md:flex-row flex-col justify-between">
                                                     <div>
                                                         Priority: <span className="text-light">{task.priority}</span>
@@ -126,7 +126,7 @@ export default function Home() {
                     {/* right side */}
                     <div className="flex flex-col lg:w-1/2 h-full gap-5">
                         {/* charts */}
-                        <div className="flex flex-row flex-wrap items-center justify-between p-5 bg-base shadow-xl rounded-3xl w-full">
+                        <div className="flex flex-row flex-wrap items-center justify-between p-5 bg-base dark:bg-dark1 shadow-xl rounded-3xl w-full">
                             <div className="capitalize text-xl w-full font-semibold">tasks stats</div>
                             {homeStatsLoading ? (
                                 <>
@@ -134,7 +134,7 @@ export default function Home() {
                                     {[...Array(3)].map((_, index) => (
                                         <div key={index} className="w-1/2 md:w-[calc(33.333%-40px)]">
                                             <div className="animate-pulse">
-                                                <div className="rounded-full bg-base border-[24px] border-gray-300 opacity-50 h-40 w-40 mx-auto"></div>
+                                                <div className="rounded-full bg-base dark:bg-dark1 border-[24px] border-gray-300 opacity-50 h-40 w-40 mx-auto"></div>
                                                 <div className="h-5 bg-gray-300 opacity-50 rounded mt-4 w-1/2 ms-3"></div>
                                             </div>
                                         </div>
@@ -236,10 +236,10 @@ export default function Home() {
                         </div>
 
                         {/* in review tasks */}
-                        <div className="flex flex-col gap-4 bg-base shadow-xl rounded-3xl p-5">
+                        <div className="flex flex-col gap-4 bg-base dark:bg-dark1 shadow-xl rounded-3xl p-5">
                             <div className="flex items-center gap-2 relative">
                                 <Clipboard className="text-gray-400" />
-                                <ShieldCheck size={15} className="absolute text-gray-400 top-4 left-4 bg-base" />
+                                <ShieldCheck size={15} className="absolute text-gray-400 top-4 left-4 bg-base dark:bg-dark1" />
                                 <h2 className="text-highlight font-semibold">In Review Tasks</h2>
                             </div>
                             {/* in review tasks mapping */}
@@ -247,20 +247,20 @@ export default function Home() {
                                 <>
                                     {/* Loading placeholders */}
                                     {[...Array(2)].map((_, index) => (
-                                        <div key={index} className="border border-opacity-30 border-black p-3 rounded-2xl flex gap-3">
+                                        <div key={index} className="border border-opacity-30 border-black dark:border-slate-800 p-3 rounded-2xl flex gap-3">
                                             <div className="animate-pulse">
-                                                <div className="rounded-full bg-gray-300 h-5 w-5"></div>
+                                                <div className="rounded-full bg-gray-300 dark:bg-dark2 h-5 w-5"></div>
                                             </div>
                                             <div className="flex flex-col gap-2 w-full">
                                                 <div className="animate-pulse">
-                                                    <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                                                    <div className="h-4 bg-gray-300 dark:bg-dark2 rounded w-3/4"></div>
                                                 </div>
                                                 <div className="animate-pulse">
-                                                    <div className="h-3 bg-gray-300 rounded w-full my-3"></div>
-                                                    <div className="h-3 bg-gray-300 rounded w-2/3"></div>
+                                                    <div className="h-3 bg-gray-300 dark:bg-dark2 rounded w-full my-3"></div>
+                                                    <div className="h-3 bg-gray-300 dark:bg-dark2 rounded w-2/3"></div>
                                                 </div>
                                                 <div className="animate-pulse flex justify-between">
-                                                    <div className="h-3 bg-gray-300 rounded w-1/4"></div>
+                                                    <div className="h-3 bg-gray-300 dark:bg-dark2 rounded w-1/4"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -270,7 +270,7 @@ export default function Home() {
                                 <>
                                     {inreviewTasksData?.data?.data?.tasks.length <= 0 ? <div className='text-center p-3 capitalize'>No in review tasks</div> : <>
                                         {inreviewTasksData?.data?.data?.tasks.map((task) => (
-                                            <div key={task.id} className="border border-opacity-30 border-black p-3 rounded-2xl flex gap-3">
+                                            <div key={task.id} className="border border-opacity-30 border-black dark:border-slate-700 p-3 rounded-2xl flex gap-3">
                                                 <div>
                                                     <Circle size={20} className="text-highlight" />
                                                 </div>
@@ -279,7 +279,7 @@ export default function Home() {
                                                         setselectedTask(task);
                                                         navigate('/task-details')
                                                     }}>{task.name}</h2>
-                                                    <div className="text-gray-700 max-w-[80%] my-3">{task.description}</div>
+                                                    <div className="text-gray-700 dark:text-gray-300 max-w-[80%] my-3">{task.description}</div>
                                                     <div className="flex flex-col justify-between">
                                                         <div className="text-gray-500">Deadline: {task.deadline.substring(0, 10)}</div>
                                                     </div>

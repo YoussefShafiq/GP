@@ -202,16 +202,16 @@ export default function Team() {
                 </div>
             ) : (
                 <div className="p-5">
-                    <div className="flex flex-col border-b md:flex-row sticky top-12 bg-white p-3 md:p-5 z-[49] justify-between md:items-center gap-3 mb-5 h-16">
+                    <div className="flex flex-col border-b md:flex-row sticky top-12 bg-white dark:bg-dark p-3 md:p-5 z-[49] justify-between md:items-center gap-3 mb-5 h-16">
                         <div className='text-gray-400 flex items-center '>
-                            <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} /><div className="ps-1 cursor-pointer text-black ">{selectedTeam?.name}</div>
+                            <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} /><div className="ps-1 cursor-pointer text-black dark:text-white ">{selectedTeam?.name}</div>
                             {refetchingTasks && <div className="md:hidden flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                         </div>
                         <div className="hidden md:flex flex-wrap justify-center gap-2">
                             {refetchingTasks && <div className="md:flex hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                             {teamData?.data?.data.team.role !== 'member' && (<>
                                 <div
-                                    className="flex md:w-fit justify-between items-center gap-2 p-2 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200"
+                                    className="flex md:w-fit justify-between items-center gap-2 p-2 bg-gray-100 dark:bg-dark1 dark:text-white rounded-lg cursor-pointer hover:bg-gray-200"
                                     onClick={() => {
                                         navigator.clipboard.writeText(teamData?.data.data.team.team_code);
                                         toast.success('added to clipboard', {
@@ -220,32 +220,32 @@ export default function Team() {
                                         });
                                     }}
                                 >
-                                    <span className="text-black hidden md:block">{teamData?.data.data.team.team_code}</span>
+                                    <span className="text-black dark:text-white hidden md:block">{teamData?.data.data.team.team_code}</span>
                                     <Copy size={18} className="text-gray-500" />
                                 </div>
                                 <Tooltip delay={350} closeDelay={0} content='manage team members'>
                                     <button
                                         onClick={() => navigate('manage-members')}
-                                        className="rounded-full bg-white text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                                        className="rounded-full bg-white dark:bg-dark text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                                     >
                                         <Settings size={25} />
                                     </button>
                                 </Tooltip>
                                 <Tooltip delay={350} closeDelay={0} content='update team name' >
-                                    <button onClick={() => setUpdateTeamForm(true)} className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
+                                    <button onClick={() => setUpdateTeamForm(true)} className="rounded-full bg-white dark:bg-dark text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
                                 </Tooltip>
                                 <Tooltip delay={350} closeDelay={0} content='delete team' >
-                                    <button onClick={() => setDeleteTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                                    <button onClick={() => setDeleteTeamForm(true)} className="rounded-full bg-white dark:bg-dark text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
                                 </Tooltip>
                                 <Tooltip delay={350} closeDelay={0} content='invite member to team' >
-                                    <button onClick={() => setInviteMemberForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
+                                    <button onClick={() => setInviteMemberForm(true)} className="rounded-full bg-white dark:bg-dark text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
                                 </Tooltip>
                                 <Tooltip delay={350} closeDelay={0} content='add task' >
-                                    <button onClick={() => setAddTaskForm(true)} className="rounded-full bg-white text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
+                                    <button onClick={() => setAddTaskForm(true)} className="rounded-full bg-white dark:bg-dark text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
                                 </Tooltip>
                             </>)}
                             <Tooltip delay={350} closeDelay={0} content='leave team' >
-                                <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
+                                <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white dark:bg-dark text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
                             </Tooltip>
                         </div>
 

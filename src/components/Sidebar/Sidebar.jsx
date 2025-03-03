@@ -289,7 +289,7 @@ export default function Sidebar() {
       </AnimatePresence>
 
       {/* Sidebar */}
-      <div className={`${!sidebarOpen ? "w-0 overflow-hidden md:w-16" : "w-48 border-e md:border-none"} transition-all h-[calc(100vh-48px)] fixed left-0 z-50 bg-darkblue flex flex-col px-0 text-white mt-12 text-[13px]`}>
+      <div className={`${!sidebarOpen ? "w-0 overflow-hidden md:w-16" : "w-48 border-e md:border-none"} transition-all h-[calc(100vh-48px)] fixed left-0 z-50 bg-darkblue dark:bg-darklayout flex flex-col px-0 text-white mt-12 text-[13px]`}>
         <div className="px-3 pb-3 border-b">
           <div className={`flex ${!sidebarOpen ? "flex-col-reverse items-center mt-3" : ""} justify-between relative after:absolute after:content-[""] after:h-[1px] after:w-full after:bg-gray-500 after:bottom-1 `} >
             <Link to={'profile'} className='text-darkTeal bg-white rounded-3xl w-fit my-5 '><CircleUserRound color='#0b2534' /></Link>
@@ -307,7 +307,7 @@ export default function Sidebar() {
             <li><NavLink className={`px-2 rounded-3xl ${!sidebarOpen ? "" : "pe-4 "} py-[6px] block`} to={"notes"} ><div className={`flex items-center ${!sidebarOpen ? "justify-center" : ""} space-x-2 capitalize `} ><NotebookPen /><h2 className={`${!sidebarOpen ? "hidden" : ""} `} >notes</h2></div></NavLink></li>
           </ul>
         </div>
-        <div className="bg-blueblack h-full overflow-y-scroll p-3" style={{ scrollbarWidth: 'none' }}>
+        <div className="bg-blueblack dark:bg-darklayout h-full overflow-y-scroll p-3" style={{ scrollbarWidth: 'none' }}>
           {/* Team Spaces List */}
           {sidebarOpen ? (
             <>
@@ -332,7 +332,7 @@ export default function Sidebar() {
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
-                      className="flex flex-col space-y-1 mt-2 ms-2 bg-white text-blueblack p-2 rounded-lg rounded-tl-none overflow-hidden"
+                      className="flex flex-col space-y-1 mt-2 ms-2 bg-white dark:bg-dark dark:bg-opacity-60 dark:text-white text-blueblack p-2 rounded-lg rounded-tl-none overflow-hidden"
                     >
                       {/* Add and Join Buttons */}
                       <div className="flex">

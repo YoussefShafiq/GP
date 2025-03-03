@@ -500,7 +500,7 @@ export default function ProjectTeams() {
             <div className="p-5">
                 <div className="flex md:flex-row flex-col justify-between items-center mb-0 border-b gap-3 md:gap-0 md:h-16 ps-5 p-5 ">
                     {/* Path */}
-                    <div className='text-black flex items-center' >
+                    <div className='text-black flex items-center  dark:text-white' >
                         <div onClick={() => navigate('/project')} className="pe-1 cursor-pointer">{selectedProject?.name}</div> <ChevronRight strokeWidth={0.7} />
                         {isRefetching && <div className="md:hidden flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                     </div>
@@ -522,16 +522,16 @@ export default function ProjectTeams() {
                 </div>
 
                 <div className="mt-3">
-                    <h2 className='text-xl capitalize font-semibold text-darkblue mb-3'>All teams</h2>
+                    <h2 className='text-xl capitalize font-semibold text-darkblue dark:text-white mb-3'>All teams</h2>
                     <div className="flex justify-between">
 
                         <div className="w-full md:w-[70%] flex flex-wrap h-fit gap-3">
                             {isLoading ? <>
-                                <div className="py-3 px-4 rounded-lg bg-base shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
-                                <div className="py-3 px-4 rounded-lg bg-base shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
-                                <div className="py-3 px-4 rounded-lg bg-base shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
-                                <div className="py-3 px-4 rounded-lg bg-base shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
-                                <div className="py-3 px-4 rounded-lg bg-base shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
+                                <div className="py-3 px-4 rounded-lg bg-base dark:bg-dark2 shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
+                                <div className="py-3 px-4 rounded-lg bg-base dark:bg-dark2 shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
+                                <div className="py-3 px-4 rounded-lg bg-base dark:bg-dark2 shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
+                                <div className="py-3 px-4 rounded-lg bg-base dark:bg-dark2 shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
+                                <div className="py-3 px-4 rounded-lg bg-base dark:bg-dark2 shadow-inner w-full h-10 lg:w-[calc(33.33333%-12px)] bg-opacity-40 animate-pulse"></div>
                             </>
                                 : <>
 
@@ -544,7 +544,7 @@ export default function ProjectTeams() {
                                                     <div
                                                         key={team.id}
                                                         onClick={() => { setselectedTeam(team); navigate('team') }}
-                                                        className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base shadow-inner w-full lg:w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
+                                                        className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base dark:bg-dark2 shadow-inner w-full lg:w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
                                                     >
                                                         {team.name}
                                                         <Unlock size={20} className='opacity-80 text-gray-500' />
@@ -573,8 +573,8 @@ export default function ProjectTeams() {
                         </div>
 
                         {/* materials */}
-                        <div className="hidden md:flex flex-col md:w-[30%] h-full bg-base p-5 rounded-2xl max-h-[70vh] overflow-y-scroll">
-                            <h2 className='capitalize text-2xl font-semibold text-darkblue' >materials</h2>
+                        <div className="hidden md:flex flex-col md:w-[30%] h-full bg-base dark:bg-dark1 p-5 rounded-2xl max-h-[70vh] overflow-y-auto scrollbar-hide">
+                            <h2 className='capitalize text-2xl font-semibold text-darkblue dark:text-white' >materials</h2>
 
                             <div className="flex justify-between items-center mb-3">
                                 <div className="flex items-center gap-1.5 text-gray-600 py-3"><FolderMinus strokeWidth={1.5} /><h2>folders</h2></div>
@@ -592,12 +592,12 @@ export default function ProjectTeams() {
                                                 setselectedProjectFolder(selectedProject);
                                                 setselectedTeamFolder(team)
                                                 navigate('/materials/project/team')
-                                            }} className="relative bg-white rounded-lg shadow-lg p-6 w-full rounded-tl-none mt-5 cursor-pointer ">
-                                                <div className="absolute w-1/2 -top-6 left-0 bg-white h-6 text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl "></div>
+                                            }} className="relative bg-white dark:bg-dark2 rounded-lg shadow-lg p-6 w-full rounded-tl-none mt-5 cursor-pointer ">
+                                                <div className="absolute w-1/2 -top-6 left-0 bg-white dark:bg-dark2 h-6 text-sm font-semibold px-4 py-1 rounded-tl-lg rounded-tr-3xl "></div>
                                                 <div className="">
                                                     <div className="flex items-center gap-2">
                                                         <div className="aspect-square p-1.5 rounded-lg bg-highlight"><Square fill='#eee' color='#eee' size={8} /></div>
-                                                        <h2 className="text-lg font-bold text-gray-800">{team.name}</h2>
+                                                        <h2 className="text-lg font-bold text-gray-800 dark:text-white">{team.name}</h2>
                                                     </div>
                                                     <div className="flex justify-between items-center w-full">
                                                         <p className="text-sm text-gray-500 mt-2">{team?.created_at?.substring(0, 10)}</p>

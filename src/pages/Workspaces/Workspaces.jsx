@@ -99,10 +99,10 @@ export default function Workspaces() {
                     <div className="w-1/4">
                         <div className="relative">
                             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+                                <div className="w-4 h-4 bg-gray-300 dark:bg-dark2 rounded-full"></div>
                             </div>
                             <div className="block w-full p-4 ps-10 text-sm text-gray-900 border-0 rounded-lg bg-light bg-opacity-10 focus:ring-light focus:border-0 animate-pulse">
-                                <div className="h-4 bg-gray-300 rounded"></div>
+                                <div className="h-4 bg-gray-300 dark:bg-dark2 rounded"></div>
                             </div>
                         </div>
                     </div>
@@ -113,26 +113,26 @@ export default function Workspaces() {
                     {[...Array(6)].map((_, index) => (
                         <div key={index} className="w-full md:w-[calc(33.333%-16px)] p-2">
                             {/* Image Skeleton */}
-                            <div className="rounded-xl overflow-hidden flex items-center bg-gray-300 animate-pulse">
+                            <div className="rounded-xl overflow-hidden flex items-center bg-gray-300 dark:bg-dark2 animate-pulse">
                                 <div className="w-full h-40"></div>
                             </div>
                             {/* Workspace Name Skeleton */}
                             <div className="font-semiBold text capitalize my-3">
-                                <div className="h-6 bg-gray-300 rounded animate-pulse"></div>
+                                <div className="h-6 bg-gray-300 dark:bg-dark2 rounded animate-pulse"></div>
                             </div>
                             {/* Keys and Rate Skeleton */}
                             <div className="flex justify-between items-center">
                                 <div className="opacity-50 text-sm capitalize">
-                                    <div className="h-4 bg-gray-300 rounded animate-pulse"></div>
+                                    <div className="h-4 bg-gray-300 dark:bg-dark2 rounded animate-pulse"></div>
                                 </div>
                                 <div className="text-yellow-400 flex justify-center items-center gap-1 text-sm">
-                                    <div className="h-6 w-6 bg-gray-300 rounded-full animate-pulse"></div>
-                                    <div className="h-4 w-8 bg-gray-300 rounded animate-pulse"></div>
+                                    <div className="h-6 w-6 bg-gray-300 dark:bg-dark2 rounded-full animate-pulse"></div>
+                                    <div className="h-4 w-8 bg-gray-300 dark:bg-dark2 rounded animate-pulse"></div>
                                 </div>
                             </div>
                             {/* Price Skeleton */}
                             <div className="text-light capitalize text-sm my-1">
-                                <div className="h-4 bg-gray-300 rounded animate-pulse"></div>
+                                <div className="h-4 bg-gray-300 dark:bg-dark2 rounded animate-pulse"></div>
                             </div>
                         </div>
                     ))}
@@ -194,7 +194,7 @@ export default function Workspaces() {
                                 </div>
                                 <input
                                     type="search"
-                                    className="block w-full p-4 ps-10 text-sm text-gray-900 border-0 rounded-lg bg-light bg-opacity-10 focus:ring-light focus:border-0"
+                                    className="block w-full p-4 ps-10 text-sm text-gray-900 dark:text-white border-0 rounded-lg bg-light dark:bg-dark2 bg-opacity-10 focus:ring-light focus:border-0"
                                     placeholder="Search..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -207,7 +207,7 @@ export default function Workspaces() {
                         <div className="relative" ref={filterRef}>
                             <button
                                 onClick={() => setIsFilterOpen(!isFilterOpen)}
-                                className="p-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+                                className="p-2 bg-gray-200 dark:bg-dark2 dark:hover:bg-dark1 rounded-lg hover:bg-gray-300 transition-colors"
                             >
                                 Filter
                             </button>
@@ -216,7 +216,7 @@ export default function Workspaces() {
                             <AnimatePresence>
                                 {isFilterOpen && (
                                     <motion.div
-                                        className="absolute z-10 right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg p-4"
+                                        className="absolute z-10 right-0 mt-2 w-64 bg-white dark:bg-dark2 border border-gray-200 rounded-lg shadow-lg p-4"
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -10 }}
@@ -238,7 +238,7 @@ export default function Workspaces() {
                                                                 setMinPrice(newMin);
                                                             }
                                                         }}
-                                                        className="w-2/5 p-2 text-center border border-gray-300 rounded-lg bg-gray-100"
+                                                        className="w-2/5 p-2 text-center border border-gray-300 rounded-lg bg-gray-100 dark:bg-dark2 "
                                                         min={0}
                                                         max={maxPrice}
                                                     />
@@ -252,7 +252,7 @@ export default function Workspaces() {
                                                                 setMaxPrice(newMax);
                                                             }
                                                         }}
-                                                        className="w-2/5 p-2 text-center border border-gray-300 rounded-lg bg-gray-100"
+                                                        className="w-2/5 p-2 text-center border border-gray-300 dark:bg-dark2 rounded-lg bg-gray-100"
                                                         min={minPrice}
                                                         max={500}
                                                     />
@@ -264,7 +264,7 @@ export default function Workspaces() {
                                                 <div className="w-full relative mt-2">
                                                     {/* Track for the Slider */}
                                                     <div
-                                                        className="absolute w-full h-1 bg-gray-300 rounded-full"
+                                                        className="absolute w-full h-1 bg-gray-300  rounded-full"
                                                         style={{ top: '50%', transform: 'translateY(-50%)' }}
                                                     />
 
@@ -327,8 +327,8 @@ export default function Workspaces() {
                                                         key={star}
                                                         onClick={() => setSelectedStars(star)}
                                                         className={`p-2 rounded-lg ${selectedStars >= star
-                                                            ? 'bg-yellow-400'
-                                                            : 'bg-gray-200'
+                                                            ? 'bg-yellow-400 dark:text-dark2'
+                                                            : 'bg-gray-200 dark:bg-dark2'
                                                             } hover:bg-yellow-400 transition-colors`}
                                                     >
                                                         <StarIcon />
@@ -340,7 +340,7 @@ export default function Workspaces() {
                                         {/* Clear Filters Button */}
                                         <button
                                             onClick={clearFilters}
-                                            className="w-full p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                                            className="w-full p-2 bg-highlight text-white rounded-lg hover:bg-highlight hover:bg-opacity-80 transition-colors"
                                         >
                                             Clear Filters
                                         </button>
@@ -356,7 +356,7 @@ export default function Workspaces() {
                     {filteredWorkspaces.map((workspace) => (
                         <div
                             key={workspace.id}
-                            className="w-full md:w-[calc(33.333%-16px)] p-2 bg-white rounded-xl shadow-md cursor-pointer hover:shadow-lg transition-shadow"
+                            className="w-full md:w-[calc(33.333%-16px)] p-2 bg-white dark:bg-dark2 rounded-xl shadow-md cursor-pointer hover:shadow-lg transition-shadow"
                             onClick={() => setSelectedWorkspace(workspace)}
                         >
                             {/* Image Container */}
@@ -398,7 +398,7 @@ export default function Workspaces() {
                             onClick={() => setSelectedWorkspace(null)}
                         >
                             <motion.div
-                                className="bg-white rounded-lg shadow-lg border p-6 w-11/12 max-w-2xl relative max-h-[95vh] overflow-y-auto "
+                                className="bg-white dark:bg-dark1 rounded-lg shadow-lg border p-6 w-11/12 max-w-2xl relative max-h-[95vh] overflow-y-auto "
                                 initial={{ y: 0, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 exit={{ y: 0, opacity: 0 }}
@@ -434,7 +434,7 @@ export default function Workspaces() {
                                     {/* Details */}
                                     <div className="w-full">
                                         <div className="flex justify-between items-center mb-4">
-                                            <h2 className="text-2xl font-bold text-darkblue">
+                                            <h2 className="text-2xl font-bold text-darkblue dark:text-white">
                                                 {selectedWorkspace.name}
                                             </h2>
                                             <div className='flex items-center gap-1' > <a className='text-highlight' href={selectedWorkspace.map_url}> <MapPin /> </a> {selectedWorkspace.location}</div>
@@ -459,12 +459,12 @@ export default function Workspaces() {
                                         </div>
 
 
-                                        <h2 className="text-2xl font-bold mb-2 mt-5 text-darkblue">
+                                        <h2 className="text-2xl font-bold mb-2 mt-5 text-darkblue dark:text-white">
                                             Workspace Description
                                         </h2>
                                         <p>{selectedWorkspace.description}</p>
 
-                                        <h2 className="text-2xl font-bold mb-2 mt-5 text-darkblue">
+                                        <h2 className="text-2xl font-bold mb-2 mt-5 text-darkblue dark:text-white">
                                             Facilities
                                         </h2>
                                         <div className="flex flex-wrap gap-5 text-sm">

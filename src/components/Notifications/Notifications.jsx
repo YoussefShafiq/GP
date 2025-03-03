@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Bell, Eye, Trash2 } from 'lucide-react';
 import { Tooltip } from '@heroui/tooltip';
 import { useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import notificationsound from '../../assets/Sounds/notification.mp3'
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
@@ -83,7 +85,21 @@ const Notifications = () => {
             console.log('channel: ', channel);
 
             channel.bind('new-notification', (newNotification) => {
-                console.log('New notification received:', newNotification);
+                // Play the notification sound
+                const audio = new Audio(notificationsound);
+                audio.play()
+                    .then(() => console.log('Notification sound played successfully'))
+                    .catch((error) => console.error('Error playing notification sound:', error));
+
+                toast.success(
+                    newNotification.message.replace('_', ' '),
+                    {
+                        duration: 3000,
+                        position: 'bottom-right',
+                        icon: <Bell color='#faca15' fill='#faca15' />
+                    }
+                );
+
                 setNotifications(prevNotifications => [newNotification, ...prevNotifications]);
             });
 

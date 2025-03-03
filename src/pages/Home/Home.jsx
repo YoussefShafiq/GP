@@ -128,7 +128,7 @@ export default function Home() {
                         {/* charts */}
                         <div className="flex flex-row flex-wrap items-center justify-between p-5 bg-base dark:bg-dark1 shadow-xl rounded-3xl w-full">
                             <div className="capitalize text-xl w-full font-semibold">tasks stats</div>
-                            {!homeStatsLoading ? (
+                            {homeStatsLoading ? (
                                 <>
                                     {/* Loading placeholders */}
                                     {[...Array(3)].map((_, index) => (

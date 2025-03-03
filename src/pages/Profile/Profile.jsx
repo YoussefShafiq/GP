@@ -81,16 +81,9 @@ export default function Profile() {
     }
 
     let { data, isLoading, isError } = useQuery({
-        queryKey: 'ProfileData',
+        queryKey: ['ProfileData'],
         queryFn: getProfileData
     })
-
-    useEffect(() => {
-        console.log(data);
-    }, [data])
-
-
-
 
     return (
         <>
@@ -214,8 +207,8 @@ export default function Profile() {
                         <h2 className='font-bold text-2xl capitalize'>skills</h2>
 
                         <div className="flex flex-wrap gap-3">
-                            {data?.data?.data?.user?.skills?.map((skill) => (
-                                <div className='bg-darkblue bg-opacity-5 shadow-inner rounded-3xl py-1 px-3' >{skill}</div>
+                            {data?.data?.data?.user?.skills?.map((skill, index) => (
+                                <div key={index} className='bg-darkblue bg-opacity-5 shadow-inner rounded-3xl py-1 px-3' >{skill}</div>
                             ))}
                         </div>
                     </div>

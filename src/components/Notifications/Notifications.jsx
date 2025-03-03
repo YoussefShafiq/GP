@@ -3,12 +3,26 @@ import Pusher from 'pusher-js';
 import axios from 'axios';
 import { Bell, Eye, Trash2 } from 'lucide-react';
 import { Tooltip } from '@heroui/tooltip';
+import { useQuery } from '@tanstack/react-query';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const token = localStorage.getItem('userToken'); // Get the token from localStorage
     const dropdownRef = useRef(null); // Ref for the dropdown
+
+    function getProfileData() {
+        return axios.get('https://brainmate.fly.dev/api/v1/profile', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+    }
+
+    let { data: profileData } = useQuery({
+        queryKey: ['ProfileData'],
+        queryFn: getProfileData
+    })
 
     // Axios instance with base URL and headers
     const api = axios.create({
@@ -56,22 +70,28 @@ const Notifications = () => {
         }
     };
 
-    // // Initialize Pusher for real-time updates
-    // useEffect(() => {
-    //     const pusher = new Pusher('d42fd688ba933368ee26', {
-    //         cluster: 'mt1',
-    //         encrypted: true,
-    //     });
+    // Initialize Pusher for real-time updates
+    useEffect(() => {
+        if (profileData?.data.data.user.id) {
 
-    //     const channel = pusher.subscribe('private-user.YOUR_USER_ID'); // Replace with dynamic user ID
-    //     channel.bind('notification.sent', (newNotification) => {
-    //         setNotifications(prevNotifications => [newNotification, ...prevNotifications]);
-    //     });
+            const pusher = new Pusher('d42fd688ba933368ee26', {
+                cluster: 'mt1',
+                forceTLS: true,
+            });
 
-    //     return () => {
-    //         pusher.unsubscribe('private-user.YOUR_USER_ID');
-    //     };
-    // }, []);
+            const channel = pusher.subscribe(`user.${profileData?.data?.data?.user?.id}`);
+            console.log(channel);
+
+            channel.bind('notification.sent', (newNotification) => {
+                console.log('New notification received:', newNotification);
+                setNotifications(prevNotifications => [newNotification, ...prevNotifications]);
+            });
+
+            return () => {
+                pusher.unsubscribe(`user.${profileData?.data?.data?.user?.id}`);
+            };
+        }
+    }, [profileData?.data.data.user.id]);
 
     // Fetch notifications on component mount
     useEffect(() => {
@@ -108,7 +128,7 @@ const Notifications = () => {
                         {notifications.filter(notification => !notification.read).length}
                     </span>
                 )}
-                {isOpen && <div class="absolute top-9 right-2 -translate-y-1 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[20px] border-b-white"></div>}
+                {isOpen && <div className="absolute top-9 right-2 -translate-y-1 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[20px] border-b-white"></div>}
             </button>
 
             {/* Notification Dropdown */}

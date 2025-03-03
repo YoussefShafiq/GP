@@ -128,13 +128,13 @@ export default function Home() {
                         {/* charts */}
                         <div className="flex flex-row flex-wrap items-center justify-between p-5 bg-base dark:bg-dark1 shadow-xl rounded-3xl w-full">
                             <div className="capitalize text-xl w-full font-semibold">tasks stats</div>
-                            {homeStatsLoading ? (
+                            {!homeStatsLoading ? (
                                 <>
                                     {/* Loading placeholders */}
                                     {[...Array(3)].map((_, index) => (
-                                        <div key={index} className="w-1/2 md:w-[calc(33.333%-40px)]">
+                                        <div key={index} className="w-1/3 md:w-[calc(33.333%-10px)]">
                                             <div className="animate-pulse">
-                                                <div className="rounded-full bg-base dark:bg-dark1 border-[24px] border-gray-300 opacity-50 h-40 w-40 mx-auto"></div>
+                                                <div className="rounded-full bg-base dark:bg-dark1 border-[24px] border-gray-300 opacity-50 w-4/5 md:h-5/6 md:w-5/6 aspect-square mx-auto"></div>
                                                 <div className="h-5 bg-gray-300 opacity-50 rounded mt-4 w-1/2 ms-3"></div>
                                             </div>
                                         </div>

@@ -207,7 +207,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                         >
                             <X size={24} />
                         </button>
-                        <div className="m-auto w-fit bg-light text-white px-3 py-2 rounded-xl text-xl">{selectedTeam?.name || selectedTask?.name}</div>
+                        <div className="m-auto w-fit bg-light text-white px-3 py-2 rounded-xl text-xl">{mode === 'update' ? taskData?.name : selectedTeam?.name}</div>
 
                         {/* Task Form */}
                         <form

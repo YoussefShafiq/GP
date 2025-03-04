@@ -250,13 +250,13 @@ export default function Team() {
                         </div>
 
                         <div className="absolute top-6 right-0 ms-auto md:hidden flex">
-                            <button onClick={() => setteamOptionsDropdown(!teamOptionsDropdown)} className='flex justify-end bg-gray-300 rounded-full p-1.5'>
+                            <button onClick={() => setteamOptionsDropdown(!teamOptionsDropdown)} className='flex justify-end bg-gray-300 dark:bg-dark2 rounded-full p-1.5'>
                                 <ChevronDown />
                             </button>
                             <AnimatePresence>
                                 {teamOptionsDropdown && (
                                     <motion.div
-                                        className="absolute flex flex-col top-full right-0 justify-center gap-2 bg-white p-3 rounded-xl overflow-hidden"
+                                        className="absolute flex flex-col top-full right-0 justify-center gap-2 bg-white dark:bg-dark1 p-3 rounded-xl overflow-hidden"
                                         initial={{ opacity: 0, y: -20 }} // Initial state (hidden)
                                         animate={{ opacity: 1, y: 0 }}   // Animate to visible state
                                         exit={{ opacity: 0, y: -20 }}    // Animate to hidden state
@@ -265,7 +265,7 @@ export default function Team() {
                                         {refetchingTasks && <div className="md:flex hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
                                         {teamData?.data?.data.team.role !== 'member' && (<>
                                             <div
-                                                className="flex md:w-fit justify-between items-center gap-2 p-2 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200"
+                                                className="flex md:w-fit justify-between items-center gap-2 p-2 bg-gray-100 dark:bg-dark1 rounded-lg cursor-pointer hover:bg-gray-200"
                                                 onClick={() => {
                                                     navigator.clipboard.writeText(teamData?.data.data.team.team_code);
                                                     toast.success('added to clipboard', {
@@ -280,17 +280,17 @@ export default function Team() {
                                             {teamData?.data?.data.team.role === 'manager' && <>
                                                 <button title='manage team members'
                                                     onClick={() => navigate('manage-members')}
-                                                    className="rounded-full bg-white text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                                                    className="rounded-full bg-white dark:bg-dark1 text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                                                 >
                                                     <Settings size={25} />
                                                 </button>
-                                                <button onClick={() => setDeleteTeamForm(true)} title='delete team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
+                                                <button onClick={() => setDeleteTeamForm(true)} title='delete team' className="rounded-full bg-white dark:bg-dark1 text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
                                             </>}
-                                            <button onClick={() => setUpdateTeamForm(true)} title='update team name' className="rounded-full bg-white text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
-                                            <button onClick={() => setInviteMemberForm(true)} title='invite member to team' className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
-                                            <button onClick={() => setAddTaskForm(true)} title='add task' className="rounded-full bg-white text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
+                                            <button onClick={() => setUpdateTeamForm(true)} title='update team name' className="rounded-full bg-white dark:bg-dark1 text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
+                                            <button onClick={() => setInviteMemberForm(true)} title='invite member to team' className="rounded-full bg-white dark:bg-dark1 text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
+                                            <button onClick={() => setAddTaskForm(true)} title='add task' className="rounded-full bg-white dark:bg-dark1 text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
                                         </>)}
-                                        <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
+                                        <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white dark:bg-dark1 text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
                                     </motion.div>
                                 )}
                             </AnimatePresence>

@@ -56,7 +56,7 @@ export default function NavbarList() {
                 {dropped && (
                     <motion.div
                         ref={dropdownRef}
-                        className="absolute top-full right-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow p-3 "
+                        className="absolute top-full right-0 z-10 bg-white dark:bg-dark1 divide-y divide-gray-100 rounded-lg shadow p-3 "
                         initial={{ opacity: 0, y: -10 }} // Initial state (hidden and slightly above)
                         animate={{ opacity: 1, y: 0 }} // Animate to visible and in place
                         exit={{ opacity: 0, y: -10 }} // Exit animation (fade out and move up)
@@ -64,7 +64,7 @@ export default function NavbarList() {
                     >
                         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 space-y-3">
                             <li >
-                                <NavLink to={'profile'} onClick={() => setDropped(false)} ><User2Icon color="#0b2534" /></NavLink>
+                                <NavLink to={'profile'} onClick={() => setDropped(false)} ><User2Icon className="dark:text-white text-[#0b2534]" /></NavLink>
                             </li>
                             <li>
                                 <Logout />

@@ -6,6 +6,10 @@
   @apply bg-[#0b2534] transition-all duration-500 dark:bg-dark dark:bg-opacity-60
 }
 
+.p-chips .p-chips-token {
+  @apply dark:bg-dark1
+}
+
 ::-webkit-scrollbar {
   @apply w-[4px]
 }
@@ -83,4 +87,3 @@ input[type="range"]::-moz-range-thumb {
 html {
   @apply dark:bg-dark bg-white
 }
-

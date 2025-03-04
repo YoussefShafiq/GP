@@ -249,10 +249,10 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                     value={addTaskFormik.values.priority}
                                     className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                 >
-                                    <option value="" disabled>Select Priority</option>
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
+                                    <option className='dark:bg-dark2' value="" disabled>Select Priority</option>
+                                    <option className='dark:bg-dark2' value="low">Low</option>
+                                    <option className='dark:bg-dark2' value="medium">Medium</option>
+                                    <option className='dark:bg-dark2' value="high">High</option>
                                 </select>
                                 <label
                                     htmlFor="priority"

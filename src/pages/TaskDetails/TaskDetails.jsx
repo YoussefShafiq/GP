@@ -200,9 +200,11 @@ export default function TaskDetails() {
     const handleAddNote = (e) => {
         setaddingNote(true)
         e.preventDefault(); // Prevent form submission
-        if (noteDescription.trim()) {
+        const noteverify = noteDescription.replaceAll('\n', '').replaceAll(' ', '')
+        if (noteverify) {
             addNoteMutation.mutate(noteDescription); // Call the mutation
         } else {
+            setaddingNote(false)
             toast.error('Note description cannot be empty', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -417,14 +419,15 @@ export default function TaskDetails() {
                     </Tooltip>
 
                     {(taskData?.data.data.task.role === 'leader' || taskData?.data.data.task.role === 'manager') && <>
-                        {selectedTask?.members && <Tooltip delay={350} closeDelay={0} content='update task' >
+
+                        <Tooltip delay={350} closeDelay={0} content='update task' >
                             <button
                                 onClick={() => setIsUpdateTaskFormOpen(true)} // Open the update form
                                 title='update task'
                                 className="rounded-full bg-white dark:bg-dark text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
                                 <Edit size={25} />
                             </button>
-                        </Tooltip>}
+                        </Tooltip>
                         <Tooltip delay={350} closeDelay={0} content='delete task' >
                             <button
                                 onClick={() => handleRemoveTask(selectedTask.id)}

@@ -84,9 +84,9 @@ export default function TasksTable({ tasks = [] }) {
                     {tasks.length > 0 ? <>
                         {tasks.map((task, rowIndex) => (
                             <tr onClick={() => {
-                                if (location.pathname !== `/task-details/${task.id}`) {
+                                if (location.pathname !== `/task-details`) {
                                     setselectedTask(task); // Set the selected task
-                                    navigate('/task-details'); // Navigate to the task details page
+                                    navigate(`/task-details/${task.id}`); // Navigate to the task details page
                                 }
                             }}
                                 key={rowIndex}

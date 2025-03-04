@@ -386,23 +386,27 @@ export default function TaskDetails() {
             <div className='text-gray-400 flex md:flex-row flex-col justify-between md:items-center lg:h-16 px-5'>
                 <div className='flex flex-wrap items-center ' >
 
-                    {selectedTask?.members ? <>
-                        {selectedTask?.assigned_to_me ? <>
-                            {!(selectedTask?.notes) && <>
-                                <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div><ChevronRight strokeWidth={0.7} />
-                            </>}
-                            {(selectedTask?.notes) && <>
-                                <div onClick={() => { navigate('/'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">Home</div><ChevronRight strokeWidth={0.7} />
-                            </>}
-                        </> :
-                            <>
-                                <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} />
-                                <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div><ChevronRight strokeWidth={0.7} />
-                            </>}
+                    {selectedTask?.members ?
+                        <>
+                            {selectedTask?.assigned_to_me ?
+                                <>
+                                    {!(selectedTask?.notes) &&
+                                        <>
+                                            <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div><ChevronRight strokeWidth={0.7} />
+                                        </>}
+                                    {(selectedTask?.notes) &&
+                                        <>
+                                            <div onClick={() => { navigate('/'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">Home</div><ChevronRight strokeWidth={0.7} />
+                                        </>}
+                                </> :
+                                <>
+                                    {selectedProject && <><div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} /></>}
+                                    {selectedTeam && <><div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div><ChevronRight strokeWidth={0.7} /></>}
+                                </>}
 
-                    </> : <>
-                        <div onClick={() => { navigate('/'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">Home</div><ChevronRight strokeWidth={0.7} />
-                    </>}
+                        </> : <>
+                            <div onClick={() => { navigate('/'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">Home</div><ChevronRight strokeWidth={0.7} />
+                        </>}
 
 
                     <div onClick={() => { navigate('/task-details'); }} className="px-1 cursor-pointer text-black dark:text-white">{(taskData?.data.data.task.name || selectedTask?.name)}</div>

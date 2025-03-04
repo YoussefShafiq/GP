@@ -442,37 +442,33 @@ export default function TaskDetails() {
             <div className="p-3">
                 {/* task in table */}
                 {taskDataIsLoading ? <>
-                    {selectedTask?.members ? <TasksTable tasks={[selectedTask]} /> : <>
+                    <table className="w-full rounded-xl overflow-hidden text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
+                            <tr>
+                                {["Task Name", "Assigned to", "Deadline", "Priority", "Status", "Tags"].map((header, index) => (
+                                    <th key={index} scope="col" className="px-6 py-3 whitespace-nowrap">
+                                        {header}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                        <table className="w-full rounded-xl overflow-hidden text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
-                                <tr>
-                                    {["Task Name", "Assigned to", "Deadline", "Priority", "Status", "Tags"].map((header, index) => (
-                                        <th key={index} scope="col" className="px-6 py-3 whitespace-nowrap">
-                                            {header}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
+                            <td colSpan={6} className='text-center py-3' >
+                                <ThreeDots
+                                    visible={true}
+                                    height="20"
+                                    width="43"
+                                    color="#133d57"
+                                    radius="9"
+                                    ariaLabel="three-dots-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClass="w-fit m-auto"
+                                />
+                            </td>
 
-                                <td colSpan={6} className='text-center py-3' >
-                                    <ThreeDots
-                                        visible={true}
-                                        height="20"
-                                        width="43"
-                                        color="#133d57"
-                                        radius="9"
-                                        ariaLabel="three-dots-loading"
-                                        wrapperStyle={{}}
-                                        wrapperClass="w-fit m-auto"
-                                    />
-                                </td>
-
-                            </tbody>
-                        </table>
-
-                    </>}
+                        </tbody>
+                    </table>
                 </> : <><TasksTable tasks={[taskData?.data?.data?.task]} /></>}
 
                 <div className="flex flex-col lg:flex-row justify-between gap-10 mt-8">

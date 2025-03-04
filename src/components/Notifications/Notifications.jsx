@@ -156,6 +156,7 @@ const Notifications = () => {
                         key={notification.id}
                         onClick={() => {
                             { notification?.metadata?.task_id ? navigate(`/task-details/${notification.metadata.task_id}`) : '' }
+                            markAsRead(notification.id)
                         }}
                         className={`p-4 cursor-pointer border-b  border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100 dark:hover:bg-white dark:hover:bg-opacity-5 dark:bg-dark1' : 'bg-white dark:hover:bg-white dark:hover:bg-opacity-10 dark:bg-dark2 hover:bg-gray-50'}  flex flex-col justify-between text-start`}
                     >

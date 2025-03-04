@@ -171,7 +171,7 @@ const Notifications = () => {
                                 {notification.read === 0 && (
                                     <Tooltip delay={300} content='mark as read' closeDelay={0}>
                                         <button
-                                            onClick={() => markAsRead(notification.id)}
+                                            onClick={(e) => { markAsRead(notification.id); e.stopPropagation() }}
                                             className="text-xs text-blue-500 hover:text-blue-700 "
                                         >
                                             <Eye size={20} />
@@ -180,7 +180,7 @@ const Notifications = () => {
                                 )}
                                 <Tooltip delay={300} content='delete notification' closeDelay={0}>
                                     <button
-                                        onClick={() => deleteNotification(notification.id)}
+                                        onClick={(e) => { deleteNotification(notification.id); e.stopPropagation() }}
                                         className="text-xs text-red-500 hover:text-red-700 "
                                     >
                                         <Trash2 size={20} />

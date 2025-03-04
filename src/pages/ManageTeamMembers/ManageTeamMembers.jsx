@@ -251,13 +251,13 @@ const ManageTeamMembers = () => {
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.8, opacity: 0 }}
-                            className="bg-white p-6 rounded-lg shadow-lg"
+                            className="bg-white dark:bg-dark1 dark:border-gray-300 dark:border p-6 rounded-lg shadow-lg"
                         >
                             <h2 className="text-lg font-semibold mb-4">Are you sure you want to remove this member?</h2>
                             <div className="flex justify-end gap-3">
                                 <button
                                     onClick={cancelDelete}
-                                    className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                                    className="px-4 py-2 dark:bg-dark2 bg-gray-300 rounded-lg hover:bg-gray-400"
                                 >
                                     Cancel
                                 </button>
@@ -286,7 +286,7 @@ const ManageTeamMembers = () => {
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.8, opacity: 0 }}
-                            className="bg-white p-6 rounded-lg shadow-lg"
+                            className="bg-white dark:bg-dark1 dark:border-gray-300 dark:border p-6 rounded-lg shadow-lg"
                         >
                             <h2 className="text-lg font-semibold mb-4">Confirm Manager Change</h2>
                             <p className="mb-4">Please enter the email of the new manager:</p>
@@ -294,7 +294,7 @@ const ManageTeamMembers = () => {
                                 type="email"
                                 value={newManagerEmail}
                                 onChange={(e) => setNewManagerEmail(e.target.value)}
-                                className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+                                className="w-full p-2 border border-gray-300 dark:bg-dark2 dark:text-white dark:focus:ring-0 dark:focus:border-light transition-all rounded-lg mb-4"
                                 placeholder="Enter new manager's email"
                             />
                             {newManagerName && (
@@ -311,7 +311,7 @@ const ManageTeamMembers = () => {
                                         setSelectedMemberEmail('');
                                         setNewManagerName('');
                                     }}
-                                    className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-all"
+                                    className="px-4 py-2 bg-gray-200 dark:bg-dark2 rounded-lg hover:bg-gray-300 transition-all"
                                 >
                                     Cancel
                                 </button>
@@ -333,14 +333,14 @@ const ManageTeamMembers = () => {
                 <ChevronRight strokeWidth={0.7} />
                 <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div>
                 <ChevronRight strokeWidth={0.7} />
-                <div onClick={() => { navigate('/project/team/manage-members'); }} className="px-1 cursor-pointer text-black">Manage Team Members</div>
+                <div onClick={() => { navigate('/project/team/manage-members'); }} className="px-1 cursor-pointer text-black dark:text-white">Manage Team Members</div>
             </div>
 
             <div className="overflow-x-auto scrollbar-hide">
                 {/* Team Members Table */}
                 <table className="w-full border-collapse  ">
                     <thead>
-                        <tr className="bg-gray-100">
+                        <tr className="bg-gray-100 dark:bg-dark1 dark:bg-opacity-50 dark:text-gray-400">
                             <th className="p-3 text-left">ID</th>
                             <th className="p-3 text-left">Name</th>
                             <th className="p-3 text-left">Email</th>
@@ -350,7 +350,7 @@ const ManageTeamMembers = () => {
                     </thead>
                     <tbody>
                         {teamMembers?.data?.data.users.map((member) => (
-                            <tr key={member.id} className="border-b">
+                            <tr key={member.id} className="border-b dark:bg-dark1 dark:hover:bg-opacity-80">
                                 <td className="p-3">{member.id}</td>
                                 <td className="p-3">{member.name}</td>
                                 <td className="p-3">{member.email}</td>
@@ -358,7 +358,7 @@ const ManageTeamMembers = () => {
                                     <select
                                         value={member.role === 'member' ? '3' : member.role === 'leader' ? '2' : '1'}
                                         onChange={(e) => handleRoleChange(member.id, e.target.value)}
-                                        className="p-2 border border-gray-300 rounded-lg"
+                                        className="p-2 border dark:bg-dark1 text-gray-900 dark:text-white border-gray-300 rounded-lg"
                                         disabled={updatingRole === member.id || teamData?.data?.data.team.role !== 'manager'}
                                     >
                                         <option value="1">Manager</option>

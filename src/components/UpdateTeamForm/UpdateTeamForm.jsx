@@ -79,7 +79,7 @@ export default function UpdateTeamForm({ isOpen, onClose }) {
                     onClick={onClose}
                 >
                     <motion.div
-                        className="bg-white rounded-lg shadow-lg border p-6 w-5/6 md:w-1/3 relative max-h-[95vh] overflow-y-auto"
+                        className="bg-white dark:bg-dark1 rounded-lg shadow-lg border p-6 w-5/6 md:w-1/3 relative max-h-[95vh] overflow-y-auto"
                         initial={{ y: 0, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 0, opacity: 0 }}
@@ -104,12 +104,12 @@ export default function UpdateTeamForm({ isOpen, onClose }) {
                                     onBlur={updateFormik.handleBlur}
                                     onChange={updateFormik.handleChange}
                                     value={updateFormik.values.name}
-                                    className="block py-2 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                     placeholder=" "
                                 />
                                 <label
                                     htmlFor="name"
-                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Team Name
                                 </label>

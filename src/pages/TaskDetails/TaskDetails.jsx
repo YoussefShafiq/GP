@@ -347,13 +347,13 @@ export default function TaskDetails() {
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.8, opacity: 0 }}
-                        className="bg-white p-6 rounded-lg shadow-lg"
+                        className="bg-white dark:bg-dark1 border  p-6 rounded-lg shadow-lg"
                     >
                         <h2 className="text-lg font-semibold mb-4">Are you sure you want to remove "{selectedTask.name}" task?</h2>
                         <div className="flex justify-end gap-3">
                             <button
                                 onClick={cancelDelete}
-                                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                                className="px-4 py-2 bg-gray-300 dark:bg-dark2 rounded-lg hover:bg-gray-400"
                             >
                                 Cancel
                             </button>
@@ -447,33 +447,35 @@ export default function TaskDetails() {
                 {taskDataIsLoading ? <>
                     {selectedTask?.members ? <TasksTable tasks={[selectedTask]} /> : <>
 
-                        <table className="w-full rounded-xl overflow-hidden text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
-                                <tr>
-                                    {["Task Name", "Assigned to", "Deadline", "Priority", "Status", "Tags"].map((header, index) => (
-                                        <th key={index} scope="col" className="px-6 py-3 whitespace-nowrap">
-                                            {header}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div className="overflow-x-auto">
+                            <table className="w-full rounded-xl overflow-hidden text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
+                                    <tr>
+                                        {["Task Name", "Assigned to", "Deadline", "Priority", "Status", "Tags"].map((header, index) => (
+                                            <th key={index} scope="col" className="px-6 py-3 whitespace-nowrap">
+                                                {header}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                                <td colSpan={6} className='text-center py-3' >
-                                    <ThreeDots
-                                        visible={true}
-                                        height="20"
-                                        width="43"
-                                        color="#133d57"
-                                        radius="9"
-                                        ariaLabel="three-dots-loading"
-                                        wrapperStyle={{}}
-                                        wrapperClass="w-fit m-auto"
-                                    />
-                                </td>
+                                    <td colSpan={6} className='text-center py-3' >
+                                        <ThreeDots
+                                            visible={true}
+                                            height="20"
+                                            width="43"
+                                            color="#133d57"
+                                            radius="9"
+                                            ariaLabel="three-dots-loading"
+                                            wrapperStyle={{}}
+                                            wrapperClass="w-fit m-auto"
+                                        />
+                                    </td>
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
 
                     </>}
                 </> : <><TasksTable tasks={[taskData?.data?.data?.task]} /></>}

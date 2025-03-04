@@ -8,24 +8,27 @@ import toast from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
 import { TaskContext } from '../../context/TaskContext';
 import { ThreeDots } from 'react-loader-spinner';
+import { useParams } from 'react-router-dom';
 
 const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, taskData }) => {
     const [assignTobtn, setAssignTobtn] = useState(false);
     const [teamMembersState, setTeamMembersState] = useState([]);
     const [selectedMembers, setSelectedMembers] = useState([]);
     const [sendingTask, setsendingTask] = useState(false);
+    const { id } = useParams(); // Extract the ID from the URL
     const [attachments, setAttachments] = useState([]); // State for attachments
     const memberIds = (selectedMembers || []).map((member) => member.id);
     let { selectedTask } = useContext(TaskContext);
 
     const { refetch: refetchTask } = useQuery({
-        queryKey: ['taskData', selectedTask],
+        queryKey: ['taskData', id || selectedTask?.id],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/tasks/${selectedTask.id}`, {
+            axios.get(`https://brainmate.fly.dev/api/v1/tasks/${id || selectedTask?.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             }),
+        enabled: !!id || !!selectedTask,
     });
     // Form validation schema for task
     const taskValidationSchema = object({
@@ -190,7 +193,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                     onClick={onClose}
                 >
                     <motion.div
-                        className="bg-white rounded-lg shadow-lg border p-6 w-5/6 md:w-2/3 relative max-h-[95vh] overflow-y-auto"
+                        className="bg-white dark:bg-dark1 rounded-lg shadow-lg border p-6 w-5/6 md:w-2/3 relative max-h-[95vh] overflow-y-auto"
                         initial={{ y: 0, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 0, opacity: 0 }}
@@ -200,7 +203,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                         {/* Close Button */}
                         <button
                             onClick={onClose}
-                            className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700"
+                            className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-500"
                         >
                             <X size={24} />
                         </button>
@@ -220,12 +223,12 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                     onChange={addTaskFormik.handleChange}
                                     onBlur={addTaskFormik.handleBlur}
                                     value={addTaskFormik.values.name}
-                                    className="block py-2 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                     placeholder=" "
                                 />
                                 <label
                                     htmlFor="name"
-                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Task Name
                                 </label>
@@ -244,7 +247,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                     onChange={addTaskFormik.handleChange}
                                     onBlur={addTaskFormik.handleBlur}
                                     value={addTaskFormik.values.priority}
-                                    className="block py-2 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                 >
                                     <option value="" disabled>Select Priority</option>
                                     <option value="low">Low</option>
@@ -253,7 +256,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                 </select>
                                 <label
                                     htmlFor="priority"
-                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Priority
                                 </label>
@@ -273,12 +276,12 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                     onChange={addTaskFormik.handleChange}
                                     onBlur={addTaskFormik.handleBlur}
                                     value={addTaskFormik.values.deadline}
-                                    className="block py-2 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                     placeholder=" "
                                 />
                                 <label
                                     htmlFor="deadline"
-                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Deadline
                                 </label>
@@ -297,12 +300,12 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                     onChange={addTaskFormik.handleChange}
                                     onBlur={addTaskFormik.handleBlur}
                                     value={addTaskFormik.values.description}
-                                    className="block py-2 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                     placeholder=" "
                                 />
                                 <label
                                     htmlFor="description"
-                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Description
                                 </label>
@@ -321,12 +324,12 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                     onChange={addTaskFormik.handleChange}
                                     onBlur={addTaskFormik.handleBlur}
                                     value={addTaskFormik.values.tags}
-                                    className="block py-2 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                     placeholder=" "
                                 />
                                 <label
                                     htmlFor="tags"
-                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Tags
                                 </label>
@@ -341,7 +344,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                             <div className="relative z-0 w-full group">
                                 <div className="my-3 flex flex-wrap gap-2">
                                     {selectedMembers?.map((member) => (
-                                        <div key={member.id} className="flex gap-1 items-center bg-gray-300 w-fit p-2 rounded-full">
+                                        <div key={member.id} className="flex gap-1 items-center bg-gray-300 dark:bg-dark2 w-fit p-2 rounded-full">
                                             {member.name}
                                             <XIcon
                                                 size={15}
@@ -375,7 +378,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
 
                                 <label
                                     htmlFor="role_id"
-                                    className="absolute text-sm text-gray-700 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Assigned To
                                 </label>
@@ -387,7 +390,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                             animate={{ opacity: 1, height: 'auto' }}
                                             exit={{ opacity: 0, height: 0 }}
                                             transition={{ duration: 0.3 }}
-                                            className="relative bg-white rounded w-full max-h-40 overflow-y-scroll"
+                                            className="relative bg-transparent rounded w-full max-h-40 overflow-y-scroll"
                                         >
                                             {teamMembersState?.map((user, index) => (
                                                 <motion.div
@@ -401,8 +404,8 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                                             prevTeamMembers.filter((member) => member.id !== user.id)
                                                         );
                                                     }}
-                                                    className={`${index % 2 === 0 ? 'bg-stone-50' : 'bg-stone-100'
-                                                        } flex flex-col px-1 py-2 hover:bg-white cursor-pointer`}
+                                                    className={`${index % 2 === 0 ? 'bg-stone-50 dark:bg-dark2' : 'bg-stone-100 dark:bg-dark1'
+                                                        } flex flex-col px-1 py-2 hover:bg-white dark:hover:bg-white dark:hover:bg-opacity-10 cursor-pointer`}
                                                 >
                                                     <div className="flex items-center gap-1"><span>{user.name}</span><span className='text-xs opacity-80'>({user.role})</span></div>
                                                     <div className="text-[11px] opacity-90">{user.email}</div>
@@ -417,7 +420,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                             {mode === 'add' && <div className="relative z-0 w-full group">
                                 <label
                                     htmlFor="attachments"
-                                    className="block text-sm text-gray-700 mb-2"
+                                    className="block text-sm text-gray-700 dark:text-gray-500 mb-2"
                                 >
                                     Attachments
                                 </label>
@@ -427,7 +430,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                                     name="attachments"
                                     multiple
                                     onChange={handleFileUpload}
-                                    className="block w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    className="block w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                 />
                                 <div className="mt-3 flex flex-wrap gap-2">
                                     {addTaskFormik.values.attachments.map((file, index) => (

@@ -153,45 +153,49 @@ const Notifications = () => {
 
             {/* Notification Dropdown */}
             <div className={`absolute top-12 right-0 bg-white dark:bg-dark2  border-gray-200 rounded-lg shadow-lg w-60 md:w-80 ${isOpen ? 'h-96 border' : 'h-0'} overflow-y-auto border-t-0 transition-all`}>
-                {notifications.map(notification => (
-                    <div
-                        key={notification.id}
-                        onClick={() => {
-                            { notification?.metadata?.task_id && navigate(`/task-details/${notification.metadata.task_id}`); setselectedTask({ 'id': notification.metadata.task_id }) }
-                            markAsRead(notification.id)
-                        }}
-                        className={`p-4 cursor-pointer border-b  border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100 dark:hover:bg-white dark:hover:bg-opacity-5 dark:bg-dark1' : 'bg-white dark:hover:bg-white dark:hover:bg-opacity-10 dark:bg-dark2 hover:bg-gray-50'}  flex flex-col justify-between text-start`}
-                    >
-                        <div>
-                            <p className="text-sm font-medium text-gray-900 dark:text-white">{notification.message}</p>
-                        </div>
-                        <div className="flex justify-between items-center space-x-2">
-                            <small className="text-xs text-gray-500">
-                                {new Date(notification.created_at).toLocaleString()}
-                            </small>
-                            <div className="flex justify-end gap-2">
-                                {notification.read === 0 && (
-                                    <Tooltip delay={300} content='mark as read' closeDelay={0}>
+                {notifications.length === 0 ? <>
+                    <div className="flex justify-center items-center h-full capitalize text-black dark:text-white">no notifications found</div>
+                </> : <>
+                    {notifications.map(notification => (
+                        <div
+                            key={notification.id}
+                            onClick={() => {
+                                { notification?.metadata?.task_id && navigate(`/task-details/${notification.metadata.task_id}`); setselectedTask({ 'id': notification.metadata.task_id, 'team_id': notification.metadata.team_id }); setIsOpen(!isOpen) }
+                                markAsRead(notification.id)
+                            }}
+                            className={`p-4 cursor-pointer border-b  border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100 dark:hover:bg-white dark:hover:bg-opacity-5 dark:bg-dark1' : 'bg-white dark:hover:bg-white dark:hover:bg-opacity-10 dark:bg-dark2 hover:bg-gray-50'}  flex flex-col justify-between text-start`}
+                        >
+                            <div>
+                                <p className="text-sm font-medium text-gray-900 dark:text-white">{notification.read === 0 && <div className='h-2 w-2 bg-red-500 inline-block me-2 rounded-full'></div>}{notification.message}</p>
+                            </div>
+                            <div className="flex justify-between items-center space-x-2">
+                                <small className="text-xs text-gray-500">
+                                    {new Date(notification.created_at).toLocaleString()}
+                                </small>
+                                <div className="flex justify-end gap-2">
+                                    {notification.read === 0 && (
+                                        <Tooltip delay={300} content='mark as read' closeDelay={0}>
+                                            <button
+                                                onClick={(e) => { markAsRead(notification.id); e.stopPropagation() }}
+                                                className="text-xs text-blue-500 hover:text-blue-700 "
+                                            >
+                                                <Eye size={20} />
+                                            </button>
+                                        </Tooltip>
+                                    )}
+                                    <Tooltip delay={300} content='delete notification' closeDelay={0}>
                                         <button
-                                            onClick={(e) => { markAsRead(notification.id); e.stopPropagation() }}
-                                            className="text-xs text-blue-500 hover:text-blue-700 "
+                                            onClick={(e) => { deleteNotification(notification.id); e.stopPropagation() }}
+                                            className="text-xs text-red-500 hover:text-red-700 "
                                         >
-                                            <Eye size={20} />
+                                            <Trash2 size={20} />
                                         </button>
                                     </Tooltip>
-                                )}
-                                <Tooltip delay={300} content='delete notification' closeDelay={0}>
-                                    <button
-                                        onClick={(e) => { deleteNotification(notification.id); e.stopPropagation() }}
-                                        className="text-xs text-red-500 hover:text-red-700 "
-                                    >
-                                        <Trash2 size={20} />
-                                    </button>
-                                </Tooltip>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </>}
             </div>
         </div >
     );

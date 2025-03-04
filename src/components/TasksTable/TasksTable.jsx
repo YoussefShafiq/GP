@@ -71,7 +71,7 @@ export default function TasksTable({ tasks = [] }) {
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg scrollbar-hide">
             <table className="w-full rounded-xl overflow-hidden text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-dark1 dark:bg-opacity-50 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-dark1 dark:bg-opacity-50 dark:text-gray-400">
                     <tr>
                         {["Task Name", "Assigned to", "Deadline", "Priority", "Status", "Tags"].map((header, index) => (
                             <th key={index} scope="col" className="px-6 py-3 whitespace-nowrap">
@@ -90,7 +90,7 @@ export default function TasksTable({ tasks = [] }) {
                                 }
                             }}
                                 key={rowIndex}
-                                className={`bg-white border-b cursor-pointer dark:bg-dark1 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-opacity-80 duration-150  `}
+                                className={`bg-white border-b cursor-pointer dark:bg-dark1 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-opacity-80 duration-150  `}
                             >
                                 <th scope="row" className="min-w-40 flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     {task.is_overdue && <ClockAlert className='text-red-600 me-2' size={28} strokeWidth={2} />} {task.name}

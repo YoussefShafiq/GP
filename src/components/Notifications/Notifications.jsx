@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import Pusher from 'pusher-js';
 import axios from 'axios';
 import { Bell, Eye, Trash2 } from 'lucide-react';
@@ -7,9 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import notificationsound from '../../assets/Sounds/notification.mp3'
 import { useNavigate } from 'react-router-dom';
+import { TaskContext } from '../../context/TaskContext';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
+    let { selectedTask, setselectedTask } = useContext(TaskContext)
     const [isOpen, setIsOpen] = useState(false);
     const token = localStorage.getItem('userToken'); // Get the token from localStorage
     const dropdownRef = useRef(null); // Ref for the dropdown
@@ -155,7 +157,7 @@ const Notifications = () => {
                     <div
                         key={notification.id}
                         onClick={() => {
-                            { notification?.metadata?.task_id ? navigate(`/task-details/${notification.metadata.task_id}`) : '' }
+                            { notification?.metadata?.task_id && navigate(`/task-details/${notification.metadata.task_id}`); setselectedTask({ 'id': notification.metadata.task_id }) }
                             markAsRead(notification.id)
                         }}
                         className={`p-4 cursor-pointer border-b  border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100 dark:hover:bg-white dark:hover:bg-opacity-5 dark:bg-dark1' : 'bg-white dark:hover:bg-white dark:hover:bg-opacity-10 dark:bg-dark2 hover:bg-gray-50'}  flex flex-col justify-between text-start`}
@@ -191,7 +193,7 @@ const Notifications = () => {
                     </div>
                 ))}
             </div>
-        </div>
+        </div >
     );
 };
 

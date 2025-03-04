@@ -101,7 +101,7 @@ export default function Home() {
                                             <div className="flex flex-col w-5/6">
                                                 <h2 className="font-semibold cursor-pointer" onClick={() => {
                                                     setselectedTask(task);
-                                                    navigate('/task-details')
+                                                    navigate(`/task-details/${task.id}`)
                                                 }}>{task.name}</h2>
                                                 <div className="text-gray-700 dark:text-gray-300 max-w-[80%] my-3">{task.description}</div>
                                                 <div className="flex md:flex-row flex-col justify-between">
@@ -277,7 +277,7 @@ export default function Home() {
                                                 <div className="flex flex-col">
                                                     <h2 className="font-semibold cursor-pointer" onClick={() => {
                                                         setselectedTask(task);
-                                                        navigate('/task-details')
+                                                        navigate(`/task-details/${task.id}`)
                                                     }}>{task.name}</h2>
                                                     <div className="text-gray-700 dark:text-gray-300 max-w-[80%] my-3">{task.description}</div>
                                                     <div className="flex flex-col justify-between">

@@ -6,12 +6,14 @@ import { Tooltip } from '@heroui/tooltip';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import notificationsound from '../../assets/Sounds/notification.mp3'
+import { useNavigate } from 'react-router-dom';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const token = localStorage.getItem('userToken'); // Get the token from localStorage
     const dropdownRef = useRef(null); // Ref for the dropdown
+    const navigate = useNavigate()
 
     function getProfileData() {
         return axios.get('https://brainmate.fly.dev/api/v1/profile', {
@@ -152,7 +154,10 @@ const Notifications = () => {
                 {notifications.map(notification => (
                     <div
                         key={notification.id}
-                        className={`p-4 border-b  border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100 dark:hover:bg-white dark:hover:bg-opacity-5 dark:bg-dark1' : 'bg-white dark:hover:bg-white dark:hover:bg-opacity-10 dark:bg-dark2 hover:bg-gray-50'}  flex flex-col justify-between text-start`}
+                        onClick={() => {
+                            { notification?.metadata?.task_id ? navigate(`/task-details/${notification.metadata.task_id}`) : '' }
+                        }}
+                        className={`p-4 cursor-pointer border-b  border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100 dark:hover:bg-white dark:hover:bg-opacity-5 dark:bg-dark1' : 'bg-white dark:hover:bg-white dark:hover:bg-opacity-10 dark:bg-dark2 hover:bg-gray-50'}  flex flex-col justify-between text-start`}
                     >
                         <div>
                             <p className="text-sm font-medium text-gray-900 dark:text-white">{notification.message}</p>

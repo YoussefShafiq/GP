@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { TaskContext } from '../../context/TaskContext'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TeamsContext } from '../../context/TeamsContext';
 import { projectContext } from '../../context/ProjectsContext';
 import { Bomb, ChevronRight, Clock, Edit, Laptop, Loader2Icon, MoreVertical, MousePointerClick, Paperclip, RefreshCcw, Send, Trash2 } from 'lucide-react';
@@ -24,6 +24,7 @@ export default function TaskDetails() {
     let { selectedTeam, setselectedTeam } = useContext(TeamsContext);
     const token = localStorage.getItem('userToken');
     const navigate = useNavigate();
+    const { id } = useParams(); // Extract the ID from the URL
     const [showConfirmation, setShowConfirmation] = useState(false); // State for showing the confirmation popup
     const [isUpdateTaskFormOpen, setIsUpdateTaskFormOpen] = useState(false); // State for update form
     const queryClient = useQueryClient(); // For invalidating queries
@@ -34,25 +35,22 @@ export default function TaskDetails() {
     const [attachmentToDelete, setAttachmentToDelete] = useState(null);
     const [uploading, setuploading] = useState(false);
 
-    const { data: taskData, isLoading: taskDataIsLoading, refetch, isRefetching } = useQuery({
-        queryKey: ['taskData', selectedTask],
+    const { data: taskData, isLoading: taskDataIsLoading, refetch, isRefetching, isError, error } = useQuery({
+        queryKey: ['taskData', id || selectedTask?.id],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/tasks/${selectedTask.id}`, {
+            axios.get(`https://brainmate.fly.dev/api/v1/tasks/${id || selectedTask?.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             }),
+        enabled: !!id || !!selectedTask, // Only run the query if there's an ID or a selected task
     });
 
     useEffect(() => {
-        if (taskData?.data?.data?.task && !(selectedTask.members)) {
-            setselectedTask(taskData?.data?.data?.task)
+        if (taskData?.data?.data?.task && !selectedTask) {
+            setselectedTask(taskData?.data?.data?.task);
         }
-
-        console.log(selectedTask);
-
-
-    }, [taskData])
+    }, [taskData]);
 
 
 
@@ -213,7 +211,7 @@ export default function TaskDetails() {
     };
 
 
-    if (!selectedTask) {
+    if (!selectedTask && !id) {
         return (
             <div className="h-[calc(100vh-48px)] flex justify-center items-center">
                 <div className="flex flex-col items-center gap-3">
@@ -223,6 +221,7 @@ export default function TaskDetails() {
             </div>
         );
     }
+
     useEffect(() => {
         window.scrollTo({
             top: 0,
@@ -327,6 +326,10 @@ export default function TaskDetails() {
         }
     };
 
+    if (isError) {
+        return <div className='text-center py-5'>task loading error</div>
+    }
+
 
     return <>
 
@@ -381,7 +384,7 @@ export default function TaskDetails() {
             <div className='text-gray-400 flex md:flex-row flex-col justify-between md:items-center lg:h-16 px-5'>
                 <div className='flex flex-wrap items-center ' >
 
-                    {selectedTask.members ? <>
+                    {selectedTask?.members ? <>
                         {selectedTask?.assigned_to_me ? <>
                             {!(selectedTask?.notes) && <>
                                 <div onClick={() => { navigate('/mytasks'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">my tasks</div><ChevronRight strokeWidth={0.7} />
@@ -414,7 +417,7 @@ export default function TaskDetails() {
                     </Tooltip>
 
                     {(taskData?.data.data.task.role === 'leader' || taskData?.data.data.task.role === 'manager') && <>
-                        {selectedTask.members && <Tooltip delay={350} closeDelay={0} content='update task' >
+                        {selectedTask?.members && <Tooltip delay={350} closeDelay={0} content='update task' >
                             <button
                                 onClick={() => setIsUpdateTaskFormOpen(true)} // Open the update form
                                 title='update task'
@@ -439,7 +442,7 @@ export default function TaskDetails() {
             <div className="p-3">
                 {/* task in table */}
                 {taskDataIsLoading ? <>
-                    {selectedTask.members ? <TasksTable tasks={[selectedTask]} /> : <>
+                    {selectedTask?.members ? <TasksTable tasks={[selectedTask]} /> : <>
 
                         <table className="w-full rounded-xl overflow-hidden text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">

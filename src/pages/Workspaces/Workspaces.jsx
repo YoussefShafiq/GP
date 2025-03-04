@@ -425,6 +425,7 @@ export default function Workspaces() {
                                                         src={'https://brainmate.fly.dev' + image}
                                                         alt={`workspace ${index + 1}`}
                                                         className="w-full h-64 object-cover"
+                                                        loading='lazy'
                                                     />
                                                 </div>
                                             ))}

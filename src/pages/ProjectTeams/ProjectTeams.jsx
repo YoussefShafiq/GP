@@ -566,7 +566,7 @@ export default function ProjectTeams() {
                                             }
                                         </>
                                     ) : (
-                                        <div className="capitalize text-gray-400 text-center w-full">No teams with access to show</div>
+                                        <div className="capitalize text-gray-400 text-center w-full">No teams to show</div>
                                     )}
                                 </>
                             }

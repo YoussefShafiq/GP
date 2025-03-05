@@ -440,10 +440,24 @@ export default function MainChat() {
 
                             <div className="text-sm font-semibold">{message?.sender_id !== profileData?.data?.data.user.id ? message?.sender?.name : ''}</div>
                             <div className="text-sm break-words">
-                                {message?.message.split('\n').map((line, index) => (
-                                    <React.Fragment key={index}>
-                                        {line}
-                                        <br />
+                                {message?.message.split('\n').map((line, lineIndex) => (
+                                    <React.Fragment key={lineIndex}>
+                                        {line.split(' ').map((word, wordIndex) =>
+                                            /\bhttps?:\/\/[^\s]+/.test(word) ? (
+                                                <a
+                                                    key={wordIndex}
+                                                    href={word}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className='text-light'
+                                                >
+                                                    {word}
+                                                </a>
+                                            ) : (
+                                                <span key={wordIndex}> {word} </span>
+                                            )
+                                        )}
+                                        <br /> {/* Handles new lines */}
                                     </React.Fragment>
                                 ))}
                             </div>

@@ -103,7 +103,31 @@ export default function Home() {
                                                     setselectedTask(task);
                                                     navigate(`/task-details/${task.id}`)
                                                 }}>{task.name}</h2>
-                                                <div className="text-gray-700 dark:text-gray-300 max-w-[80%] my-3">{task.description}</div>
+                                                <div className="text-gray-700 dark:text-gray-300 my-3 break-words">
+
+                                                    {task.description.split('\n').map((line, lineIndex) => (
+                                                        <React.Fragment key={lineIndex}>
+                                                            {line.split(' ').map((word, wordIndex) =>
+                                                                /\bhttps?:\/\/[^\s]+/.test(word) ? (
+                                                                    <a
+                                                                        key={wordIndex}
+                                                                        href={word}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className='text-light'
+                                                                    >
+                                                                        {word}
+                                                                    </a>
+                                                                ) : (
+                                                                    <span key={wordIndex}> {word} </span>
+                                                                )
+                                                            )}
+                                                            <br /> {/* Handles new lines */}
+                                                        </React.Fragment>
+                                                    ))}
+
+
+                                                </div>
                                                 <div className="flex md:flex-row flex-col justify-between">
                                                     <div>
                                                         Priority: <span className="text-light">{task.priority}</span>
@@ -279,7 +303,28 @@ export default function Home() {
                                                         setselectedTask(task);
                                                         navigate(`/task-details/${task.id}`)
                                                     }}>{task.name}</h2>
-                                                    <div className="text-gray-700 dark:text-gray-300 max-w-[80%] my-3">{task.description}</div>
+                                                    <div className="text-gray-700 dark:text-gray-300 max-w-[80%] my-3">
+                                                        {task.description.split('\n').map((line, lineIndex) => (
+                                                            <React.Fragment key={lineIndex}>
+                                                                {line.split(' ').map((word, wordIndex) =>
+                                                                    /\bhttps?:\/\/[^\s]+/.test(word) ? (
+                                                                        <a
+                                                                            key={wordIndex}
+                                                                            href={word}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className='text-light'
+                                                                        >
+                                                                            {word}
+                                                                        </a>
+                                                                    ) : (
+                                                                        <span key={wordIndex}> {word} </span>
+                                                                    )
+                                                                )}
+                                                                <br /> {/* Handles new lines */}
+                                                            </React.Fragment>
+                                                        ))}
+                                                    </div>
                                                     <div className="flex flex-col justify-between">
                                                         <div className="text-gray-500">Deadline: {task.deadline.substring(0, 10)}</div>
                                                     </div>

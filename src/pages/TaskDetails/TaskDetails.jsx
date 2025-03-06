@@ -566,7 +566,7 @@ export default function TaskDetails() {
                             <h2 className='capitalize mb-2 font-semibold text-gray-700 dark:text-gray-100' >task description</h2>
                             {taskDataIsLoading ? <>
                                 <div name="task description" id="task description" className='w-full dark:outline-gray-300 dark:text-white overflow-y-auto break-words' >
-                                    {selectedTask?.description.split('\n').map((line, lineIndex) => (
+                                    {selectedTask?.description?.split('\n').map((line, lineIndex) => (
                                         <React.Fragment key={lineIndex}>
                                             {line.split(' ').map((word, wordIndex) =>
                                                 /\bhttps?:\/\/[^\s]+/.test(word) ? (
@@ -589,7 +589,7 @@ export default function TaskDetails() {
                                 </div>
                             </> :
                                 <div name="task description" id="task description" className='w-full dark:outline-gray-300 dark:text-white overflow-y-auto' >
-                                    {taskData?.data?.data?.task?.description.split('\n').map((line, lineIndex) => (
+                                    {taskData?.data?.data?.task?.description?.split('\n').map((line, lineIndex) => (
                                         <React.Fragment key={lineIndex}>
                                             {line.split(' ').map((word, wordIndex) =>
                                                 /\bhttps?:\/\/[^\s]+/.test(word) ? (

@@ -303,7 +303,7 @@ export default function Home() {
                                                         setselectedTask(task);
                                                         navigate(`/task-details/${task.id}`)
                                                     }}>{task.name}</h2>
-                                                    <div className="text-gray-700 dark:text-gray-300 max-w-[80%] my-3">
+                                                    <div className="text-gray-700 dark:text-gray-300 my-3">
                                                         {task.description.split('\n').map((line, lineIndex) => (
                                                             <React.Fragment key={lineIndex}>
                                                                 {line.split(' ').map((word, wordIndex) =>

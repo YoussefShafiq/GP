@@ -409,7 +409,7 @@ export default function TaskDetails() {
                         </>}
 
 
-                    <div onClick={() => { navigate('/task-details'); }} className="px-1 cursor-pointer text-black dark:text-white">{(taskData?.data.data.task.name || selectedTask?.name)}</div>
+                    <div onClick={() => { navigate(`/task-details/${id}`); }} className="px-1 cursor-pointer text-black dark:text-white">{(taskData?.data.data.task.name || selectedTask?.name)}</div>
                 </div>
                 <div className="flex justify-end gap-2 mb-4">
                     {isRefetching && <div className="hidden md:flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
@@ -575,12 +575,12 @@ export default function TaskDetails() {
                                                         href={word}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className='text-light'
+                                                        className='text-light break-words'
                                                     >
                                                         {word}
                                                     </a>
                                                 ) : (
-                                                    <span key={wordIndex}> {word} </span>
+                                                    <span className='break-words' key={wordIndex}> {word} </span>
                                                 )
                                             )}
                                             <br /> {/* Handles new lines */}
@@ -598,12 +598,12 @@ export default function TaskDetails() {
                                                         href={word}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className='text-light'
+                                                        className='text-light break-words'
                                                     >
                                                         {word}
                                                     </a>
                                                 ) : (
-                                                    <span key={wordIndex}> {word} </span>
+                                                    <span className='break-words' key={wordIndex}> {word} </span>
                                                 )
                                             )}
                                             <br /> {/* Handles new lines */}
@@ -722,7 +722,7 @@ export default function TaskDetails() {
                                                 {person.name[0]}
                                             </div>
                                             <div className="flex flex-col">
-                                                <p className='dark:text-gray-50' >{person.name} <span className='text-xs text-gray-500 dark:text-gray-400 font-light' >{person.role}</span></p>
+                                                <p className='dark:text-gray-50' >{person.name} <span className='text-xs text-gray-500 dark:text-gray-400 font-light' >({person.role})</span></p>
                                                 <p className='text-xs text-gray-600 dark:text-gray-500' >{person.email || `${person.name.replaceAll(' ', '_')}@gmail.com`}</p>
                                             </div>
                                         </div>
@@ -766,12 +766,12 @@ export default function TaskDetails() {
                                                                         href={word}
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
-                                                                        className='text-light'
+                                                                        className='text-light break-words'
                                                                     >
                                                                         {word}
                                                                     </a>
                                                                 ) : (
-                                                                    <span key={wordIndex}> {word} </span>
+                                                                    <span className='break-words' key={wordIndex}> {word} </span>
                                                                 )
                                                             )}
                                                             <br /> {/* Handles new lines */}

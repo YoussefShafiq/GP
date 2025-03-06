@@ -793,10 +793,16 @@ export default function TaskDetails() {
                                     style={{ minHeight: '40px', maxHeight: '120px', overflowY: 'auto' }}
                                     value={noteDescription}
                                     onChange={(e) => setNoteDescription(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault(); // Prevent default behavior (new line)
+                                            handleAddNote(e); // Send the message
+                                        }
+                                    }}
                                 />
-                                <button
+                                <button button
                                     type="submit"
-                                    className="p-2 bg-light text-white rounded-lg hover:bg-darkblue h-full aspect-square flex items-center justify-center transition-all"
+                                    className="p-2 bg-light text-white rounded-lg hover:bg-darkblue h-full aspect-square flex items-center justify-center transition-all disabled:opacity-20"
                                     disabled={addingNote} // Disable button while loading
                                 >
                                     {addNoteMutation.isLoading ? 'Adding...' : <Send size={20} />}
@@ -840,6 +846,6 @@ export default function TaskDetails() {
                 </div>
             </div>
 
-        </div>
+        </div >
     </>
 }

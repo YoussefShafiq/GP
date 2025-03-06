@@ -387,7 +387,7 @@ export default function MainChat() {
             </div>
 
             {/* Chat Messages */}
-            <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-scroll bg-chat-light dark:bg-chat-dark dark:bg-center bg-opacity-10" onScroll={handleScroll}>
+            <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-scroll light:bg-chat-light dark:bg-dark1 bg-opacity-10" onScroll={handleScroll}>
                 {messages.map((message) => (
                     <div
                         key={message?.id}
@@ -403,7 +403,7 @@ export default function MainChat() {
                             </div>
                         )}
                         <div
-                            className={`ml-3 p-3 rounded-lg shadow-md max-w-[70%] relative ${message?.sender_id === profileData?.data?.data.user.id ? 'bg-light dark:bg-dark1 text-white' : 'bg-white dark:bg-dark2'
+                            className={`ml-3 p-3 rounded-lg shadow-md max-w-[70%] relative ${message?.sender_id === profileData?.data?.data.user.id ? 'bg-light dark:bg-dark dark:bg-opacity-40 text-white' : 'bg-white dark:bg-dark2'
                                 }`}
                         >
 
@@ -506,7 +506,7 @@ export default function MainChat() {
             {/* Chat Input */}
             <div className="p-4 border-t border-gray-200 bg-white dark:bg-dark1 rounded-b-lg">
                 {/* File Previews */}
-                {files.length > 0 && (
+                {/* {files.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-2">
                         {files.map((file, index) => (
                             <div key={index} className="relative">
@@ -530,7 +530,7 @@ export default function MainChat() {
                             </div>
                         ))}
                     </div>
-                )}
+                )} */}
 
                 <div className="flex items-center gap-2">
                     <textarea

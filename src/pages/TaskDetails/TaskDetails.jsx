@@ -602,7 +602,7 @@ export default function TaskDetails() {
                                                         href={word}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className='text-light break-words'
+                                                        className='text-light break-words hover:underline'
                                                     >
                                                         {word}
                                                     </a>

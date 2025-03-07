@@ -73,7 +73,10 @@ const Notifications = () => {
                     ...notification,
                     read: 1
                 })));
-                toast.success('All notifications marked as read');
+                toast.success('All notifications marked as read', {
+                    duration: 3000,
+                    position: 'bottom-right',
+                });
             }
         } catch (error) {
             toast.error(error?.response?.data?.message, {

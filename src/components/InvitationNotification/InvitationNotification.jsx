@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Check, X, Trash2, Eye } from 'lucide-react';
 import { Tooltip } from '@heroui/tooltip';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 const InvitationNotification = ({ notification, markAsRead, deleteNotification }) => {
     const token = localStorage.getItem('userToken'); // User token from localStorage
     const invitationToken = notification.metadata.token; // Token from the notification metadata
+    const [sending, setsending] = useState(false)
 
     // Fetch projects
     function getProjects() {
@@ -26,6 +27,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
 
     // Handle accepting the invitation
     const handleAccept = async () => {
+        setsending(true)
         try {
             const response = await axios.post(
                 'https://brainmate.fly.dev/api/v1/projects/teams/accept',
@@ -46,7 +48,10 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
                 notification.type = 'info'
                 refetchProjects()
             }
+            setsending(false)
+
         } catch (error) {
+            setsending(false)
             toast.error(error?.response?.data?.message || 'Failed to accept invitation', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -56,6 +61,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
 
     // Handle rejecting the invitation
     const handleReject = async () => {
+        setsending(true)
         try {
             const response = await axios.post(
                 'https://brainmate.fly.dev/api/v1/projects/teams/reject',
@@ -75,7 +81,9 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
                 markAsRead(notification.id); // Mark the notification as read
                 notification.type = 'info'
             }
+            setsending(false)
         } catch (error) {
+            setsending(false)
             toast.error(error?.response?.data?.message || 'Failed to reject invitation', {
                 duration: 3000,
                 position: 'bottom-right',
@@ -106,6 +114,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
                     {/* Accept Button */}
                     <Tooltip delay={300} content="Accept Invitation" closeDelay={0}>
                         <button
+                            disabled={sending}
                             onClick={(e) => {
                                 handleAccept();
                                 e.stopPropagation();
@@ -119,6 +128,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
                     {/* Reject Button */}
                     <Tooltip delay={300} content="Reject Invitation" closeDelay={0}>
                         <button
+                            disabled={sending}
                             onClick={(e) => {
                                 handleReject();
                                 e.stopPropagation();

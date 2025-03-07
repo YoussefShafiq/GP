@@ -408,8 +408,12 @@ export default function TaskDetails() {
                             <div onClick={() => { navigate('/'); setselectedTeam(null) }} className="pe-1 cursor-pointer capitalize">Home</div><ChevronRight strokeWidth={0.7} />
                         </>}
 
+                    <Tooltip closeDelay={0} content={
+                        <h2><span className='font-bold'>Project: </span>{taskData?.data.data.task.project_name}, <span className='font-bold'>Team: </span>{taskData?.data.data.task.team_name}</h2>
+                    }>
+                        <div onClick={() => { navigate(`/task-details/${id}`); }} className="px-1 cursor-pointer text-black dark:text-white">{(taskData?.data.data.task.name || selectedTask?.name)}</div>
 
-                    <div onClick={() => { navigate(`/task-details/${id}`); }} className="px-1 cursor-pointer text-black dark:text-white">{(taskData?.data.data.task.name || selectedTask?.name)}</div>
+                    </Tooltip>
                 </div>
                 <div className="flex justify-end gap-2 mb-4">
                     {isRefetching && <div className="hidden md:flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}

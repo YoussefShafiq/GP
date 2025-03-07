@@ -1,6 +1,6 @@
 import React, { useContext, useState, useMemo } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings, ChevronDown, ChevronRight } from 'lucide-react';
+import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings, ChevronDown, ChevronRight, MessageCircleMore } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -15,9 +15,11 @@ import TasksTable from '../../components/TasksTable/TasksTable';
 import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
 import FilterBar from '../../components/FilterBar/FilterBar'; // Import the FilterBar component
 import { Tooltip } from '@heroui/tooltip';
+import { ChatContext } from '../../context/ChatContext';
 
 export default function Team() {
     let { selectedProject, setselectedProject } = useContext(projectContext);
+    const { selectedChat, setselectedChat } = useContext(ChatContext)
     let { selectedTeam, setselectedTeam } = useContext(TeamsContext);
     const [teamOptionsDropdown, setteamOptionsDropdown] = useState(false)
     const [deleteTeamForm, setDeleteTeamForm] = useState(false);
@@ -223,6 +225,19 @@ export default function Team() {
                                     <span className="text-black dark:text-white hidden md:block">{teamData?.data.data.team.team_code}</span>
                                     <Copy size={18} className="text-gray-500" />
                                 </div>
+                                <div onClick={(e) => {
+                                    navigate('/chat');
+                                    e.stopPropagation();
+                                    setselectedChat({
+                                        'id': teamData?.data.data.team.id,
+                                        'name': teamData?.data.data.team.name,
+                                        'project': {
+                                            'name': teamData?.data.data.team.project.name
+                                        }
+                                    })
+                                }} className="bg-darkblue dark:bg-dark2 flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
+                                    <button onClick={() => navigate('/chat')} ><MessageCircleMore color='white' /></button>
+                                </div>
                                 <Tooltip delay={350} closeDelay={0} content='manage team members'>
                                     <button
                                         onClick={() => navigate('manage-members')}
@@ -276,6 +291,19 @@ export default function Team() {
                                             >
                                                 <span className="text-black hidden md:block">{teamData?.data.data.team.team_code}</span>
                                                 <Copy size={18} className="text-gray-500" />
+                                            </div>
+                                            <div onClick={(e) => {
+                                                navigate('/chat');
+                                                e.stopPropagation();
+                                                setselectedChat({
+                                                    'id': teamData?.data.data.team.id,
+                                                    'name': teamData?.data.data.team.name,
+                                                    'project': {
+                                                        'name': teamData?.data.data.team.project.name
+                                                    }
+                                                })
+                                            }} className="bg-darkblue dark:bg-dark2 flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
+                                                <button onClick={() => navigate('/chat')} ><MessageCircleMore color='white' /></button>
                                             </div>
                                             {teamData?.data?.data.team.role === 'manager' && <>
                                                 <button title='manage team members'

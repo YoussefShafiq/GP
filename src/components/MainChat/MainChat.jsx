@@ -478,15 +478,15 @@ export default function MainChat() {
                             )} */}
                             <div className="flex items-center justify-between">
                                 <div
-                                    className={`text-xs mt-1 ${message?.sender_id === profileData?.data?.data.user.id ? 'text-gray-200' : 'text-gray-500'}`}
+                                    className={`text-xs flex items-center mt-1 ${message?.sender_id === profileData?.data?.data.user.id ? 'text-gray-200' : 'text-gray-500'}`}
                                 >
                                     {new Date(message?.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    {sendingMessages[message.id] && (
+                                        <div className="ml-2">
+                                            <Clock3 size={14} />
+                                        </div>
+                                    )}
                                 </div>
-                                {sendingMessages[message.id] && (
-                                    <div className="ml-2">
-                                        <Clock3 size={14} />
-                                    </div>
-                                )}
                                 {/* Three dots button */}
                                 <button
                                     className={`p-2 pe-0  ${message?.sender_id === profileData?.data?.data.user.id ? 'text-white' : 'text-dark dark:text-white'} rounded-full`}

@@ -5,30 +5,30 @@ import { Bell, Eye, Trash2 } from 'lucide-react';
 import { Tooltip } from '@heroui/tooltip';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import notificationsound from '../../assets/Sounds/notification.mp3'
+import notificationsound from '../../assets/Sounds/notification.mp3';
 import { useNavigate } from 'react-router-dom';
 import { TaskContext } from '../../context/TaskContext';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
-    let { selectedTask, setselectedTask } = useContext(TaskContext)
+    let { selectedTask, setselectedTask } = useContext(TaskContext);
     const [isOpen, setIsOpen] = useState(false);
     const token = localStorage.getItem('userToken'); // Get the token from localStorage
     const dropdownRef = useRef(null); // Ref for the dropdown
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     function getProfileData() {
         return axios.get('https://brainmate.fly.dev/api/v1/profile', {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
-        })
+        });
     }
 
     let { data: profileData } = useQuery({
         queryKey: ['ProfileData'],
         queryFn: getProfileData
-    })
+    });
 
     // Axios instance with base URL and headers
     const api = axios.create({
@@ -64,6 +64,25 @@ const Notifications = () => {
         }
     };
 
+    // Mark all notifications as read
+    const markAllAsRead = async () => {
+        try {
+            const response = await api.post('/notifications/mark-all-as-read');
+            if (response.data.success) {
+                setNotifications(notifications.map(notification => ({
+                    ...notification,
+                    read: 1
+                })));
+                toast.success('All notifications marked as read');
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message, {
+                duration: 3000,
+                position: 'bottom-right',
+            });
+        }
+    };
+
     // Delete a notification
     const deleteNotification = async (notificationId) => {
         try {
@@ -79,7 +98,6 @@ const Notifications = () => {
     // Initialize Pusher for real-time updates
     useEffect(() => {
         if (profileData?.data.data.user.id) {
-
             const pusher = new Pusher('d42fd688ba933368ee26', {
                 cluster: 'mt1',
                 forceTLS: true,
@@ -152,52 +170,75 @@ const Notifications = () => {
             </button>
 
             {/* Notification Dropdown */}
-            <div className={`absolute top-12 right-0 bg-white dark:bg-dark2  border-gray-200 rounded-lg shadow-lg w-60 md:w-80 ${isOpen ? 'h-96 border' : 'h-0'} overflow-y-auto border-t-0 transition-all`}>
-                {notifications.length === 0 ? <>
-                    <div className="flex justify-center items-center h-full capitalize text-black dark:text-white">no notifications found</div>
-                </> : <>
-                    {notifications.map(notification => (
-                        <div
-                            key={notification.id}
-                            onClick={() => {
-                                { notification?.metadata?.task_id && navigate(`/task-details/${notification.metadata.task_id}`); setselectedTask({ 'id': notification.metadata.task_id, 'team_id': notification.metadata.team_id }); setIsOpen(!isOpen) }
-                                markAsRead(notification.id)
-                            }}
-                            className={`p-4 cursor-pointer border-b  border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100 dark:hover:bg-white dark:hover:bg-opacity-5 dark:bg-dark1' : 'bg-white dark:hover:bg-white dark:hover:bg-opacity-10 dark:bg-dark2 hover:bg-gray-50'}  flex flex-col justify-between text-start`}
+            <div className={`absolute top-12 right-0 bg-white dark:bg-dark2 border-gray-200 rounded-lg shadow-lg w-60 md:w-80 ${isOpen ? 'h-96 border' : 'h-0'} flex flex-col-reverse overflow-hidden border-t-0 transition-all`}>
+                {/* Mark All as Read Button */}
+                {notifications.length > 0 && (
+                    <div className="p-2 border-b border-gray-200">
+                        <button
+                            onClick={markAllAsRead}
+                            className="w-full text-sm text-blue-500 hover:text-blue-700 text-center"
                         >
-                            <div>
-                                <p className="text-sm font-medium text-gray-900 dark:text-white">{notification.read === 0 && <div className='h-2 w-2 bg-red-500 inline-block me-2 rounded-full'></div>}{notification.message}</p>
-                            </div>
-                            <div className="flex justify-between items-center space-x-2">
-                                <small className="text-xs text-gray-500">
-                                    {new Date(notification.created_at).toLocaleString()}
-                                </small>
-                                <div className="flex justify-end gap-2">
-                                    {notification.read === 0 && (
-                                        <Tooltip delay={300} content='mark as read' closeDelay={0}>
+                            Mark All as Read
+                        </button>
+                    </div>
+                )}
+
+                <div className="overflow-y-auto">
+                    {notifications.length === 0 ? (
+                        <div className="flex justify-center items-center h-full capitalize text-black dark:text-white">
+                            No notifications found
+                        </div>
+                    ) : (
+                        notifications.map(notification => (
+                            <div
+                                key={notification.id}
+                                onClick={() => {
+                                    if (notification?.metadata?.task_id) {
+                                        navigate(`/task-details/${notification.metadata.task_id}`);
+                                        setselectedTask({ 'id': notification.metadata.task_id, 'team_id': notification.metadata.team_id });
+                                        setIsOpen(!isOpen);
+                                    }
+                                    markAsRead(notification.id);
+                                }}
+                                className={`p-4 cursor-pointer border-b border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100 dark:hover:bg-white dark:hover:bg-opacity-5 dark:bg-dark1' : 'bg-white dark:hover:bg-white dark:hover:bg-opacity-10 dark:bg-dark2 hover:bg-gray-50'} flex flex-col justify-between text-start`}
+                            >
+                                <div>
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                        {notification.read === 0 && <div className='h-2 w-2 bg-red-500 inline-block me-2 rounded-full'></div>}
+                                        {notification.message}
+                                    </p>
+                                </div>
+                                <div className="flex justify-between items-center space-x-2">
+                                    <small className="text-xs text-gray-500">
+                                        {new Date(notification.created_at).toLocaleString()}
+                                    </small>
+                                    <div className="flex justify-end gap-2">
+                                        {notification.read === 0 && (
+                                            <Tooltip delay={300} content='mark as read' closeDelay={0}>
+                                                <button
+                                                    onClick={(e) => { markAsRead(notification.id); e.stopPropagation() }}
+                                                    className="text-xs text-blue-500 hover:text-blue-700"
+                                                >
+                                                    <Eye size={20} />
+                                                </button>
+                                            </Tooltip>
+                                        )}
+                                        <Tooltip delay={300} content='delete notification' closeDelay={0}>
                                             <button
-                                                onClick={(e) => { markAsRead(notification.id); e.stopPropagation() }}
-                                                className="text-xs text-blue-500 hover:text-blue-700 "
+                                                onClick={(e) => { deleteNotification(notification.id); e.stopPropagation() }}
+                                                className="text-xs text-red-500 hover:text-red-700"
                                             >
-                                                <Eye size={20} />
+                                                <Trash2 size={20} />
                                             </button>
                                         </Tooltip>
-                                    )}
-                                    <Tooltip delay={300} content='delete notification' closeDelay={0}>
-                                        <button
-                                            onClick={(e) => { deleteNotification(notification.id); e.stopPropagation() }}
-                                            className="text-xs text-red-500 hover:text-red-700 "
-                                        >
-                                            <Trash2 size={20} />
-                                        </button>
-                                    </Tooltip>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </>}
+                        ))
+                    )}
+                </div>
             </div>
-        </div >
+        </div>
     );
 };
 

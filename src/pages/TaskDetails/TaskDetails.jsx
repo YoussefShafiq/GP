@@ -349,7 +349,7 @@ export default function TaskDetails() {
                         exit={{ scale: 0.8, opacity: 0 }}
                         className="bg-white dark:bg-dark1 border  p-6 rounded-lg shadow-lg"
                     >
-                        <h2 className="text-lg font-semibold mb-4">Are you sure you want to remove "{selectedTask.name}" task?</h2>
+                        <h2 className="text-lg font-semibold mb-4">Are you sure you want to remove "{taskData?.data?.data?.task?.name}" task?</h2>
                         <div className="flex justify-end gap-3">
                             <button
                                 onClick={cancelDelete}

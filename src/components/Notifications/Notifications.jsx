@@ -11,6 +11,7 @@ import { TaskContext } from '../../context/TaskContext';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
+    const [markingAllRead, setmarkingAllRead] = useState(false);
     let { selectedTask, setselectedTask } = useContext(TaskContext);
     const [isOpen, setIsOpen] = useState(false);
     const token = localStorage.getItem('userToken'); // Get the token from localStorage
@@ -66,6 +67,7 @@ const Notifications = () => {
 
     // Mark all notifications as read
     const markAllAsRead = async () => {
+        setmarkingAllRead(true)
         try {
             const response = await api.post('/notifications/mark-all-as-read');
             if (response.data.success) {
@@ -84,6 +86,7 @@ const Notifications = () => {
                 position: 'bottom-right',
             });
         }
+        setmarkingAllRead(false)
     };
 
     // Delete a notification
@@ -179,7 +182,8 @@ const Notifications = () => {
                     <div className="p-2 border-b border-gray-200">
                         <button
                             onClick={markAllAsRead}
-                            className="w-full text-sm text-blue-500 hover:text-blue-700 text-center"
+                            className="w-full text-sm text-light hover:text-teal-700 text-center disabled:opacity-50"
+                            disabled={markingAllRead}
                         >
                             Mark All as Read
                         </button>
@@ -203,6 +207,7 @@ const Notifications = () => {
                                     }
                                     markAsRead(notification.id);
                                 }}
+
                                 className={`p-4 cursor-pointer border-b border-gray-200 ${notification.read === 0 ? 'bg-blue-100 hover:bg-blue-100 dark:hover:bg-white dark:hover:bg-opacity-5 dark:bg-dark1' : 'bg-white dark:hover:bg-white dark:hover:bg-opacity-10 dark:bg-dark2 hover:bg-gray-50'} flex flex-col justify-between text-start`}
                             >
                                 <div>

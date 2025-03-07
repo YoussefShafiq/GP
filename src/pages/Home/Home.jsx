@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { TaskContext } from '../../context/TaskContext';
 import { useNavigate } from 'react-router-dom';
+import { Tooltip } from '@heroui/tooltip';
 
 export default function Home() {
     const token = localStorage.getItem('userToken');
@@ -94,53 +95,60 @@ export default function Home() {
                             <>
                                 {toDoTasksData?.data?.data.tasks.length <= 0 ? <div className='text-center p-3 capitalize'>no tasks to do</div> : <>
                                     {toDoTasksData?.data?.data.tasks.map((task) => (
-                                        <div key={task.id} className="border border-opacity-30 border-black dark:border-slate-800 p-3 rounded-2xl flex gap-3">
-                                            <div>
-                                                <Circle size={20} className="text-highlight" />
-                                            </div>
-                                            <div className="flex flex-col w-5/6">
-                                                <h2 className="font-semibold cursor-pointer" onClick={() => {
-                                                    setselectedTask(task);
-                                                    navigate(`/task-details/${task.id}`)
-                                                }}>{task.name}</h2>
-                                                <div className="text-gray-700 dark:text-gray-300 my-3 break-words">
-
-                                                    {task.description.split('\n').map((line, lineIndex) => (
-                                                        <React.Fragment key={lineIndex}>
-                                                            {line.split(' ').map((word, wordIndex) =>
-                                                                /\bhttps?:\/\/[^\s]+/.test(word) ? (
-                                                                    <a
-                                                                        key={wordIndex}
-                                                                        href={word}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        className='text-light'
-                                                                    >
-                                                                        {word}
-                                                                    </a>
-                                                                ) : (
-                                                                    <span key={wordIndex}> {word} </span>
-                                                                )
-                                                            )}
-                                                            <br /> {/* Handles new lines */}
-                                                        </React.Fragment>
-                                                    ))}
-
-
+                                        <Tooltip closeDelay={0} content={
+                                            <h2><span className='font-bold'>Project: </span>{task.project_name}, <span className='font-bold'>Team: </span>{task.team_name}</h2>
+                                        }>
+                                            <div key={task.id} className="border border-opacity-30 border-black dark:border-slate-800 p-3 rounded-2xl flex gap-3">
+                                                <div>
+                                                    <Circle size={20} className="text-highlight" />
                                                 </div>
-                                                <div className="flex md:flex-row flex-col justify-between">
-                                                    <div>
-                                                        Priority: <span className="text-light">{task.priority}</span>
+                                                <div className="flex flex-col w-5/6">
+
+                                                    <h2 className="font-semibold cursor-pointer" onClick={() => {
+                                                        setselectedTask(task);
+                                                        navigate(`/task-details/${task.id}`)
+                                                    }}>{task.name}</h2>
+                                                    {/* <h2><span className='font-bold'>Project: </span>{task.project_name}, <span className='font-bold'>Team: </span>{task.team_name}</h2> */}
+                                                    <div className="text-gray-700 dark:text-gray-300 my-3 break-words">
+
+                                                        {task.description.split('\n').map((line, lineIndex) => (
+                                                            <React.Fragment key={lineIndex}>
+                                                                {line.split(' ').map((word, wordIndex) =>
+                                                                    /\bhttps?:\/\/[^\s]+/.test(word) ? (
+                                                                        <a
+                                                                            key={wordIndex}
+                                                                            href={word}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className='text-light break-words hover:underline'
+                                                                        >
+                                                                            {word}
+                                                                        </a>
+                                                                    ) : (
+                                                                        <span key={wordIndex}> {word} </span>
+                                                                    )
+                                                                )}
+                                                                <br /> {/* Handles new lines */}
+                                                            </React.Fragment>
+                                                        ))}
+
+
                                                     </div>
-                                                    <div>
-                                                        Status: <span className="text-highlight">{statusMap[task.status] || 'unknown'}</span>
-                                                    </div>
-                                                    <div>
-                                                        Deadline: <span className="text-gray-500">{task.deadline.substring(0, 10)}</span>
+                                                    <div className="flex md:flex-row flex-col justify-between">
+                                                        <div>
+                                                            Priority: <span className="text-light">{task.priority}</span>
+                                                        </div>
+                                                        <div>
+                                                            Status: <span className="text-highlight">{statusMap[task.status] || 'unknown'}</span>
+                                                        </div>
+                                                        <div>
+                                                            Deadline: <span className="text-gray-500">{task.deadline.substring(0, 10)}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Tooltip>
+
                                     ))}
                                 </>}
                             </>
@@ -294,42 +302,47 @@ export default function Home() {
                                 <>
                                     {inreviewTasksData?.data?.data?.tasks.length <= 0 ? <div className='text-center p-3 capitalize'>No in review tasks</div> : <>
                                         {inreviewTasksData?.data?.data?.tasks.map((task) => (
-                                            <div key={task.id} className="border border-opacity-30 border-black dark:border-slate-700 p-3 rounded-2xl flex gap-3">
-                                                <div>
-                                                    <Circle size={20} className="text-highlight" />
-                                                </div>
-                                                <div className="flex flex-col">
-                                                    <h2 className="font-semibold cursor-pointer" onClick={() => {
-                                                        setselectedTask(task);
-                                                        navigate(`/task-details/${task.id}`)
-                                                    }}>{task.name}</h2>
-                                                    <div className="text-gray-700 dark:text-gray-300 my-3">
-                                                        {task.description.split('\n').map((line, lineIndex) => (
-                                                            <React.Fragment key={lineIndex}>
-                                                                {line.split(' ').map((word, wordIndex) =>
-                                                                    /\bhttps?:\/\/[^\s]+/.test(word) ? (
-                                                                        <a
-                                                                            key={wordIndex}
-                                                                            href={word}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            className='text-light'
-                                                                        >
-                                                                            {word}
-                                                                        </a>
-                                                                    ) : (
-                                                                        <span key={wordIndex}> {word} </span>
-                                                                    )
-                                                                )}
-                                                                <br /> {/* Handles new lines */}
-                                                            </React.Fragment>
-                                                        ))}
+                                            <Tooltip closeDelay={0} content={
+                                                <h2><span className='font-bold'>Project: </span>{task.project_name}, <span className='font-bold'>Team: </span>{task.team_name}</h2>
+                                            }>
+                                                <div key={task.id} className="border border-opacity-30 border-black dark:border-slate-700 p-3 rounded-2xl flex gap-3">
+                                                    <div>
+                                                        <Circle size={20} className="text-highlight" />
                                                     </div>
-                                                    <div className="flex flex-col justify-between">
-                                                        <div className="text-gray-500">Deadline: {task.deadline.substring(0, 10)}</div>
+                                                    <div className="flex flex-col">
+                                                        <h2 className="font-semibold cursor-pointer" onClick={() => {
+                                                            setselectedTask(task);
+                                                            navigate(`/task-details/${task.id}`)
+                                                        }}>{task.name}</h2>
+                                                        <div className="text-gray-700 dark:text-gray-300 my-3">
+                                                            {task.description.split('\n').map((line, lineIndex) => (
+                                                                <React.Fragment key={lineIndex}>
+                                                                    {line.split(' ').map((word, wordIndex) =>
+                                                                        /\bhttps?:\/\/[^\s]+/.test(word) ? (
+                                                                            <a
+                                                                                key={wordIndex}
+                                                                                href={word}
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer"
+                                                                                className='text-light break-words hover:underline'
+                                                                            >
+                                                                                {word}
+                                                                            </a>
+                                                                        ) : (
+                                                                            <span key={wordIndex}> {word} </span>
+                                                                        )
+                                                                    )}
+                                                                    <br /> {/* Handles new lines */}
+                                                                </React.Fragment>
+                                                            ))}
+                                                        </div>
+                                                        <div className="flex flex-col justify-between">
+                                                            <div className="text-gray-500">Deadline: {task.deadline.substring(0, 10)}</div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </Tooltip>
+
                                         ))}
                                     </>}
                                 </>

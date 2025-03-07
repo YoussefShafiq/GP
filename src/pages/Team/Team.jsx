@@ -232,11 +232,11 @@ export default function Team() {
                                         'id': teamData?.data.data.team.id,
                                         'name': teamData?.data.data.team.name,
                                         'project': {
-                                            'name': teamData?.data.data.team.project.name
+                                            'name': teamData?.data.data.team.project_name
                                         }
                                     })
-                                }} className="bg-darkblue dark:bg-dark2 flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
-                                    <button onClick={() => navigate('/chat')} ><MessageCircleMore color='white' /></button>
+                                }} className="bg-white text-light dark:text-white dark:bg-dark flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
+                                    <button onClick={() => navigate('/chat')} ><MessageCircleMore /></button>
                                 </div>
                                 <Tooltip delay={350} closeDelay={0} content='manage team members'>
                                     <button
@@ -299,11 +299,11 @@ export default function Team() {
                                                     'id': teamData?.data.data.team.id,
                                                     'name': teamData?.data.data.team.name,
                                                     'project': {
-                                                        'name': teamData?.data.data.team.project.name
+                                                        'name': teamData?.data.data.team.project_name
                                                     }
                                                 })
-                                            }} className="bg-darkblue dark:bg-dark2 flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
-                                                <button onClick={() => navigate('/chat')} ><MessageCircleMore color='white' /></button>
+                                            }} className="bg-white text-light dark:text-white dark:bg-dark flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
+                                                <button onClick={() => navigate('/chat')} ><MessageCircleMore /></button>
                                             </div>
                                             {teamData?.data?.data.team.role === 'manager' && <>
                                                 <button title='manage team members'

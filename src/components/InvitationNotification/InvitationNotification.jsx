@@ -3,10 +3,26 @@ import { Check, X, Trash2, Eye } from 'lucide-react';
 import { Tooltip } from '@heroui/tooltip';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
 
 const InvitationNotification = ({ notification, markAsRead, deleteNotification }) => {
     const token = localStorage.getItem('userToken'); // User token from localStorage
     const invitationToken = notification.metadata.token; // Token from the notification metadata
+
+    // Fetch projects
+    function getProjects() {
+        return axios.get('https://brainmate.fly.dev/api/v1/projects/assigned', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    }
+
+    let { refetch: refetchProjects } = useQuery({
+        queryKey: ['allprojects'],
+        queryFn: getProjects,
+        keepPreviousData: true,
+    });
 
     // Handle accepting the invitation
     const handleAccept = async () => {
@@ -28,6 +44,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
                 });
                 markAsRead(notification.id); // Mark the notification as read
                 notification.type = 'info'
+                refetchProjects()
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || 'Failed to accept invitation', {

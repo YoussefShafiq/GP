@@ -95,7 +95,7 @@ export default function Home() {
                             <>
                                 {toDoTasksData?.data?.data.tasks.length <= 0 ? <div className='text-center p-3 capitalize'>no tasks to do</div> : <>
                                     {toDoTasksData?.data?.data.tasks.map((task) => (
-                                        <Tooltip closeDelay={0} content={
+                                        <Tooltip key={task.id} closeDelay={0} content={
                                             <h2><span className='font-bold'>Project: </span>{task.project_name}, <span className='font-bold'>Team: </span>{task.team_name}</h2>
                                         }>
                                             <div key={task.id} className="border border-opacity-30 border-black dark:border-slate-800 p-3 rounded-2xl flex gap-3">

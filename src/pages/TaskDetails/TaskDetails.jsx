@@ -329,9 +329,8 @@ export default function TaskDetails() {
     };
 
     if (isError) {
-        return <div className='text-center py-5'>task loading error</div>
+        return <div className='text-center py-5 h-[90vh] flex items-center justify-center'><div className="">The requested task could not be found, <br /> or you do not have the necessary permissions to access it.</div></div>;
     }
-
 
     return <>
 

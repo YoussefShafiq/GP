@@ -3,7 +3,7 @@ import image from '../../assets/images/Work time-pana (1).svg'
 import logo from '../../assets/images/brainmate.png'
 import darklogo from '../../assets/images/brainmate dark.png'
 import googleLogo from '../../assets/images/google.png'
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { UserData } from '../../context/UserContext'
 import axios from 'axios'
 import { useFormik } from 'formik'
@@ -17,6 +17,8 @@ export default function Signup() {
     const { setToken, setUsername } = useContext(UserData)
     const [error, setError] = useState('')
     const [loading, setloading] = useState(false)
+    const { invitation_token } = useParams(); // Extract the ID from the URL
+
 
     let navigate = useNavigate()
 
@@ -86,7 +88,8 @@ export default function Signup() {
             password_confirmation: '',
             phone: '',
             position: '',
-            level: ''
+            level: '',
+            invitation_token: invitation_token
         },
         validationSchema,
         onSubmit: signup

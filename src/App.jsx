@@ -41,7 +41,7 @@ import ErrorPage from './components/ErrorPage/ErrorPage'; // Import your error c
 
 let routers = createBrowserRouter([
   { path: 'login/:token?', element: <GoHome><Login /></GoHome>, errorElement: <ErrorPage /> },
-  { path: 'signup', element: <GoHome><Signup /></GoHome>, errorElement: <ErrorPage /> },
+  { path: 'signup/:invitation_token?', element: <GoHome><Signup /></GoHome>, errorElement: <ErrorPage /> },
   { path: 'forgetpassword', element: <GoHome><ForgetPass /></GoHome>, errorElement: <ErrorPage /> },
   { path: 'resetpassword', element: <ResetPassword />, errorElement: <ErrorPage /> },
   {

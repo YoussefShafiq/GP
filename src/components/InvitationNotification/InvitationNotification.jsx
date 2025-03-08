@@ -140,7 +140,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
                     </Tooltip>
 
                     {/* Delete Button */}
-                    <Tooltip delay={300} content="Delete Notification" closeDelay={0}>
+                    {notification.type === 'info' && <Tooltip delay={300} content="Delete Notification" closeDelay={0}>
                         <button
                             onClick={(e) => {
                                 deleteNotification(notification.id);
@@ -150,7 +150,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
                         >
                             <Trash2 size={20} />
                         </button>
-                    </Tooltip>
+                    </Tooltip>}
                 </div>
             </div>
         </div>

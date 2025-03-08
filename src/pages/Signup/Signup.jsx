@@ -89,7 +89,7 @@ export default function Signup() {
             phone: '',
             position: '',
             level: '',
-            invitation_token: invitation_token
+            invitation_token: invitation_token?.split('=')[1]
         },
         validationSchema,
         onSubmit: signup

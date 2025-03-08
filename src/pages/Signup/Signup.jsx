@@ -18,7 +18,7 @@ export default function Signup() {
     const [error, setError] = useState('')
     const [loading, setloading] = useState(false)
     const params = new URLSearchParams(location.search);
-    const paramToken = params.get('invitation_token');
+    const invitationToken = params.get('invitation_token');
 
 
 
@@ -91,7 +91,7 @@ export default function Signup() {
             phone: '',
             position: '',
             level: '',
-            invitation_token: paramToken
+            invitation_token: invitationToken
         },
         validationSchema,
         onSubmit: signup
@@ -244,7 +244,7 @@ export default function Signup() {
                             <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-primary before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-primary after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>
                         </div>
                         <div className='w-full max-w-sm my-5'>
-                            <button onClick={() => { window.location.href = 'https://brainmate.fly.dev/api/v1/auth/google' }} className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> signup with google</button>
+                            <button onClick={() => { window.location.href = `https://brainmate.fly.dev/api/v1/auth/google${invitationToken ? `?invitation_token=${invitationToken}` : ''}` }} className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> signup with google</button>
                         </div>
                         <div className='text-primary pb-5 dark:text-gray-500 ' >Already have an account? <NavLink to={'/login'} className='text-darkTeal'>Login</NavLink></div>
 

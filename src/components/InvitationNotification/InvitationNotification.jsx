@@ -46,6 +46,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
                 });
                 markAsRead(notification.id); // Mark the notification as read
                 notification.type = 'info'
+                notification.read = 1
                 refetchProjects()
             }
             setsending(false)
@@ -80,6 +81,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
                 });
                 markAsRead(notification.id); // Mark the notification as read
                 notification.type = 'info'
+                notification.read = 1
             }
             setsending(false)
         } catch (error) {

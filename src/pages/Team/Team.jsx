@@ -256,19 +256,21 @@ export default function Team() {
                                 <Tooltip delay={350} closeDelay={0} content='Backlog' >
                                     <button onClick={() => navigate(`/project/team/backlog/${selectedTeam.id}`)} className="rounded-full bg-white dark:bg-dark text-light p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><ListTodo size={25} /></button>
                                 </Tooltip>
-                                <div onClick={(e) => {
-                                    navigate('/chat');
-                                    e.stopPropagation();
-                                    setselectedChat({
-                                        'id': teamData?.data.data.team.id,
-                                        'name': teamData?.data.data.team.name,
-                                        'project': {
-                                            'name': teamData?.data.data.team.project_name
-                                        }
-                                    })
-                                }} className="bg-white text-darkblue dark:text-white dark:bg-dark flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
-                                    <button onClick={() => navigate('/chat')} ><MessageCircleMore /></button>
-                                </div>
+                                <Tooltip delay={350} closeDelay={0} content='Chat'>
+                                    <div onClick={(e) => {
+                                        navigate('/chat');
+                                        e.stopPropagation();
+                                        setselectedChat({
+                                            'id': teamData?.data.data.team.id,
+                                            'name': teamData?.data.data.team.name,
+                                            'project': {
+                                                'name': teamData?.data.data.team.project_name
+                                            }
+                                        })
+                                    }} className="bg-white text-darkblue dark:text-white dark:bg-dark flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
+                                        <button onClick={() => navigate('/chat')} ><MessageCircleMore /></button>
+                                    </div>
+                                </Tooltip>
                                 <Tooltip delay={350} closeDelay={0} content='manage team members'>
                                     <button
                                         onClick={() => navigate('/project/team/manage-members')}

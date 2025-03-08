@@ -1,10 +1,10 @@
-import React, { useContext, useState, useMemo } from 'react';
+import React, { useContext, useState, useMemo, useEffect } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings, ChevronDown, ChevronRight, MessageCircleMore } from 'lucide-react';
+import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings, ChevronDown, ChevronRight, MessageCircleMore, ListTodo } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { TeamsContext } from '../../context/TeamsContext';
 import LeaveTeamForm from '../../components/LeaveTeamForm/LeaveTeamForm';
 import DeleteTeamForm from '../../components/DeleteTeamForm/DeleteTeamForm';
@@ -48,7 +48,7 @@ export default function Team() {
     }
 
     // Get team details query
-    let { data: teamData, isLoading: isTeamLoading, error: teamError } = useQuery({
+    let { data: teamData, isLoading: isTeamLoading, error: teamError, isError: TeamDataError, refetch: refetchTeamDetails } = useQuery({
         queryKey: ['teamDetails', selectedTeam?.id],
         queryFn: getTeamDetails,
         enabled: !!selectedTeam,
@@ -65,7 +65,7 @@ export default function Team() {
     }
 
     // Get team members query
-    let { data: teamMembers } = useQuery({
+    let { data: teamMembers, refetch: refetchTeamMembers } = useQuery({
         queryKey: ['teamMembers', selectedTeam?.id],
         queryFn: getTeamMembers,
         enabled: !!selectedTeam,
@@ -82,7 +82,7 @@ export default function Team() {
     }
 
     // Get team tasks query
-    let { data: teamTasks, isError, isRefetching: refetchingTasks } = useQuery({
+    let { data: teamTasks, isError: isTasksError, isRefetching: refetchingTasks, error: TasksError, refetch: refetchTeamTasks } = useQuery({
         queryKey: ['teamTasks', selectedTeam?.id],
         queryFn: getTeamTasks,
         enabled: !!selectedTeam,
@@ -161,15 +161,43 @@ export default function Team() {
         return tasks;
     }, [teamTasks, searchName, searchTag, filterPriority, sortPriority, sortDeadline, filterState]);
 
+    const { teamId } = useParams();
+    const [searchParams] = useSearchParams();
+    function getUrlData() {
+        const teamName = searchParams.get('teamName');
+        const projectId = searchParams.get('projectId');
+        const projectName = searchParams.get('projectName');
+
+        setselectedTeam({
+            'id': teamId,
+            'name': teamName
+        })
+        setselectedProject({
+            'id': projectId,
+            'name': projectName
+        })
+    }
     if (!selectedTeam) {
-        return (
-            <div className="h-[calc(100vh-48px)] flex justify-center items-center">
-                <div className="flex flex-col items-center gap-3">
-                    <MousePointerClick size={35} className='text-light' />
-                    <h2 className='capitalize'>Please select team first</h2>
-                </div>
-            </div>
-        );
+        getUrlData()
+
+    }
+
+    useEffect(() => {
+        getUrlData()
+        refetchTeamDetails()
+        refetchTeamMembers()
+        refetchTeamTasks()
+    }, [teamId])
+
+
+    if (TeamDataError) {
+        return <div className="text-center py-5 h-[90vh] flex items-center justify-center">
+            Oops!, {teamError.response.data.message}
+        </div>
+    } else if (isTasksError) {
+        return <div className="text-center py-5 h-[90vh] flex items-center justify-center">
+            Oops!, {TasksError.response.data.message}
+        </div>
     }
 
     return (
@@ -204,7 +232,7 @@ export default function Team() {
                 </div>
             ) : (
                 <div className="p-5">
-                    <div className="flex flex-col border-b md:flex-row sticky top-12 bg-white dark:bg-dark p-3 md:p-5 z-[49] justify-between md:items-center gap-3 mb-5 h-16">
+                    <div className="flex flex-col border-b lg:flex-row sticky top-12 bg-white dark:bg-dark p-3 md:p-5 z-[49] justify-between md:items-center gap-3 mb-5 min-h-16">
                         <div className='text-gray-400 flex items-center '>
                             <div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} /><div className="ps-1 cursor-pointer text-black dark:text-white ">{selectedTeam?.name}</div>
                             {refetchingTasks && <div className="md:hidden flex items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
@@ -225,6 +253,9 @@ export default function Team() {
                                     <span className="text-black dark:text-white hidden md:block">{teamData?.data.data.team.team_code}</span>
                                     <Copy size={18} className="text-gray-500" />
                                 </div>
+                                <Tooltip delay={350} closeDelay={0} content='Backlog' >
+                                    <button onClick={() => navigate(`/project/team/backlog/${selectedTeam.id}`)} className="rounded-full bg-white dark:bg-dark text-light p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><ListTodo size={25} /></button>
+                                </Tooltip>
                                 <div onClick={(e) => {
                                     navigate('/chat');
                                     e.stopPropagation();
@@ -235,12 +266,12 @@ export default function Team() {
                                             'name': teamData?.data.data.team.project_name
                                         }
                                     })
-                                }} className="bg-white text-light dark:text-white dark:bg-dark flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
+                                }} className="bg-white text-darkblue dark:text-white dark:bg-dark flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
                                     <button onClick={() => navigate('/chat')} ><MessageCircleMore /></button>
                                 </div>
                                 <Tooltip delay={350} closeDelay={0} content='manage team members'>
                                     <button
-                                        onClick={() => navigate('manage-members')}
+                                        onClick={() => navigate('/project/team/manage-members')}
                                         className="rounded-full bg-white dark:bg-dark text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                                     >
                                         <Settings size={25} />
@@ -292,6 +323,9 @@ export default function Team() {
                                                 <span className="text-black hidden md:block">{teamData?.data.data.team.team_code}</span>
                                                 <Copy size={18} className="text-gray-500" />
                                             </div>
+                                            <Tooltip delay={350} closeDelay={0} content='Backlog' >
+                                                <button onClick={() => navigate(`backlog/${selectedTeam.id}`)} className="rounded-full bg-white dark:bg-dark text-light p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><ListTodo size={25} /></button>
+                                            </Tooltip>
                                             <div onClick={(e) => {
                                                 navigate('/chat');
                                                 e.stopPropagation();

@@ -52,7 +52,7 @@ export default function ProjectTeams() {
         });
     }
 
-    let { data, isLoading, refetch, isRefetching } = useQuery({
+    let { data, isLoading, refetch, isRefetching, isError, error } = useQuery({
         queryKey: ['projectTeams', selectedProject?.id], // Add selectedProject.id to queryKey
         queryFn: getProjectTeams,
         keepPreviousData: true,
@@ -244,6 +244,12 @@ export default function ProjectTeams() {
                 </div>
             </div>
         );
+    }
+
+    if (isError) {
+        return <div className="text-center py-5 h-[90vh] flex items-center justify-center">
+            Oops!, {error.response.data.message}
+        </div>
     }
 
     return (
@@ -543,7 +549,10 @@ export default function ProjectTeams() {
                                                 .map((team) => (
                                                     <div
                                                         key={team.id}
-                                                        onClick={() => { setselectedTeam(team); navigate('team') }}
+                                                        onClick={() => {
+                                                            setselectedTeam({ 'id': team.id, 'name': team.name });
+                                                            navigate(`/project/team/${team.id}?teamName=${(team.name)}&projectId=${selectedProject.id}&projectName=${(selectedProject.name)}`);
+                                                        }}
                                                         className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base dark:bg-dark2 shadow-inner w-full lg:w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
                                                     >
                                                         {team.name}

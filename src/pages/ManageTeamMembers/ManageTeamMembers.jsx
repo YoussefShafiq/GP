@@ -218,7 +218,7 @@ const ManageTeamMembers = () => {
                 <ChevronRight strokeWidth={0.7} />
                 <div onClick={() => { navigate('/project/team'); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div>
                 <ChevronRight strokeWidth={0.7} />
-                <div onClick={() => { navigate('/project/team/manage-members'); }} className="px-1 cursor-pointer text-black">Manage Team Members</div>
+                <div className="px-1 cursor-pointer text-black">Manage Team Members</div>
             </div>
 
             <div className="text-black mt-5 text-center">Failed to load team members.</div>

@@ -209,7 +209,10 @@ const Notifications = () => {
                                 <div
                                     key={notification.id}
                                     onClick={() => {
-                                        if (notification?.metadata?.task_id) {
+                                        if (notification?.metadata.project_id) {
+                                            navigate(`/project/team/${notification?.metadata.team_id}?teamName=${(notification?.metadata.team_name)}&projectId=${notification?.metadata.project_id}&projectName=${(notification?.metadata.project_name)}`);
+                                            setIsOpen(!isOpen);
+                                        } else if (notification?.metadata?.task_id) {
                                             navigate(`/task-details/${notification.metadata.task_id}`);
                                             setselectedTask({
                                                 id: notification.metadata.task_id,

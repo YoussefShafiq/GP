@@ -25,7 +25,7 @@ export default function MyTeams() {
         });
     }
 
-    const { data, isLoading, isFetching, isRefetching } = useQuery({
+    const { data, isLoading, isFetching, isRefetching, isError, error } = useQuery({
         queryKey: ['myTeams'],
         queryFn: getMyTeams,
     });
@@ -36,6 +36,12 @@ export default function MyTeams() {
         const matchesProjectName = team.project.name.toLowerCase().includes(projectNameSearch.toLowerCase());
         return matchesTeamName && matchesProjectName;
     });
+
+    if (isError) {
+        return <div className="text-center py-5 h-[90vh] flex items-center justify-center">
+            Oops!, {error.response.data.message}
+        </div>
+    }
 
     return (
         <>
@@ -83,7 +89,7 @@ export default function MyTeams() {
                             <div onClick={() => {
                                 setselectedProject(team.project);
                                 setselectedTeam(team);
-                                navigate('/project/team')
+                                navigate(`/project/team/${team.id}?teamName=${(team.name)}&projectId=${team.project.id}&projectName=${(team.project.name)}`);
                             }} key={team.id} className="relative rounded-3xl mt-5 md:w-[calc(50%-10px)] lg:w-[calc(33%-10px)] w-full bg-base dark:bg-dark1 shadow-lg p-4 pt-7 cursor-pointer hover:scale-[1.02] duration-300">
                                 {/* name */}
                                 <div className="absolute w-max max-w-full left-1/2 -translate-x-1/2 -translate-y-full">

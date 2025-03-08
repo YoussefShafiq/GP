@@ -33,7 +33,7 @@ export default function MyTasks() {
     }
 
     // Get user tasks query
-    let { data: userTasks, isError, isRefetching: refetchingTasks } = useQuery({
+    let { data: userTasks, isError, error, isRefetching: refetchingTasks } = useQuery({
         queryKey: ['userTasks'],
         queryFn: getUserTasks,
     });
@@ -113,6 +113,12 @@ export default function MyTasks() {
 
         return tasks;
     }, [userTasks, searchName, searchTag, filterPriority, sortPriority, sortDeadline, filterState]);
+
+    if (isError) {
+        return <div className="text-center py-5 h-[90vh] flex items-center justify-center">
+            Oops!, {error.response.data.message}
+        </div>
+    }
 
     return (
         <div className="p-5">

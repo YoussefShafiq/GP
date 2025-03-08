@@ -31,7 +31,7 @@ export default function Home() {
             }),
     });
 
-    const { data: toDoTasksData, isLoading: toDoTasksLoading } = useQuery({
+    const { data: toDoTasksData, isLoading: toDoTasksLoading, isError, error } = useQuery({
         queryKey: ['toDoTasks'],
         queryFn: () =>
             axios.get(`https://brainmate.fly.dev/api/v1/home/to-do-list`, {
@@ -49,6 +49,12 @@ export default function Home() {
         5: 'on hold',
         6: 'in review',
     };
+
+    if (isError) {
+        return <div className="text-center py-5 h-[90vh] flex items-center justify-center">
+            Oops!, {error.response.data.message}
+        </div>
+    }
 
     return (
         <>

@@ -64,11 +64,11 @@ const DarkmodeToggle = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-fit bg-darkblue dark:bg-dark1 text-white rounded-lg overflow-hidden shadow-lg z-10"
+            className="absolute right-0 mt-2 w-fit bg-darkblue dark:bg-dark2 text-white rounded-lg overflow-hidden shadow-lg z-10"
           >
             <button
               onClick={() => handleThemeChange('system')}
-              className={`flex items-center w-full p-3 space-x-2 hover:bg-[#0b2534] dark:hover:bg-dark2 transition-colors duration-200 ${theme === 'system' ? 'bg-[#0b2534] dark:bg-dark2' : ''
+              className={`flex items-center w-full p-3 space-x-2 hover:bg-[#0b2534] dark:hover:bg-dark1 transition-colors duration-200 ${theme === 'system' ? 'bg-[#0b2534] dark:bg-dark1' : ''
                 }`}
             >
               <Monitor size={18} />
@@ -76,7 +76,7 @@ const DarkmodeToggle = () => {
             </button>
             <button
               onClick={() => handleThemeChange('light')}
-              className={`flex items-center w-full p-3 space-x-2 hover:bg-[#0b2534] dark:hover:bg-dark2 transition-colors duration-200 ${theme === 'light' ? 'bg-[#0b2534] dark:bg-dark2' : ''
+              className={`flex items-center w-full p-3 space-x-2 hover:bg-[#0b2534] dark:hover:bg-dark1 transition-colors duration-200 ${theme === 'light' ? 'bg-[#0b2534] dark:bg-dark1' : ''
                 }`}
             >
               <Sun size={18} />
@@ -84,7 +84,7 @@ const DarkmodeToggle = () => {
             </button>
             <button
               onClick={() => handleThemeChange('dark')}
-              className={`flex items-center w-full p-3 space-x-2 hover:bg-[#0b2534] dark:hover:bg-dark2 transition-colors duration-200 ${theme === 'dark' ? 'bg-[#0b2534] dark:bg-dark2' : ''
+              className={`flex items-center w-full p-3 space-x-2 hover:bg-[#0b2534] dark:hover:bg-dark1 transition-colors duration-200 ${theme === 'dark' ? 'bg-[#0b2534] dark:bg-dark1' : ''
                 }`}
             >
               <Moon size={18} />

@@ -38,6 +38,7 @@ import MaterialsContextProvider from './context/MaterialsContext';
 import MaterialTeams from './components/MaterialTeams/MaterialTeams';
 import MaterialsItems from './components/MaterialsItems/MaterialsItems';
 import ErrorPage from './components/ErrorPage/ErrorPage'; // Import your error component
+import Backlog from './pages/Backlog/Backlog';
 
 let routers = createBrowserRouter([
   { path: 'login/:token?', element: <GoHome><Login /></GoHome>, errorElement: <ErrorPage /> },
@@ -45,7 +46,7 @@ let routers = createBrowserRouter([
   { path: 'forgetpassword', element: <GoHome><ForgetPass /></GoHome>, errorElement: <ErrorPage /> },
   { path: 'resetpassword', element: <ResetPassword />, errorElement: <ErrorPage /> },
   {
-    path: '', element: <Layout />, errorElement: <ErrorPage />, children: [
+    path: '', element: <Layout />, children: [
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
       { path: 'team-invitation-confirm', element: <ProtectedRoute><TeamInvitationConfirm /></ProtectedRoute> },
       { path: 'profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
@@ -60,8 +61,9 @@ let routers = createBrowserRouter([
       { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },
       { path: 'profile/updateprofile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
       { path: 'project', element: <ProtectedRoute><ProjectTeams /></ProtectedRoute> },
-      { path: 'project/team', element: <ProtectedRoute><Team /></ProtectedRoute> },
+      { path: 'project/team/:teamId?/:teamName?/:projectId?/:projectName?', element: <ProtectedRoute><Team /></ProtectedRoute> },
       { path: 'project/team/manage-members', element: <ProtectedRoute><ManageTeamMembers /></ProtectedRoute> },
+      { path: 'project/team/backlog/:id?', element: <ProtectedRoute><Backlog /></ProtectedRoute> },
       { path: 'task-details/:id?', element: <ProtectedRoute><TaskDetails /></ProtectedRoute> },
       { path: '*', element: <ProtectedRoute><Notfound /></ProtectedRoute> },
     ]

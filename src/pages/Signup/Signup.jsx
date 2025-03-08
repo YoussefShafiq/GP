@@ -17,7 +17,9 @@ export default function Signup() {
     const { setToken, setUsername } = useContext(UserData)
     const [error, setError] = useState('')
     const [loading, setloading] = useState(false)
-    const { invitation_token } = useParams(); // Extract the ID from the URL
+    const params = new URLSearchParams(location.search);
+    const paramToken = params.get('invitation_token');
+
 
 
     let navigate = useNavigate()
@@ -89,7 +91,7 @@ export default function Signup() {
             phone: '',
             position: '',
             level: '',
-            invitation_token: invitation_token?.split('=')[1]
+            invitation_token: paramToken
         },
         validationSchema,
         onSubmit: signup

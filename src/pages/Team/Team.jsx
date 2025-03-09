@@ -172,6 +172,17 @@ export default function Team() {
         </div>
     }
 
+    if (!selectedTeam) {
+        return (
+            <div className="h-[calc(100vh-48px)] flex justify-center items-center">
+                <div className="flex flex-col items-center gap-3">
+                    <MousePointerClick size={35} className='text-light' />
+                    <h2 className='capitalize'>please select team first</h2>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
             <LeaveTeamForm isOpen={leaveTeamForm} onClose={() => setLeaveTeamForm(false)} selectedTeam={selectedTeam} setselectedTeam={setselectedTeam} />

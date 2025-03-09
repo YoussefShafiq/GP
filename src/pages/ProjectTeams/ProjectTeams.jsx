@@ -106,12 +106,14 @@ export default function ProjectTeams() {
     // Form validation schema for add team
     const addTeamValidationSchema = object({
         name: string().required('Team name is required'),
+        description: string().required('Team description is required'),
     });
 
     // Formik form handling for add team
     const addTeamFormik = useFormik({
         initialValues: {
             name: '',
+            description: ''
         },
         validationSchema: addTeamValidationSchema,
         onSubmit: (values, formikHelpers) => {
@@ -308,6 +310,30 @@ export default function ProjectTeams() {
                                         {addTeamFormik.errors.name && addTeamFormik.touched.name && (
                                             <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
                                                 {addTeamFormik.errors.name}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Team Description Input */}
+                                    <div className="relative z-0 w-full group mb-4">
+                                        <textarea
+                                            name="description"
+                                            id="description"
+                                            onBlur={addTeamFormik.handleBlur}
+                                            onChange={addTeamFormik.handleChange}
+                                            value={addTeamFormik.values.description}
+                                            className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                            placeholder=" "
+                                        />
+                                        <label
+                                            htmlFor="description"
+                                            className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                        >
+                                            Team Description
+                                        </label>
+                                        {addTeamFormik.errors.description && addTeamFormik.touched.description && (
+                                            <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
+                                                {addTeamFormik.errors.description}
                                             </div>
                                         )}
                                     </div>

@@ -2,13 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, ArrowUpDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
 
-const FilterBar = ({ onSearch, onFilter, onSort, onStateFilter }) => {
+const FilterBar = ({
+    onSearch,
+    onFilter,
+    onProjectFilter,
+    onTeamFilter,
+    onSort,
+    onStateFilter,
+    projects,
+    teams,
+    isTeamsLoading,
+}) => {
     const [searchName, setSearchName] = useState('');
     const [searchTag, setSearchTag] = useState('');
     const [filterPriority, setFilterPriority] = useState('');
     const [sortPriority, setSortPriority] = useState('');
     const [sortDeadline, setSortDeadline] = useState('');
     const [filterState, setFilterState] = useState('');
+    const [filterProjectId, setFilterProjectId] = useState(''); // State for project ID
+    const [filterTeamId, setFilterTeamId] = useState(''); // State for team ID
     const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
@@ -18,6 +30,17 @@ const FilterBar = ({ onSearch, onFilter, onSort, onStateFilter }) => {
     const handleFilter = (priority) => {
         setFilterPriority(priority);
         onFilter(priority);
+    };
+
+    const handleProjectFilter = (projectId) => {
+        setFilterProjectId(projectId);
+        setFilterTeamId(''); // Reset team filter when project changes
+        onProjectFilter(projectId); // Call onProjectFilter
+    };
+
+    const handleTeamFilter = (teamId) => {
+        setFilterTeamId(teamId);
+        onTeamFilter(teamId); // Call onTeamFilter
     };
 
     const handleSort = (type, order) => {
@@ -110,6 +133,43 @@ const FilterBar = ({ onSearch, onFilter, onSort, onStateFilter }) => {
                                         <option value="6">in review</option>
                                     </select>
                                 </div>
+                                {projects && (
+                                    <div className="flex items-center gap-2 flex-1">
+                                        <Filter className="text-highlight" />
+                                        <select
+                                            value={filterProjectId}
+                                            onChange={(e) => handleProjectFilter(e.target.value)}
+                                            className="p-2 border border-gray-300 dark:bg-dark2 dark:text-white focus:border-light focus:ring-0 transition-all rounded-lg w-full"
+                                        >
+                                            <option value="">Select Project</option>
+                                            {projects.map((project) => (
+                                                <option key={project.id} value={project.id}>
+                                                    {project.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
+
+                                {projects && <>
+                                    <div className="flex items-center gap-2 flex-1">
+                                        <Filter className="text-highlight" />
+                                        <select
+                                            value={filterTeamId}
+                                            onChange={(e) => handleTeamFilter(e.target.value)}
+                                            className="p-2 border border-gray-300 dark:bg-dark2 dark:text-white focus:border-light focus:ring-0 transition-all rounded-lg w-full"
+                                            disabled={!filterProjectId} // Disable if no project is selected
+                                        >
+                                            <option value="">Select Team</option>
+                                            {teams?.map((team) => (
+                                                <option key={team.id} value={team.id}>
+                                                    {team.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </>}
+
                                 <div className="flex items-center gap-2 flex-1">
                                     <ArrowUpDown className="text-highlight" />
                                     <select

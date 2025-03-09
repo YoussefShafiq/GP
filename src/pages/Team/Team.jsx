@@ -1,6 +1,6 @@
 import React, { useContext, useState, useMemo, useEffect } from 'react';
 import { projectContext } from '../../context/ProjectsContext';
-import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings, ChevronDown, ChevronRight, MessageCircleMore, ListTodo } from 'lucide-react';
+import { MousePointerClick, Plus, Trash2, Copy, UserRoundPlus, LogOut, Edit, Loader2Icon, Settings, ChevronDown, ChevronRight, MessageCircleMore, ListTodo, X, Info } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -34,6 +34,7 @@ export default function Team() {
     const [sortPriority, setSortPriority] = useState('');
     const [sortDeadline, setSortDeadline] = useState('');
     const [filterState, setFilterState] = useState('');
+    const [teamInfo, setteamInfo] = useState(false)
     const token = localStorage.getItem('userToken');
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -200,6 +201,63 @@ export default function Team() {
                 teamMembers={teamMembers}
                 mode="add"
             />
+            <AnimatePresence>
+                {teamInfo && (
+                    <motion.div
+                        id="floating-div"
+                        className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black bg-opacity-15 z-50"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        onClick={() => setteamInfo(false)}
+                    >
+                        <motion.div
+                            className="bg-white dark:bg-dark1 rounded-lg shadow-lg border p-6 w-5/6 md:w-2/3 relative max-h-[95vh] overflow-y-auto "
+                            initial={{ y: 0, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <button
+                                onClick={() => setteamInfo(false)}
+                                className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-500"
+                            >
+                                <X size={24} />
+                            </button>
+
+                            <div className="space-y-2">
+                                <p><strong>Description:</strong></p>
+                                <div className="max-h-52 overflow-auto bg-base dark:bg-dark2 p-3 rounded-lg">
+                                    {teamData?.data?.data?.team?.description && <>
+                                        {teamData?.data?.data?.team?.description?.split(`\n`).map((line, lineIndex) => (
+                                            <React.Fragment key={lineIndex}>
+                                                {line.split(' ').map((word, wordIndex) =>
+                                                    /\bhttps?:\/\/[^\s]+/.test(word) ? (
+                                                        <a
+                                                            key={wordIndex}
+                                                            href={word}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className='text-light break-words hover:underline'
+                                                        >
+                                                            {word}
+                                                        </a>
+                                                    ) : (
+                                                        <span className='break-words' key={wordIndex}> {word} </span>
+                                                    )
+                                                )}
+                                                <br /> {/* Handles new lines */}
+                                            </React.Fragment>
+                                        ))}
+                                    </>}
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {isTeamLoading ? (
                 <div className="p-5 ">
@@ -236,10 +294,10 @@ export default function Team() {
                                     <span className="text-black dark:text-white hidden md:block">{teamData?.data.data.team.team_code}</span>
                                     <Copy size={18} className="text-gray-500" />
                                 </div>
-                                <Tooltip delay={350} closeDelay={0} content='Backlog' >
-                                    <button onClick={() => navigate(`/project/team/backlog/${selectedTeam.id}`)} className="rounded-full bg-base dark:bg-dark2  text-light p-2 h-full aspect-square hover:shadow-lg hover:-translate-y-0.5 transition-all"><ListTodo size={25} /></button>
+                                <Tooltip delay={100} closeDelay={0} content='Invite member' >
+                                    <button onClick={() => setInviteMemberForm(true)} className="rounded-full bg-base dark:bg-dark2 text-red-600 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><UserRoundPlus size={25} /></button>
                                 </Tooltip>
-                                <Tooltip delay={350} closeDelay={0} content='Chat'>
+                                <Tooltip delay={100} closeDelay={0} content='Chat'>
                                     <div onClick={(e) => {
                                         navigate('/chat');
                                         e.stopPropagation();
@@ -250,11 +308,11 @@ export default function Team() {
                                                 'name': teamData?.data.data.team.project_name
                                             }
                                         })
-                                    }} className="bg-base text-darkblue dark:text-white dark:bg-dark2 flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
+                                    }} className="bg-base text-darkblue dark:text-white dark:bg-dark2 flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all cursor-pointer">
                                         <button onClick={() => navigate('/chat')} ><MessageCircleMore /></button>
                                     </div>
                                 </Tooltip>
-                                <Tooltip delay={350} closeDelay={0} content='manage team members'>
+                                <Tooltip delay={100} closeDelay={0} content='Manage team members'>
                                     <button
                                         onClick={() => navigate('/project/team/manage-members')}
                                         className="rounded-full bg-base dark:bg-dark2 text-green-500 p-2 h-full aspect-square hover:shadow-lg hover:-translate-y-0.5 transition-all"
@@ -262,21 +320,24 @@ export default function Team() {
                                         <Settings size={25} />
                                     </button>
                                 </Tooltip>
-                                <Tooltip delay={350} closeDelay={0} content='update team name' >
-                                    <button onClick={() => setUpdateTeamForm(true)} className="rounded-full bg-base dark:bg-dark2 text-yellow-400 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Edit size={25} /></button>
+                                <Tooltip delay={100} closeDelay={0} content='Backlog' >
+                                    <button onClick={() => navigate(`/project/team/backlog/${selectedTeam.id}`)} className="rounded-full bg-base dark:bg-dark2  text-light p-2 h-full aspect-square hover:shadow-lg hover:-translate-y-0.5 transition-all"><ListTodo size={25} /></button>
                                 </Tooltip>
-                                <Tooltip delay={350} closeDelay={0} content='delete team' >
-                                    <button onClick={() => setDeleteTeamForm(true)} className="rounded-full bg-base dark:bg-dark2 text-red-600 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Trash2 size={25} /></button>
-                                </Tooltip>
-                                <Tooltip delay={350} closeDelay={0} content='invite member to team' >
-                                    <button onClick={() => setInviteMemberForm(true)} className="rounded-full bg-base dark:bg-dark2 text-red-600 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><UserRoundPlus size={25} /></button>
-                                </Tooltip>
-                                <Tooltip delay={350} closeDelay={0} content='add task' >
+                                <Tooltip delay={100} closeDelay={0} content='Add task' >
                                     <button onClick={() => setAddTaskForm(true)} className="rounded-full bg-base dark:bg-dark2 text-blue-500 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Plus size={25} /></button>
                                 </Tooltip>
+                                <Tooltip delay={100} closeDelay={0} content='Update team name' >
+                                    <button onClick={() => setUpdateTeamForm(true)} className="rounded-full bg-base dark:bg-dark2 text-yellow-400 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Edit size={25} /></button>
+                                </Tooltip>
+                                <Tooltip delay={100} closeDelay={0} content='Delete team' >
+                                    <button onClick={() => setDeleteTeamForm(true)} className="rounded-full bg-base dark:bg-dark2 text-red-600 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Trash2 size={25} /></button>
+                                </Tooltip>
                             </>)}
-                            <Tooltip delay={350} closeDelay={0} content='leave team' >
+                            <Tooltip delay={100} closeDelay={0} content='Leave team' >
                                 <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-base dark:bg-dark2 text-red-600 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><LogOut size={25} /></button>
+                            </Tooltip>
+                            <Tooltip delay={100} closeDelay={0} content='Info' >
+                                <button onClick={() => setteamInfo(true)} className="rounded-full bg-base dark:bg-dark2 text-gray-700 dark:text-gray-200 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Info size={25} /></button>
                             </Tooltip>
                         </div>
 
@@ -308,9 +369,7 @@ export default function Team() {
                                                 <span className="text-black hidden md:block">{teamData?.data.data.team.team_code}</span>
                                                 <Copy size={18} className="text-gray-500" />
                                             </div>
-                                            <Tooltip delay={350} closeDelay={0} content='Backlog' >
-                                                <button onClick={() => navigate(`backlog/${selectedTeam.id}`)} className="rounded-full bg-white dark:bg-dark text-light p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><ListTodo size={25} /></button>
-                                            </Tooltip>
+                                            <button onClick={() => setInviteMemberForm(true)} title='invite member to team' className="rounded-full bg-white dark:bg-dark1 text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
                                             <div onClick={(e) => {
                                                 navigate('/chat');
                                                 e.stopPropagation();
@@ -333,9 +392,11 @@ export default function Team() {
                                                 </button>
                                                 <button onClick={() => setDeleteTeamForm(true)} title='delete team' className="rounded-full bg-white dark:bg-dark1 text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Trash2 size={25} /></button>
                                             </>}
-                                            <button onClick={() => setUpdateTeamForm(true)} title='update team name' className="rounded-full bg-white dark:bg-dark1 text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
-                                            <button onClick={() => setInviteMemberForm(true)} title='invite member to team' className="rounded-full bg-white dark:bg-dark1 text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
+                                            <Tooltip delay={350} closeDelay={0} content='Backlog' >
+                                                <button onClick={() => navigate(`backlog/${selectedTeam.id}`)} className="rounded-full bg-white dark:bg-dark text-light p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><ListTodo size={25} /></button>
+                                            </Tooltip>
                                             <button onClick={() => setAddTaskForm(true)} title='add task' className="rounded-full bg-white dark:bg-dark1 text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
+                                            <button onClick={() => setUpdateTeamForm(true)} title='update team name' className="rounded-full bg-white dark:bg-dark1 text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
                                         </>)}
                                         <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white dark:bg-dark1 text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>
                                     </motion.div>

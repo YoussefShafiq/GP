@@ -215,38 +215,37 @@ export default function Backlog() {
                         <Tooltip closeDelay={0} delay={350} content='Generate with AI'>
                             <button
                                 onClick={() => { }}
-                                className="rounded-full aspect-square text-highlight h-11 flex justify-center items-center hover:shadow-lg hover:-translate-y-0.5 transition-all bg-base dark:bg-dark2">
-                                <Bot size={28} />
+                                className="rounded-full aspect-square text-highlight p-2 flex justify-center items-center hover:shadow-lg hover:-translate-y-0.5 transition-all bg-base dark:bg-dark2">
+                                <Bot />
                             </button>
                         </Tooltip>
-                        <div className="flex items-center justify-center bg-base dark:bg-dark2 py-2 px-3 rounded-xl gap-2">
-                            <Tooltip closeDelay={0} delay={350} content='Delete Tasks'>
-                                <button
-                                    onClick={() => {
+                        <Tooltip closeDelay={0} delay={350} content='Delete Tasks'>
+                            <button
+                                onClick={() => {
 
-                                    }}
-                                    className="rounded-full bg-white dark:bg-dark1 text-red-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                                    <Trash2 />
-                                </button>
-                            </Tooltip>
-                            <Tooltip closeDelay={0} delay={350} content='Add task'>
-                                <button
-                                    onClick={() => {
-                                        setselectedTask(null);
-                                        setIsFormOpen(true);
-                                    }}
-                                    className="rounded-full bg-white dark:bg-dark1 text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                                    <Plus size={25} />
-                                </button>
-                            </Tooltip>
-                            <Tooltip closeDelay={0} delay={350} content='Commit Tasks'>
-                                <button
-                                    onClick={() => { }}
-                                    className="rounded-full dark:bg-light text-white bg-light py-1 px-2 hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                                    Commit Tasks
-                                </button>
-                            </Tooltip>
-                        </div>
+                                }}
+                                className="rounded-full aspect-square  bg-base dark:bg-dark2 text-red-500 p-2 flex justify-center items-center  hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                <Trash2 />
+                            </button>
+                        </Tooltip>
+                        <Tooltip closeDelay={0} delay={350} content='Add task'>
+                            <button
+                                onClick={() => {
+                                    setselectedTask(null);
+                                    setIsFormOpen(true);
+                                }}
+                                className="rounded-full aspect-square  bg-base dark:bg-dark2 text-blue-500 p-2 flex justify-center items-center hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                <Plus size={25} />
+                            </button>
+                        </Tooltip>
+                        <Tooltip closeDelay={0} delay={350} content='Commit Tasks'>
+                            <button
+                                onClick={() => { }}
+                                className="rounded-full dark:bg-light text-white bg-light py-1 px-2 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                Commit Tasks
+                            </button>
+                        </Tooltip>
+
                     </div>
                 </div>
 
@@ -328,8 +327,8 @@ export default function Backlog() {
                     </table>
                 </div>
 
+                {/* Floating Task Details Modal */}
                 <AnimatePresence>
-                    {/* Floating Task Details Modal */}
                     {floatingTask && (
                         <motion.div
                             id="floating-div"

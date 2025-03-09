@@ -403,7 +403,7 @@ export default function MainChat() {
                             </div>
                         )}
                         <div
-                            className={`ml-3 p-3 rounded-lg shadow-md max-w-[70%] relative ${message?.sender_id === profileData?.data?.data.user.id ? 'bg-light dark:bg-dark dark:bg-opacity-40 text-white' : 'bg-white dark:bg-dark2'
+                            className={`ml-3 p-3 rounded-lg shadow-md max-w-[70%] relative ${message?.sender_id === profileData?.data?.data.user.id ? 'bg-dark2  dark:bg-dark dark:bg-opacity-40 text-white' : 'bg-white dark:bg-dark2'
                                 }`}
                         >
 
@@ -449,7 +449,7 @@ export default function MainChat() {
                                                     href={word}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className='text-light break-words hover:underline'
+                                                    className={`${message?.sender_id !== profileData?.data?.data.user.id ? 'text-light' : 'text-light'} break-words hover:underline`}
                                                 >
                                                     {word}
                                                 </a>

@@ -6,11 +6,18 @@ import axios from 'axios';
 import { X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { TeamsContext } from '../../context/TeamsContext';
+import { useQuery } from '@tanstack/react-query';
 
 export default function UpdateTeamForm({ isOpen, onClose }) {
     const { selectedTeam, setselectedTeam } = useContext(TeamsContext);
     const [updating, setupdating] = useState(false)
     const token = localStorage.getItem('userToken');
+
+    // Get team details query
+    let { refetch: refetchTeamDetails } = useQuery({
+        queryKey: ['teamDetails', selectedTeam?.id],
+        enabled: !!selectedTeam,
+    });
 
     // Update a team
     async function updateTeam(values, { resetForm }) {
@@ -32,6 +39,7 @@ export default function UpdateTeamForm({ isOpen, onClose }) {
             setupdating(false)
             resetForm();
             onClose();
+            refetchTeamDetails()
             setselectedTeam(response.data.data.team);
         } catch (error) {
             setupdating(false)
@@ -45,12 +53,14 @@ export default function UpdateTeamForm({ isOpen, onClose }) {
     // Form validation schema for update team
     const updateValidationSchema = object({
         name: string().required('Team name is required'),
+        description: string().required('Team description is required'),
     });
 
     // Formik form handling for update team
     const updateFormik = useFormik({
         initialValues: {
             name: selectedTeam?.name || '',
+            description: selectedTeam?.description || '',
         },
         validationSchema: updateValidationSchema,
         onSubmit: (values, formikHelpers) => {
@@ -63,6 +73,7 @@ export default function UpdateTeamForm({ isOpen, onClose }) {
         if (isOpen) {
             updateFormik.setValues({
                 name: selectedTeam?.name || '',
+                description: selectedTeam?.description || '',
             });
         }
     }, [isOpen, selectedTeam]);
@@ -116,6 +127,30 @@ export default function UpdateTeamForm({ isOpen, onClose }) {
                                 {updateFormik.errors.name && updateFormik.touched.name && (
                                     <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
                                         {updateFormik.errors.name}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Team Description Input */}
+                            <div className="relative z-0 w-full group mb-4">
+                                <textarea
+                                    name="description"
+                                    id="description"
+                                    onBlur={updateFormik.handleBlur}
+                                    onChange={updateFormik.handleChange}
+                                    value={updateFormik.values.description}
+                                    className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    placeholder=" "
+                                />
+                                <label
+                                    htmlFor="description"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                >
+                                    Team Description
+                                </label>
+                                {updateFormik.errors.description && updateFormik.touched.description && (
+                                    <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
+                                        {updateFormik.errors.description}
                                     </div>
                                 )}
                             </div>

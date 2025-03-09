@@ -16,6 +16,8 @@ export default function MyTasks() {
     const [searchName, setSearchName] = useState('');
     const [searchTag, setSearchTag] = useState('');
     const [filterPriority, setFilterPriority] = useState('');
+    const [filterProjectId, setFilterProjectId] = useState(''); // State for project ID
+    const [filterTeamId, setFilterTeamId] = useState(''); // State for team ID
     const [sortPriority, setSortPriority] = useState('');
     const [sortDeadline, setSortDeadline] = useState('');
     const [filterState, setFilterState] = useState('');
@@ -23,7 +25,13 @@ export default function MyTasks() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    // Get user tasks function
+    // Fetch all projects
+    let { data: projectsData } = useQuery({
+        queryKey: ['allprojects'],
+        keepPreviousData: true,
+    });
+
+    // Fetch user tasks
     function getUserTasks() {
         return axios.get(`https://brainmate.fly.dev/api/v1/tasks`, {
             headers: {
@@ -32,10 +40,24 @@ export default function MyTasks() {
         });
     }
 
-    // Get user tasks query
     let { data: userTasks, isError, error, isRefetching: refetchingTasks } = useQuery({
         queryKey: ['userTasks'],
         queryFn: getUserTasks,
+    });
+
+    // Fetch project teams
+    function getProjectTeams() {
+        return axios.get(`https://brainmate.fly.dev/api/v1/projects/${filterProjectId}/teams`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    }
+
+    let { data: projectTeamsData, isLoading: isTeamsLoading } = useQuery({
+        queryKey: ['projectTeams', filterProjectId], // Add filterProjectId to queryKey
+        queryFn: getProjectTeams,
+        enabled: !!filterProjectId, // Only fetch if filterProjectId is defined
     });
 
     // Invalidate the userTasks query when tasks are added, updated, or deleted
@@ -51,6 +73,15 @@ export default function MyTasks() {
 
     const handleFilter = (priority) => {
         setFilterPriority(priority);
+    };
+
+    const handleProjectFilter = (projectId) => {
+        setFilterProjectId(projectId);
+        setFilterTeamId(''); // Reset team filter when project changes
+    };
+
+    const handleTeamFilter = (teamId) => {
+        setFilterTeamId(teamId);
     };
 
     const handleSort = (type, order) => {
@@ -94,6 +125,16 @@ export default function MyTasks() {
             tasks = tasks.filter(task => task.status === filterState);
         }
 
+        // Filter by project ID
+        if (filterProjectId) {
+            tasks = tasks.filter(task => task.project_id === Number(filterProjectId));
+        }
+
+        // Filter by team ID
+        if (filterTeamId) {
+            tasks = tasks.filter(task => task.team_id === Number(filterTeamId));
+        }
+
         // Sort by priority
         if (sortPriority) {
             tasks = tasks.sort((a, b) => {
@@ -112,12 +153,12 @@ export default function MyTasks() {
         }
 
         return tasks;
-    }, [userTasks, searchName, searchTag, filterPriority, sortPriority, sortDeadline, filterState]);
+    }, [userTasks, searchName, searchTag, filterPriority, filterProjectId, filterTeamId, sortPriority, sortDeadline, filterState]);
 
     if (isError) {
         return <div className="text-center py-5 h-[90vh] flex items-center justify-center">
             Oops!, {error.response.data.message}
-        </div>
+        </div>;
     }
 
     return (
@@ -134,8 +175,13 @@ export default function MyTasks() {
                 <FilterBar
                     onSearch={handleSearch}
                     onFilter={handleFilter}
+                    onProjectFilter={handleProjectFilter}
+                    onTeamFilter={handleTeamFilter}
                     onSort={handleSort}
                     onStateFilter={handleStateFilter}
+                    projects={projectsData?.data.data.projects}
+                    teams={projectTeamsData?.data.data.teams} // Pass teams data
+                    isTeamsLoading={isTeamsLoading} // Pass loading state
                 />
                 {userTasks?.data?.data && (
                     <div className="space-y-6">

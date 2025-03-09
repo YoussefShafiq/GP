@@ -86,7 +86,7 @@ export default function Signup() {
     let formik = useFormik({
         initialValues: {
             name: '',
-            email: '',
+            email: urlEmail,
             password: '',
             password_confirmation: '',
             phone: '',
@@ -201,15 +201,15 @@ export default function Signup() {
                                     id="level"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer"
+                                    className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white  dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                 >
-                                    <option value="">Select Job Level</option>
-                                    <option value="fresh">Fresh</option>
-                                    <option value="junior">Junior</option>
-                                    <option value="mid">Mid Level</option>
-                                    <option value="semi senior">Semi Senior</option>
-                                    <option value="senior">Senior Level</option>
-                                    <option value="executive">Executive Level</option>
+                                    <option className='dark:bg-dark2' value="">Select Job Level</option>
+                                    <option className='dark:bg-dark2' value="fresh">Fresh</option>
+                                    <option className='dark:bg-dark2' value="junior">Junior</option>
+                                    <option className='dark:bg-dark2' value="mid">Mid Level</option>
+                                    <option className='dark:bg-dark2' value="semi senior">Semi Senior</option>
+                                    <option className='dark:bg-dark2' value="senior">Senior Level</option>
+                                    <option className='dark:bg-dark2' value="executive">Executive Level</option>
                                 </select>
                                 <label htmlFor="level" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Job Level</label>
                                 {formik.errors.level && formik.touched.level &&

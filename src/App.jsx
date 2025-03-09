@@ -61,7 +61,7 @@ let routers = createBrowserRouter([
       { path: 'notes', element: <ProtectedRoute><Notes /></ProtectedRoute> },
       { path: 'profile/updateprofile', element: <ProtectedRoute><UpdateProfile /></ProtectedRoute> },
       { path: 'project', element: <ProtectedRoute><ProjectTeams /></ProtectedRoute> },
-      { path: 'project/team/:teamId?/:teamName?/:projectId?/:projectName?', element: <ProtectedRoute><Team /></ProtectedRoute> },
+      { path: 'project/team', element: <ProtectedRoute><Team /></ProtectedRoute> },
       { path: 'project/team/manage-members', element: <ProtectedRoute><ManageTeamMembers /></ProtectedRoute> },
       { path: 'project/team/backlog/:id?', element: <ProtectedRoute><Backlog /></ProtectedRoute> },
       { path: 'task-details/:id?', element: <ProtectedRoute><TaskDetails /></ProtectedRoute> },

@@ -211,40 +211,42 @@ export default function Backlog() {
                         <ChevronRight strokeWidth={0.7} />
                         <div className="px-1 cursor-pointer text-black dark:text-white">Backlog</div>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-2">
-                        <Tooltip closeDelay={0} delay={350} content='Delete Tasks'>
-                            <button
-                                onClick={() => {
-
-                                }}
-                                className="rounded-full bg-white dark:bg-dark text-red-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                                <Trash2 />
-                            </button>
-                        </Tooltip>
-                        <Tooltip closeDelay={0} delay={350} content='Add task'>
-                            <button
-                                onClick={() => {
-                                    setselectedTask(null);
-                                    setIsFormOpen(true);
-                                }}
-                                className="rounded-full bg-white dark:bg-dark text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                                <Plus size={25} />
-                            </button>
-                        </Tooltip>
+                    <div className="flex flex-wrap justify-center items-center gap-2">
                         <Tooltip closeDelay={0} delay={350} content='Generate with AI'>
                             <button
                                 onClick={() => { }}
-                                className="rounded-full aspect-square text-highlight h-9 flex justify-center items-center hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                className="rounded-full aspect-square text-highlight h-11 flex justify-center items-center hover:shadow-lg hover:-translate-y-0.5 transition-all bg-base dark:bg-dark2">
                                 <Bot size={28} />
                             </button>
                         </Tooltip>
-                        <Tooltip closeDelay={0} delay={350} content='Commit Tasks'>
-                            <button
-                                onClick={() => { }}
-                                className="rounded-full dark:bg-light text-white bg-light py-1 px-2 hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                                Commit Tasks
-                            </button>
-                        </Tooltip>
+                        <div className="flex items-center justify-center bg-base dark:bg-dark2 py-2 px-3 rounded-xl gap-2">
+                            <Tooltip closeDelay={0} delay={350} content='Delete Tasks'>
+                                <button
+                                    onClick={() => {
+
+                                    }}
+                                    className="rounded-full bg-white dark:bg-dark1 text-red-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                    <Trash2 />
+                                </button>
+                            </Tooltip>
+                            <Tooltip closeDelay={0} delay={350} content='Add task'>
+                                <button
+                                    onClick={() => {
+                                        setselectedTask(null);
+                                        setIsFormOpen(true);
+                                    }}
+                                    className="rounded-full bg-white dark:bg-dark1 text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                    <Plus size={25} />
+                                </button>
+                            </Tooltip>
+                            <Tooltip closeDelay={0} delay={350} content='Commit Tasks'>
+                                <button
+                                    onClick={() => { }}
+                                    className="rounded-full dark:bg-light text-white bg-light py-1 px-2 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                    Commit Tasks
+                                </button>
+                            </Tooltip>
+                        </div>
                     </div>
                 </div>
 
@@ -257,7 +259,7 @@ export default function Backlog() {
                                     type="checkbox"
                                     checked={checkedTasks.length === tasks.length}
                                     onChange={handleSelectAll}
-                                    className='h-5 w-5 text-blue-600 ms-5 focus:ring-0 rounded-md cursor-pointer'
+                                    className='h-5 w-5 text-blue-600 ms-5 focus:ring-0 rounded-md cursor-pointer dark:bg-dark2'
                                 />
                             </th>
                             {["Task Name", "Assigned to", "Duration", "Priority", "Tags"].map((header, index) => (
@@ -279,7 +281,7 @@ export default function Backlog() {
                                             type="checkbox"
                                             checked={checkedTasks.includes(task.id)}
                                             onChange={() => handleCheckboxChange(task.id)}
-                                            className='h-5 w-5 text-blue-600 ms-5 focus:ring-0 rounded-md cursor-pointer'
+                                            className='h-5 w-5 text-blue-600 ms-5 focus:ring-0 rounded-md cursor-pointer dark:bg-dark2'
                                         />
                                     </td>
                                     <th scope="row" className="min-w-40 flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">

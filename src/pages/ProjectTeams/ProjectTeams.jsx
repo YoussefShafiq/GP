@@ -550,8 +550,8 @@ export default function ProjectTeams() {
                                                     <div
                                                         key={team.id}
                                                         onClick={() => {
-                                                            setselectedTeam({ 'id': team.id, 'name': team.name });
-                                                            navigate(`/project/team/${team.id}?teamName=${(team.name)}&projectId=${selectedProject.id}&projectName=${(selectedProject.name)}`);
+                                                            setselectedTeam(team);
+                                                            navigate(`/project/team`);
                                                         }}
                                                         className="flex justify-between items-center cursor-pointer py-3 px-4 rounded-lg bg-base dark:bg-dark2 shadow-inner w-full lg:w-[calc(33.33333%-12px)] bg-opacity-40 text-lg h-fit"
                                                     >

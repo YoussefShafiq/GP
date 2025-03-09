@@ -331,9 +331,7 @@ const ManageTeamMembers = () => {
             <div className='text-gray-400 flex items-center px-5 mb-5 border-b p-5 flex-wrap'>
                 <div onClick={() => { navigate('/project'); setselectedTeam(null); }} className="pe-1 cursor-pointer">{selectedProject?.name}</div>
                 <ChevronRight strokeWidth={0.7} />
-                <div onClick={() => {
-                    navigate(`/project/team/${selectedTeam?.id}?teamName=${(selectedTeam?.name)}&projectId=${selectedProject?.id}&projectName=${(selectedProject?.name)}`);
-                }} className="px-1 cursor-pointer">{selectedTeam?.name}</div>
+                <div onClick={() => { navigate(`/project/team`); }} className="px-1 cursor-pointer">{selectedTeam?.name}</div>
                 <ChevronRight strokeWidth={0.7} />
                 <div onClick={() => { navigate('/project/team/manage-members'); }} className="px-1 cursor-pointer text-black dark:text-white">Manage Team Members</div>
             </div>

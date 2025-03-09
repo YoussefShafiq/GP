@@ -37,7 +37,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                 tags: taskData.tags,
                 priority: taskData.priority,
                 duration: taskData.duration, // Changed from deadline to duration
-                members: taskData.members.map((member) => member.id) || [], // Ensure this is an array
+                members: taskData.members?.map((member) => member.id) || [], // Ensure this is an array
                 attachments: taskData.attachments || [], // Ensure this is an array
             });
             setSelectedMembers(taskData.members || []); // Ensure this is an array
@@ -61,7 +61,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
         onSubmit: async (values, formikHelpers) => {
             try {
                 // Ensure `members` is an array
-                values.members = selectedMembers.map((member) => member.id);
+                values.members = selectedMembers?.map((member) => member.id);
 
                 // Create FormData object for multipart/form-data
                 const formData = new FormData();

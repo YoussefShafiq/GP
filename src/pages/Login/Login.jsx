@@ -101,14 +101,14 @@ export default function Login() {
 
 
     return <>
-        <div className="h-screen bg-base dark:bg-[#0a0a0a] overflow-hidden relative transition-colors duration-300 ">
-            <div className="fixed top-0 z-50 left-1/2 -translate-x-1/2"><DarkmodeToggle /></div>
-            <div className="absolute top-0 left-0 bg-darkblue w-[210px] h-[196px] rounded-full -translate-x-1/3 -translate-y-1/3"></div>
-            <div className="absolute top-0 right-0 bg-darkblue w-[210px] h-[196px] rounded-full translate-x-1/3 -translate-y-1/3 "></div>
-            <div className="absolute bottom-0 left-0 bg-darkblue w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
-            <div className="absolute bottom-0 right-0 bg-darkblue w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
+        <div className="h-screen bg-base dark:bg-dark overflow-hidden relative transition-colors duration-300 ">
+            <div className="fixed top-0 z-50 left-1/2 -translate-x-1/2 hidden"><DarkmodeToggle /></div>
+            <div className="absolute top-0 left-0 bg-darkblue dark:bg-darklayout w-[210px] h-[196px] rounded-full -translate-x-1/3 -translate-y-1/3"></div>
+            <div className="absolute top-0 right-0 bg-darkblue dark:bg-darklayout w-[210px] h-[196px] rounded-full translate-x-1/3 -translate-y-1/3 "></div>
+            <div className="absolute bottom-0 left-0 bg-darkblue dark:bg-darklayout w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
+            <div className="absolute bottom-0 right-0 bg-darkblue dark:bg-darklayout w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
 
-            <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#121212ac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " >
+            <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-dark1 dark:bg-opacity-20 transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " >
                 <div className="container m-auto flex lg:flex-row flex-col items-center lg:items-stretch h-full" >
                     <div className="hidden lg:block w-2/3 lg:w-1/2 h ">
                         <img src={image} className='w-full' alt="illustration for sand clock and man working on laptop" />

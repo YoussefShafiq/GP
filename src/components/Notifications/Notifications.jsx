@@ -9,11 +9,15 @@ import notificationsound from '../../assets/Sounds/notification.mp3';
 import { useNavigate } from 'react-router-dom';
 import { TaskContext } from '../../context/TaskContext';
 import InvitationNotification from '../InvitationNotification/InvitationNotification';
+import { projectContext } from '../../context/ProjectsContext';
+import { TeamsContext } from '../../context/TeamsContext';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
     const [markingAllRead, setmarkingAllRead] = useState(false);
     let { selectedTask, setselectedTask } = useContext(TaskContext);
+    let { selectedProject, setselectedProject } = useContext(projectContext);
+    let { selectedTeam, setselectedTeam } = useContext(TeamsContext);
     const [isOpen, setIsOpen] = useState(false);
     const token = localStorage.getItem('userToken'); // Get the token from localStorage
     const dropdownRef = useRef(null); // Ref for the dropdown
@@ -210,7 +214,9 @@ const Notifications = () => {
                                     key={notification.id}
                                     onClick={() => {
                                         if (notification?.metadata.project_id) {
-                                            navigate(`/project/team/${notification?.metadata.team_id}?teamName=${(notification?.metadata.team_name)}&projectId=${notification?.metadata.project_id}&projectName=${(notification?.metadata.project_name)}`);
+                                            setselectedProject({ 'id': notification.metadata.projeect_id, 'name': notification.metadata.project_name })
+                                            setselectedTeam({ 'id': notification.metadata.team_id, 'name': notification.metadata.team_name })
+                                            navigate(`/project/team`);
                                             setIsOpen(!isOpen);
                                         } else if (notification?.metadata?.task_id) {
                                             navigate(`/task-details/${notification.metadata.task_id}`);

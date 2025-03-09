@@ -229,7 +229,13 @@ export default function TaskDetails() {
             top: 0,
             behavior: 'auto',
         });
+        return () => {
+            setselectedTask(null)
+        }
     }, []);
+
+
+
 
 
 
@@ -401,7 +407,7 @@ export default function TaskDetails() {
                                 <>
                                     {selectedProject && <><div onClick={() => { navigate('/project'); setselectedTeam(null) }} className="pe-1 cursor-pointer">{selectedProject?.name}</div><ChevronRight strokeWidth={0.7} /></>}
                                     {selectedTeam && <><div onClick={() => {
-                                        navigate(`/project/team/${selectedTeam?.id}?teamName=${(selectedTeam?.name)}&projectId=${selectedProject?.id}&projectName=${(selectedProject?.name)}`);
+                                        navigate(`/project/team`);
                                     }} className="px-1 cursor-pointer">{selectedTeam?.name}</div><ChevronRight strokeWidth={0.7} /></>}
                                 </>}
 

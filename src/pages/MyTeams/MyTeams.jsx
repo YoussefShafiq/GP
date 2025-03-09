@@ -89,7 +89,7 @@ export default function MyTeams() {
                             <div onClick={() => {
                                 setselectedProject(team.project);
                                 setselectedTeam(team);
-                                navigate(`/project/team/${team.id}?teamName=${(team.name)}&projectId=${team.project.id}&projectName=${(team.project.name)}`);
+                                navigate(`/project/team`);
                             }} key={team.id} className="relative rounded-3xl mt-5 md:w-[calc(50%-10px)] lg:w-[calc(33%-10px)] w-full bg-base dark:bg-dark1 shadow-lg p-4 pt-7 cursor-pointer hover:scale-[1.02] duration-300">
                                 {/* name */}
                                 <div className="absolute w-max max-w-full left-1/2 -translate-x-1/2 -translate-y-full">

@@ -19,6 +19,7 @@ export default function Signup() {
     const [loading, setloading] = useState(false)
     const params = new URLSearchParams(location.search);
     const invitationToken = params.get('invitation_token');
+    const urlEmail = params.get('email');
 
 
 
@@ -100,14 +101,14 @@ export default function Signup() {
 
 
     return <>
-        <div className="h-screen bg-base dark:bg-[#0a0a0a] overflow-hidden relative transition-colors duration-300">
-            <div className="fixed top-0 z-50 left-1/2 -translate-x-1/2"><DarkmodeToggle /></div>
-            <div className="absolute top-0 left-0 bg-darkblue w-[210px] h-[196px] rounded-full -translate-x-1/3 -translate-y-1/3"></div>
-            <div className="absolute top-0 right-0 bg-darkblue w-[210px] h-[196px] rounded-full translate-x-1/3 -translate-y-1/3 "></div>
-            <div className="absolute bottom-0 left-0 bg-darkblue w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
-            <div className="absolute bottom-0 right-0 bg-darkblue w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
+        <div className="h-screen bg-base dark:bg-dark overflow-hidden relative transition-colors duration-300">
+            <div className="fixed top-0 z-50 left-1/2 -translate-x-1/2 hidden"><DarkmodeToggle /></div>
+            <div className="absolute top-0 left-0 bg-darkblue dark:bg-darklayout w-[210px] h-[196px] rounded-full -translate-x-1/3 -translate-y-1/3"></div>
+            <div className="absolute top-0 right-0 bg-darkblue dark:bg-darklayout w-[210px] h-[196px] rounded-full translate-x-1/3 -translate-y-1/3 "></div>
+            <div className="absolute bottom-0 left-0 bg-darkblue dark:bg-darklayout w-[210px] h-[196px] rounded-full -translate-x-1/3 translate-y-1/3 "></div>
+            <div className="absolute bottom-0 right-0 bg-darkblue dark:bg-darklayout w-[210px] h-[196px] rounded-full translate-x-1/3 translate-y-1/3 "></div>
 
-            <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-[#121212ac]  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " >
+            <div className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-[90%] w-[90%] bg-[#ffffffc0] dark:bg-dark1 dark:bg-opacity-20  transition-colors duration-300 dark:text-white backdrop-blur-md rounded-lg shadow-xl " >
                 <div className="container m-auto flex lg:flex-row flex-col items-center lg:items-stretch h-full">
                     <div className="hidden lg:block w-2/3 lg:w-1/2 h ">
                         <img src={image} className='w-full' alt="illustration for sand clock and man working on laptop" />
@@ -128,7 +129,11 @@ export default function Signup() {
                                 }
                             </div>
                             <div className="relative z-0 w-full group">
-                                <input type="email" name="email" id="email" onChange={formik.handleChange} onBlur={formik.handleBlur} className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
+                                {urlEmail ?
+                                    <input type="email" name="email" id="email" onChange={formik.handleChange} onBlur={formik.handleBlur} value={urlEmail} disabled='true' className="disabled:opacity-70 disabled:cursor-not-allowed block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
+                                    :
+                                    <input type="email" name="email" id="email" onChange={formik.handleChange} onBlur={formik.handleBlur} className="block py-2.5 px-0 w-full text-sm text-primary bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-darkTeal peer" placeholder=" " />
+                                }
                                 <label htmlFor="email" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-darkTeal peer-focus:dark:text-darkTeal peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
                                 {formik.errors.email && formik.touched.email &&
                                     <div className=" text-sm text-red-800 rounded-lg bg-transparent dark:text-red-600 " role="alert">
@@ -240,13 +245,15 @@ export default function Signup() {
                             </button>
                         </form>
 
-                        <div className='relative opacity-70 '>
-                            <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-primary before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-primary after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>
-                        </div>
-                        <div className='w-full max-w-sm my-5'>
-                            <button onClick={() => { window.location.href = `https://brainmate.fly.dev/api/v1/auth/google${invitationToken ? `?invitation_token=${invitationToken}` : ''}` }} className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> signup with google</button>
-                        </div>
-                        <div className='text-primary pb-5 dark:text-gray-500 ' >Already have an account? <NavLink to={'/login'} className='text-darkTeal'>Login</NavLink></div>
+                        {!urlEmail && <>
+                            <div className='relative opacity-70 '>
+                                <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-primary before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-primary after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>
+                            </div>
+                            <div className='w-full max-w-sm my-5'>
+                                <button onClick={() => { window.location.href = `https://brainmate.fly.dev/api/v1/auth/google${invitationToken ? `?invitation_token=${invitationToken}` : ''}` }} className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> signup with google</button>
+                            </div>
+                            <div className='text-primary pb-5 dark:text-gray-500 ' >Already have an account? <NavLink to={'/login'} className='text-darkTeal'>Login</NavLink></div>
+                        </>}
 
                     </div>
                 </div>

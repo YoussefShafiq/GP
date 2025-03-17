@@ -57,7 +57,7 @@ export default function Team() {
 
     // Get team members function
     function getTeamMembers() {
-        if (teamData?.data?.data.team.role !== 'member')
+        if (teamData?.data?.data?.team.role !== 'member')
             return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -165,11 +165,11 @@ export default function Team() {
 
     if (TeamDataError) {
         return <div className="text-center py-5 h-[90vh] flex items-center justify-center">
-            Oops!, {teamError.response.data.message}
+            Oops!, {teamError?.response?.data?.message}
         </div>
     } else if (isTasksError) {
         return <div className="text-center py-5 h-[90vh] flex items-center justify-center">
-            Oops!, {TasksError.response.data.message}
+            Oops!, {TasksError?.response?.data?.message}
         </div>
     }
 
@@ -280,18 +280,18 @@ export default function Team() {
                         </div>
                         <div className="hidden md:flex flex-wrap justify-center gap-2">
                             {refetchingTasks && <div className="md:flex hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
-                            {teamData?.data?.data.team.role !== 'member' && (<>
+                            {teamData?.data?.data?.team.role !== 'member' && (<>
                                 <div
                                     className="flex md:w-fit justify-between items-center gap-2 p-2 bg-gray-100 dark:bg-dark1 dark:text-white rounded-lg cursor-pointer hover:bg-gray-200"
                                     onClick={() => {
-                                        navigator.clipboard.writeText(teamData?.data.data.team.team_code);
+                                        navigator.clipboard.writeText(teamData?.data?.data?.team.team_code);
                                         toast.success('added to clipboard', {
                                             duration: 2000,
                                             position: 'bottom-right',
                                         });
                                     }}
                                 >
-                                    <span className="text-black dark:text-white hidden md:block">{teamData?.data.data.team.team_code}</span>
+                                    <span className="text-black dark:text-white hidden md:block">{teamData?.data?.data?.team.team_code}</span>
                                     <Copy size={18} className="text-gray-500" />
                                 </div>
                                 <Tooltip delay={100} closeDelay={0} content='Invite member' >
@@ -302,10 +302,10 @@ export default function Team() {
                                         navigate('/chat');
                                         e.stopPropagation();
                                         setselectedChat({
-                                            'id': teamData?.data.data.team.id,
-                                            'name': teamData?.data.data.team.name,
+                                            'id': teamData?.data?.data?.team.id,
+                                            'name': teamData?.data?.data?.team.name,
                                             'project': {
-                                                'name': teamData?.data.data.team.project_name
+                                                'name': teamData?.data?.data?.team.project_name
                                             }
                                         })
                                     }} className="bg-base text-darkblue dark:text-white dark:bg-dark2 flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all cursor-pointer">
@@ -355,18 +355,18 @@ export default function Team() {
                                         transition={{ duration: 0.3 }}   // Animation duration
                                     >
                                         {refetchingTasks && <div className="md:flex hidden items-center text-blue-500"><Loader2Icon className='animate-spin' /></div>}
-                                        {teamData?.data?.data.team.role !== 'member' && (<>
+                                        {teamData?.data?.data?.team.role !== 'member' && (<>
                                             <div
                                                 className="flex md:w-fit justify-between items-center gap-2 p-2 bg-gray-100 dark:bg-dark1 rounded-lg cursor-pointer hover:bg-gray-200"
                                                 onClick={() => {
-                                                    navigator.clipboard.writeText(teamData?.data.data.team.team_code);
+                                                    navigator.clipboard.writeText(teamData?.data?.data?.team.team_code);
                                                     toast.success('added to clipboard', {
                                                         duration: 2000,
                                                         position: 'bottom-right',
                                                     });
                                                 }}
                                             >
-                                                <span className="text-black hidden md:block">{teamData?.data.data.team.team_code}</span>
+                                                <span className="text-black hidden md:block">{teamData?.data?.data?.team.team_code}</span>
                                                 <Copy size={18} className="text-gray-500" />
                                             </div>
                                             <button onClick={() => setInviteMemberForm(true)} title='invite member to team' className="rounded-full bg-white dark:bg-dark1 text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><UserRoundPlus size={25} /></button>
@@ -374,16 +374,16 @@ export default function Team() {
                                                 navigate('/chat');
                                                 e.stopPropagation();
                                                 setselectedChat({
-                                                    'id': teamData?.data.data.team.id,
-                                                    'name': teamData?.data.data.team.name,
+                                                    'id': teamData?.data?.data?.team.id,
+                                                    'name': teamData?.data?.data?.team.name,
                                                     'project': {
-                                                        'name': teamData?.data.data.team.project_name
+                                                        'name': teamData?.data?.data?.team.project_name
                                                     }
                                                 })
                                             }} className="bg-white text-light dark:text-white dark:bg-dark flex justify-center p-2 rounded-full space-x-2 items-center h-full hover:scale-110 transition-all">
                                                 <button onClick={() => navigate('/chat')} ><MessageCircleMore /></button>
                                             </div>
-                                            {teamData?.data?.data.team.role === 'manager' && <>
+                                            {teamData?.data?.data?.team.role === 'manager' && <>
                                                 <button title='manage team members'
                                                     onClick={() => navigate('manage-members')}
                                                     className="rounded-full bg-white dark:bg-dark1 text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"

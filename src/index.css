@@ -15,11 +15,11 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-white
+  @apply bg-transparent
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-darkblue rounded-full bg-gradient-to-t from-blueblack to-darkblue
+  @apply dark:bg-[#afdcff48] opacity-20 bg-darkblue
 }
 
 ::-webkit-scrollbar-thumb:hover {

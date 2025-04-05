@@ -3,15 +3,96 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="brainmate.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BrainMate</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+
+  <!-- Primary Meta Tags -->
+  <title>BrainMate | AI-Powered Task Management & Productivity Assistant</title>
+  <meta name="description"
+    content="Organize, prioritize, and automate your workflow with BrainMate's AI-driven task management system. Get intelligent suggestions, auto-scheduling, and productivity analytics.">
+  <meta name="keywords"
+    content="AI task manager, productivity app, smart to-do list, task automation, time management, BrainMate">
+  <meta name="author" content="BrainMate Team">
+  <meta name="robots" content="index, follow">
+
+  <!-- Favicon & App Icons -->
+  <link rel="icon" type="image/svg+xml" href="/brainmate.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://brainmate.vercel.app/">
+  <meta property="og:title" content="BrainMate | Your AI Task Management Assistant">
+  <meta property="og:description"
+    content="Revolutionize your productivity with AI-powered task organization and smart scheduling.">
+  <meta property="og:image" content="https://brainmate.vercel.app/social-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BrainMate | AI-Powered Task Management">
+  <meta name="twitter:description"
+    content="The smart way to organize and automate your tasks with artificial intelligence.">
+  <meta name="twitter:image" content="https://brainmate.vercel.app/social-preview.jpg">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://brainmate.vercel.app/" />
+
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="/src/main.jsx" as="script">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js" as="script">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BrainMate",
+      "description": "AI-powered task management system with smart scheduling and productivity analytics",
+      "url": "https://brain-mate.vercel.app",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "BrainMate",
+        "logo": "https://brainmate.vercel.app/brainmate.png"
+      }
+    }
+  </script>
+
+  <!-- Flowbite JS (loaded at bottom of body) -->
 </head>
 
 <body>
   <div id="root"></div>
+
+  <!-- Scripts -->
   <script type="module" src="/src/main.jsx"></script>
+  <!-- Flowbite at bottom for better performance -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js" defer></script>
+
+  <!-- Progressive Enhancement -->
+  <noscript>
+    <div class="noscript-warning" style="padding: 2rem; text-align: center; font-family: sans-serif;">
+      <img src="/brainmate.png" alt="BrainMate Logo" width="120" style="margin-bottom: 1rem;">
+      <h1 style="font-size: 1.5rem; margin-bottom: 1rem;">BrainMate requires JavaScript</h1>
+      <p style="margin-bottom: 1.5rem;">Our AI-powered task management features need JavaScript to function properly.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="https://enable-javascript.com/"
+          style="padding: 0.5rem 1rem; background: #2563eb; color: white; border-radius: 0.375rem; text-decoration: none;">How
+          to Enable JavaScript</a>
+        <a href="https://brainmate.vercel.app/static-version"
+          style="padding: 0.5rem 1rem; border: 1px solid #2563eb; border-radius: 0.375rem; text-decoration: none;">View
+          Basic Version</a>
+      </div>
+    </div>
+  </noscript>
 </body>
 
 </html>

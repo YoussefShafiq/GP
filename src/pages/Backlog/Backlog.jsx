@@ -15,6 +15,7 @@ export default function Backlog() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     let { selectedTask, setselectedTask } = useContext(TaskContext);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const { selectedProject, setselectedProject } = useContext(projectContext);
     const { selectedTeam, setselectedTeam } = useContext(TeamsContext);
     const [checkedTasks, setcheckedTasks] = useState([]);
@@ -117,18 +118,21 @@ export default function Backlog() {
         }
     });
 
-    // Handlers
-    const handleCheckboxChange = (id) => {
+    // Update the handleCheckboxChange function
+    const handleCheckboxChange = (id, e) => {
+        e.stopPropagation(); // Stop event bubbling to prevent row click
         setcheckedTasks(prev =>
             prev.includes(id) ? prev.filter(taskId => taskId !== id) : [...prev, id]
         );
     };
 
-    const handleSelectAll = () => {
-        if (checkedTasks.length === tasksData?.length) {
+    // Update the handleSelectAll function
+    const handleSelectAll = (e) => {
+        e.stopPropagation(); // Stop event bubbling
+        if (checkedTasks.length === tasksData?.data.data.backlog_tasks?.length) {
             setcheckedTasks([]);
         } else {
-            setcheckedTasks(tasksData?.data.data.backlog_tasks.map(task => task.id) || []);
+            setcheckedTasks(tasksData?.data.data.backlog_tasks?.map(task => task.id) || []);
         }
     };
 
@@ -153,14 +157,21 @@ export default function Backlog() {
         publishMutation.mutate(checkedTasks);
     };
 
-    const handleDeleteTasks = () => {
+    const handleDeleteClick = () => {
         if (checkedTasks.length === 0) {
             toast.error('Please select at least one task to delete');
             return;
         }
-        if (confirm('Are you sure you want to delete the selected tasks?')) {
-            deleteMutation.mutate(checkedTasks);
-        }
+        setShowDeleteConfirmation(true);
+    };
+
+    const confirmDeleteTasks = () => {
+        deleteMutation.mutate(checkedTasks);
+        setShowDeleteConfirmation(false);
+    };
+
+    const cancelDeleteTasks = () => {
+        setShowDeleteConfirmation(false);
     };
 
     if (!selectedTeam) {
@@ -221,7 +232,7 @@ export default function Backlog() {
                         </Tooltip>
                         <Tooltip closeDelay={0} delay={350} content='Delete Tasks'>
                             <button
-                                onClick={handleDeleteTasks}
+                                onClick={handleDeleteClick}
                                 disabled={deleteMutation.isPending}
                                 className="rounded-full aspect-square bg-base dark:bg-dark2 text-red-500 p-2 flex justify-center items-center hover:shadow-lg hover:-translate-y-0.5 transition-all disabled:opacity-50"
                             >
@@ -261,8 +272,10 @@ export default function Backlog() {
                             <th>
                                 <input
                                     type="checkbox"
-                                    checked={checkedTasks.length === tasksData?.length && tasksData?.length > 0}
+                                    checked={tasksData?.data.data.backlog_tasks?.length > 0 &&
+                                        checkedTasks.length === tasksData?.data.data.backlog_tasks?.length}
                                     onChange={handleSelectAll}
+                                    onClick={(e) => e.stopPropagation()} // Add this to prevent row click
                                     className='h-5 w-5 text-blue-600 ms-5 focus:ring-0 rounded-md cursor-pointer dark:bg-dark2'
                                 />
                             </th>
@@ -291,7 +304,8 @@ export default function Backlog() {
                                             <input
                                                 type="checkbox"
                                                 checked={checkedTasks.includes(task.id)}
-                                                onChange={() => handleCheckboxChange(task.id)}
+                                                onChange={(e) => handleCheckboxChange(task.id, e)}
+                                                onClick={(e) => e.stopPropagation()} // Add this to prevent row click
                                                 className='h-5 w-5 text-blue-600 ms-5 focus:ring-0 rounded-md cursor-pointer dark:bg-dark2'
                                             />
                                         </td>
@@ -402,10 +416,49 @@ export default function Backlog() {
                     onClose={() => setIsFormOpen(false)}
                     selectedTeam={selectedTeam}
                     token={token}
-                    teamMembers={teamMembersData.data.data}
+                    teamMembers={teamMembersData}
                     mode={selectedTask ? 'update' : 'add'}
                     taskData={selectedTask}
                 />
+
+                {/* Delete Confirmation Popup */}
+                <AnimatePresence>
+                    {showDeleteConfirmation && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+                        >
+                            <motion.div
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.8, opacity: 0 }}
+                                className="bg-white dark:bg-dark1 dark:border-gray-300 dark:border p-6 rounded-lg shadow-lg"
+                            >
+                                <h2 className="text-lg font-semibold mb-4">
+                                    Are you sure you want to delete {checkedTasks.length} selected task{checkedTasks.length !== 1 ? 's' : ''}?
+                                </h2>
+                                <div className="flex justify-end gap-3">
+                                    <button
+                                        onClick={cancelDeleteTasks}
+                                        className="px-4 py-2 dark:bg-dark2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={confirmDeleteTasks}
+                                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                                        disabled={deleteMutation.isPending}
+                                    >
+                                        {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+                                    </button>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
             </div>
         </>
     );

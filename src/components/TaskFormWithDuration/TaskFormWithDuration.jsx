@@ -7,8 +7,9 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { ThreeDots } from 'react-loader-spinner';
 import { TaskContext } from '../../context/TaskContext';
+import { useQuery } from '@tanstack/react-query';
 
-const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, taskData }) => {
+const TaskFormWithduration_days = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, taskData }) => {
     const [assignTobtn, setAssignTobtn] = useState(false);
     const [teamMembersState, setTeamMembersState] = useState([]);
     const [selectedMembers, setSelectedMembers] = useState([]);
@@ -22,9 +23,15 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
         description: string().required('Description is required'),
         tags: string().required('Tags are required'),
         priority: string().required('Priority is required'),
-        duration: string().required('Duration is required'),
+        duration_days: string().required('duration_days is required'),
         members: array().min(1, 'At least one member is required'),
         attachments: array(),
+    });
+
+    const {
+        refetch: refetchTasks
+    } = useQuery({
+        queryKey: ['backlogTasks', selectedTeam?.id],
     });
 
     // Initialize form with task data when in update mode
@@ -35,8 +42,8 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                 description: taskData.description,
                 tags: taskData.tags,
                 priority: taskData.priority,
-                is_backlog: true,
-                duration: taskData.duration,
+                is_backlog: 1,
+                duration_days: taskData.duration_days,
                 members: taskData.members?.map((member) => member.id) || [],
                 attachments: taskData.attachments || [],
             });
@@ -53,8 +60,8 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
             description: '',
             tags: '',
             priority: '',
-            is_backlog: true,
-            duration: '',
+            is_backlog: 1,
+            duration_days: '',
             members: [],
             attachments: [],
         },
@@ -84,6 +91,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                     config.headers['Content-Type'] = 'multipart/form-data';
                     await axios.post('https://brainmate.fly.dev/api/v1/tasks', formData, config);
                     toast.success('Task created successfully!');
+                    refetchTasks();
                 } else if (mode === 'update') {
                     // Update task with JSON data
                     const updateData = {
@@ -154,7 +162,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration_days: 0.3 }}
                     className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black bg-opacity-15 z-50"
                     onClick={() => { onClose(); setselectedTask(null); }}
                 >
@@ -163,7 +171,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                         initial={{ y: 0, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration_days: 0.3 }}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
@@ -192,7 +200,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 />
                                 <label
                                     htmlFor="name"
-                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration_days-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Task Name
                                 </label>
@@ -220,7 +228,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 </select>
                                 <label
                                     htmlFor="priority"
-                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration_days-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Priority
                                 </label>
@@ -231,27 +239,27 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 )}
                             </div>
 
-                            {/* Duration */}
+                            {/* duration_days */}
                             <div className="relative z-0 w-full md:w-[calc(25%-10px)] group">
                                 <input
                                     type="number"
-                                    name="duration"
-                                    id="duration"
+                                    name="duration_days"
+                                    id="duration_days"
                                     onChange={addTaskFormik.handleChange}
                                     onBlur={addTaskFormik.handleBlur}
-                                    value={addTaskFormik.values.duration}
+                                    value={addTaskFormik.values.duration_days}
                                     className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                     placeholder=" "
                                 />
                                 <label
-                                    htmlFor="duration"
-                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    htmlFor="duration_days"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration_days-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
-                                    Duration (hours)
+                                    duration_days (hours)
                                 </label>
-                                {addTaskFormik.errors.duration && addTaskFormik.touched.duration && (
+                                {addTaskFormik.errors.duration_days && addTaskFormik.touched.duration_days && (
                                     <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
-                                        {addTaskFormik.errors.duration}
+                                        {addTaskFormik.errors.duration_days}
                                     </div>
                                 )}
                             </div>
@@ -270,7 +278,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 />
                                 <label
                                     htmlFor="description"
-                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration_days-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Description
                                 </label>
@@ -294,7 +302,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 />
                                 <label
                                     htmlFor="tags"
-                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
+                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration_days-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
                                     Tags (comma separated)
                                 </label>
@@ -335,7 +343,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                     className="flex justify-between items-center cursor-pointer py-2 border-b-2 border-gray-300"
                                 >
                                     <span className="text-sm text-gray-700 dark:text-gray-500">Assign Team Members</span>
-                                    <ChevronDown className={`${assignTobtn ? 'rotate-180 text-light' : ''} duration-300`} />
+                                    <ChevronDown className={`${assignTobtn ? 'rotate-180 text-light' : ''} duration_days-300`} />
                                 </div>
 
                                 <AnimatePresence>
@@ -344,7 +352,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                             initial={{ opacity: 0, height: 0 }}
                                             animate={{ opacity: 1, height: 'auto' }}
                                             exit={{ opacity: 0, height: 0 }}
-                                            transition={{ duration: 0.3 }}
+                                            transition={{ duration_days: 0.3 }}
                                             className="relative bg-transparent rounded w-full max-h-40 overflow-y-auto mt-2"
                                         >
                                             {teamMembersState?.map((user) => (
@@ -352,7 +360,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                                     key={user.id}
                                                     initial={{ opacity: 0, y: -10 }}
                                                     animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ duration: 0.2 }}
+                                                    transition={{ duration_days: 0.2 }}
                                                     onClick={() => {
                                                         setSelectedMembers(prev => [...prev, user]);
                                                         setTeamMembersState(prev => prev.filter(m => m.id !== user.id));
@@ -360,11 +368,13 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                                     className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-dark2 cursor-pointer"
                                                 >
                                                     <div className="flex-1">
-                                                        <div className="font-medium">{user.name}</div>
+                                                        <div className="flex items-center">
+                                                            <div className="font-medium">{user.name}</div>
+                                                            <div className="text-xs dark:bg-dark3 px-2 py-1 rounded opacity-60">
+                                                                ({user.role})
+                                                            </div>
+                                                        </div>
                                                         <div className="text-xs text-gray-500">{user.email}</div>
-                                                    </div>
-                                                    <div className="text-xs bg-gray-200 dark:bg-dark3 px-2 py-1 rounded">
-                                                        {user.role}
                                                     </div>
                                                 </motion.div>
                                             ))}
@@ -427,4 +437,4 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
     );
 };
 
-export default TaskFormWithDuration;
+export default TaskFormWithduration_days;

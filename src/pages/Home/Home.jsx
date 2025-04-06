@@ -311,16 +311,16 @@ export default function Home() {
                                             <Tooltip closeDelay={0} content={
                                                 <h2><span className='font-bold'>Project: </span>{task.project_name}, <span className='font-bold'>Team: </span>{task.team_name}</h2>
                                             }>
-                                                <div key={task.id} className="border border-opacity-30 border-black dark:border-slate-700 p-3 rounded-2xl flex gap-3">
+                                                <div key={task.id} className="border overflow-hidden border-opacity-30 border-black dark:border-slate-700 p-3 rounded-2xl flex gap-3">
                                                     <div>
                                                         <Circle size={20} className="text-highlight" />
                                                     </div>
-                                                    <div className="flex flex-col">
+                                                    <div className="flex flex-col w-5/6">
                                                         <h2 className="font-semibold cursor-pointer" onClick={() => {
                                                             setselectedTask(task);
                                                             navigate(`/task-details/${task.id}`)
                                                         }}>{task.name}</h2>
-                                                        <div className="text-gray-700 dark:text-gray-300 my-3">
+                                                        <div className="text-gray-700 dark:text-gray-300 my-3 break-words">
                                                             {task.description.split('\n').map((line, lineIndex) => (
                                                                 <React.Fragment key={lineIndex}>
                                                                     {line.split(' ').map((word, wordIndex) =>

@@ -48,6 +48,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                 description: taskData.description,
                 tags: taskData.tags,
                 priority: taskData.priority,
+                is_backlog: false,
                 deadline: taskData.deadline.split('T')[0],
                 members: taskData.members.map((member) => member.id) || [], // Ensure this is an array
                 attachments: taskData.attachments || [], // Ensure this is an array
@@ -65,6 +66,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
             description: '',
             tags: '',
             priority: '',
+            is_backlog: false,
             deadline: '',
             members: [], // Ensure this is an empty array
             attachments: [], // Ensure this is an empty array

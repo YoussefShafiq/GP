@@ -13,22 +13,21 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
     const [teamMembersState, setTeamMembersState] = useState([]);
     const [selectedMembers, setSelectedMembers] = useState([]);
     const [sendingTask, setsendingTask] = useState(false);
-    const [attachments, setAttachments] = useState([]); // State for attachments
-    const memberIds = (selectedMembers || []).map((member) => member.id);
-    let { selectedTask, setselectedTask } = useContext(TaskContext)
+    const [attachments, setAttachments] = useState([]);
+    const { selectedTask, setselectedTask } = useContext(TaskContext);
 
-
-    // Form validation schema for task
+    // Form validation schema
     const taskValidationSchema = object({
         name: string().required('Task name is required'),
         description: string().required('Description is required'),
         tags: string().required('Tags are required'),
         priority: string().required('Priority is required'),
-        duration: string().required('Duration is required'), // Changed from deadline to duration
+        duration: string().required('Duration is required'),
         members: array().min(1, 'At least one member is required'),
-        attachments: array(), // Optional: Add validation rules if needed
+        attachments: array(),
     });
 
+    // Initialize form with task data when in update mode
     useEffect(() => {
         if (mode === 'update' && taskData) {
             addTaskFormik.setValues({
@@ -36,16 +35,17 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                 description: taskData.description,
                 tags: taskData.tags,
                 priority: taskData.priority,
-                duration: taskData.duration, // Changed from deadline to duration
-                members: taskData.members?.map((member) => member.id) || [], // Ensure this is an array
-                attachments: taskData.attachments || [], // Ensure this is an array
+                is_backlog: true,
+                duration: taskData.duration,
+                members: taskData.members?.map((member) => member.id) || [],
+                attachments: taskData.attachments || [],
             });
-            setSelectedMembers(taskData.members || []); // Ensure this is an array
-            setAttachments(taskData.attachments || []); // Ensure this is an array
+            setSelectedMembers(taskData.members || []);
+            setAttachments(taskData.attachments || []);
         }
     }, [mode, taskData]);
 
-    // Formik form handling for task
+    // Formik configuration
     const addTaskFormik = useFormik({
         initialValues: {
             name: '',
@@ -53,118 +53,99 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
             description: '',
             tags: '',
             priority: '',
-            duration: '', // Changed from deadline to duration
-            members: [], // Ensure this is an empty array
-            attachments: [], // Ensure this is an empty array
+            is_backlog: true,
+            duration: '',
+            members: [],
+            attachments: [],
         },
         validationSchema: taskValidationSchema,
-        onSubmit: async (values, formikHelpers) => {
+        onSubmit: async (values, { resetForm }) => {
             try {
-                // Ensure `members` is an array
-                values.members = selectedMembers?.map((member) => member.id);
-
-                // Create FormData object for multipart/form-data
-                const formData = new FormData();
-
-                // Append non-array fields
-                Object.keys(values).forEach((key) => {
-                    if (key !== 'members' && key !== 'attachments') {
-                        formData.append(key, values[key]);
+                setsendingTask(true);
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
                     }
-                });
+                };
 
-                // Append `members` as an array
-                values.members.forEach((memberId) => {
-                    formData.append('members[]', memberId); // Use 'members[]' for array format
-                });
-
-                // Append attachments as an array
-                values.attachments.forEach((file) => {
-                    formData.append('attachments[]', file); // Use 'attachments[]' for array format
-                });
-
-                let response;
                 if (mode === 'add') {
-                    setsendingTask(true);
-                    // Add task API call
-                    response = await axios.post(
-                        `https://brainmate.fly.dev/api/v1/tasks`,
-                        formData,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                'Content-Type': 'multipart/form-data',
-                            },
+                    // Create task with FormData for file uploads
+                    const formData = new FormData();
+                    Object.entries(values).forEach(([key, value]) => {
+                        if (key !== 'members' && key !== 'attachments') {
+                            formData.append(key, value);
                         }
-                    );
-                    setsendingTask(false);
-                    toast.success('Task added successfully', {
-                        duration: 1000,
-                        position: 'bottom-right',
                     });
+
+                    // Add members and attachments
+                    selectedMembers.forEach(member => formData.append('members[]', member.id));
+                    attachments.forEach(file => formData.append('attachments[]', file));
+
+                    config.headers['Content-Type'] = 'multipart/form-data';
+                    await axios.post('https://brainmate.fly.dev/api/v1/tasks', formData, config);
+                    toast.success('Task created successfully!');
                 } else if (mode === 'update') {
-                    setsendingTask(true);
-                    // Update task API call
-                    response = await axios.put(
+                    // Update task with JSON data
+                    const updateData = {
+                        ...values,
+                        members: selectedMembers.map(member => member.id),
+                        // Note: For updating attachments, you might need additional logic
+                        // depending on your API requirements
+                    };
+                    await axios.put(
                         `https://brainmate.fly.dev/api/v1/tasks/${taskData.id}`,
-                        values,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                        }
+                        updateData,
+                        config
                     );
-                    setsendingTask(false);
-                    toast.success('Task updated successfully', {
-                        duration: 1000,
-                        position: 'bottom-right',
-                    });
+                    toast.success('Task updated successfully!');
                 }
 
-                // Reset form and close modal
-                formikHelpers.resetForm();
+                resetForm();
                 onClose();
-                setSelectedMembers([]); // Clear selected members
-                setAttachments([]); // Clear attachments
+                setSelectedMembers([]);
+                setAttachments([]);
             } catch (error) {
+                console.error('API Error:', error);
+                toast.error(error.response?.data?.message || 'An error occurred');
+            } finally {
                 setsendingTask(false);
-                // Handle error
-                toast.error(error.response?.data?.message || 'Error processing task', {
-                    duration: 3000,
-                    position: 'bottom-right',
-                });
             }
         },
     });
 
+    // Handle file uploads
     const handleFileUpload = (e) => {
         const files = Array.from(e.target.files);
-        setAttachments((prev) => [...prev, ...files]);
+        setAttachments(prev => [...prev, ...files]);
         addTaskFormik.setFieldValue('attachments', [...addTaskFormik.values.attachments, ...files]);
     };
 
+    // Handle file deletion
     const handleFileDelete = (index) => {
-        setAttachments((prev) => prev.filter((_, i) => i !== index));
-        const updatedAttachments = addTaskFormik.values.attachments.filter((_, i) => i !== index);
-        addTaskFormik.setFieldValue('attachments', updatedAttachments);
+        setAttachments(prev => prev.filter((_, i) => i !== index));
+        addTaskFormik.setFieldValue(
+            'attachments',
+            addTaskFormik.values.attachments.filter((_, i) => i !== index)
+        );
     };
 
+    // Filter available team members
     useEffect(() => {
-        if (teamMembers?.data?.data.users) {
-            // Filter out members that are already in selectedMembers
-            const filteredMembers = teamMembers.data.data.users.filter(
-                (user) => !selectedMembers.some((member) => member.id === user.id)
+        if (teamMembers?.data?.data?.users) {
+            const filtered = teamMembers.data.data.users.filter(
+                user => !selectedMembers.some(member => member.id === user.id)
             );
-            setTeamMembersState(filteredMembers);
+            setTeamMembersState(filtered);
         }
     }, [teamMembers, selectedMembers]);
 
+    // Update formik values when selected members change
     useEffect(() => {
-        // Ensure `selectedMembers` is an array and map it to an array of IDs
-        const memberIds = (selectedMembers || []).map((member) => member.id);
-        addTaskFormik.setFieldValue('members', memberIds); // This will always be an array
+        addTaskFormik.setFieldValue(
+            'members',
+            selectedMembers.map(member => member.id)
+        );
     }, [selectedMembers]);
-
 
     return (
         <AnimatePresence>
@@ -185,20 +166,18 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                         transition={{ duration: 0.3 }}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        {/* Close Button */}
                         <button
                             onClick={() => { onClose(); setselectedTask(null); }}
                             className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-500"
                         >
                             <X size={24} />
                         </button>
-                        <div className="m-auto w-fit bg-light text-white px-3 py-2 rounded-xl text-xl">{mode === 'update' ? taskData?.name : selectedTeam?.name}</div>
 
-                        {/* Task Form */}
-                        <form
-                            onSubmit={addTaskFormik.handleSubmit}
-                            className="w-full mt-5 flex flex-wrap gap-x-[10px] gap-y-5"
-                        >
+                        <div className="m-auto w-fit bg-light text-white px-3 py-2 rounded-xl text-xl">
+                            {mode === 'update' ? taskData?.name : selectedTeam?.name}
+                        </div>
+
+                        <form onSubmit={addTaskFormik.handleSubmit} className="w-full mt-5 flex flex-wrap gap-x-[10px] gap-y-5">
                             {/* Task Name */}
                             <div className="relative z-0 w-full md:w-1/2 group">
                                 <input
@@ -224,7 +203,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 )}
                             </div>
 
-                            {/* Task Priority */}
+                            {/* Priority */}
                             <div className="relative z-0 w-full md:w-[calc(25%-10px)] group">
                                 <select
                                     name="priority"
@@ -252,7 +231,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 )}
                             </div>
 
-                            {/* Task Duration */}
+                            {/* Duration */}
                             <div className="relative z-0 w-full md:w-[calc(25%-10px)] group">
                                 <input
                                     type="number"
@@ -268,7 +247,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                     htmlFor="duration"
                                     className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
-                                    Duration
+                                    Duration (hours)
                                 </label>
                                 {addTaskFormik.errors.duration && addTaskFormik.touched.duration && (
                                     <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
@@ -277,7 +256,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 )}
                             </div>
 
-                            {/* Task Description */}
+                            {/* Description */}
                             <div className="relative z-0 w-full group">
                                 <textarea
                                     name="description"
@@ -287,6 +266,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                     value={addTaskFormik.values.description}
                                     className="block py-2 w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                     placeholder=" "
+                                    rows="3"
                                 />
                                 <label
                                     htmlFor="description"
@@ -301,9 +281,9 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 )}
                             </div>
 
-                            {/* Task Tags */}
+                            {/* Tags */}
                             <div className="relative z-0 w-full group">
-                                <textarea
+                                <input
                                     name="tags"
                                     id="tags"
                                     onChange={addTaskFormik.handleChange}
@@ -316,7 +296,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                     htmlFor="tags"
                                     className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
-                                    Tags
+                                    Tags (comma separated)
                                 </label>
                                 {addTaskFormik.errors.tags && addTaskFormik.touched.tags && (
                                     <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">
@@ -325,7 +305,7 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 )}
                             </div>
 
-                            {/* Assign to Members */}
+                            {/* Members Assignment */}
                             <div className="relative z-0 w-full group">
                                 <div className="my-3 flex flex-wrap gap-2">
                                     {selectedMembers?.map((member) => (
@@ -335,10 +315,8 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                                 size={15}
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    setSelectedMembers((prevSelectedMembers) =>
-                                                        prevSelectedMembers.filter((m) => m.id !== member.id)
-                                                    );
-                                                    setTeamMembersState((prevTeamMembers) => [...prevTeamMembers, member]);
+                                                    setSelectedMembers(prev => prev.filter(m => m.id !== member.id));
+                                                    setTeamMembersState(prev => [...prev, member]);
                                                 }}
                                                 className="cursor-pointer"
                                             />
@@ -351,22 +329,14 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                         {addTaskFormik.errors.members}
                                     </div>
                                 )}
+
                                 <div
                                     onClick={() => setAssignTobtn(!assignTobtn)}
-                                    className="flex justify-between items-center cursor-pointer"
+                                    className="flex justify-between items-center cursor-pointer py-2 border-b-2 border-gray-300"
                                 >
-                                    <span>Members</span>
-                                    <ChevronDown
-                                        className={`${assignTobtn ? 'rotate-180 text-light' : ''} duration-300`}
-                                    />
+                                    <span className="text-sm text-gray-700 dark:text-gray-500">Assign Team Members</span>
+                                    <ChevronDown className={`${assignTobtn ? 'rotate-180 text-light' : ''} duration-300`} />
                                 </div>
-
-                                <label
-                                    htmlFor="role_id"
-                                    className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
-                                >
-                                    Assigned To
-                                </label>
 
                                 <AnimatePresence>
                                     {assignTobtn && (
@@ -375,25 +345,27 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                             animate={{ opacity: 1, height: 'auto' }}
                                             exit={{ opacity: 0, height: 0 }}
                                             transition={{ duration: 0.3 }}
-                                            className="relative bg-transparent rounded w-full max-h-40 overflow-y-scroll"
+                                            className="relative bg-transparent rounded w-full max-h-40 overflow-y-auto mt-2"
                                         >
-                                            {teamMembersState?.map((user, index) => (
+                                            {teamMembersState?.map((user) => (
                                                 <motion.div
                                                     key={user.id}
                                                     initial={{ opacity: 0, y: -10 }}
                                                     animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ delay: index * 0.1 }}
+                                                    transition={{ duration: 0.2 }}
                                                     onClick={() => {
-                                                        setSelectedMembers((prevSelectedMembers) => [...prevSelectedMembers, user]);
-                                                        setTeamMembersState((prevTeamMembers) =>
-                                                            prevTeamMembers.filter((member) => member.id !== user.id)
-                                                        );
+                                                        setSelectedMembers(prev => [...prev, user]);
+                                                        setTeamMembersState(prev => prev.filter(m => m.id !== user.id));
                                                     }}
-                                                    className={`${index % 2 === 0 ? 'bg-stone-50 dark:bg-dark2' : 'bg-stone-100 dark:bg-dark1'
-                                                        } flex flex-col px-1 py-2 hover:bg-white dark:hover:bg-white dark:hover:bg-opacity-10 cursor-pointer`}
+                                                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-dark2 cursor-pointer"
                                                 >
-                                                    <div className="flex items-center gap-1"><span>{user.name}</span><span className='text-xs opacity-80'>({user.role})</span></div>
-                                                    <div className="text-[11px] opacity-90">{user.email}</div>
+                                                    <div className="flex-1">
+                                                        <div className="font-medium">{user.name}</div>
+                                                        <div className="text-xs text-gray-500">{user.email}</div>
+                                                    </div>
+                                                    <div className="text-xs bg-gray-200 dark:bg-dark3 px-2 py-1 rounded">
+                                                        {user.role}
+                                                    </div>
                                                 </motion.div>
                                             ))}
                                         </motion.div>
@@ -401,59 +373,51 @@ const TaskFormWithDuration = ({ isOpen, onClose, selectedTeam, token, teamMember
                                 </AnimatePresence>
                             </div>
 
-                            {/* Attachments Section */}
-                            {mode === 'add' && <div className="relative z-0 w-full group">
-                                <label
-                                    htmlFor="attachments"
-                                    className="block text-sm text-gray-700 dark:text-gray-500 mb-2"
-                                >
-                                    Attachments
-                                </label>
-                                <input
-                                    type="file"
-                                    id="attachments"
-                                    name="attachments"
-                                    multiple
-                                    onChange={handleFileUpload}
-                                    className="block w-full text-sm text-black dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
-                                />
-                                <div className="mt-3 flex flex-wrap gap-2">
-                                    {addTaskFormik.values.attachments.map((file, index) => (
-                                        <div key={index} className="flex gap-1 items-center bg-gray-300 w-fit p-2 rounded-full">
-                                            {file.name}
-                                            <XIcon
-                                                size={15}
-                                                onClick={() => handleFileDelete(index)}
-                                                className="cursor-pointer"
-                                            />
-                                        </div>
-                                    ))}
+                            {/* Attachments (only for create mode) */}
+                            {mode === 'add' && (
+                                <div className="relative z-0 w-full group">
+                                    <label className="block text-sm text-gray-700 dark:text-gray-500 mb-2">
+                                        Attachments
+                                    </label>
+                                    <input
+                                        type="file"
+                                        multiple
+                                        onChange={handleFileUpload}
+                                        className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none"
+                                    />
+                                    <div className="mt-2 space-y-2">
+                                        {attachments.map((file, index) => (
+                                            <div key={index} className="flex items-center justify-between p-2 bg-gray-100 dark:bg-dark2 rounded">
+                                                <span className="text-sm truncate max-w-xs">{file.name}</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleFileDelete(index)}
+                                                    className="text-red-500 hover:text-red-700"
+                                                >
+                                                    <XIcon size={16} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>}
+                            )}
 
                             {/* Submit Button */}
                             <button
                                 type="submit"
-                                className="w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack to-blueblack text-white text-lg font-bold hover:shadow-md"
-                                style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
-                                onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
-                                onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
                                 disabled={sendingTask}
+                                className="w-full h-12 rounded-xl bg-gradient-to-r from-darkblue via-blueblack to-blueblack text-white text-lg font-bold hover:shadow-md disabled:opacity-70"
                             >
-                                {sendingTask ? <>
-
+                                {sendingTask ? (
                                     <ThreeDots
                                         visible={true}
                                         height="20"
                                         width="43"
-                                        color={'white'}
+                                        color="white"
                                         radius="9"
-                                        ariaLabel="three-dots-loading"
-                                        wrapperStyle={{}}
                                         wrapperClass="w-fit m-auto"
-                                    /></> : <>
-                                    {mode === 'add' ? 'Add Task' : 'Update Task'}
-                                </>}
+                                    />
+                                ) : mode === 'add' ? 'Create Task' : 'Update Task'}
                             </button>
                         </form>
                     </motion.div>

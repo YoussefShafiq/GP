@@ -39,6 +39,7 @@ import MaterialTeams from './components/MaterialTeams/MaterialTeams';
 import MaterialsItems from './components/MaterialsItems/MaterialsItems';
 import ErrorPage from './components/ErrorPage/ErrorPage'; // Import your error component
 import Backlog from './pages/Backlog/Backlog';
+import DashboardLayout from './components/DashboardLayout/DashboardLayout';
 
 let routers = createBrowserRouter([
   { path: 'login/:token?', element: <GoHome><Login /></GoHome>, errorElement: <ErrorPage /> },
@@ -50,7 +51,11 @@ let routers = createBrowserRouter([
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
       { path: 'team-invitation-confirm', element: <ProtectedRoute><TeamInvitationConfirm /></ProtectedRoute> },
       { path: 'profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
-      { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
+      {
+        path: 'dashboard', element: <ProtectedRoute><DashboardLayout /></ProtectedRoute>, children: [
+          { index: true, element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
+        ]
+      },
       { path: 'mytasks', element: <ProtectedRoute><Mytasks /></ProtectedRoute> },
       { path: 'myteams', element: <ProtectedRoute><MyTeams /></ProtectedRoute> },
       { path: 'materials', element: <ProtectedRoute><Materials /></ProtectedRoute> },

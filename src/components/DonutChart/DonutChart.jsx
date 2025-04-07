@@ -6,7 +6,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function DonutChart({
-    labels = ['#133d57', '#f25287', '#00adb5'],
+    labels = [],
     dataPoints = [300, 50, 100],
     backgroundColors = [
         '#00ADB5', // Teal
@@ -123,11 +123,11 @@ export default function DonutChart({
     return (
         <div className='relative w-full'>
             {/* Render the Doughnut chart with plugins */}
-            <h2 className='font-inter font-bold text-gray-900 dark:text-gray-50 mb-5 capitalize'>{label}</h2>
+            {label && <h2 className='font-inter font-bold text-gray-900 dark:text-gray-50 mb-5 capitalize'>{label}</h2>}
 
             <Doughnut data={data} options={options} plugins={[centerTextPlugin]} />
             {/* Custom Labels */}
-            <div className="flex flex-col items-start mt-3 p-2">
+            {labels.length > 0 && <div className="flex flex-col items-start mt-3 p-2">
                 {labels.map((label, index) => (
                     <div
                         key={index}
@@ -142,7 +142,7 @@ export default function DonutChart({
                         <span className="text-[10px] w-max md:text-sm text-gray-800 dark:text-gray-50 capitalize">{label}</span>
                     </div>
                 ))}
-            </div>
+            </div>}
 
         </div>
     );

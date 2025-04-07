@@ -1,140 +1,191 @@
-import { BellDot, CalendarDays, ChevronDown } from 'lucide-react'
-import React from 'react'
+import { BellDot, ChevronDown, MoveDownLeft, MoveUpRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import VerticalBarChart from '../../components/VerticalBarChart/VerticalBarChart';
 import ProgressBarChart from '../../components/VerticalBarChart/ProgressBarChart/ProgressBarChart';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
-import { faAward, faSquarePollVertical } from '@fortawesome/free-solid-svg-icons';
+import { faAward, faListCheck, faPeopleGroup, faSquarePollVertical } from '@fortawesome/free-solid-svg-icons';
 import DonutChart from '../../components/DonutChart/DonutChart';
+import LineChart from '../../components/LineChart/LineChart';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+
 
 export default function Dashboard() {
-    const labels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-    const dataPoints = [5, 9, 1, 5, 2, 4, 5];
     const label = 'Task Progress';
-    const backgroundColor = '#00adb5';
-    const borderColor = '#fff';
-    const barSpacing = 0.7; // Adjust this value to control the space between bars
 
-    return <>
-        <div className="flex h-full dark:bg-dark">
-            <div className="w-2/3">
-                <div className="flex justify-between items-center py-5 px-10">
-                    <div className="text-darkblue dark:text-white font-semibold font-inter text-3xl">
-                        Analytics
-                    </div>
-                    <div className="flex space-x-5 text-black dark:text-white">
-                        <div className="flex items-center space-x-1">
-                            <CalendarDays strokeWidth={1.3} />
-                            <p className='font-inter font-medium text-sm '>Monday, 4th September</p>
-                        </div>
-                        <div className="bg-[#f1eef6] rounded-full aspect-square p-2">
-                            <BellDot size={25} strokeWidth={2} absoluteStrokeWidth className='text-darkblue' />
-                        </div>
-                    </div>
-                </div>
-                <div className="flex p-8 space-x-5">
-                    {/* leftside */}
-                    <div className="w-1/3 flex flex-col space-y-4">
-                        <div className="py-4 px-6 outline outline-1 outline-gray-200 rounded-2xl flex flex-col justify-center items-center">
-                            <div className="flex justify-start space-x-4 items-center w-full">
-                                <div className="w-14 bg-[#f1eef6] dark:bg-opacity-5 flex items-center justify-center text-blueblack dark:text-highlight rounded-xl aspect-square text-3xl">
-                                    <FontAwesomeIcon icon={faClock} />
-                                </div>
-                                <div className="flex flex-col  ">
-                                    <span className='capitalize text-gray-400 text-sm'>hours spent</span>
-                                    <span className='font-semiBold text-2xl dark:text-white' >54 hours</span>
-                                </div>
-                            </div>
-                            <div className="h-[1px] w-full bg-gray-200 my-5"></div>
-                            <div className="flex justify-start space-x-4 items-center w-full">
-                                <div className="w-14 bg-[#f1eef6] dark:bg-opacity-5 flex items-center justify-center text-blueblack dark:text-highlight rounded-xl aspect-square text-3xl">
-                                    <FontAwesomeIcon icon={faAward} />
-                                </div>
-                                <div className="flex flex-col  ">
-                                    <span className='capitalize text-gray-400 text-sm'>Achivements</span>
-                                    <span className='font-semiBold text-2xl dark:text-white' >54</span>
-                                </div>
-                            </div>
-                            <div className="h-[1px] w-full bg-gray-200 my-5"></div>
-                            <div className="flex justify-start space-x-4 items-center w-full">
-                                <div className="w-14 bg-[#f1eef6] dark:bg-opacity-5 flex items-center justify-center text-blueblack dark:text-highlight rounded-xl aspect-square text-3xl">
-                                    <FontAwesomeIcon icon={faSquarePollVertical} />
-                                </div>
-                                <div className="flex flex-col  ">
-                                    <span className='capitalize text-gray-400 text-sm'>team progress</span>
-                                    <span className='font-semiBold text-2xl dark:text-white' >84%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="py-4 px-4 outline outline-1 outline-gray-200 rounded-2xl flex flex-col justify-center items-center">
+
+
+    const linechartData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        dataPoints: [5, 9, 1, 5, 2, 4, 5, 2, 4, 5, 2, 4, 5],
+    };
+
+
+    return (
+        <div className="flex flex-col h-full dark:bg-darkoverflow-hidden">
+
+
+            {/* Dashboard Content */}
+            <div className="flex gap-5">
+                {/* First vertical data card */}
+                <div className="flex flex-col justify-center w-1/12 bg-base shadow-xl text-black gap-2 py-4 rounded-xl">
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-1/2">
                             <DonutChart
-                                labels={['frontend', 'backend', 'design']}
-                                dataPoints={[500, 300, 500]}
-                                // backgroundColors={['#133d57', '#f25287', '#00adb5', '#777']}
-                                // hoverColors={['#071924', '#bf406a', '#007c82','#999']}
-                                centerText="75"
-                                label="your interests"
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={['10', '90']}
+                                centerText={'10%'}
                             />
                         </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">54</h2>
+                            <h3 className="text-sm">pending</h3>
+                        </div>
                     </div>
-                    {/* rightside */}
-                    <div className="w-2/3 flex flex-col">
-                        <div className="outline outline-1 outline-gray-200 rounded-2xl ">
-                            <div className="flex justify-between items-center pt-4 px-6 ">
-                                <h2 className='font-inter font-bold text-gray-900 dark:text-white '>{label}</h2>
-                                <div className="relative py-2 px-3 rounded-lg outline outline-1 outline-gray-200 dark:outline-[#ffffff33] flex space-x-3 items-center group cursor-pointer">
-                                    <div className="font-inter text-gray-600 dark:text-white text-sm">Weekly</div>
-                                    <ChevronDown size={18} className="transition-transform duration-300 group-hover:rotate-180 dark:text-highlight group-hover:text-highlight" />
-                                    <ul className='hidden z-10 hover:block py-2 group-hover:block absolute bg-white dark:bg-dark dark:text-white rounded-tl-none border border-r top-0 dark:border-[#ffffff33] right-0 translate-y-9 rounded-lg w-full text-gray-900'>
-                                        <li className='hover:bg-[#f3f4f6] hover:text-highlight transition-all p-1 px-3 cursor-pointer ' >Daily</li>
-                                        <li className='hover:bg-[#f3f4f6] hover:text-highlight transition-all p-1 px-3 cursor-pointer '>Weakly</li>
-                                        <li className='hover:bg-[#f3f4f6] hover:text-highlight transition-all p-1 px-3 cursor-pointer '>Monthly</li>
-                                        <li className='hover:bg-[#f3f4f6] hover:text-highlight transition-all p-1 px-3 cursor-pointer '>Yearly</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div className="flex">
-                                <div className="w-4/5 p-5">
-                                    <ProgressBarChart
-                                        labels={labels}
-                                        dataPoints={dataPoints}
-                                        label={label}
-                                        backgroundColor={backgroundColor}
-                                        borderColor={borderColor}
-                                        barSpacing={barSpacing}
-                                    />
-                                </div>
-                                <div className="w-1/5 flex flex-col justify-center items-center space-y-4 pe-6">
-                                    <div className="flex flex-col space-y-1 w-full">
-                                        <p className="font-inter text-gray-400 text-xs text-start">Time spent</p>
-                                        <div className="flex justify-between items-center">
-                                            <span className='font-inter font-semibold text-sm uppercase dark:text-white' >18h</span>
-                                            <div className="bg-light text-center py-1 text-xs px-2 rounded-xl">100%</div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col space-y-1 w-full">
-                                        <p className="font-inter text-gray-400 text-xs text-start">Rework time</p>
-                                        <div className="flex justify-between items-center">
-                                            <span className='font-inter font-semibold text-sm uppercase dark:text-white' >3h</span>
-                                            <div className="bg-light text-center py-1 text-xs px-2 rounded-xl">16%</div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col space-y-1 w-full">
-                                        <p className="font-inter text-gray-400 text-xs text-start">Testing time</p>
-                                        <div className="flex justify-between items-center">
-                                            <span className='font-inter font-semibold text-sm uppercase dark:text-white ' >2H</span>
-                                            <div className="bg-light text-center py-1 text-xs px-2 rounded-xl">9%</div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-1/2">
+                            <DonutChart
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={['10', '90']}
+                                centerText={'10%'}
+                            />
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">54</h2>
+                            <h3 className="text-sm">pending</h3>
+                        </div>
+                    </div>
+                    <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-1/2">
+                            <DonutChart
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={['10', '90']}
+                                centerText={'10%'}
+                            />
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">54</h2>
+                            <h3 className="text-sm">pending</h3>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Second vertical data card */}
+                <div className="flex flex-col justify-center w-1/12 bg-base shadow-xl text-black gap-2 py-4 rounded-xl">
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-1/2">
+                            <DonutChart
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={['10', '90']}
+                                centerText={'10%'}
+                            />
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">54</h2>
+                            <h3 className="text-sm">pending</h3>
+                        </div>
+                    </div>
+                    <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-1/2">
+                            <DonutChart
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={['10', '90']}
+                                centerText={'10%'}
+                            />
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">54</h2>
+                            <h3 className="text-sm">pending</h3>
+                        </div>
+                    </div>
+                    <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-1/2">
+                            <DonutChart
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={['10', '90']}
+                                centerText={'10%'}
+                            />
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">54</h2>
+                            <h3 className="text-sm">pending</h3>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Project cards */}
+                <div className="flex flex-col w-1/6 gap-5">
+                    <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base shadow-xl text-black gap-2 p-4 rounded-xl">
+                        <FontAwesomeIcon icon={faListCheck} className="text-2xl" />
+                        <h2 className="font-semibold capitalize">projects</h2>
+                        <h2 className="text-3xl">95</h2>
+                        <h3 className='flex items-center'><MoveDownLeft className='text-red-500' />10% decrease from last month</h3>
+                    </div>
+                    <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base shadow-xl text-black gap-2 p-4 rounded-xl">
+                        <FontAwesomeIcon icon={faPeopleGroup} className="text-2xl" />
+                        <h2 className="font-semibold capitalize">teams</h2>
+                        <h2 className="text-3xl">95</h2>
+                        <h3 className='flex items-center'><MoveUpRight className='text-green-500' />10% increase from last month</h3>
+                    </div>
+                </div>
+
+                {/* Main chart area */}
+                <div className="w-4/6 flex flex-col">
+                    <div className="outline outline-1 outline-gray-200 bg-base shadow-lg rounded-2xl">
+                        <div className="flex justify-between items-center pt-4 px-6">
+                            <h2 className="font-inter font-bold text-gray-900 dark:text-white">
+                                {label}
+                            </h2>
+                        </div>
+                        <div className="flex">
+                            <div className="w-full p-5">
+                                <LineChart
+                                    labels={linechartData.labels}
+                                    dataPoints={linechartData.dataPoints}
+                                    label={linechartData.label}
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="w-1/3 rounded-tl-3xl rounded-bl-3xl bg-base shadow-lg">
 
+            {/* Bottom section */}
+            <div className="flex mt-8 gap-3">
+                <div className="flex flex-col space-y-4 outline outline-1 outline-gray-200 bg-base shadow-lg p-5 rounded-2xl">
+                    <div className="py-4 px-4 flex flex-col items-center">
+                        <DonutChart
+                            labels={['frontend', 'backend', 'design']}
+                            dataPoints={[500, 300, 500]}
+                            centerText="75"
+                            label="your interests"
+                            fontSize={45}
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-1 flex-col">
+                    <div className="outline outline-1 outline-gray-200 bg-base shadow-lg p-5 rounded-2xl">
+                        <div className="flex justify-between items-center pt-4 px-6">
+                            <h2 className="font-inter font-bold text-gray-900 dark:text-white">
+                                {label}
+                            </h2>
+                        </div>
+                        <div className="flex">
+                            <div className="w-full p-5">
+                                <ProgressBarChart
+                                    labels={linechartData.labels}
+                                    dataPoints={linechartData.dataPoints}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </>
+    );
 }

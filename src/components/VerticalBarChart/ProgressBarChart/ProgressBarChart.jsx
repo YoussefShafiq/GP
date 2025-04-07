@@ -14,6 +14,7 @@ export default function VerticalBarChart({
     barSpacing = 0.5,
     backgroundColors = [
         '#00ADB5', // Teal
+
         '#133D57', // Dark Teal-Blue
         '#F25287', // Pink-Red
 

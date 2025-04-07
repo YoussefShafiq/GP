@@ -29,7 +29,7 @@ export default function Dashboard() {
             {/* Dashboard Content */}
             <div className="flex gap-5">
                 {/* First vertical data card */}
-                <div className="flex flex-col justify-center w-1/12 bg-base shadow-xl text-black gap-2 py-4 rounded-xl">
+                <div className="flex flex-col justify-center w-1/12 bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 py-4 rounded-xl">
                     <div className="flex flex-col justify-center items-center gap-2">
                         <div className="w-1/2">
                             <DonutChart
@@ -74,7 +74,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Second vertical data card */}
-                <div className="flex flex-col justify-center w-1/12 bg-base shadow-xl text-black gap-2 py-4 rounded-xl">
+                <div className="flex flex-col justify-center w-1/12 bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 py-4 rounded-xl">
                     <div className="flex flex-col justify-center items-center gap-2">
                         <div className="w-1/2">
                             <DonutChart
@@ -120,13 +120,13 @@ export default function Dashboard() {
 
                 {/* Project cards */}
                 <div className="flex flex-col w-1/6 gap-5">
-                    <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base shadow-xl text-black gap-2 p-4 rounded-xl">
+                    <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
                         <FontAwesomeIcon icon={faListCheck} className="text-2xl" />
                         <h2 className="font-semibold capitalize">projects</h2>
                         <h2 className="text-3xl">95</h2>
                         <h3 className='flex items-center'><MoveDownLeft className='text-red-500' />10% decrease from last month</h3>
                     </div>
-                    <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base shadow-xl text-black gap-2 p-4 rounded-xl">
+                    <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
                         <FontAwesomeIcon icon={faPeopleGroup} className="text-2xl" />
                         <h2 className="font-semibold capitalize">teams</h2>
                         <h2 className="text-3xl">95</h2>
@@ -136,7 +136,7 @@ export default function Dashboard() {
 
                 {/* Main chart area */}
                 <div className="w-4/6 flex flex-col">
-                    <div className="outline outline-1 outline-gray-200 bg-base shadow-lg rounded-2xl">
+                    <div className="bg-base dark:bg-dark1 shadow-lg rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
                                 {label}
@@ -157,7 +157,7 @@ export default function Dashboard() {
 
             {/* Bottom section */}
             <div className="flex mt-8 gap-3">
-                <div className="flex flex-col space-y-4 outline outline-1 outline-gray-200 bg-base shadow-lg p-5 rounded-2xl">
+                <div className="flex flex-col space-y-4 bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                     <div className="py-4 px-4 flex flex-col items-center">
                         <DonutChart
                             labels={['frontend', 'backend', 'design']}
@@ -169,7 +169,7 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div className="flex flex-1 flex-col">
-                    <div className="outline outline-1 outline-gray-200 bg-base shadow-lg p-5 rounded-2xl">
+                    <div className="bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
                                 {label}

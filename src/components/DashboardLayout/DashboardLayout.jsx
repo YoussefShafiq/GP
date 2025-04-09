@@ -1,6 +1,6 @@
 import { ChevronDown } from 'lucide-react';
-import React, { useContext, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { projectContext } from '../../context/ProjectsContext';
@@ -9,13 +9,14 @@ import { TeamsContext } from '../../context/TeamsContext';
 export default function DashboardLayout() {
     const { selectedDashboardProject, setselectedDashboardProject } = useContext(projectContext)
     const { selectedDashboardTeam, setselectedDashboardTeam } = useContext(TeamsContext)
+    const navigate = useNavigate()
 
     const token = localStorage.getItem('userToken');
 
     // Fetch projects with React Query
     const { data: projectsData, isLoading: isLoadingProjects } = useQuery({
         queryKey: ['allprojects'],
-        queryFn: () => axios.get('https://brainmate.fly.dev/api/v1/projects', {
+        queryFn: () => axios.get('https://brainmate.fly.dev/api/v1/projects/assigned', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -36,7 +37,34 @@ export default function DashboardLayout() {
         enabled: !!selectedDashboardProject,
     });
 
+    useEffect(() => {
+        if (selectedDashboardProject) {
+            const project = projectsData.data.data.projects.find(project => project.id == selectedDashboardProject)
+            if (project == undefined) {
+                setselectedDashboardProject('');
+            }
+            handleDashboardProjectChange(project);
+        } else {
+            navigate('/dashboard')
+        }
+    }, []);
+
+    function handleDashboardProjectChange(project) {
+        if (project == undefined) {
+            navigate('/dashboard')
+        }
+        if (project.is_manager) {
+            navigate('project-dashboard')
+        }
+    }
+
     const handleProjectChange = (e) => {
+        const project = projectsData.data.data.projects.find(project => project.id == e.target.value)
+        console.log(project);
+        if (project == undefined) {
+            setselectedDashboardProject('');
+        }
+        handleDashboardProjectChange(project);
         setselectedDashboardProject(e.target.value);
         setselectedDashboardTeam('');
     };

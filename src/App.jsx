@@ -40,6 +40,7 @@ import MaterialsItems from './components/MaterialsItems/MaterialsItems';
 import ErrorPage from './components/ErrorPage/ErrorPage'; // Import your error component
 import Backlog from './pages/Backlog/Backlog';
 import DashboardLayout from './components/DashboardLayout/DashboardLayout';
+import ProjectDashboard from './pages/ProjectDashboard/ProjectDashboard';
 
 let routers = createBrowserRouter([
   { path: 'login/:token?', element: <GoHome><Login /></GoHome>, errorElement: <ErrorPage /> },
@@ -54,6 +55,7 @@ let routers = createBrowserRouter([
       {
         path: 'dashboard', element: <ProtectedRoute><DashboardLayout /></ProtectedRoute>, children: [
           { index: true, element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
+          { path: 'project-dashboard', element: <ProtectedRoute><ProjectDashboard /></ProtectedRoute> },
         ]
       },
       { path: 'mytasks', element: <ProtectedRoute><Mytasks /></ProtectedRoute> },

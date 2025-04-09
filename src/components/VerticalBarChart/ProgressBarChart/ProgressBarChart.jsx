@@ -26,6 +26,8 @@ export default function VerticalBarChart({
         '#FF668E', // Brighter Pink-Red
 
     ],
+    barThickness = 20,
+    borderRadius = 50
 }) {
     // Define chart data based on the props received
     const data = {
@@ -37,8 +39,8 @@ export default function VerticalBarChart({
                 backgroundColor: backgroundColors,
                 hoverColors: hoverColors, // bar color (progress bar color)
                 borderWidth: 0,
-                borderRadius: 50, // Round the corners of the bars
-                barThickness: 20, // Make the bars thicker (to simulate progress bars)
+                borderRadius: borderRadius, // Round the corners of the bars
+                barThickness: barThickness, // Make the bars thicker (to simulate progress bars)
                 hoverBackgroundColor: hoverColors, // Hover color effect
                 hoverBorderColor: 'rgba(75, 192, 192, 1)', // Hover border color
             },

@@ -9,6 +9,8 @@ import { TeamsContext } from '../../context/TeamsContext';
 export default function DashboardLayout() {
     const { selectedDashboardProject, setselectedDashboardProject } = useContext(projectContext)
     const { selectedDashboardTeam, setselectedDashboardTeam } = useContext(TeamsContext)
+    const [Project, setProject] = useState(null)
+    const [Team, setTeam] = useState(null)
     const navigate = useNavigate()
 
     const token = localStorage.getItem('userToken');
@@ -39,27 +41,46 @@ export default function DashboardLayout() {
 
     useEffect(() => {
         if (selectedDashboardProject) {
-            const project = projectsData.data.data.projects.find(project => project.id == selectedDashboardProject)
-            if (project == undefined) {
-                setselectedDashboardProject('');
+            if (selectedDashboardTeam) {
+                const team = projectTeamsData?.data?.data?.teams.find(team => team.id == selectedDashboardTeam)
+                setTeam(team)
+                if (team == undefined) {
+                    setselectedDashboardTeam('');
+                }
+                handleDashboardTeamChange(team);
+            } else {
+                const project = projectsData?.data?.data?.projects.find(project => project.id == selectedDashboardProject)
+                setProject(project)
+                if (project == undefined) {
+                    setselectedDashboardProject('');
+                }
+                handleDashboardProjectChange(project);
             }
-            handleDashboardProjectChange(project);
         } else {
             navigate('/dashboard')
         }
     }, []);
 
     function handleDashboardProjectChange(project) {
-        if (project == undefined) {
+        console.log(project);
+
+        if (project === undefined) {
+            console.log('project undefined');
+
             navigate('/dashboard')
         }
         if (project.is_manager) {
+            console.log('project manager');
+
             navigate('project-dashboard')
+        } else {
+            console.log('not project manager');
+            navigate('/dashboard')
         }
     }
 
     const handleProjectChange = (e) => {
-        const project = projectsData.data.data.projects.find(project => project.id == e.target.value)
+        const project = projectsData?.data?.data?.projects.find(project => project.id == e.target.value)
         console.log(project);
         if (project == undefined) {
             setselectedDashboardProject('');
@@ -69,8 +90,26 @@ export default function DashboardLayout() {
         setselectedDashboardTeam('');
     };
 
+    function handleDashboardTeamChange(Team) {
+        console.log(Team);
+
+        console.log(Team);
+        if (Team == undefined) {
+            setselectedDashboardTeam('');
+            handleDashboardProjectChange(Project);
+        } else if (Team.role == 'manager' || Team.role == 'leader') {
+            navigate('managment-team-dashboard')
+        } else {
+            navigate('team-dashboard')
+        }
+    }
+
     const handleTeamChange = (e) => {
         setselectedDashboardTeam(e.target.value);
+        const team = projectTeamsData?.data?.data?.teams.find(team => team.id == e.target.value)
+        console.log(team);
+        handleDashboardTeamChange(team);
+
     };
 
     return (
@@ -82,7 +121,7 @@ export default function DashboardLayout() {
                 </div>
                 <div className="flex space-x-5 items-center">
                     <div className="flex space-x-3">
-                        <div className="relative min-w-[200px]">
+                        <div className="min-w-[200px]">
                             <select
                                 value={selectedDashboardProject}
                                 onChange={handleProjectChange}
@@ -95,13 +134,9 @@ export default function DashboardLayout() {
                                     </option>
                                 ))}
                             </select>
-                            <ChevronDown
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
-                                size={18}
-                            />
                         </div>
 
-                        <div className="relative min-w-[180px]">
+                        <div className="min-w-[180px]">
                             <select
                                 value={selectedDashboardTeam}
                                 onChange={handleTeamChange}
@@ -115,10 +150,6 @@ export default function DashboardLayout() {
                                     </option>
                                 ))}
                             </select>
-                            <ChevronDown
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
-                                size={18}
-                            />
                         </div>
                     </div>
                 </div>

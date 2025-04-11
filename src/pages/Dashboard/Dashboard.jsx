@@ -1,7 +1,6 @@
 import { BellDot, ChevronDown, MoveDownLeft, MoveUpRight } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import VerticalBarChart from '../../components/VerticalBarChart/VerticalBarChart';
-import ProgressBarChart from '../../components/VerticalBarChart/ProgressBarChart/ProgressBarChart';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import { faAward, faListCheck, faPeopleGroup, faSquarePollVertical } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +8,7 @@ import DonutChart from '../../components/DonutChart/DonutChart';
 import LineChart from '../../components/LineChart/LineChart';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import VerticalBarChart from '../../components/ProgressBarChart/ProgressBarChart';
 
 
 export default function Dashboard() {
@@ -157,8 +157,8 @@ export default function Dashboard() {
 
             {/* Bottom section */}
             <div className="flex mt-8 gap-3">
-                <div className="flex flex-col space-y-4 bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
-                    <div className="py-4 px-4 flex flex-col items-center">
+                <div className=" bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
+                    <div className="h-[300px]">
                         <DonutChart
                             labels={['frontend', 'backend', 'design']}
                             dataPoints={[500, 300, 500]}
@@ -177,7 +177,7 @@ export default function Dashboard() {
                         </div>
                         <div className="flex">
                             <div className="w-full p-5">
-                                <ProgressBarChart
+                                <VerticalBarChart
                                     labels={linechartData.labels}
                                     dataPoints={linechartData.dataPoints}
                                     backgroundColors={['#00c5c9']}

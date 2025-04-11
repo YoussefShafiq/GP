@@ -41,6 +41,8 @@ import ErrorPage from './components/ErrorPage/ErrorPage'; // Import your error c
 import Backlog from './pages/Backlog/Backlog';
 import DashboardLayout from './components/DashboardLayout/DashboardLayout';
 import ProjectDashboard from './pages/ProjectDashboard/ProjectDashboard';
+import MngrLeaderTeamDashboard from './pages/MngrLeaderTeamDashboard/MngrLeaderTeamDashboard';
+import MemberTeamDashboard from './pages/MemberTeamDashboard/MemberTeamDashboard';
 
 let routers = createBrowserRouter([
   { path: 'login/:token?', element: <GoHome><Login /></GoHome>, errorElement: <ErrorPage /> },
@@ -56,6 +58,8 @@ let routers = createBrowserRouter([
         path: 'dashboard', element: <ProtectedRoute><DashboardLayout /></ProtectedRoute>, children: [
           { index: true, element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
           { path: 'project-dashboard', element: <ProtectedRoute><ProjectDashboard /></ProtectedRoute> },
+          { path: 'managment-team-dashboard', element: <ProtectedRoute><MngrLeaderTeamDashboard /></ProtectedRoute> },
+          { path: 'team-dashboard', element: <ProtectedRoute><MemberTeamDashboard /></ProtectedRoute> },
         ]
       },
       { path: 'mytasks', element: <ProtectedRoute><Mytasks /></ProtectedRoute> },

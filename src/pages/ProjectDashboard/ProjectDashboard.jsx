@@ -1,6 +1,6 @@
 import React from 'react'
 import DonutChart from '../../components/DonutChart/DonutChart'
-import ProgressBarChart from '../../components/VerticalBarChart/ProgressBarChart/ProgressBarChart';
+import ProgressBarChart from '../../components/ProgressBarChart/ProgressBarChart';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import { faAward, faListCheck, faPeopleGroup, faSquarePollVertical } from '@fortawesome/free-solid-svg-icons';

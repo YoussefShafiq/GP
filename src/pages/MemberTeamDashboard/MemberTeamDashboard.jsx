@@ -1,5 +1,5 @@
 import React from 'react'
-import VerticalBarChart from '../../components/ProgressBarChart/ProgressBarChart';
+import VerticalBarChart from '../../components/VerticalBarChart/VerticalBarChart';
 import DonutChart from '../../components/DonutChart/DonutChart';
 import LineChart from '../../components/LineChart/LineChart';
 
@@ -40,7 +40,7 @@ export default function MemberTeamDashboard() {
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <h3 className="text-sm">Overdue tasks</h3>
+                            <h3 className="text-sm">At risk tasks</h3>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@ export default function MemberTeamDashboard() {
                     <div className="bg-base dark:bg-dark1 shadow-lg rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
-                                {label}
+                                Total tasks duration per month
                             </h2>
                         </div>
                         <div className="flex">
@@ -164,7 +164,7 @@ export default function MemberTeamDashboard() {
                     <div className="bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
-                                {label}
+                                Task completion rate over Year
                             </h2>
                         </div>
                         <div className="flex">

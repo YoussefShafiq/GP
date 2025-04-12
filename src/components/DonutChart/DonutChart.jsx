@@ -38,7 +38,8 @@ export default function DonutChart({
     cutout = '75%',
     centerText = '',
     label = '',
-    fontSize = 16
+    fontSize = 16,
+    borderRadius = 50
 }) {
     // Define chart data based on the props received
     const data = {
@@ -51,7 +52,7 @@ export default function DonutChart({
                 hoverBackgroundColor: hoverColors,
                 // borderColor: borderColor, 
                 borderWidth: borderWidth,
-                borderRadius: 50,
+                borderRadius: borderRadius,
             },
         ],
     };

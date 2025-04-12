@@ -1,12 +1,16 @@
 import React from 'react'
 import DonutChart from '../../components/DonutChart/DonutChart'
-import VerticalBarChart from '../../components/ProgressBarChart/ProgressBarChart';
+import VerticalBarChart from '../../components/VerticalBarChart/VerticalBarChart';
 import LineChart from '../../components/LineChart/LineChart';
 
 export default function MngrLeaderTeamDashboard() {
     const label = 'Task Progress';
 
 
+    const linechartData2 = {
+        labels: ['member 1', 'member 2', 'member 3', 'member 4', 'member 5', 'member 6', 'member 7', 'member 8', 'member 9', 'member 10', 'member 11', 'member 12'],
+        dataPoints: [5, 9, 1, 5, 2, 4, 5, 2, 4, 5, 2, 4, 5],
+    }
 
     const linechartData = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -21,6 +25,7 @@ export default function MngrLeaderTeamDashboard() {
                         <div className="w-2/3">
                             <DonutChart
                                 backgroundColors={['#00c5c9', '#ffffff33']}
+                                hoverColors={['#00C5C9', '#ffffff33']}
                                 dataPoints={['10', '90']}
                                 centerText={'10%'}
                                 fontSize={26}
@@ -40,7 +45,7 @@ export default function MngrLeaderTeamDashboard() {
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <h3 className="text-sm">Overdue tasks</h3>
+                            <h3 className="text-sm">At risk tasks</h3>
                         </div>
                     </div>
                 </div>
@@ -48,15 +53,15 @@ export default function MngrLeaderTeamDashboard() {
                     <div className="bg-base dark:bg-dark1 shadow-lg rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
-                                {label}
+                                Workload distribution across team members
                             </h2>
                         </div>
                         <div className="flex">
                             <div className="w-full p-5">
                                 <LineChart
-                                    labels={linechartData.labels}
-                                    dataPoints={linechartData.dataPoints}
-                                    label={linechartData.label}
+                                    labels={linechartData2.labels}
+                                    dataPoints={linechartData2.dataPoints}
+                                    label={linechartData2.label}
                                 />
                             </div>
                         </div>
@@ -109,6 +114,8 @@ export default function MngrLeaderTeamDashboard() {
                                 labels={['frontend']}
                                 dataPoints={[500, 300]}
                                 centerText="75"
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                hoverColors={['#00C5C9', '#ffffff33']}
                                 label="Pending"
                                 fontSize={20}
                             />
@@ -118,6 +125,8 @@ export default function MngrLeaderTeamDashboard() {
                                 labels={['frontend']}
                                 dataPoints={[500, 300]}
                                 centerText="75"
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                hoverColors={['#00C5C9', '#ffffff33']}
                                 label="in progress"
                                 fontSize={20}
                             />
@@ -127,6 +136,8 @@ export default function MngrLeaderTeamDashboard() {
                                 labels={['frontend']}
                                 dataPoints={[500, 300]}
                                 centerText="75"
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                hoverColors={['#00C5C9', '#ffffff33']}
                                 label="Completed"
                                 fontSize={20}
                             />
@@ -136,6 +147,8 @@ export default function MngrLeaderTeamDashboard() {
                                 labels={['frontend']}
                                 dataPoints={[500, 300]}
                                 centerText="75"
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                hoverColors={['#00C5C9', '#ffffff33']}
                                 label="in review"
                                 fontSize={20}
                             />
@@ -145,6 +158,8 @@ export default function MngrLeaderTeamDashboard() {
                                 labels={['frontend']}
                                 dataPoints={[500, 300]}
                                 centerText="75"
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                hoverColors={['#00C5C9', '#ffffff33']}
                                 label="cancelled"
                                 fontSize={20}
                             />
@@ -154,6 +169,8 @@ export default function MngrLeaderTeamDashboard() {
                                 labels={['frontend']}
                                 dataPoints={[500, 300]}
                                 centerText="75"
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                hoverColors={['#00C5C9', '#ffffff33']}
                                 label="on hold"
                                 fontSize={20}
                             />
@@ -177,7 +194,7 @@ export default function MngrLeaderTeamDashboard() {
                     <div className="bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
-                                {label}
+                                Task completion rate over Year
                             </h2>
                         </div>
                         <div className="flex">

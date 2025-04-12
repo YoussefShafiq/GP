@@ -8,16 +8,20 @@ import DonutChart from '../../components/DonutChart/DonutChart';
 import LineChart from '../../components/LineChart/LineChart';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import VerticalBarChart from '../../components/ProgressBarChart/ProgressBarChart';
+import VerticalBarChart from '../../components/VerticalBarChart/VerticalBarChart';
 
 
 export default function Dashboard() {
-    const label = 'Task Progress';
+    const label = 'Task Progress over last year';
 
 
 
     const linechartData = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        dataPoints: [5, 9, 1, 5, 2, 4, 5, 2, 4, 5, 2, 4, 5],
+    };
+    const linechartData2 = {
+        labels: ['project1', 'project2', 'project3', 'project4', 'project5', 'project6', 'project7', 'project8', 'project9', 'project10', 'project11', 'project12'],
         dataPoints: [5, 9, 1, 5, 2, 4, 5, 2, 4, 5, 2, 4, 5],
     };
 
@@ -122,13 +126,13 @@ export default function Dashboard() {
                 <div className="flex flex-col w-1/6 gap-5">
                     <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
                         <FontAwesomeIcon icon={faListCheck} className="text-2xl" />
-                        <h2 className="font-semibold capitalize">projects</h2>
+                        <h2 className="font-semibold capitalize">tasks</h2>
                         <h2 className="text-3xl">95</h2>
                         <h3 className='flex items-center'><MoveDownLeft className='text-red-500' />10% decrease from last month</h3>
                     </div>
                     <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
                         <FontAwesomeIcon icon={faPeopleGroup} className="text-2xl" />
-                        <h2 className="font-semibold capitalize">teams</h2>
+                        <h2 className="font-semibold capitalize">projects</h2>
                         <h2 className="text-3xl">95</h2>
                         <h3 className='flex items-center'><MoveUpRight className='text-green-500' />10% increase from last month</h3>
                     </div>
@@ -139,7 +143,7 @@ export default function Dashboard() {
                     <div className="bg-base dark:bg-dark1 shadow-lg rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
-                                {label}
+                                {label} (no of tasks completed per month)
                             </h2>
                         </div>
                         <div className="flex">
@@ -160,10 +164,10 @@ export default function Dashboard() {
                 <div className=" bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                     <div className="h-[300px]">
                         <DonutChart
-                            labels={['frontend', 'backend', 'design']}
+                            labels={['high', 'medium', 'low']}
                             dataPoints={[500, 300, 500]}
                             centerText="75"
-                            label="your interests"
+                            label="no of tasks per priority"
                             fontSize={45}
                         />
                     </div>
@@ -172,14 +176,14 @@ export default function Dashboard() {
                     <div className="bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
-                                {label}
+                                percentage of assigned tasks per project
                             </h2>
                         </div>
                         <div className="flex">
                             <div className="w-full p-5">
                                 <VerticalBarChart
-                                    labels={linechartData.labels}
-                                    dataPoints={linechartData.dataPoints}
+                                    labels={linechartData2.labels}
+                                    dataPoints={linechartData2.dataPoints}
                                     backgroundColors={['#00c5c9']}
                                     hoverColors={['#1A4E6B']}
                                 />

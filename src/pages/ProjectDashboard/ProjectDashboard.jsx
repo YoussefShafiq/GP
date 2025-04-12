@@ -1,6 +1,6 @@
 import React from 'react'
 import DonutChart from '../../components/DonutChart/DonutChart'
-import ProgressBarChart from '../../components/ProgressBarChart/ProgressBarChart';
+import VerticalBarChart from '../../components/VerticalBarChart/VerticalBarChart';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import { faAward, faListCheck, faPeopleGroup, faSquarePollVertical } from '@fortawesome/free-solid-svg-icons';
@@ -8,15 +8,15 @@ import { MoveDownLeft, MoveUpRight } from 'lucide-react';
 import LineChart from '../../components/LineChart/LineChart';
 
 export default function ProjectDashboard() {
-    const label = 'Task Progress';
+    const label = 'Monthly overall progress per project';
 
-    const barchartData = {
-        labels: ['pending', 'inprogress', 'completed', 'cancelled', 'on hold', 'in review'],
+    const linechartData = {
+        labels: ['team1', 'team2', 'team3', 'team4', 'team5', 'team6', 'team7'],
         dataPoints: [5, 9, 1, 5, 2, 4, 5],
     };
 
 
-    const linechartData = {
+    const barchartData = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         dataPoints: [5, 9, 1, 5, 2, 4, 5, 2, 4, 5, 2, 4, 5],
     };
@@ -119,7 +119,7 @@ export default function ProjectDashboard() {
                     <div className="bg-base dark:bg-dark1 shadow-lg rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
-                                {label}
+                                Overall progress per team
                             </h2>
                         </div>
                         <div className="flex">
@@ -161,7 +161,7 @@ export default function ProjectDashboard() {
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <h3 className="text-sm">Overdue tasks</h3>
+                            <h3 className="text-sm">in progress tasks</h3>
                         </div>
                     </div>
                 </div>
@@ -189,7 +189,7 @@ export default function ProjectDashboard() {
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <h3 className="text-sm">Overdue tasks</h3>
+                            <h3 className="text-sm">Completed tasks</h3>
                         </div>
                     </div>
                 </div>
@@ -197,15 +197,16 @@ export default function ProjectDashboard() {
                     <div className="bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
-                                {label}
+
+                                Monthly overall progress per project
                             </h2>
                         </div>
                         <div className="flex">
                             <div className="w-full p-5">
-                                <ProgressBarChart
+                                <VerticalBarChart
                                     labels={barchartData.labels}
                                     dataPoints={barchartData.dataPoints}
-                                    barThickness={60}
+                                    barThickness={40}
                                     borderRadius={20}
                                     backgroundColors={['#00c5c9']}
                                     hoverColors={['#1A4E6B']}

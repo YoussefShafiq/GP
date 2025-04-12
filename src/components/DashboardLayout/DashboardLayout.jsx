@@ -69,7 +69,7 @@ export default function DashboardLayout() {
 
             navigate('/dashboard')
         }
-        if (project.is_manager) {
+        if (project?.is_manager) {
             console.log('project manager');
 
             navigate('project-dashboard')

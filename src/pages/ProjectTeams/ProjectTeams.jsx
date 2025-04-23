@@ -45,7 +45,7 @@ export default function ProjectTeams() {
     }, []);
 
     function getProjectTeams() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/${selectedProject.id}/teams`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/projects/${selectedProject.id}/teams`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -77,7 +77,7 @@ export default function ProjectTeams() {
         setsendingRequest(true)
         try {
             let response = await axios.post(
-                `https://brainmate.fly.dev/api/v1/projects/${selectedProject.id}/teams/create`,
+                `https://brainmate-new.fly.dev/api/v1/projects/${selectedProject.id}/teams/create`,
                 values,
                 {
                     headers: {
@@ -134,7 +134,7 @@ export default function ProjectTeams() {
         setsendingRequest(true)
         try {
             await axios.delete(
-                `https://brainmate.fly.dev/api/v1/projects/${selectedProject.id}`,
+                `https://brainmate-new.fly.dev/api/v1/projects/${selectedProject.id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -182,7 +182,7 @@ export default function ProjectTeams() {
         setsendingRequest(true)
         try {
             const response = await axios.put(
-                `https://brainmate.fly.dev/api/v1/projects/${selectedProject.id}`,
+                `https://brainmate-new.fly.dev/api/v1/projects/${selectedProject.id}`,
                 values,
                 {
                     headers: {

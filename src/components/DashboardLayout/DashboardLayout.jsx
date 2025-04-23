@@ -18,7 +18,7 @@ export default function DashboardLayout() {
     // Fetch projects with React Query
     const { data: projectsData, isLoading: isLoadingProjects } = useQuery({
         queryKey: ['allprojects'],
-        queryFn: () => axios.get('https://brainmate.fly.dev/api/v1/projects/assigned', {
+        queryFn: () => axios.get('https://brainmate-new.fly.dev/api/v1/projects/assigned', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -26,7 +26,7 @@ export default function DashboardLayout() {
     });
 
     function getProjectTeams() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/${selectedDashboardProject}/teams`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/projects/${selectedDashboardProject}/teams`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

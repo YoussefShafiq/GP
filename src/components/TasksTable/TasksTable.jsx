@@ -22,7 +22,7 @@ export default function TasksTable({ tasks = [] }) {
         setLoadingTaskId(taskId); // Disable select for this task
         try {
             const response = await axios.put(
-                `https://brainmate.fly.dev/api/v1/tasks/${taskId}/status`,
+                `https://brainmate-new.fly.dev/api/v1/tasks/${taskId}/status`,
                 { status: `${newStatus}` },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -45,7 +45,7 @@ export default function TasksTable({ tasks = [] }) {
     }
 
     function getProfileData() {
-        return axios.get('https://brainmate.fly.dev/api/v1/profile', {
+        return axios.get('https://brainmate-new.fly.dev/api/v1/profile', {
             headers: {
                 Authorization: `Bearer ${token}`,
             }

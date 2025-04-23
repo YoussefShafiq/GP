@@ -37,7 +37,7 @@ import Materials from './pages/Materials/Materials';
 import MaterialsContextProvider from './context/MaterialsContext';
 import MaterialTeams from './components/MaterialTeams/MaterialTeams';
 import MaterialsItems from './components/MaterialsItems/MaterialsItems';
-import ErrorPage from './components/ErrorPage/ErrorPage'; // Import your error component
+import ErrorPage from './components/ErrorPage/ErrorPage';
 import Backlog from './pages/Backlog/Backlog';
 import DashboardLayout from './components/DashboardLayout/DashboardLayout';
 import ProjectDashboard from './pages/ProjectDashboard/ProjectDashboard';
@@ -50,7 +50,7 @@ let routers = createBrowserRouter([
   { path: 'forgetpassword', element: <GoHome><ForgetPass /></GoHome>, errorElement: <ErrorPage /> },
   { path: 'resetpassword', element: <ResetPassword />, errorElement: <ErrorPage /> },
   {
-    path: '', element: <Layout />, children: [
+    path: '', element: <Layout />, errorElement: <ErrorPage />, children: [
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
       { path: 'team-invitation-confirm', element: <ProtectedRoute><TeamInvitationConfirm /></ProtectedRoute> },
       { path: 'profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },

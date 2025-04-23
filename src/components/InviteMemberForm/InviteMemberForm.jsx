@@ -23,7 +23,7 @@ const InviteMemberForm = ({ isOpen, onClose, selectedTeam }) => {
         onSubmit: async (values, formikHelpers) => {
             try {
                 await axios.post(
-                    `https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/invite`,
+                    `https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}/invite`,
                     values,
                     {
                         headers: {

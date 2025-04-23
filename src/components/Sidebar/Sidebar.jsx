@@ -21,7 +21,7 @@ export default function Sidebar() {
 
   // Fetch projects
   function getProjects() {
-    return axios.get('https://brainmate.fly.dev/api/v1/projects/assigned', {
+    return axios.get('https://brainmate-new.fly.dev/api/v1/projects/assigned', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -38,7 +38,7 @@ export default function Sidebar() {
   async function addProject(values, { resetForm }) {
     try {
       const response = await axios.post(
-        'https://brainmate.fly.dev/api/v1/projects/create',
+        'https://brainmate-new.fly.dev/api/v1/projects/create',
         values,
         {
           headers: {
@@ -65,7 +65,7 @@ export default function Sidebar() {
   async function joinTeam(values, { resetForm }) {
     try {
       const response = await axios.post(
-        'https://brainmate.fly.dev/api/v1/projects/teams/join',
+        'https://brainmate-new.fly.dev/api/v1/projects/teams/join',
         values,
         {
           headers: {

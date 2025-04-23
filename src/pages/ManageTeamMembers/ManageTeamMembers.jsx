@@ -28,7 +28,7 @@ const ManageTeamMembers = () => {
     const { data: teamMembers, isLoading, isError, isRefetching } = useQuery({
         queryKey: ['teamMembers', selectedTeam?.id],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -38,7 +38,7 @@ const ManageTeamMembers = () => {
 
     // Get team details function
     function getTeamDetails() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -54,7 +54,7 @@ const ManageTeamMembers = () => {
 
     // Fetch current user's email
     const getProfileData = () => {
-        return axios.get('https://brainmate.fly.dev/api/v1/profile', {
+        return axios.get('https://brainmate-new.fly.dev/api/v1/profile', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -72,7 +72,7 @@ const ManageTeamMembers = () => {
         mutationFn: async ({ userId, role, email }) => {
             setUpdatingRole(userId);
             const response = await axios.put(
-                `https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/change-role`,
+                `https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}/change-role`,
                 { user_id: userId, role_id: `${role}`, email },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -103,7 +103,7 @@ const ManageTeamMembers = () => {
     const removeMemberMutation = useMutation({
         mutationFn: async (userId) => {
             const response = await axios.delete(
-                `https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/remove-user`,
+                `https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}/remove-user`,
                 {
                     data: { user_id: userId },
                     headers: { Authorization: `Bearer ${token}` },

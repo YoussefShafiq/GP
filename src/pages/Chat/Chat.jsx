@@ -33,7 +33,7 @@ export default function Chat() {
     const { data, isLoading } = useQuery({
         queryKey: ['chatTeams'],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/chat/teams`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/chat/teams`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

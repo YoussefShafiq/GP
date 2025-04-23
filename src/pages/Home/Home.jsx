@@ -14,7 +14,7 @@ export default function Home() {
     const { data: homeStatsData, isLoading: homeStatsLoading } = useQuery({
         queryKey: ['homeStats'],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/home/task-statistics`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/home/task-statistics`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -24,7 +24,7 @@ export default function Home() {
     const { data: inreviewTasksData, isLoading: inreviewTasksLoading } = useQuery({
         queryKey: ['inreviewTasks'],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/home/in-review`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/home/in-review`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -34,7 +34,7 @@ export default function Home() {
     const { data: toDoTasksData, isLoading: toDoTasksLoading, isError, error } = useQuery({
         queryKey: ['toDoTasks'],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/home/to-do-list`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/home/to-do-list`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

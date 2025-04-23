@@ -38,7 +38,7 @@ export default function TaskDetails() {
     const { data: taskData, isLoading: taskDataIsLoading, refetch, isRefetching, isError, error } = useQuery({
         queryKey: ['taskData', id || selectedTask?.id],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/tasks/${id || selectedTask?.id}`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/tasks/${id || selectedTask?.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -125,7 +125,7 @@ export default function TaskDetails() {
     };
     // Get team members function
     function getTeamMembers() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTask.team_id}/users`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTask.team_id}/users`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -140,7 +140,7 @@ export default function TaskDetails() {
     async function confirmDelete() {
         try {
             await axios.delete(
-                `https://brainmate.fly.dev/api/v1/tasks/${selectedTask.id}`,
+                `https://brainmate-new.fly.dev/api/v1/tasks/${selectedTask.id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -170,7 +170,7 @@ export default function TaskDetails() {
     const addNoteMutation = useMutation({
         mutationFn: (description) =>
             axios.post(
-                `https://brainmate.fly.dev/api/v1/tasks/${selectedTask.id}/notes`,
+                `https://brainmate-new.fly.dev/api/v1/tasks/${selectedTask.id}/notes`,
                 { description },
                 {
                     headers: {
@@ -262,7 +262,7 @@ export default function TaskDetails() {
         try {
             setuploading(true)
             const response = await axios.post(
-                `https://brainmate.fly.dev/api/v1/tasks/${selectedTask.id}/attachments`,
+                `https://brainmate-new.fly.dev/api/v1/tasks/${selectedTask.id}/attachments`,
                 formData,
                 {
                     headers: {
@@ -291,7 +291,7 @@ export default function TaskDetails() {
         setdeletingAttachment(true)
         try {
             await axios.delete(
-                `https://brainmate.fly.dev/api/v1/tasks/attachments/${attachmentId}`,
+                `https://brainmate-new.fly.dev/api/v1/tasks/attachments/${attachmentId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -661,12 +661,12 @@ export default function TaskDetails() {
                                         <div
                                             key={index}
                                             className="flex flex-col items-center p-3 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer dark:border-gray-700 relative"
-                                            onClick={() => window.open('https://brainmate.fly.dev/' + attachment.media, '_blank')}
+                                            onClick={() => window.open('https://brainmate-new.fly.dev/' + attachment.media, '_blank')}
                                         >
                                             {/* File Icon Based on File Type */}
                                             {['.jpg', '.png', '.svg', '.jpeg'].some(ext => attachment.name.toLowerCase().endsWith(ext)) ? (
                                                 <img
-                                                    src={`https://brainmate.fly.dev/${attachment.media}`}
+                                                    src={`https://brainmate-new.fly.dev/${attachment.media}`}
                                                     alt={attachment.name}
                                                     className="w-16 h-16 object-cover rounded-lg"
                                                 />

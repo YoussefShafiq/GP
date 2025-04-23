@@ -17,7 +17,7 @@ export default function LeaveTeamForm({ isOpen, onClose }) {
 
     // Fetch projects
     function getProjects() {
-        return axios.get('https://brainmate.fly.dev/api/v1/projects/assigned', {
+        return axios.get('https://brainmate-new.fly.dev/api/v1/projects/assigned', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -43,7 +43,7 @@ export default function LeaveTeamForm({ isOpen, onClose }) {
 
         try {
             const response = await axios.post(
-                `https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/leave`,
+                `https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}/leave`,
                 {},
                 {
                     headers: {

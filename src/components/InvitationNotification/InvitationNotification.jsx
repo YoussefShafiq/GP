@@ -12,7 +12,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
 
     // Fetch projects
     function getProjects() {
-        return axios.get('https://brainmate.fly.dev/api/v1/projects/assigned', {
+        return axios.get('https://brainmate-new.fly.dev/api/v1/projects/assigned', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -30,7 +30,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
         setsending(true)
         try {
             const response = await axios.post(
-                'https://brainmate.fly.dev/api/v1/projects/teams/accept',
+                'https://brainmate-new.fly.dev/api/v1/projects/teams/accept',
                 { token: invitationToken },
                 {
                     headers: {
@@ -65,7 +65,7 @@ const InvitationNotification = ({ notification, markAsRead, deleteNotification }
         setsending(true)
         try {
             const response = await axios.post(
-                'https://brainmate.fly.dev/api/v1/projects/teams/reject',
+                'https://brainmate-new.fly.dev/api/v1/projects/teams/reject',
                 { token: invitationToken },
                 {
                     headers: {

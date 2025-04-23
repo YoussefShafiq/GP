@@ -38,7 +38,7 @@ export default function NotesFolders() {
 
     // Fetch folders
     function getNotesFolders() {
-        return axios.get('https://brainmate.fly.dev/api/v1/notes/folders', {
+        return axios.get('https://brainmate-new.fly.dev/api/v1/notes/folders', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -49,7 +49,7 @@ export default function NotesFolders() {
     async function createFolder(values, { resetForm }) {
         setFolderform(false);
         try {
-            let response = await axios.post('https://brainmate.fly.dev/api/v1/notes/folders', values, {
+            let response = await axios.post('https://brainmate-new.fly.dev/api/v1/notes/folders', values, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -72,7 +72,7 @@ export default function NotesFolders() {
     // Delete a folder
     async function deleteFolder(folderId) {
         try {
-            await axios.delete(`https://brainmate.fly.dev/api/v1/notes/folders/${folderId}`, {
+            await axios.delete(`https://brainmate-new.fly.dev/api/v1/notes/folders/${folderId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

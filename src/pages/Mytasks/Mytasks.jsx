@@ -33,7 +33,7 @@ export default function MyTasks() {
 
     // Fetch user tasks
     function getUserTasks() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/tasks`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/tasks`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -47,7 +47,7 @@ export default function MyTasks() {
 
     // Fetch project teams
     function getProjectTeams() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/${filterProjectId}/teams`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/projects/${filterProjectId}/teams`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -59,7 +59,7 @@ export default function MyTasks() {
         queryFn: getProjectTeams,
         enabled: !!filterProjectId, // Only fetch if filterProjectId is defined
     });
- 
+
     // Invalidate the userTasks query when tasks are added, updated, or deleted
     const invalidateUserTasks = () => {
         queryClient.invalidateQueries(['userTasks']);

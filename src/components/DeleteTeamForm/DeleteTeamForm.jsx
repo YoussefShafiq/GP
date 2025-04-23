@@ -27,7 +27,7 @@ export default function DeleteTeamForm({ isOpen, onClose }) {
 
         try {
             await axios.delete(
-                `https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}`,
+                `https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

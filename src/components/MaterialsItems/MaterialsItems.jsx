@@ -23,7 +23,7 @@ export default function MaterialsItems() {
     const { data: attachmentsData, isLoading, isError, isRefetching } = useQuery({
         queryKey: ['attachments', { folderId: selectedTeamFolder?.id }], // Correct query key format
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/materials/${selectedTeamFolder.id}`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/materials/${selectedTeamFolder.id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             }),
         enabled: !!selectedTeamFolder?.id, // Only fetch if folderId is available
@@ -47,7 +47,7 @@ export default function MaterialsItems() {
 
         try {
             setUploading(true);
-            await axios.post(`https://brainmate.fly.dev/api/v1/materials/${selectedTeamFolder.id}`, formData, {
+            await axios.post(`https://brainmate-new.fly.dev/api/v1/materials/${selectedTeamFolder.id}`, formData, {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
             });
             toast.success('Attachments uploaded successfully', {
@@ -69,7 +69,7 @@ export default function MaterialsItems() {
     const handleFileDelete = async (attachmentId) => {
         setDeletingAttachment(true);
         try {
-            await axios.delete(`https://brainmate.fly.dev/api/v1/materials/${attachmentId}`, {
+            await axios.delete(`https://brainmate-new.fly.dev/api/v1/materials/${attachmentId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             toast.success('Attachment deleted successfully', {
@@ -155,9 +155,9 @@ export default function MaterialsItems() {
                     </> : <>
                         {attachmentsData?.data?.data?.attachments?.length > 0 ? (
                             attachmentsData.data.data.attachments.map((attachment, index) => (
-                                <div key={index} className="flex flex-col items-center p-3 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer dark:border-gray-700 relative" onClick={() => window.open('https://brainmate.fly.dev/' + attachment.media, '_blank')}>
+                                <div key={index} className="flex flex-col items-center p-3 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer dark:border-gray-700 relative" onClick={() => window.open('https://brainmate-new.fly.dev/' + attachment.media, '_blank')}>
                                     {['.jpg', '.png', '.svg', '.jpeg'].some(ext => attachment.name.toLowerCase().endsWith(ext)) ? (
-                                        <img src={`https://brainmate.fly.dev/${attachment.media}`} alt={attachment.name} className="w-16 h-16 object-cover rounded-lg" />
+                                        <img src={`https://brainmate-new.fly.dev/${attachment.media}`} alt={attachment.name} className="w-16 h-16 object-cover rounded-lg" />
                                     ) : (
                                         <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-lg dark:bg-dark2">
                                             <Paperclip size={24} className="text-gray-500 dark:text-gray-400" />

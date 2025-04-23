@@ -42,7 +42,7 @@ export default function MainChat() {
 
     // Get team details function
     function getChatDetails() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedChat.id}`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedChat.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -86,7 +86,7 @@ export default function MainChat() {
 
     // Fetch profile data
     function getProfileData() {
-        return axios.get('https://brainmate.fly.dev/api/v1/profile', {
+        return axios.get('https://brainmate-new.fly.dev/api/v1/profile', {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -120,7 +120,7 @@ export default function MainChat() {
         setLoading(true);
         try {
             const response = await axios.get(
-                `https://brainmate.fly.dev/api/v1/chat/messages/${selectedChat.id}?page=${page}`,
+                `https://brainmate-new.fly.dev/api/v1/chat/messages/${selectedChat.id}?page=${page}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -224,7 +224,7 @@ export default function MainChat() {
             });
 
             const response = await axios.post(
-                'https://brainmate.fly.dev/api/v1/chat/send',
+                'https://brainmate-new.fly.dev/api/v1/chat/send',
                 formData,
                 {
                     headers: {
@@ -299,7 +299,7 @@ export default function MainChat() {
         try {
             // Send the delete request to the server
             const response = await axios.delete(
-                `https://brainmate.fly.dev/api/v1/chat/messages/${messageId}`,
+                `https://brainmate-new.fly.dev/api/v1/chat/messages/${messageId}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }

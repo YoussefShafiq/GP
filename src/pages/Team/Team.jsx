@@ -41,7 +41,7 @@ export default function Team() {
 
     // Get team details function
     function getTeamDetails() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -58,7 +58,7 @@ export default function Team() {
     // Get team members function
     function getTeamMembers() {
         if (teamData?.data?.data?.team.role !== 'member')
-            return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`, {
+            return axios.get(`https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -75,7 +75,7 @@ export default function Team() {
 
     // Get team tasks function
     function getTeamTasks() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/tasks/teams/${selectedTeam.id}/tasks`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/tasks/teams/${selectedTeam.id}/tasks`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

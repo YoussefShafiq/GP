@@ -23,7 +23,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
     const { refetch: refetchTask } = useQuery({
         queryKey: ['taskData', id || selectedTask?.id],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/tasks/${id || selectedTask?.id}`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/tasks/${id || selectedTask?.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -102,7 +102,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                     setsendingTask(true);
                     // Add task API call
                     response = await axios.post(
-                        `https://brainmate.fly.dev/api/v1/tasks`,
+                        `https://brainmate-new.fly.dev/api/v1/tasks`,
                         formData,
                         {
                             headers: {
@@ -120,7 +120,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                     setsendingTask(true);
                     // Update task API call
                     response = await axios.put(
-                        `https://brainmate.fly.dev/api/v1/tasks/${taskData.id}`,
+                        `https://brainmate-new.fly.dev/api/v1/tasks/${taskData.id}`,
                         values,
                         {
                             headers: {

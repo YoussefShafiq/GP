@@ -27,7 +27,7 @@ const Notifications = () => {
     const { data: profileData } = useQuery({
         queryKey: ['ProfileData'],
         queryFn: () =>
-            axios.get('https://brainmate.fly.dev/api/v1/profile', {
+            axios.get('https://brainmate-new.fly.dev/api/v1/profile', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -36,7 +36,7 @@ const Notifications = () => {
 
     // Axios instance with base URL and headers
     const api = axios.create({
-        baseURL: 'https://brainmate.fly.dev/api/v1',
+        baseURL: 'https://brainmate-new.fly.dev/api/v1',
         headers: {
             Authorization: `Bearer ${token}`,
         },

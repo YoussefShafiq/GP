@@ -24,7 +24,7 @@ export default function Login() {
         setloading(true)
         try {
             setError('')
-            let { data } = await axios.post('https://brainmate.fly.dev/api/v1/auth/login', values)
+            let { data } = await axios.post('https://brainmate-new.fly.dev/api/v1/auth/login', values)
             setloading(false)
             console.log(data);
             toast.success('logged in successfully', {
@@ -68,7 +68,7 @@ export default function Login() {
                 let headers = {
                     Authorization: `Bearer ${paramToken}`
                 }
-                let { data } = await axios.post('https://brainmate.fly.dev/api/v1/auth/validate-token', {
+                let { data } = await axios.post('https://brainmate-new.fly.dev/api/v1/auth/validate-token', {
 
                 }, { headers })
                 console.log(data);
@@ -179,7 +179,7 @@ export default function Login() {
                                 <p className='before:content-[""] before:absolute before:h-[1px] before:w-2 before:bg-darkblue before:-left-2 before:top-1/2 before:-translate-x-full after:content-[""] after:absolute after:h-[1px] after:w-2 after:bg-darkblue after:-right-2 after:top-1/2 after:translate-x-full '>OR</p>
                             </div>
                             <div className='w-full max-w-sm my-5' >
-                                <button onClick={() => { window.location.href = 'https://brainmate.fly.dev/api/v1/auth/google' }} className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> Login with google</button>
+                                <button onClick={() => { window.location.href = 'https://brainmate-new.fly.dev/api/v1/auth/google' }} className='w-full h-12 rounded-xl text-primary dark:text-gray-500 text-opacity-80 border border-solid border-primary border-opacity-40 flex justify-center items-center space-x-3 ' > <img className='h-2/3 me-2' src={googleLogo} alt="google login" /> Login with google</button>
                             </div>
                             <div className='text-primary dark:text-gray-500' >Don't have an account? <NavLink to={'/signup'} className={'text-darkTeal'} >Sign up</NavLink></div>
                         </div>}

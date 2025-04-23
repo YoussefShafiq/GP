@@ -11,7 +11,7 @@ export default function NoteDetails() {
 
     // Function to fetch note details
     function getNoteDetails() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/notes/${selectedNote}`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/notes/${selectedNote}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -50,7 +50,7 @@ export default function NoteDetails() {
     let folderNotes = useQuery({
         queryKey: ['folderNotes', selectedFolder], // Include selectedFolder in the queryKey
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/notes/folders/${selectedFolder}/notes`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/notes/folders/${selectedFolder}/notes`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -62,7 +62,7 @@ export default function NoteDetails() {
     let recentNotes = useQuery({
         queryKey: ['recentNotes'],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/notes`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/notes`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -78,7 +78,7 @@ export default function NoteDetails() {
     // Delete a note
     async function deleteNote() {
         try {
-            let response = await axios.delete(`https://brainmate.fly.dev/api/v1/notes/${selectedNote}`, {
+            let response = await axios.delete(`https://brainmate-new.fly.dev/api/v1/notes/${selectedNote}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -116,7 +116,7 @@ export default function NoteDetails() {
 
             // Send a request to update the favorite status
             const response = await axios.post(
-                `https://brainmate.fly.dev/api/v1/notes/favorites`,
+                `https://brainmate-new.fly.dev/api/v1/notes/favorites`,
                 {
                     note_id: selectedNote,
                     flag: flag, // true to favorite, false to unfavorite
@@ -175,7 +175,7 @@ export default function NoteDetails() {
         ) {
             try {
                 await axios.put(
-                    `https://brainmate.fly.dev/api/v1/notes/${noteData.id}`,
+                    `https://brainmate-new.fly.dev/api/v1/notes/${noteData.id}`,
                     {
                         title: noteTitle.trim() || noteData.title, // Use existing title if new title is empty
                         content: noteContent.trim() || noteData.content, // Use existing content if new content is empty

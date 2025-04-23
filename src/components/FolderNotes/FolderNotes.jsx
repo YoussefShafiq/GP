@@ -13,7 +13,7 @@ export default function FolderNotes() {
     const { data, isLoading, isFetching, refetch } = useQuery({
         queryKey: ['folderNotes', selectedFolder],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/notes/folders/${selectedFolder}/notes`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/notes/folders/${selectedFolder}/notes`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -29,7 +29,7 @@ export default function FolderNotes() {
     } = useQuery({
         queryKey: ['noteDetails', selectedNote], // Ensure queryKey changes when selectedNote changes
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/notes/${selectedNote}`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/notes/${selectedNote}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -41,7 +41,7 @@ export default function FolderNotes() {
     let recentNotes = useQuery({
         queryKey: ['recentNotes'],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/notes`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/notes`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -52,7 +52,7 @@ export default function FolderNotes() {
     // Delete a note permanently
     async function deletePermenent(noteid) {
         try {
-            await axios.delete(`https://brainmate.fly.dev/api/v1/notes/trash/${noteid}`, {
+            await axios.delete(`https://brainmate-new.fly.dev/api/v1/notes/trash/${noteid}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -73,7 +73,7 @@ export default function FolderNotes() {
 
     async function emptyTrash() {
         try {
-            await axios.delete(`https://brainmate.fly.dev/api/v1/notes/trash/deleteAll`, {
+            await axios.delete(`https://brainmate-new.fly.dev/api/v1/notes/trash/deleteAll`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -96,7 +96,7 @@ export default function FolderNotes() {
     async function restore(noteid) {
         try {
             await axios.post(
-                `https://brainmate.fly.dev/api/v1/notes/trash/${noteid}/restore`,
+                `https://brainmate-new.fly.dev/api/v1/notes/trash/${noteid}/restore`,
                 {},
                 {
                     headers: {

@@ -10,7 +10,7 @@ export default function RecentNotes() {
 
     // Function to fetch all notes
     function getAllNotes() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/notes`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/notes`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

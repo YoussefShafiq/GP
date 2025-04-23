@@ -26,7 +26,7 @@ export default function Backlog() {
     // Fetch team members
     function getTeamMembers() {
         return axios.get(
-            `https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`,
+            `https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}/users`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ export default function Backlog() {
     // Fetch backlog tasks
     function getBacklogTasks() {
         return axios.get(
-            `https://brainmate.fly.dev/api/v1/tasks/teams/${selectedTeam.id}/backlog`,
+            `https://brainmate-new.fly.dev/api/v1/tasks/teams/${selectedTeam.id}/backlog`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -69,7 +69,7 @@ export default function Backlog() {
     const publishMutation = useMutation({
         mutationFn: async (taskIds) => {
             const response = await axios.post(
-                'https://brainmate.fly.dev/api/v1/tasks/backlog/publish-bulk',
+                'https://brainmate-new.fly.dev/api/v1/tasks/backlog/publish-bulk',
                 {
                     task_ids: taskIds,
                     team_id: selectedTeam.id
@@ -95,7 +95,7 @@ export default function Backlog() {
     const deleteMutation = useMutation({
         mutationFn: async (taskIds) => {
             const response = await axios.post(
-                'https://brainmate.fly.dev/api/v1/tasks/backlog/delete-bulk',
+                'https://brainmate-new.fly.dev/api/v1/tasks/backlog/delete-bulk',
                 {
                     task_ids: taskIds,
                     team_id: selectedTeam.id
@@ -329,7 +329,7 @@ export default function Backlog() {
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
                                                 <Clock className="mr-2" color="#faca15" />
-                                                {task.duration} {task.duration === 1 ? 'day' : 'days'}
+                                                {task.duration_days} {task.duration_days === 1 ? 'day' : 'days'}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -382,7 +382,7 @@ export default function Backlog() {
                                 <h2 className="text-xl font-bold mb-4 text-center">{floatingTask.name}</h2>
                                 <div className="space-y-4">
                                     <p><strong>Description:</strong> {floatingTask.description}</p>
-                                    <p><strong>Duration:</strong> {floatingTask.duration} {floatingTask.duration === 1 ? 'day' : 'days'}</p>
+                                    <p><strong>Duration:</strong> {floatingTask.duration_days} {floatingTask.duration_days === 1 ? 'day' : 'days'}</p>
                                     <p><strong>Priority:</strong> {floatingTask.priority}</p>
                                     <p><strong>Tags:</strong> {floatingTask.tags}</p>
                                     <p><strong>Assigned To:</strong></p>

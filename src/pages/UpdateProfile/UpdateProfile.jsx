@@ -54,7 +54,7 @@ export default function UpdateProfile() {
     });
 
     function getProfileData() {
-        return axios.get('https://brainmate.fly.dev/api/v1/profile', {
+        return axios.get('https://brainmate-new.fly.dev/api/v1/profile', {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -72,7 +72,7 @@ export default function UpdateProfile() {
 
     async function updateProfile(values) {
         try {
-            let response = await axios.put('https://brainmate.fly.dev/api/v1/profile', values, {
+            let response = await axios.put('https://brainmate-new.fly.dev/api/v1/profile', values, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }

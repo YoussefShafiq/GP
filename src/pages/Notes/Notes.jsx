@@ -40,7 +40,7 @@ export default function Notes() {
     let recentNotes = useQuery({
         queryKey: ['recentNotes'],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/notes`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/notes`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -56,7 +56,7 @@ export default function Notes() {
     let folderNotes = useQuery({
         queryKey: ['folderNotes', selectedFolder], // Include selectedFolder in the queryKey
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/notes/folders/${selectedFolder}/notes`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/notes/folders/${selectedFolder}/notes`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -68,7 +68,7 @@ export default function Notes() {
     async function addNote(values, { resetForm }) {
         setaddnoteForm(false);
         try {
-            let response = await axios.post('https://brainmate.fly.dev/api/v1/notes', values, {
+            let response = await axios.post('https://brainmate-new.fly.dev/api/v1/notes', values, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -116,7 +116,7 @@ export default function Notes() {
     let notesFolders = useQuery({
         queryKey: ['notesFolders'],
         queryFn: () =>
-            axios.get(`https://brainmate.fly.dev/api/v1/folders`, {
+            axios.get(`https://brainmate-new.fly.dev/api/v1/folders`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

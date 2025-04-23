@@ -18,7 +18,7 @@ export default function MyTeams() {
     const navigate = useNavigate()
 
     function getMyTeams() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/teams/get/my-teams`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/projects/teams/get/my-teams`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

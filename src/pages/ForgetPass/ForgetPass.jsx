@@ -20,7 +20,7 @@ export default function ForgetPass() {
     async function resetpassword(values) {
         setloading(true)
         try {
-            let { data } = await axios.post('https://brainmate.fly.dev/api/v1/password/reset/request', values)
+            let { data } = await axios.post('https://brainmate-new.fly.dev/api/v1/password/reset/request', values)
             setloading(false)
             toast.success(data.message, {
                 duration: 6000,

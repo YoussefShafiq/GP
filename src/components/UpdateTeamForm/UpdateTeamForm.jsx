@@ -24,7 +24,7 @@ export default function UpdateTeamForm({ isOpen, onClose }) {
         setupdating(true)
         try {
             const response = await axios.put(
-                `https://brainmate.fly.dev/api/v1/projects/teams/${selectedTeam.id}`,
+                `https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}`,
                 values,
                 {
                     headers: {

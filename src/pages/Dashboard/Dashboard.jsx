@@ -12,9 +12,37 @@ import VerticalBarChart from '../../components/VerticalBarChart/VerticalBarChart
 
 
 export default function Dashboard() {
+
+
+    const token = localStorage.getItem('userToken');
+
+
+    function getDashbaordData() {
+        return axios.get(
+            `https://brainmate-new.fly.dev/api/v1/dashboard/general`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+    }
+
+
+    // Queries
+    const { data: dashbaordData, isLoading: isDashboardLoading } = useQuery({
+        queryKey: ['dashbaordData'],
+        queryFn: getDashbaordData,
+    });
     const label = 'Task Progress over last year';
 
 
+    const [DashData, setDashData] = useState({})
+
+    useEffect(() => {
+        setDashData(dashbaordData?.data?.data);
+
+    }, [dashbaordData]);
 
     const linechartData = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -37,13 +65,14 @@ export default function Dashboard() {
                     <div className="flex flex-col justify-center items-center gap-2">
                         <div className="w-2/3">
                             <DonutChart
+                                key={dashbaordData?.data?.data}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
-                                dataPoints={['10', '90']}
-                                centerText={'10%'}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.pending, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.pending]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.pending / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <h2 className="font-semibold">54</h2>
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.pending}</h2>
                             <h3 className="text-sm">pending</h3>
                         </div>
                     </div>
@@ -51,28 +80,32 @@ export default function Dashboard() {
                     <div className="flex flex-col justify-center items-center gap-2">
                         <div className="w-2/3">
                             <DonutChart
+                                key={dashbaordData?.data?.data}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
-                                dataPoints={['10', '90']}
-                                centerText={'10%'}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.in_progress, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.in_progress]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.in_progress / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
+
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <h2 className="font-semibold">54</h2>
-                            <h3 className="text-sm">pending</h3>
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.in_progress}</h2>
+                            <h3 className="text-sm">in progress</h3>
                         </div>
                     </div>
                     <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
                     <div className="flex flex-col justify-center items-center gap-2">
                         <div className="w-2/3">
                             <DonutChart
+                                key={dashbaordData?.data?.data}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
-                                dataPoints={['10', '90']}
-                                centerText={'10%'}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.completed, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.completed]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.completed / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
+
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <h2 className="font-semibold">54</h2>
-                            <h3 className="text-sm">pending</h3>
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.completed}</h2>
+                            <h3 className="text-sm">completed</h3>
                         </div>
                     </div>
                 </div>
@@ -82,42 +115,48 @@ export default function Dashboard() {
                     <div className="flex flex-col justify-center items-center gap-2">
                         <div className="w-2/3">
                             <DonutChart
+                                key={dashbaordData?.data?.data}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
-                                dataPoints={['10', '90']}
-                                centerText={'10%'}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.cancelled, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.cancelled]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.cancelled / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
+
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <h2 className="font-semibold">54</h2>
-                            <h3 className="text-sm">pending</h3>
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.cancelled}</h2>
+                            <h3 className="text-sm">cancelled</h3>
                         </div>
                     </div>
                     <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
                     <div className="flex flex-col justify-center items-center gap-2">
                         <div className="w-2/3">
                             <DonutChart
+                                key={dashbaordData?.data?.data}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
-                                dataPoints={['10', '90']}
-                                centerText={'10%'}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.on_hold, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.on_hold]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.on_hold / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
+
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <h2 className="font-semibold">54</h2>
-                            <h3 className="text-sm">pending</h3>
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.on_hold}</h2>
+                            <h3 className="text-sm">on hold</h3>
                         </div>
                     </div>
                     <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
                     <div className="flex flex-col justify-center items-center gap-2">
                         <div className="w-2/3">
                             <DonutChart
+                                key={dashbaordData?.data?.data}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
-                                dataPoints={['10', '90']}
-                                centerText={'10%'}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.in_review, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.in_review]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.in_review / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
+
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <h2 className="font-semibold">54</h2>
-                            <h3 className="text-sm">pending</h3>
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.in_review}</h2>
+                            <h3 className="text-sm">in review</h3>
                         </div>
                     </div>
                 </div>
@@ -126,15 +165,15 @@ export default function Dashboard() {
                 <div className="flex flex-col w-1/6 gap-5">
                     <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
                         <FontAwesomeIcon icon={faListCheck} className="text-2xl" />
-                        <h2 className="font-semibold capitalize">tasks</h2>
-                        <h2 className="text-3xl">95</h2>
-                        <h3 className='flex items-center'><MoveDownLeft className='text-red-500' />10% decrease from last month</h3>
+                        <h2 className="font-semibold capitalize">teams</h2>
+                        <h2 className="text-3xl">{dashbaordData?.data?.data?.teams_count.current}</h2>
+                        <h3 className='flex items-center'> {dashbaordData?.data.data.teams_count.trend == 'increase' ? <MoveDownLeft className='text-red-500' /> : <MoveUpRight className='text-green-500' />}  {dashbaordData?.data?.data.teams_count.change_percentage}% {dashbaordData?.data.data.teams_count.trend} from last month</h3>
                     </div>
                     <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
                         <FontAwesomeIcon icon={faPeopleGroup} className="text-2xl" />
                         <h2 className="font-semibold capitalize">projects</h2>
-                        <h2 className="text-3xl">95</h2>
-                        <h3 className='flex items-center'><MoveUpRight className='text-green-500' />10% increase from last month</h3>
+                        <h2 className="text-3xl">{dashbaordData?.data?.data?.projects_count.current}</h2>
+                        <h3 className='flex items-center'> {dashbaordData?.data.data.projects_count.trend == 'increase' ? <MoveDownLeft className='text-red-500' /> : <MoveUpRight className='text-green-500' />}  {dashbaordData?.data?.data.projects_count.change_percentage}% {dashbaordData?.data.data.projects_count.trend} from last month</h3>
                     </div>
                 </div>
 
@@ -149,9 +188,9 @@ export default function Dashboard() {
                         <div className="flex">
                             <div className="w-full p-5">
                                 <LineChart
-                                    labels={linechartData.labels}
-                                    dataPoints={linechartData.dataPoints}
-                                    label={linechartData.label}
+                                    key={dashbaordData?.data?.data?.completion_trend}
+                                    labels={dashbaordData?.data?.data?.completion_trend.labels}
+                                    dataPoints={dashbaordData?.data?.data?.completion_trend.values}
                                 />
                             </div>
                         </div>
@@ -164,10 +203,11 @@ export default function Dashboard() {
                 <div className=" bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                     <div className="h-[300px]">
                         <DonutChart
+                            key={dashbaordData?.data?.data.tasks_by_priority}
                             labels={['high', 'medium', 'low']}
-                            dataPoints={[500, 300, 500]}
+                            dataPoints={[dashbaordData?.data?.data.tasks_by_priority.high, dashbaordData?.data?.data.tasks_by_priority.medium, dashbaordData?.data?.data.tasks_by_priority.low]}
                             centerText="75"
-                            label="no of tasks per priority"
+                            label="tasks per priority"
                             fontSize={45}
                         />
                     </div>
@@ -176,14 +216,15 @@ export default function Dashboard() {
                     <div className="bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
-                                percentage of assigned tasks per project
+                                assigned tasks per project
                             </h2>
                         </div>
                         <div className="flex">
                             <div className="w-full p-5">
                                 <VerticalBarChart
-                                    labels={linechartData2.labels}
-                                    dataPoints={linechartData2.dataPoints}
+                                    key={dashbaordData?.data?.data?.workload_by_project}
+                                    labels={dashbaordData?.data?.data?.workload_by_project.labels}
+                                    dataPoints={dashbaordData?.data?.data?.workload_by_project.values}
                                     backgroundColors={['#00c5c9']}
                                     hoverColors={['#1A4E6B']}
                                 />

@@ -89,7 +89,7 @@ const TaskFormWithduration_days = ({ isOpen, onClose, selectedTeam, token, teamM
                     attachments.forEach(file => formData.append('attachments[]', file));
 
                     config.headers['Content-Type'] = 'multipart/form-data';
-                    await axios.post('https://brainmate.fly.dev/api/v1/tasks', formData, config);
+                    await axios.post('https://brainmate-new.fly.dev/api/v1/tasks', formData, config);
                     toast.success('Task created successfully!');
                     refetchTasks();
                 } else if (mode === 'update') {
@@ -101,7 +101,7 @@ const TaskFormWithduration_days = ({ isOpen, onClose, selectedTeam, token, teamM
                         // depending on your API requirements
                     };
                     await axios.put(
-                        `https://brainmate.fly.dev/api/v1/tasks/${taskData.id}`,
+                        `https://brainmate-new.fly.dev/api/v1/tasks/${taskData.id}`,
                         updateData,
                         config
                     );

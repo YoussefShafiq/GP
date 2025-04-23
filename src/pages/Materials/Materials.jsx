@@ -15,7 +15,7 @@ export default function Materials() {
 
     // Fetch projects
     function getProjects() {
-        return axios.get('https://brainmate.fly.dev/api/v1/projects/assigned', {
+        return axios.get('https://brainmate-new.fly.dev/api/v1/projects/assigned', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

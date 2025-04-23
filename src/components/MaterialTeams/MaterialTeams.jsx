@@ -14,7 +14,7 @@ export default function MaterialTeams() {
     const token = localStorage.getItem('userToken');
 
     function getProjectTeams() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/projects/${selectedProjectFolder.id}/teams`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/projects/${selectedProjectFolder.id}/teams`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

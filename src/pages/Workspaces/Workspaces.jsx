@@ -19,7 +19,7 @@ export default function Workspaces() {
     // Ref for the filter dropdown
     const filterRef = useRef(null);
     function getworkspaces() {
-        return axios.get(`https://brainmate.fly.dev/api/v1/workspaces`, {
+        return axios.get(`https://brainmate-new.fly.dev/api/v1/workspaces`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

@@ -135,7 +135,7 @@ export default function Chat() {
                             Array.from({ length: 5 }).map((_, index) => (
                                 <div
                                     key={index}
-                                    className="flex items-center p-4 border-b border-gray-400 bg-darkblue bg-opacity-5 hover:bg-gray-100 cursor-pointer transition-all duration-200"
+                                    className="flex items-center p-4 border-b border-gray-400 bg-darkblue bg-opacity-5 hover:bg-gray-100 dark:hover:bg-dark2 cursor-pointer transition-all duration-200"
                                 >
                                     <div className="rounded-full p-1 bg-gray-200 animate-pulse">
                                         <div className="w-8 h-8 bg-gray-300 rounded-full"></div>

@@ -50,7 +50,7 @@ let routers = createBrowserRouter([
   { path: 'forgetpassword', element: <GoHome><ForgetPass /></GoHome>, errorElement: <ErrorPage /> },
   { path: 'resetpassword', element: <ResetPassword />, errorElement: <ErrorPage /> },
   {
-    path: '', element: <Layout />, errorElement: <ErrorPage />, children: [
+    path: '', element: <Layout />,  children: [
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
       { path: 'team-invitation-confirm', element: <ProtectedRoute><TeamInvitationConfirm /></ProtectedRoute> },
       { path: 'profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },

@@ -206,7 +206,7 @@ export default function Dashboard() {
                             key={dashbaordData?.data?.data.tasks_by_priority}
                             labels={['high', 'medium', 'low']}
                             dataPoints={[dashbaordData?.data?.data.tasks_by_priority.high, dashbaordData?.data?.data.tasks_by_priority.medium, dashbaordData?.data?.data.tasks_by_priority.low]}
-                            centerText="75"
+                            centerText=""
                             label="tasks per priority"
                             fontSize={45}
                         />

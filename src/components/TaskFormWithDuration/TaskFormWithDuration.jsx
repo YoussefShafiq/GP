@@ -7,7 +7,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { ThreeDots } from 'react-loader-spinner';
 import { TaskContext } from '../../context/TaskContext';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const TaskFormWithduration_days = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, taskData }) => {
     const [assignTobtn, setAssignTobtn] = useState(false);
@@ -16,6 +16,7 @@ const TaskFormWithduration_days = ({ isOpen, onClose, selectedTeam, token, teamM
     const [sendingTask, setsendingTask] = useState(false);
     const [attachments, setAttachments] = useState([]);
     const { selectedTask, setselectedTask } = useContext(TaskContext);
+    const queryClient = useQueryClient();
 
     // Form validation schema
     const taskValidationSchema = object({
@@ -107,7 +108,7 @@ const TaskFormWithduration_days = ({ isOpen, onClose, selectedTeam, token, teamM
                     );
                     toast.success('Task updated successfully!');
                 }
-
+                queryClient.invalidateQueries(['backlogTasks']);
                 resetForm();
                 onClose();
                 setSelectedMembers([]);

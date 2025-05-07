@@ -21,6 +21,9 @@ export default function Backlog() {
     const [checkedTasks, setcheckedTasks] = useState([]);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [floatingTask, setFloatingTask] = useState(null);
+    const [isAIGenerateOpen, setIsAIGenerateOpen] = useState(false);
+    const [aiPrompt, setAiPrompt] = useState('');
+    const [aiPriority, setAiPriority] = useState('medium');
     const token = localStorage.getItem('userToken');
 
     // Fetch team members
@@ -58,9 +61,10 @@ export default function Backlog() {
         data: tasksData,
         isLoading: isTasksLoading,
         isError: isTasksError,
-        refetch: refetchTasks
+        refetch: refetchTasks,
+        error: tasksError
     } = useQuery({
-        queryKey: ['backlogTasks', selectedTeam?.id],
+        queryKey: ['backlogTasks'],
         queryFn: getBacklogTasks,
         enabled: !!selectedTeam,
     });
@@ -136,6 +140,12 @@ export default function Backlog() {
         }
     };
 
+    /*************  ✨ Windsurf Command ⭐  *************/
+    /**
+     * Opens the task form to edit the given task
+     * @param {Object} task The task to edit
+     */
+    /*******  cce1bae7-f277-467d-a8cf-3f8e3a0422d4  *******/
     const editTask = (task) => {
         setselectedTask(task);
         setIsFormOpen(true);
@@ -174,6 +184,46 @@ export default function Backlog() {
         setShowDeleteConfirmation(false);
     };
 
+    const aiGenerateMutation = useMutation({
+        mutationFn: async (data) => {
+            const response = await axios.post(
+                'http://localhost/projects/brainmate/public/api/v1/ai/generate-tasks',
+                {
+                    prompt: data.prompt,
+                    team_id: selectedTeam.id,
+                    priority: data.priority
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            return response.data;
+        },
+        onSuccess: () => {
+            toast.success('AI tasks generated successfully');
+            setIsAIGenerateOpen(false);
+            setAiPrompt('');
+            queryClient.invalidateQueries(['backlogTasks']);
+        },
+        onError: (error) => {
+            toast.error(error.response?.data?.message || 'Failed to generate AI tasks');
+        }
+    });
+
+
+    const handleAIGenerate = () => {
+        if (!aiPrompt.trim()) {
+            toast.error('Please enter a description for the tasks');
+            return;
+        }
+        aiGenerateMutation.mutate({
+            prompt: aiPrompt,
+            priority: aiPriority
+        });
+    };
+
     if (!selectedTeam) {
         return (
             <div className="h-[calc(100vh-48px)] flex justify-center items-center">
@@ -185,6 +235,9 @@ export default function Backlog() {
         );
     }
 
+
+
+
     if (isTasksLoading) {
         return (
             <div className="h-[calc(100vh-48px)] flex justify-center items-center">
@@ -194,6 +247,10 @@ export default function Backlog() {
     }
 
     if (isTasksError) {
+        console.log(selectedTeam);
+
+        console.log(tasksError);
+
         return (
             <div className="h-[calc(100vh-48px)] flex justify-center items-center">
                 <div className="flex flex-col items-center gap-3">
@@ -225,7 +282,7 @@ export default function Backlog() {
                     <div className="flex flex-wrap justify-center items-center gap-2">
                         <Tooltip closeDelay={0} delay={350} content='Generate with AI'>
                             <button
-                                onClick={() => { }}
+                                onClick={() => setIsAIGenerateOpen(true)}
                                 className="rounded-full aspect-square text-highlight p-2 flex justify-center items-center hover:shadow-lg hover:-translate-y-0.5 transition-all bg-base dark:bg-dark2">
                                 <Bot />
                             </button>
@@ -453,6 +510,83 @@ export default function Backlog() {
                                     >
                                         {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
                                     </button>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* AI Generate Tasks Form Modal */}
+                <AnimatePresence>
+                    {isAIGenerateOpen && (
+                        <motion.div
+                            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black bg-opacity-15 z-50"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={() => setIsAIGenerateOpen(false)}
+                        >
+                            <motion.div
+                                className="bg-white dark:bg-dark1 rounded-lg shadow-lg border p-6 w-5/6 md:w-2/3 lg:w-1/2 relative"
+                                initial={{ y: 0, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 0, opacity: 0 }}
+                                transition={{ duration: 0.3 }}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <button
+                                    onClick={() => setIsAIGenerateOpen(false)}
+                                    className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-500"
+                                >
+                                    <X size={24} />
+                                </button>
+                                <h2 className="text-xl font-bold mb-4">Generate Tasks with AI</h2>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1">Describe what tasks you need:</label>
+                                        <textarea
+                                            value={aiPrompt}
+                                            onChange={(e) => setAiPrompt(e.target.value)}
+                                            className="w-full p-2 border rounded-lg dark:bg-dark2 dark:border-gray-700"
+                                            rows={4}
+                                            placeholder="e.g. I want to create a gym management system with member registration, class scheduling, and payment processing..."
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1">Priority for generated tasks:</label>
+                                        <select
+                                            value={aiPriority}
+                                            onChange={(e) => setAiPriority(e.target.value)}
+                                            className="w-full p-2 border rounded-lg dark:bg-dark2 dark:border-gray-700"
+                                        >
+                                            <option value="high">High</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="low">Low</option>
+                                        </select>
+                                    </div>
+                                    <div className="flex justify-end gap-3 pt-4">
+                                        <button
+                                            onClick={() => setIsAIGenerateOpen(false)}
+                                            className="px-4 py-2 dark:bg-dark2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            onClick={handleAIGenerate}
+                                            className="px-4 py-2 bg-highlight text-white rounded-lg hover:bg-opacity-90"
+                                            disabled={aiGenerateMutation.isPending}
+                                        >
+                                            {aiGenerateMutation.isPending ? (
+                                                <div className="flex items-center gap-2">
+                                                    <div className="animate-spin h-4 w-4 border-2 border-white rounded-full border-t-transparent"></div>
+                                                    Generating...
+                                                </div>
+                                            ) : (
+                                                'Generate Tasks'
+                                            )}
+                                        </button>
+                                    </div>
                                 </div>
                             </motion.div>
                         </motion.div>

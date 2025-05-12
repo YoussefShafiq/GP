@@ -87,12 +87,16 @@ export default function Backlog() {
             return response.data;
         },
         onSuccess: () => {
-            toast.success('Tasks published successfully');
+            toast.success('Tasks published successfully', {
+                position: "bottom-right",
+            });
             setcheckedTasks([]);
             queryClient.invalidateQueries(['backlogTasks']);
         },
         onError: (error) => {
-            toast.error(error.response?.data?.message || 'Failed to publish tasks');
+            toast.error(error.response?.data?.message || 'Failed to publish tasks', {
+                position: "bottom-right",
+            });
         }
     });
 
@@ -113,12 +117,16 @@ export default function Backlog() {
             return response.data;
         },
         onSuccess: () => {
-            toast.success('Tasks deleted successfully');
+            toast.success('Tasks deleted successfully', {
+                position: "bottom-right",
+            });
             setcheckedTasks([]);
             queryClient.invalidateQueries(['backlogTasks']);
         },
         onError: (error) => {
-            toast.error(error.response?.data?.message || 'Failed to delete tasks');
+            toast.error(error.response?.data?.message || 'Failed to delete tasks', {
+                position: "bottom-right",
+            });
         }
     });
 
@@ -161,7 +169,9 @@ export default function Backlog() {
 
     const handlePublishTasks = () => {
         if (checkedTasks.length === 0) {
-            toast.error('Please select at least one task to publish');
+            toast.error('Please select at least one task to publish', {
+                position: "bottom-right",
+            });
             return;
         }
         publishMutation.mutate(checkedTasks);
@@ -169,7 +179,9 @@ export default function Backlog() {
 
     const handleDeleteClick = () => {
         if (checkedTasks.length === 0) {
-            toast.error('Please select at least one task to delete');
+            toast.error('Please select at least one task to delete', {
+                position: "bottom-right",
+            });
             return;
         }
         setShowDeleteConfirmation(true);
@@ -202,20 +214,26 @@ export default function Backlog() {
             return response.data;
         },
         onSuccess: () => {
-            toast.success('AI tasks generated successfully');
+            toast.success('AI tasks generated successfully', {
+                position: "bottom-right",
+            });
             setIsAIGenerateOpen(false);
             setAiPrompt('');
             queryClient.invalidateQueries(['backlogTasks']);
         },
         onError: (error) => {
-            toast.error(error.response?.data?.message || 'Failed to generate AI tasks');
+            toast.error(error.response?.data?.message || 'Failed to generate AI tasks', {
+                position: "bottom-right",
+            });
         }
     });
 
 
     const handleAIGenerate = () => {
         if (!aiPrompt.trim()) {
-            toast.error('Please enter a description for the tasks');
+            toast.error('Please enter a description for the tasks', {
+                position: "bottom-right",
+            });
             return;
         }
         aiGenerateMutation.mutate({

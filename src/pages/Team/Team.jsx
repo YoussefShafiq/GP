@@ -326,12 +326,14 @@ export default function Team() {
                                 <Tooltip delay={100} closeDelay={0} content='Add task' >
                                     <button onClick={() => setAddTaskForm(true)} className="rounded-full bg-base dark:bg-dark2 text-blue-500 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Plus size={25} /></button>
                                 </Tooltip>
-                                <Tooltip delay={100} closeDelay={0} content='Update team name' >
-                                    <button onClick={() => setUpdateTeamForm(true)} className="rounded-full bg-base dark:bg-dark2 text-yellow-400 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Edit size={25} /></button>
-                                </Tooltip>
-                                <Tooltip delay={100} closeDelay={0} content='Delete team' >
-                                    <button onClick={() => setDeleteTeamForm(true)} className="rounded-full bg-base dark:bg-dark2 text-red-600 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Trash2 size={25} /></button>
-                                </Tooltip>
+                                {teamData?.data?.data?.team.role == 'manager' && <>
+                                    <Tooltip delay={100} closeDelay={0} content='Update team' >
+                                        <button onClick={() => setUpdateTeamForm(true)} className="rounded-full bg-base dark:bg-dark2 text-yellow-400 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Edit size={25} /></button>
+                                    </Tooltip>
+                                    <Tooltip delay={100} closeDelay={0} content='Delete team' >
+                                        <button onClick={() => setDeleteTeamForm(true)} className="rounded-full bg-base dark:bg-dark2 text-red-600 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Trash2 size={25} /></button>
+                                    </Tooltip>
+                                </>}
                             </>)}
                             <Tooltip delay={100} closeDelay={0} content='Leave team' >
                                 <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-base dark:bg-dark2 text-red-600 p-2 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><LogOut size={25} /></button>
@@ -383,7 +385,7 @@ export default function Team() {
                                             }} className="">
                                                 <button onClick={() => navigate('/chat')} className='text-light dark:text-white p-1 rounded-full items-center hover:scale-110 transition-all' ><MessageCircleMore /></button>
                                             </div>
-                                            {teamData?.data?.data?.team.role === 'manager' && <>
+                                            {teamData?.data?.data?.team.role != 'member' && <>
                                                 <button title='manage team members'
                                                     onClick={() => navigate('manage-members')}
                                                     className="rounded-full bg-white dark:bg-dark1 text-green-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"
@@ -396,7 +398,7 @@ export default function Team() {
                                                 <button onClick={() => navigate(`backlog/${selectedTeam.id}`)} className="rounded-full text-light p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><ListTodo size={25} /></button>
                                             </Tooltip>
                                             <button onClick={() => setAddTaskForm(true)} title='add task' className="rounded-full bg-white dark:bg-dark1 text-blue-500 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Plus size={25} /></button>
-                                            <button onClick={() => setUpdateTeamForm(true)} title='update team name' className="rounded-full bg-white dark:bg-dark1 text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>
+                                            {teamData?.data?.data?.team.role == 'manager' && <button onClick={() => setUpdateTeamForm(true)} title='update team name' className="rounded-full bg-white dark:bg-dark1 text-yellow-400 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><Edit size={25} /></button>}
                                         </>)}
                                         <button onClick={() => setteamInfo(true)} className="rounded-full text-gray-700 dark:text-gray-200 p-1 hover:shadow-lg hover:-translate-y-0.5 h-full aspect-square transition-all"><Info size={25} /></button>
                                         <button onClick={() => setLeaveTeamForm(true)} className="rounded-full bg-white dark:bg-dark1 text-red-600 p-1 hover:shadow-lg hover:-translate-y-0.5 transition-all"><LogOut size={25} /></button>

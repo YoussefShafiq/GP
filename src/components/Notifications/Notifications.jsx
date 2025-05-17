@@ -152,12 +152,25 @@ const Notifications = () => {
                 setIsOpen(false);
             }
         };
-
+        checkAtRiskTasks()
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    async function checkAtRiskTasks() {
+        try {
+            await axios.post('https://brainmate-new.fly.dev/api/v1/tasks/check-deadlines', {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+        } catch (error) {
+
+        }
+    }
+
 
     return (
         <div className="relative" ref={dropdownRef}>

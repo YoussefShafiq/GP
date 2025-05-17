@@ -256,7 +256,7 @@ const TaskFormWithduration_days = ({ isOpen, onClose, selectedTeam, token, teamM
                                     htmlFor="duration_days"
                                     className="absolute text-sm text-gray-700 dark:text-gray-500 transition-transform duration_days-300 transform scale-75 -translate-y-6 top-3 origin-[0] left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-darkTeal"
                                 >
-                                    duration_days (hours)
+                                    duration_days (days)
                                 </label>
                                 {addTaskFormik.errors.duration_days && addTaskFormik.touched.duration_days && (
                                     <div className="text-sm text-red-500 rounded-lg bg-transparent" role="alert">

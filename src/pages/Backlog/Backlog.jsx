@@ -148,12 +148,7 @@ export default function Backlog() {
         }
     };
 
-    /*************  ✨ Windsurf Command ⭐  *************/
-    /**
-     * Opens the task form to edit the given task
-     * @param {Object} task The task to edit
-     */
-    /*******  cce1bae7-f277-467d-a8cf-3f8e3a0422d4  *******/
+
     const editTask = (task) => {
         setselectedTask(task);
         setIsFormOpen(true);

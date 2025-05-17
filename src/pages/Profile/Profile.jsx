@@ -234,7 +234,7 @@ export default function Profile() {
                                 animate={{ y: 0, opacity: 1 }}
                                 exit={{ y: -50, opacity: 0 }}
                                 transition={{ duration: 0.2 }}
-                                className="bg-white p-6 rounded-xl shadow-lg w-96"
+                                className="bg-white dark:bg-dark1 border border-gray-300 p-6 rounded-xl shadow-lg w-96"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <h2 className="text-xl font-bold mb-4">Change Password</h2>
@@ -250,7 +250,7 @@ export default function Profile() {
                                             value={formik.values.current_password}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                            className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                            className="w-full p-2 bg-base dark:bg-dark2 dark:text-white rounded-xl border border-gray-300"
                                         />
                                         {formik.touched.current_password && formik.errors.current_password && (
                                             <div className="text-sm text-red-600 mt-1">
@@ -269,7 +269,7 @@ export default function Profile() {
                                             value={formik.values.new_password}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                            className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                            className="w-full p-2 bg-base dark:bg-dark2 dark:text-white rounded-xl border border-gray-300"
                                         />
                                         {formik.touched.new_password && formik.errors.new_password && (
                                             <div className="text-sm text-red-600 mt-1">
@@ -288,7 +288,7 @@ export default function Profile() {
                                             value={formik.values.new_password_confirmation}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                            className="w-full p-2 bg-base rounded-xl border border-gray-300"
+                                            className="w-full p-2 bg-base dark:bg-dark2 dark:text-white rounded-xl border border-gray-300"
                                         />
                                         {formik.touched.new_password_confirmation && formik.errors.new_password_confirmation && (
                                             <div className="text-sm text-red-600 mt-1">

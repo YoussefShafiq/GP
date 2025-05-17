@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { X } from 'lucide-react';
+import { Loader2Icon, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const InviteMemberForm = ({ isOpen, onClose, selectedTeam }) => {
     const token = localStorage.getItem('userToken');
+    const [inviting, setinviting] = useState(false)
 
     const inviteValidationSchema = object({
         email: string().email('Invalid email').required('Email is required'),
@@ -22,6 +23,7 @@ const InviteMemberForm = ({ isOpen, onClose, selectedTeam }) => {
         validationSchema: inviteValidationSchema,
         onSubmit: async (values, formikHelpers) => {
             try {
+                setinviting(true)
                 await axios.post(
                     `https://brainmate-new.fly.dev/api/v1/projects/teams/${selectedTeam.id}/invite`,
                     values,
@@ -42,6 +44,8 @@ const InviteMemberForm = ({ isOpen, onClose, selectedTeam }) => {
                     duration: 3000,
                     position: 'bottom-right',
                 });
+            } finally {
+                setinviting(false)
             }
         },
     });
@@ -129,8 +133,9 @@ const InviteMemberForm = ({ isOpen, onClose, selectedTeam }) => {
                                 style={{ transition: 'background-position 0.4s ease', backgroundSize: '150%' }}
                                 onMouseEnter={(e) => (e.target.style.backgroundPosition = 'right')}
                                 onMouseLeave={(e) => (e.target.style.backgroundPosition = 'left')}
+                                disabled={inviting}
                             >
-                                Invite Member
+                                {inviting ? <div className="md:flex hidden items-center text-blue-500 justify-center"><Loader2Icon className='animate-spin' /></div> : 'Invite'}
                             </button>
                         </form>
                     </motion.div>

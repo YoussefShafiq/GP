@@ -16,7 +16,7 @@ export default function Logout() {
         localStorage.setItem('userToken', '')
         navigate('/login');
         try {
-            let { data } = await axios.post('https://brainmate-new.fly.dev/api/v1/auth/logout', {}, {
+            let { data } = await axios.post('https://brainmate-new.fly.dev/api/v1/user/logout', {}, {
                 headers
             })
             setToken('')
@@ -29,8 +29,8 @@ export default function Logout() {
         }
         toast.error('logged out',
             {
-                duration: 2000,
                 position: 'bottom-right',
+                duration: 2000,
                 icon: <LogOutIcon color='red' ></LogOutIcon>
             }
         )

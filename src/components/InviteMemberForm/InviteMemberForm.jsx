@@ -107,7 +107,7 @@ const InviteMemberForm = ({ isOpen, onClose, selectedTeam }) => {
                                     className="block py-2 w-full text-sm text-black  dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-darkTeal peer"
                                 >
                                     <option className='dark:bg-dark2' value="" disabled>Select Role</option>
-                                    {/* <option className='dark:bg-dark2' value="2">Leader</option> */}
+                                    <option className='dark:bg-dark2' value="2">Leader</option>
                                     <option className='dark:bg-dark2' value="3">Member</option>
                                 </select>
                                 <label

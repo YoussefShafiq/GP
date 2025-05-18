@@ -9,8 +9,7 @@ import { TeamsContext } from '../../context/TeamsContext';
 
 export default function MemberTeamDashboard() {
     const { selectedDashboardTeam } = useContext(TeamsContext)
-
-    const [TeamDashboard, setTeamDashboard] = useState(null)
+    const [teamDashboard, setTeamDashboard] = useState(null)
 
     function getTeamDashboardData() {
         return axios.get(`https://brainmate-new.fly.dev/api/v1/dashboard/team/member/${selectedDashboardTeam}`, {
@@ -20,32 +19,48 @@ export default function MemberTeamDashboard() {
         })
     }
 
-    const { data: TeamData, isLoading: isTeamLoading } = useQuery({
+    const { data: teamData, isLoading: isTeamLoading, isError, error } = useQuery({
         queryKey: ['TeamDashboardData', selectedDashboardTeam],
         queryFn: getTeamDashboardData
     })
 
     useEffect(() => {
-        if (TeamData?.data?.data) {
-            setTeamDashboard(TeamData?.data?.data)
+        if (teamData?.data?.data) {
+            setTeamDashboard(teamData.data.data)
+            console.log("Team dashboard data updated:", teamData.data.data)
         }
-        console.log(TeamDashboard);
+    }, [teamData, selectedDashboardTeam])
+
+    // Helper function to calculate percentage safely
+    const calculatePercentage = (numerator, denominator) => {
+        if (!denominator || denominator === 0) return '0%'
+        const percentage = (numerator / denominator) * 100
+        return `${Math.round(percentage * 10) / 10}%`
+    }
 
 
-    }, [TeamData, selectedDashboardTeam])
 
+    if (isError) {
+        return <div className="flex justify-center items-center h-full">{error.response.data.message}</div>
+    }
 
-    return <>
+    return (
         <div className="flex flex-col gap-5">
             <div className="flex gap-5">
-                <div className="flex flex-col items-center gap-5 w-1/5 ">
+                <div className="flex flex-col items-center gap-5 w-1/5">
                     <div className="w-full flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
                         <div className="w-2/3">
                             <DonutChart
-                                key={TeamDashboard}
+                                key={`overdue-${teamDashboard?.task_alerts?.overdue}-${selectedDashboardTeam}`}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
-                                dataPoints={[TeamDashboard?.task_alerts?.overdue, TeamDashboard?.task_counts?.total]}
-                                centerText={`${Math.round(((TeamDashboard?.task_alerts?.overdue / TeamDashboard?.task_counts?.total) * 100 || 0) * 10) / 10}%`}
+                                dataPoints={[
+                                    teamDashboard?.task_alerts?.overdue || 0,
+                                    teamDashboard?.task_counts?.total || 0
+                                ]}
+                                centerText={calculatePercentage(
+                                    teamDashboard?.task_alerts?.overdue,
+                                    teamDashboard?.task_counts?.total
+                                )}
                                 fontSize={26}
                             />
                         </div>
@@ -56,10 +71,16 @@ export default function MemberTeamDashboard() {
                     <div className="w-full flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
                         <div className="w-2/3">
                             <DonutChart
-                                key={TeamDashboard}
+                                key={`at-risk-${teamDashboard?.task_alerts?.at_risk}-${selectedDashboardTeam}`}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
-                                dataPoints={[TeamDashboard?.task_alerts?.at_risk, TeamDashboard?.task_counts?.total - TeamDashboard?.task_alerts?.at_risk]}
-                                centerText={`${Math.round(((TeamDashboard?.task_alerts?.at_risk / TeamDashboard?.task_counts?.total) * 100 || 0) * 10) / 10}%`}
+                                dataPoints={[
+                                    teamDashboard?.task_alerts?.at_risk || 0,
+                                    (teamDashboard?.task_counts?.total || 0) - (teamDashboard?.task_alerts?.at_risk || 0)
+                                ]}
+                                centerText={calculatePercentage(
+                                    teamDashboard?.task_alerts?.at_risk,
+                                    teamDashboard?.task_counts?.total
+                                )}
                                 fontSize={26}
                             />
                         </div>
@@ -78,22 +99,23 @@ export default function MemberTeamDashboard() {
                         <div className="flex">
                             <div className="w-full p-5">
                                 <LineChart
-                                    key={TeamDashboard}
-                                    labels={TeamDashboard?.monthly_duration?.labels}
-                                    dataPoints={TeamDashboard?.monthly_duration?.values}
+                                    key={`monthly-duration-${selectedDashboardTeam}`}
+                                    labels={teamDashboard?.monthly_duration?.labels || []}
+                                    dataPoints={teamDashboard?.monthly_duration?.values || []}
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div className="flex gap-5">
                 <div className="flex flex-col space-y-4 bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                     <div className="w-full">
                         <DonutChart
-                            key={TeamDashboard}
-                            dataPoints={[TeamDashboard?.avg_completion_time]}
-                            centerText={`${TeamDashboard?.avg_completion_time || 0}h`}
+                            key={`avg-completion-${teamDashboard?.avg_completion_time}-${selectedDashboardTeam}`}
+                            dataPoints={[teamDashboard?.avg_completion_time || 0]}
+                            centerText={`${teamDashboard?.avg_completion_time || 0}h`}
                             label="AVG time to complete tasks"
                             fontSize={45}
                             backgroundColors={['#F25287']}
@@ -102,70 +124,105 @@ export default function MemberTeamDashboard() {
                     </div>
                 </div>
                 <div className="flex flex-col items-center w-full bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl overflow-hidden h-full">
-                    <div className="w-full flex flex-col justify-center items-center text-center h-1/2 text-sm  text-black dark:text-white gap-2 p-4 rounded-xl">
-
+                    <div className="w-full flex flex-col justify-center items-center text-center h-1/2 text-sm text-black dark:text-white gap-2 p-4 rounded-xl">
                         <div className="flex items-center w-full text-start">
                             <h2 className="text-lg font-semibold w-1/4">Team Name</h2>
-                            <h3 className="text-base w-3/4 text-start">{TeamDashboard?.team_info?.name}</h3>
+                            <h3 className="text-base w-3/4 text-start">{teamDashboard?.team_info?.name || 'N/A'}</h3>
                         </div>
                         <div className="w-full bg-white opacity-20 h-[1px] m-auto my-2"></div>
                         <div className="flex items-center w-full text-start">
                             <h2 className="text-lg font-semibold w-1/4">Role</h2>
-                            <h3 className="text-base w-3/4 text-start">{TeamDashboard?.team_info?.role}</h3>
+                            <h3 className="text-base w-3/4 text-start">{teamDashboard?.team_info?.role || 'N/A'}</h3>
                         </div>
                         <div className="w-full bg-white opacity-20 h-[1px] m-auto my-2"></div>
                     </div>
                     <div className="flex items-center overflow-hidden w-full">
                         <div className="py-4 px-4 w-1/6">
                             <DonutChart
-                                key={TeamDashboard}
-                                dataPoints={[TeamDashboard?.task_counts?.pending, TeamDashboard?.task_counts?.total - TeamDashboard?.task_counts?.pending]}
-                                centerText={`${Math.round(((TeamDashboard?.task_counts?.pending / TeamDashboard?.task_counts?.total) * 100 || 0) * 10) / 10}%`}
+                                key={`pending-${teamDashboard?.task_counts?.pending}-${selectedDashboardTeam}`}
+                                dataPoints={[
+                                    teamDashboard?.task_counts?.pending || 0,
+                                    (teamDashboard?.task_counts?.total || 0) - (teamDashboard?.task_counts?.pending || 0)
+                                ]}
+                                centerText={calculatePercentage(
+                                    teamDashboard?.task_counts?.pending,
+                                    teamDashboard?.task_counts?.total
+                                )}
                                 label="Pending"
                                 fontSize={20}
                             />
                         </div>
                         <div className="py-4 px-4 w-1/6">
                             <DonutChart
-                                key={TeamDashboard}
-                                dataPoints={[TeamDashboard?.task_counts?.in_progress, TeamDashboard?.task_counts?.total - TeamDashboard?.task_counts?.in_progress]}
-                                centerText={`${Math.round(((TeamDashboard?.task_counts?.in_progress / TeamDashboard?.task_counts?.total) * 100 || 0) * 10) / 10}%`}
+                                key={`in-progress-${teamDashboard?.task_counts?.in_progress}-${selectedDashboardTeam}`}
+                                dataPoints={[
+                                    teamDashboard?.task_counts?.in_progress || 0,
+                                    (teamDashboard?.task_counts?.total || 0) - (teamDashboard?.task_counts?.in_progress || 0)
+                                ]}
+                                centerText={calculatePercentage(
+                                    teamDashboard?.task_counts?.in_progress,
+                                    teamDashboard?.task_counts?.total
+                                )}
                                 label="in progress"
                                 fontSize={20}
                             />
                         </div>
                         <div className="py-4 px-4 w-1/6">
                             <DonutChart
-                                key={TeamDashboard}
-                                dataPoints={[TeamDashboard?.task_counts?.completed, TeamDashboard?.task_counts?.total - TeamDashboard?.task_counts?.completed]}
-                                centerText={`${Math.round(((TeamDashboard?.task_counts?.completed / TeamDashboard?.task_counts?.total) * 100 || 0) * 10) / 10}%`}
+                                key={`completed-${teamDashboard?.task_counts?.completed}-${selectedDashboardTeam}`}
+                                dataPoints={[
+                                    teamDashboard?.task_counts?.completed || 0,
+                                    (teamDashboard?.task_counts?.total || 0) - (teamDashboard?.task_counts?.completed || 0)
+                                ]}
+                                centerText={calculatePercentage(
+                                    teamDashboard?.task_counts?.completed,
+                                    teamDashboard?.task_counts?.total
+                                )}
                                 label="Completed"
                                 fontSize={20}
                             />
                         </div>
                         <div className="py-4 px-4 w-1/6">
                             <DonutChart
-                                key={TeamDashboard}
-                                dataPoints={[TeamDashboard?.task_counts?.in_review, TeamDashboard?.task_counts?.total - TeamDashboard?.task_counts?.in_review]}
-                                centerText={`${Math.round(((TeamDashboard?.task_counts?.in_review / TeamDashboard?.task_counts?.total) * 100 || 0) * 10) / 10}%`}
+                                key={`in-review-${teamDashboard?.task_counts?.in_review}-${selectedDashboardTeam}`}
+                                dataPoints={[
+                                    teamDashboard?.task_counts?.in_review || 0,
+                                    (teamDashboard?.task_counts?.total || 0) - (teamDashboard?.task_counts?.in_review || 0)
+                                ]}
+                                centerText={calculatePercentage(
+                                    teamDashboard?.task_counts?.in_review,
+                                    teamDashboard?.task_counts?.total
+                                )}
                                 label="in review"
                                 fontSize={20}
                             />
                         </div>
                         <div className="py-4 px-4 w-1/6">
                             <DonutChart
-                                key={TeamDashboard}
-                                dataPoints={[TeamDashboard?.task_counts?.cancelled, TeamDashboard?.task_counts?.total - TeamDashboard?.task_counts?.cancelled]}
-                                centerText={`${Math.round(((TeamDashboard?.task_counts?.cancelled / TeamDashboard?.task_counts?.total) * 100 || 0) * 10) / 10}%`}
+                                key={`cancelled-${teamDashboard?.task_counts?.cancelled}-${selectedDashboardTeam}`}
+                                dataPoints={[
+                                    teamDashboard?.task_counts?.cancelled || 0,
+                                    (teamDashboard?.task_counts?.total || 0) - (teamDashboard?.task_counts?.cancelled || 0)
+                                ]}
+                                centerText={calculatePercentage(
+                                    teamDashboard?.task_counts?.cancelled,
+                                    teamDashboard?.task_counts?.total
+                                )}
                                 label="cancelled"
                                 fontSize={20}
                             />
                         </div>
                         <div className="py-4 px-4 w-1/6">
                             <DonutChart
-                                key={TeamDashboard}
-                                dataPoints={[TeamDashboard?.task_counts?.on_hold, TeamDashboard?.task_counts?.total - TeamDashboard?.task_counts?.on_hold]}
-                                centerText={`${Math.round(((TeamDashboard?.task_counts?.on_hold / TeamDashboard?.task_counts?.total) * 100 || 0) * 10) / 10}%`}
+                                key={`on-hold-${teamDashboard?.task_counts?.on_hold}-${selectedDashboardTeam}`}
+                                dataPoints={[
+                                    teamDashboard?.task_counts?.on_hold || 0,
+                                    (teamDashboard?.task_counts?.total || 0) - (teamDashboard?.task_counts?.on_hold || 0)
+                                ]}
+                                centerText={calculatePercentage(
+                                    teamDashboard?.task_counts?.on_hold,
+                                    teamDashboard?.task_counts?.total
+                                )}
                                 label="on hold"
                                 fontSize={20}
                             />
@@ -173,13 +230,18 @@ export default function MemberTeamDashboard() {
                     </div>
                 </div>
             </div>
+
             <div className="flex gap-5">
-                <div className=" bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
+                <div className="bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                     <div className="h-[300px]">
                         <DonutChart
-                            key={TeamDashboard}
+                            key={`priority-${teamDashboard?.tasks_by_priority?.low}-${teamDashboard?.tasks_by_priority?.medium}-${teamDashboard?.tasks_by_priority?.high}-${selectedDashboardTeam}`}
                             labels={['low', 'medium', 'high']}
-                            dataPoints={[TeamDashboard?.tasks_by_priority?.low, TeamDashboard?.tasks_by_priority?.medium, TeamDashboard?.tasks_by_priority?.high]}
+                            dataPoints={[
+                                teamDashboard?.tasks_by_priority?.low || 0,
+                                teamDashboard?.tasks_by_priority?.medium || 0,
+                                teamDashboard?.tasks_by_priority?.high || 0
+                            ]}
                             label="Task breakdown by priority"
                             fontSize={45}
                         />
@@ -195,9 +257,9 @@ export default function MemberTeamDashboard() {
                         <div className="flex">
                             <div className="w-full p-5">
                                 <VerticalBarChart
-                                    key={TeamDashboard}
-                                    labels={TeamDashboard?.completion_trend?.labels}
-                                    dataPoints={TeamDashboard?.completion_trend?.values}
+                                    key={`completion-trend-${selectedDashboardTeam}`}
+                                    labels={teamDashboard?.completion_trend?.labels || []}
+                                    dataPoints={teamDashboard?.completion_trend?.values || []}
                                     backgroundColors={['#00c5c9']}
                                     hoverColors={['#1A4E6B']}
                                 />
@@ -207,5 +269,5 @@ export default function MemberTeamDashboard() {
                 </div>
             </div>
         </div>
-    </>
+    )
 }

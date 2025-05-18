@@ -58,7 +58,7 @@ export default function ProjectDashboard() {
                                 key={ProjectDashboard}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
                                 dataPoints={[ProjectDashboard?.task_counts?.pending, ProjectDashboard?.task_counts?.total - ProjectDashboard?.task_counts?.pending]}
-                                centerText={`${((ProjectDashboard?.task_counts?.pending / ProjectDashboard?.task_counts?.total) * 100)}%`}
+                                centerText={`${((ProjectDashboard?.task_counts?.pending / ProjectDashboard?.task_counts?.total) * 100).toFixed(1)}%`}
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
@@ -73,7 +73,7 @@ export default function ProjectDashboard() {
                                 key={ProjectDashboard}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
                                 dataPoints={[ProjectDashboard?.task_counts?.in_progress, ProjectDashboard?.task_counts?.total - ProjectDashboard?.task_counts?.in_progress]}
-                                centerText={`${((ProjectDashboard?.task_counts?.in_progress / ProjectDashboard?.task_counts?.total) * 100)}%`}
+                                centerText={`${((ProjectDashboard?.task_counts?.in_progress / ProjectDashboard?.task_counts?.total) * 100).toFixed(1)}%`}
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
@@ -88,7 +88,7 @@ export default function ProjectDashboard() {
                                 key={ProjectDashboard}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
                                 dataPoints={[ProjectDashboard?.task_counts?.completed, ProjectDashboard?.task_counts?.total - ProjectDashboard?.task_counts?.completed]}
-                                centerText={`${((ProjectDashboard?.task_counts?.completed / ProjectDashboard?.task_counts?.total) * 100)}%`}
+                                centerText={`${((ProjectDashboard?.task_counts?.completed / ProjectDashboard?.task_counts?.total) * 100).toFixed(1)}%`}
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
@@ -106,7 +106,7 @@ export default function ProjectDashboard() {
                                 key={ProjectDashboard}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
                                 dataPoints={[ProjectDashboard?.task_counts?.cancelled, ProjectDashboard?.task_counts?.total - ProjectDashboard?.task_counts?.cancelled]}
-                                centerText={`${((ProjectDashboard?.task_counts?.cancelled / ProjectDashboard?.task_counts?.total) * 100)}%`}
+                                centerText={`${((ProjectDashboard?.task_counts?.cancelled / ProjectDashboard?.task_counts?.total) * 100).toFixed(1)}%`}
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
@@ -121,7 +121,7 @@ export default function ProjectDashboard() {
                                 key={ProjectDashboard}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
                                 dataPoints={[ProjectDashboard?.task_counts?.on_hold, ProjectDashboard?.task_counts?.total - ProjectDashboard?.task_counts?.on_hold]}
-                                centerText={`${((ProjectDashboard?.task_counts?.on_hold / ProjectDashboard?.task_counts?.total) * 100)}%`}
+                                centerText={`${((ProjectDashboard?.task_counts?.on_hold / ProjectDashboard?.task_counts?.total) * 100).toFixed(1)}%`}
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">
@@ -136,7 +136,7 @@ export default function ProjectDashboard() {
                                 key={ProjectDashboard}
                                 backgroundColors={['#00c5c9', '#ffffff33']}
                                 dataPoints={[ProjectDashboard?.task_counts?.in_review, ProjectDashboard?.task_counts?.total - ProjectDashboard?.task_counts?.in_review]}
-                                centerText={`${((ProjectDashboard?.task_counts?.in_review / ProjectDashboard?.task_counts?.total) * 100)}%`}
+                                centerText={`${((ProjectDashboard?.task_counts?.in_review / ProjectDashboard?.task_counts?.total) * 100).toFixed(1)}%`}
                             />
                         </div>
                         <div className="flex flex-col items-center justify-center">

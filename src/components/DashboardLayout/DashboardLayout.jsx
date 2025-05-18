@@ -59,7 +59,7 @@ export default function DashboardLayout() {
         } else {
             navigate('/dashboard')
         }
-    }, []);
+    }, [selectedDashboardTeam, selectedDashboardProject]);
 
     function handleDashboardProjectChange(project) {
         console.log(project);
@@ -144,7 +144,7 @@ export default function DashboardLayout() {
                                 disabled={!selectedDashboardProject || isLoadingTeams}
                             >
                                 <option value="">Select Team</option>
-                                {!isLoadingTeams && projectTeamsData?.data?.data?.teams.map((team) => (
+                                {!isLoadingTeams && projectTeamsData?.data?.data?.teams.filter(team => team.hasAccess == true).map((team) => (
                                     <option key={team.id} value={team.id}>
                                         {team.name}
                                     </option>

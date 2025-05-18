@@ -1,17 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import DonutChart from '../../components/DonutChart/DonutChart'
 import VerticalBarChart from '../../components/VerticalBarChart/VerticalBarChart';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock } from '@fortawesome/free-regular-svg-icons';
-import { faAward, faListCheck, faPeopleGroup, faSquarePollVertical } from '@fortawesome/free-solid-svg-icons';
-import { MoveDownLeft, MoveUpRight } from 'lucide-react';
 import LineChart from '../../components/LineChart/LineChart';
 import axios from 'axios';
 import { projectContext } from '../../context/ProjectsContext';
 import { useQuery } from '@tanstack/react-query';
 
 export default function ProjectDashboard() {
-    const { selectedDashboardProject, setselectedDashboardProject } = useContext(projectContext)
+    const { selectedDashboardProject } = useContext(projectContext)
     const [ProjectDashboard, setProjectDashboard] = useState(null)
 
 

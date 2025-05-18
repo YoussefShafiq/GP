@@ -8,8 +8,7 @@ import axios from 'axios';
 import { TeamsContext } from '../../context/TeamsContext';
 
 export default function MemberTeamDashboard() {
-    const { selectedDashboardProject, setselectedDashboardProject } = useContext(projectContext)
-    const { selectedDashboardTeam, setselectedDashboardTeam } = useContext(TeamsContext)
+    const { selectedDashboardTeam } = useContext(TeamsContext)
 
     const [TeamDashboard, setTeamDashboard] = useState(null)
 
@@ -35,11 +34,6 @@ export default function MemberTeamDashboard() {
 
     }, [TeamData, selectedDashboardTeam])
 
-
-    const linechartData = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        dataPoints: [5, 9, 1, 5, 2, 4, 5, 2, 4, 5, 2, 4, 5],
-    };
 
     return <>
         <div className="flex flex-col gap-5">
@@ -99,7 +93,7 @@ export default function MemberTeamDashboard() {
                         <DonutChart
                             key={TeamDashboard}
                             dataPoints={[TeamDashboard?.avg_completion_time]}
-                            centerText={`${TeamDashboard?.avg_completion_time || 0}`}
+                            centerText={`${TeamDashboard?.avg_completion_time || 0}h`}
                             label="AVG time to complete tasks"
                             fontSize={45}
                             backgroundColors={['#F25287']}

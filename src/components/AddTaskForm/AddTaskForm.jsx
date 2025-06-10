@@ -49,7 +49,7 @@ const TaskForm = ({ isOpen, onClose, selectedTeam, token, teamMembers, mode, tas
                 tags: taskData.tags,
                 priority: taskData.priority,
                 is_backlog: 0,
-                deadline: taskData.deadline.split('T')[0],
+                deadline: taskData.deadline.split(' ')[0],
                 members: taskData.members.map((member) => member.id) || [], // Ensure this is an array
                 attachments: taskData.attachments || [], // Ensure this is an array
             });

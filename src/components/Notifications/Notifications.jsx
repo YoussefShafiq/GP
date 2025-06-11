@@ -248,7 +248,7 @@ const Notifications = () => {
                                 >
                                     <div>
                                         <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                            {notification.read === 0 && (
+                                            {notification.read == 0 && (
                                                 <div className="h-2 w-2 bg-red-500 inline-block me-2 rounded-full"></div>
                                             )}
                                             {notification.message}
@@ -259,7 +259,7 @@ const Notifications = () => {
                                             {new Date(notification.created_at).toLocaleString()}
                                         </small>
                                         <div className="flex justify-end gap-2">
-                                            {notification.read === 0 && (
+                                            {notification.read == 0 && (
                                                 <Tooltip delay={300} content="mark as read" closeDelay={0}>
                                                     <button
                                                         onClick={(e) => {

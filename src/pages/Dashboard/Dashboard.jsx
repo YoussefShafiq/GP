@@ -56,129 +56,129 @@ export default function Dashboard() {
 
     return (
         <div className="flex flex-col h-full dark:bg-darkoverflow-hidden">
+
+
             {/* Dashboard Content */}
-            <div className="flex flex-col lg:flex-row gap-5">
-                <div className="flex w-full gap-3">
-                    {/* First vertical data card */}
-                    <div className="flex flex-col justify-center w-1/4 lg:w-1/12 bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 py-4 rounded-xl">
-                        <div className="flex flex-col justify-center items-center gap-2">
-                            <div className="w-2/3">
-                                <DonutChart
-                                    key={dashbaordData?.data?.data}
-                                    backgroundColors={['#00c5c9', '#ffffff33']}
-                                    dataPoints={[dashbaordData?.data?.data.task_counts.pending, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.pending]}
-                                    centerText={`${Math.round((dashbaordData?.data?.data.task_counts.pending / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
-                                />
-                            </div>
-                            <div className="flex flex-col items-center justify-center">
-                                <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.pending}</h2>
-                                <h3 className="text-sm">pending</h3>
-                            </div>
+            <div className="flex gap-5">
+                {/* First vertical data card */}
+                <div className="flex flex-col justify-center w-1/12 bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 py-4 rounded-xl">
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-2/3">
+                            <DonutChart
+                                key={dashbaordData?.data?.data}
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.pending, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.pending]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.pending / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
+                            />
                         </div>
-                        <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
-                        <div className="flex flex-col justify-center items-center gap-2">
-                            <div className="w-2/3">
-                                <DonutChart
-                                    key={dashbaordData?.data?.data}
-                                    backgroundColors={['#00c5c9', '#ffffff33']}
-                                    dataPoints={[dashbaordData?.data?.data.task_counts.in_progress, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.in_progress]}
-                                    centerText={`${Math.round((dashbaordData?.data?.data.task_counts.in_progress / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
-
-                                />
-                            </div>
-                            <div className="flex flex-col items-center justify-center">
-                                <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.in_progress}</h2>
-                                <h3 className="text-sm">in progress</h3>
-                            </div>
-                        </div>
-                        <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
-                        <div className="flex flex-col justify-center items-center gap-2">
-                            <div className="w-2/3">
-                                <DonutChart
-                                    key={dashbaordData?.data?.data}
-                                    backgroundColors={['#00c5c9', '#ffffff33']}
-                                    dataPoints={[dashbaordData?.data?.data.task_counts.completed, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.completed]}
-                                    centerText={`${Math.round((dashbaordData?.data?.data.task_counts.completed / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
-
-                                />
-                            </div>
-                            <div className="flex flex-col items-center justify-center">
-                                <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.completed}</h2>
-                                <h3 className="text-sm">completed</h3>
-                            </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.pending}</h2>
+                            <h3 className="text-sm">pending</h3>
                         </div>
                     </div>
+                    <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-2/3">
+                            <DonutChart
+                                key={dashbaordData?.data?.data}
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.in_progress, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.in_progress]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.in_progress / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
 
-                    {/* Second vertical data card */}
-                    <div className="flex flex-col justify-center w-1/4 lg:w-1/12 bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 py-4 rounded-xl">
-                        <div className="flex flex-col justify-center items-center gap-2">
-                            <div className="w-2/3">
-                                <DonutChart
-                                    key={dashbaordData?.data?.data}
-                                    backgroundColors={['#00c5c9', '#ffffff33']}
-                                    dataPoints={[dashbaordData?.data?.data.task_counts.cancelled, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.cancelled]}
-                                    centerText={`${Math.round((dashbaordData?.data?.data.task_counts.cancelled / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
-
-                                />
-                            </div>
-                            <div className="flex flex-col items-center justify-center">
-                                <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.cancelled}</h2>
-                                <h3 className="text-sm">cancelled</h3>
-                            </div>
+                            />
                         </div>
-                        <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
-                        <div className="flex flex-col justify-center items-center gap-2">
-                            <div className="w-2/3">
-                                <DonutChart
-                                    key={dashbaordData?.data?.data}
-                                    backgroundColors={['#00c5c9', '#ffffff33']}
-                                    dataPoints={[dashbaordData?.data?.data.task_counts.on_hold, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.on_hold]}
-                                    centerText={`${Math.round((dashbaordData?.data?.data.task_counts.on_hold / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
-
-                                />
-                            </div>
-                            <div className="flex flex-col items-center justify-center">
-                                <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.on_hold}</h2>
-                                <h3 className="text-sm">on hold</h3>
-                            </div>
-                        </div>
-                        <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
-                        <div className="flex flex-col justify-center items-center gap-2">
-                            <div className="w-2/3">
-                                <DonutChart
-                                    key={dashbaordData?.data?.data}
-                                    backgroundColors={['#00c5c9', '#ffffff33']}
-                                    dataPoints={[dashbaordData?.data?.data.task_counts.in_review, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.in_review]}
-                                    centerText={`${Math.round((dashbaordData?.data?.data.task_counts.in_review / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
-
-                                />
-                            </div>
-                            <div className="flex flex-col items-center justify-center">
-                                <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.in_review}</h2>
-                                <h3 className="text-sm">in review</h3>
-                            </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.in_progress}</h2>
+                            <h3 className="text-sm">in progress</h3>
                         </div>
                     </div>
+                    <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-2/3">
+                            <DonutChart
+                                key={dashbaordData?.data?.data}
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.completed, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.completed]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.completed / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
 
-                    {/* Project cards */}
-                    <div className="flex flex-col w-1/2 lg:w-1/6 gap-5">
-                        <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
-                            <FontAwesomeIcon icon={faListCheck} className="text-2xl" />
-                            <h2 className="font-semibold capitalize">teams</h2>
-                            <h2 className="text-3xl">{dashbaordData?.data?.data?.teams_count.current}</h2>
-                            <h3 className='flex items-center'> {dashbaordData?.data.data.teams_count.trend == 'increase' ? <MoveDownLeft className='text-red-500' /> : <MoveUpRight className='text-green-500' />}  {dashbaordData?.data?.data.teams_count.change_percentage}% {dashbaordData?.data.data.teams_count.trend} from last month</h3>
+                            />
                         </div>
-                        <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
-                            <FontAwesomeIcon icon={faPeopleGroup} className="text-2xl" />
-                            <h2 className="font-semibold capitalize">projects</h2>
-                            <h2 className="text-3xl">{dashbaordData?.data?.data?.projects_count.current}</h2>
-                            <h3 className='flex items-center'> {dashbaordData?.data.data.projects_count.trend == 'increase' ? <MoveDownLeft className='text-red-500' /> : <MoveUpRight className='text-green-500' />}  {dashbaordData?.data?.data.projects_count.change_percentage}% {dashbaordData?.data.data.projects_count.trend} from last month</h3>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.completed}</h2>
+                            <h3 className="text-sm">completed</h3>
                         </div>
                     </div>
                 </div>
 
+                {/* Second vertical data card */}
+                <div className="flex flex-col justify-center w-1/12 bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 py-4 rounded-xl">
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-2/3">
+                            <DonutChart
+                                key={dashbaordData?.data?.data}
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.cancelled, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.cancelled]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.cancelled / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
+
+                            />
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.cancelled}</h2>
+                            <h3 className="text-sm">cancelled</h3>
+                        </div>
+                    </div>
+                    <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-2/3">
+                            <DonutChart
+                                key={dashbaordData?.data?.data}
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.on_hold, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.on_hold]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.on_hold / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
+
+                            />
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.on_hold}</h2>
+                            <h3 className="text-sm">on hold</h3>
+                        </div>
+                    </div>
+                    <div className="w-2/3 bg-white h-[1px] m-auto my-2"></div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="w-2/3">
+                            <DonutChart
+                                key={dashbaordData?.data?.data}
+                                backgroundColors={['#00c5c9', '#ffffff33']}
+                                dataPoints={[dashbaordData?.data?.data.task_counts.in_review, dashbaordData?.data?.data.task_counts.total - dashbaordData?.data?.data.task_counts.in_review]}
+                                centerText={`${Math.round((dashbaordData?.data?.data.task_counts.in_review / dashbaordData?.data?.data.task_counts.total) * 100) || 0}%`}
+
+                            />
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="font-semibold">{dashbaordData?.data?.data.task_counts.in_review}</h2>
+                            <h3 className="text-sm">in review</h3>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Project cards */}
+                <div className="flex flex-col w-1/6 gap-5">
+                    <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
+                        <FontAwesomeIcon icon={faListCheck} className="text-2xl" />
+                        <h2 className="font-semibold capitalize">teams</h2>
+                        <h2 className="text-3xl">{dashbaordData?.data?.data?.teams_count.current}</h2>
+                        <h3 className='flex items-center'> {dashbaordData?.data.data.teams_count.trend == 'increase' ? <MoveDownLeft className='text-red-500' /> : <MoveUpRight className='text-green-500' />}  {dashbaordData?.data?.data.teams_count.change_percentage}% {dashbaordData?.data.data.teams_count.trend} from last month</h3>
+                    </div>
+                    <div className="flex flex-col justify-center items-center text-center h-1/2 text-sm bg-base dark:bg-dark1 shadow-xl text-black dark:text-white gap-2 p-4 rounded-xl">
+                        <FontAwesomeIcon icon={faPeopleGroup} className="text-2xl" />
+                        <h2 className="font-semibold capitalize">projects</h2>
+                        <h2 className="text-3xl">{dashbaordData?.data?.data?.projects_count.current}</h2>
+                        <h3 className='flex items-center'> {dashbaordData?.data.data.projects_count.trend == 'increase' ? <MoveDownLeft className='text-red-500' /> : <MoveUpRight className='text-green-500' />}  {dashbaordData?.data?.data.projects_count.change_percentage}% {dashbaordData?.data.data.projects_count.trend} from last month</h3>
+                    </div>
+                </div>
+
                 {/* Main chart area */}
-                <div className="lg:w-4/6 flex flex-col">
+                <div className="w-4/6 flex flex-col">
                     <div className="bg-base dark:bg-dark1 shadow-lg rounded-2xl">
                         <div className="flex justify-between items-center pt-4 px-6">
                             <h2 className="font-inter font-bold text-gray-900 dark:text-white">
@@ -199,7 +199,7 @@ export default function Dashboard() {
             </div>
 
             {/* Bottom section */}
-            <div className="flex flex-col lg:flex-row mt-8 gap-3">
+            <div className="flex mt-8 gap-3">
                 <div className=" bg-base dark:bg-dark1 shadow-lg p-5 rounded-2xl">
                     <div className="h-[300px]">
                         <DonutChart

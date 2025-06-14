@@ -83,7 +83,7 @@ export default function Team() {
     }
 
     // Get team tasks query
-    let { data: teamTasks, isError: isTasksError, isRefetching: refetchingTasks, error: TasksError, refetch: refetchTeamTasks } = useQuery({
+    let { data: teamTasks, isError: isTasksError, isRefetching: refetchingTasks, error: TasksError, refetch: refetchTeamTasks, isLoading: isTasksLoading } = useQuery({
         queryKey: ['teamTasks', selectedTeam?.id],
         queryFn: getTeamTasks,
         enabled: !!selectedTeam,
@@ -414,6 +414,7 @@ export default function Team() {
                             onSort={handleSort}
                             onStateFilter={handleStateFilter}
                         />
+                        {isTasksLoading && <div className="flex items-center justify-center"><Loader2Icon className='animate-spin' /></div>}
                         {teamTasks?.data?.data && (
                             <div className="space-y-6">
                                 {(filterState == '' || filterState == 1) && <div>

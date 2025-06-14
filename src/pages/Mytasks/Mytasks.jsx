@@ -40,7 +40,7 @@ export default function MyTasks() {
         });
     }
 
-    let { data: userTasks, isError, error, isRefetching: refetchingTasks } = useQuery({
+    let { data: userTasks, isError, error, isRefetching: refetchingTasks, isLoading: isTasksLoading } = useQuery({
         queryKey: ['userTasks'],
         queryFn: getUserTasks,
     });
@@ -183,6 +183,7 @@ export default function MyTasks() {
                     teams={projectTeamsData?.data.data.teams} // Pass teams data
                     isTeamsLoading={isTeamsLoading} // Pass loading state
                 />
+                {isTasksLoading && <div className="flex items-center justify-center"><Loader2Icon className='animate-spin' /></div>}
                 {userTasks?.data?.data && (
                     <div className="space-y-6">
                         {(filterState == '' || filterState == 1) && <div>
